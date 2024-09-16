@@ -11,12 +11,11 @@ import {
   OctagonX,
   SunMoon,
 } from 'lucide-react-native';
-import { HStack, Icon, Text } from '@/components/ui';
+import { HStack, Text } from '@/components/ui';
 import { Switch } from '@/components/ui';
 import { ProfileCard } from '@/components/profile/ProfileCard';
 import SignOutAlertDialog from '../../../components/profile/SignOutAlertDialog';
 import DeleteAccountAlertDialog from '../../../components/profile/DeleteAccountAlertDialog';
-import { ThemeContext } from '../../_layout';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { useSession } from '@/hooks/useSession';
 import { RevenueCatContext } from '@/provider/RevenueCatProvider';
@@ -26,6 +25,8 @@ import config from '../../../../config';
 import { ScrollView, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PaymentPlan } from '@/components/profile/PaymentPlan';
 import * as WebBrowser from 'expo-web-browser';
+import {useTheme} from "@/hooks/useTheme";
+import {Icon} from "@/components/ui/icon";
 
 type ProfileSettingsProps = {
   toggleColorMode: () => void;
@@ -98,7 +99,7 @@ const ProfilePage = () => {
     onClose: onCloseDeleteAccountDialog,
   } = useDisclose(false);
 
-  const { toggleColorMode, isDark } = useContext(ThemeContext);
+  const { toggleColorMode, isDark } = useTheme();
   const { user } = useSession();
   const { customerInfo } = useContext(RevenueCatContext);
   const activeEntitlements = customerInfo?.activeSubscriptions;
@@ -121,8 +122,8 @@ const ProfilePage = () => {
                 <ProfileCard user={user} />
                 <Divider className="my-2" />
                 <ProfileSettings
-                  toggleColorMode={toggleColorMode!}
-                  isDark={isDark!}
+                  toggleColorMode={toggleColorMode}
+                  isDark={isDark}
                   onOpenDeleteAccountDialog={onOpenDeleteAccountDialog}
                 />
                 {Env.REVENUE_CAT_API_KEY_APPLE && (

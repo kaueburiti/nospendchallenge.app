@@ -2,7 +2,7 @@ import React from 'react';
 import { VStack } from '@/components/ui';
 import { Center } from '@/components/ui';
 import { Heading } from '@/components/ui';
-import { Link } from 'expo-router';
+import { router } from 'expo-router';
 import { Button, ButtonText } from '@/components/ui';
 import GuestLayout from '../../components/GuestLayout';
 import { Image } from '@/components/ui';
@@ -25,16 +25,16 @@ const Welcome = () => {
         </Center>
 
         <VStack space="md" className="w-full max-w-sm">
-          <Link href="/sign-in">
-            <Button size="lg" variant="solid">
+
+            <Button size="lg" onPress={() => {router.push('/sign-in')}} variant="solid" className="flex-1 w-full">
               <ButtonText>Sign In</ButtonText>
             </Button>
-          </Link>
-          <Link href="/sign-up">
-            <Button size="lg" variant="outline">
+
+
+            <Button size="lg" onPress={() => {router.push('/sign-up')}} variant="solid" className="flex-1 w-full">
               <ButtonText>Sign Up</ButtonText>
             </Button>
-          </Link>
+
         </VStack>
       </VStack>
     </GuestLayout>

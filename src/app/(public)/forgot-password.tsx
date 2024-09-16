@@ -10,7 +10,6 @@ import {
   FormControlLabelText,
 } from '@/components/ui';
 import { Input, InputField } from '@/components/ui';
-import { Icon } from '@/components/ui';
 import { Button, ButtonSpinner, ButtonText } from '@/components/ui';
 import { Keyboard } from 'react-native';
 import { Controller, useForm } from 'react-hook-form';
@@ -21,6 +20,7 @@ import { Pressable } from '@/components/ui';
 import GuestLayout from '../../components/GuestLayout';
 import { useRouter } from 'expo-router';
 import { useResetPassword } from '@/hooks/auth/useResetPassword';
+import {Icon} from "@/components/ui/icon";
 
 const forgotPasswordSchema = z.object({
   email: z.string().min(1, 'Email is required').email(),

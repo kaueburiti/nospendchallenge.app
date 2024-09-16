@@ -6,7 +6,7 @@ import config from '../../config';
 
 export const initializeOneSignal = async () => {
   if(config.oneSignalAppId) {
-    console.warn('OneSignal App ID is not set!');
+    console.log('OneSignal App ID is not set!');
     return;
   }
   

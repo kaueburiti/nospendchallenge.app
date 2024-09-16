@@ -1,5 +1,6 @@
-import { Icon } from '../ui';
+
 import { type LucideIcon } from 'lucide-react-native';
+import {Icon} from "@/components/ui/icon";
 
 export function TabBarIcon({
   icon,

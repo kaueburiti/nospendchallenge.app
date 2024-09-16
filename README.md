@@ -54,7 +54,7 @@ To get started with NativeExpress, follow these steps:
    
 2. Copy the `.env.example` file to `.env` and fill in the required environment variables:
 ```bash
-cp .env.example .env
+cp .env.local.example .env.local
 ```
 
 3. Install dependencies:

@@ -1,12 +1,12 @@
 'use client';
-import React, { useContext, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { createIcon } from '@gluestack-ui/icon';
 import { Svg } from 'react-native-svg';
 import { tva } from '@gluestack-ui/nativewind-utils/tva';
 import { type VariantProps } from '@gluestack-ui/nativewind-utils';
-import { ThemeContext } from '@/app/_layout';
 import resolveConfig from 'tailwindcss/resolveConfig';
 import tailwindConfig from '../../../../tailwind.config.js';
+import {useTheme} from "@/hooks/useTheme";
 
 type IPrimitiveIcon = {
   height?: number | string;
@@ -43,7 +43,7 @@ const PrimitiveIcon = React.forwardRef<
       if (width) return { width };
       return {};
     }, [size, height, width]);
-    const { isDark } = useContext(ThemeContext);
+    const { isDark } = useTheme();
     let colorProps =
       stroke === 'currentColor' && color !== undefined ? color : stroke;
 
