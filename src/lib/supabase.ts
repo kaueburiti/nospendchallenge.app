@@ -3,13 +3,13 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import 'react-native-url-polyfill/auto';
 import { type Database } from './db/database.types';
 import { Env } from './env';
-import config from '../../config';
 
-const SUPABASE_SERVICE_KEY = Env.SUPABASE_SERVICE_KEY!;
+const SUPABASE_URL = Env.SUPABASE_URL!;
+const SUPABASE_ANON_KEY = Env.SUPABASE_ANON_KEY!;
 
 export const supabase = createClient<Database>(
- config.supabaseUrl,
-  SUPABASE_SERVICE_KEY,
+  SUPABASE_URL,
+  SUPABASE_ANON_KEY,
   {
     auth: {
       storage: AsyncStorage,

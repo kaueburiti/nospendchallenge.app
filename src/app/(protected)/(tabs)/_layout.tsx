@@ -1,12 +1,13 @@
 import { Tabs } from 'expo-router';
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { HomeIcon, User } from 'lucide-react-native';
-import { ThemeContext } from '../../_layout';
+import {useTheme} from "@/hooks/useTheme";
+
 
 export default function TabLayout() {
-  const { isDark } = useContext(ThemeContext);
+  const { isDark } = useTheme();
 
   return (
     <Tabs

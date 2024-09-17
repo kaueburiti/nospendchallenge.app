@@ -17,7 +17,6 @@ export * from './form-control';
 export * from './gluestack-ui-provider';
 export * from './heading';
 export * from './hstack';
-export * from './icon';
 export * from './image';
 // export * from './image-background';
 export * from './input';

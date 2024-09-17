@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Text,
   Heading,
-  Icon,
   Button,
   ButtonText,
   AlertDialog,
@@ -15,6 +14,7 @@ import {
 } from '../ui';
 import { XIcon } from 'lucide-react-native';
 import { useDeleteAccount } from '@/hooks/auth/useDeleteAccount';
+import {Icon} from "@/components/ui/icon";
 
 const DeleteAccountAlertDialog = ({
   openDeleteAccountDialog,
@@ -54,7 +54,7 @@ const DeleteAccountAlertDialog = ({
             onPress={onCloseDeleteAccountDialog}>
             <ButtonText>Cancel</ButtonText>
           </Button>
-          <Button action="negative" onPress={void handleDeleteAccount}>
+          <Button action="negative" onPress={handleDeleteAccount}>
             <ButtonText className="text-white">Delete Account</ButtonText>
           </Button>
         </AlertDialogFooter>

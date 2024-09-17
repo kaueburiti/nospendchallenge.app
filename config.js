@@ -14,7 +14,7 @@ const config = {
             light: './src/assets/images/splash.png',
             dark: './src/assets/images/splash.dark.png'
         },
-        iosBundleIdentifier: '<your-ios-bundle-identifier>', // TODO: Enter your iOS bundle identifier
+        iosBundleIdentifier: 'com.robinfaraj.nativeexpress-demo', // TODO: Enter your iOS bundle identifier
         androidPackageName: '<your-android-package-name>', // TODO: Enter your Android package name
         easProjectId: '<your-eas-project-id>', // TODO: Enter your EAS project ID
     },
@@ -33,7 +33,6 @@ const config = {
         project: '<your-sentry-project>',
         organization: '<your-sentry-organization>',
     },
-    supabaseUrl: '<your-supabase-url>', // TODO: Enter your Supabase URL
     oneSignalAppId: '<your-onesignal-app-id>', // Information about OneSignal in our docs: https://docs.native.express/push-notification/overview
     //  More information about posthog in our docs: https://docs.native.express/analytics
     posthogHost: 'https://us.i.posthog.com', // usually 'https://us.i.posthog.com' or 'https://eu.i.posthog.com'

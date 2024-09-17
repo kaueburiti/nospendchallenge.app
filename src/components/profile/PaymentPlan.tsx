@@ -1,5 +1,6 @@
 import { BadgeCheck } from "lucide-react-native";
-import { VStack, HStack, ButtonText, Text, Button, Icon, Box } from "../ui";
+import { VStack, HStack, ButtonText, Text, Button, Box } from "../ui";
+import {Icon} from "@/components/ui/icon";
 
 interface ProfilePlanProps {
   onPress: () => void;

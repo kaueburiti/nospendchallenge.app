@@ -16,7 +16,7 @@ module.exports = {
     project: './tsconfig.json',
     tsconfigRootDir: __dirname,
   },
-  ignorePatterns: ['*.config.js', 'config.js', '.eslintrc.js', 'node_modules/', 'dist/', 'src/components/ui/'],
+  ignorePatterns: ['*.config.js', 'config.js', '.eslintrc.js', 'node_modules/', 'dist/', 'src/components/ui/', 'supabase/functions/'],
   rules: {
     '@typescript-eslint/array-type': 'off',
     '@typescript-eslint/consistent-type-definitions': 'off',

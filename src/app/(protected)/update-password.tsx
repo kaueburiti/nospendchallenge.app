@@ -10,7 +10,7 @@ import {
   FormControlLabelText,
 } from '@/components/ui';
 import { Input, InputField } from '@/components/ui';
-import { Icon } from '@/components/ui';
+
 import { Button, ButtonText } from '@/components/ui';
 import { Keyboard } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
@@ -21,6 +21,7 @@ import { Pressable } from '@/components/ui';
 import GuestLayout from '../../components/GuestLayout';
 import { useRouter } from 'expo-router';
 import { useUpdatePassword } from '@/hooks/auth/useUpdatePassword';
+import {Icon} from "@/components/ui/icon";
 
 const updatePasswordSchema = z
   .object({

@@ -1,38 +1,82 @@
-import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { useSimpleToast } from '../useSimpleToast';
-import type { AuthError } from '@supabase/auth-js';
+import { useSignOut } from "@/hooks/auth/useSignOut";
+import { type FunctionsError } from '@supabase/supabase-js';
 
 type DeleteAccountParams = {
   onSuccess?: () => void;
-  onError?: (error: AuthError) => void;
+  onError?: (error: Error) => void;
+};
+
+// Define a type for the expected response from the Edge Function
+type DeleteAccountResponse = {
+  message: string;
+  // Add any other fields that your Edge Function might return
+};
+
+const deleteAccount = async (): Promise<DeleteAccountResponse> => {
+  const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+
+  if (sessionError) {
+    console.error('Session Error:', sessionError);
+    throw new Error('Failed to get session');
+  }
+
+  if (!session?.access_token) {
+    console.error('No access token in session');
+    throw new Error('No active session or missing access token');
+  }
+
+  // Invoke the Supabase Edge function to delete the account
+  const response =
+      await supabase.functions.invoke<DeleteAccountResponse>('delete-account', {
+        headers: {
+          Authorization: `Bearer ${session.access_token}`,
+        },
+      });
+
+  if ('error' in response) {
+    console.error('Error invoking function:', response.error);
+    throw response.error;
+  }
+
+  const { data } = response;
+
+  if (!data) {
+    throw new Error('No data returned from delete-account function');
+  }
+
+  return data;
 };
 
 export const useDeleteAccount = () => {
-  const [isLoading, setIsLoading] = useState(false);
   const { showToast } = useSimpleToast();
+  const { signOut } = useSignOut();
 
-  const deleteAccount = async ({ onSuccess, onError }: DeleteAccountParams) => {
-    setIsLoading(true);
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    // if the user is not logged in, the user.id will be null and the deleteUser function will return an error
-    const { error } = await supabase.auth.admin.deleteUser(user?.id ?? '');
-
-    if (error) {
-      console.error('Delete account error:', error);
-      showToast('error', 'Failed to delete account');
-      onError?.(error);
-    } else {
+  const mutation = useMutation({
+    mutationFn: deleteAccount,
+    onSuccess: async () => {
       showToast('success', 'Account deleted successfully');
-      onSuccess?.();
-    }
+      await signOut({});
+    },
+    onError: (error: FunctionsError | Error) => {
+      console.error('Delete account error:', error.message);
+      showToast('error', 'Failed to delete account');
+    },
+  });
 
-    setIsLoading(false);
+  const handleDeleteAccount = async ({ onSuccess, onError }: DeleteAccountParams) => {
+    try {
+      await mutation.mutateAsync();
+      onSuccess?.();
+    } catch (error) {
+      onError?.(error as FunctionsError | Error);
+    }
   };
 
-  return { isLoading, deleteAccount };
+  return {
+    isLoading: mutation.isPending,
+    deleteAccount: handleDeleteAccount,
+  };
 };

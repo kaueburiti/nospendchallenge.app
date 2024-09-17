@@ -2,7 +2,6 @@ import React from 'react';
 import {
   Text,
   Heading,
-  Icon,
   Button,
   ButtonText,
   AlertDialog,
@@ -15,6 +14,7 @@ import {
 } from '../ui';
 import { XIcon } from 'lucide-react-native';
 import { useSignOut } from '@/hooks/auth/useSignOut';
+import {Icon} from "@/components/ui/icon";
 
 const SignOutAlertDialog = ({
   openSignOutAlertDialog,
