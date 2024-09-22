@@ -32,8 +32,9 @@ CHANGELOG.md
 
 # Angular Cache
 .angular
-
+ 
 # Local dev files
+.env
 .env.local
 .bashrc
 .nx

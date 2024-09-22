@@ -1,17 +1,17 @@
 import { LogLevel, OneSignal } from 'react-native-onesignal';
-import config from '../../config';
 
 // This file contains everything related to OneSignal
 // OneSignal is a push notification service
 
 export const initializeOneSignal = async () => {
-  if(config.oneSignalAppId) {
-    console.log('OneSignal App ID is not set!');
+  const ONE_SIGNAL_APP_ID = process.env.EXPO_PUBLIC_ONE_SIGNAL_APP_ID;
+
+  if(!ONE_SIGNAL_APP_ID) {
     return;
   }
   
   OneSignal.Debug.setLogLevel(LogLevel.Verbose);
-  OneSignal.initialize(config.oneSignalAppId);
+  OneSignal.initialize(ONE_SIGNAL_APP_ID);
   void OneSignal.Notifications.requestPermission(true);
 }
 

@@ -27,8 +27,7 @@ module.exports = {
         CFBundleURLTypes: [
           {
             CFBundleURLSchemes: [
-              config.googleOauth.scheme,
-              config.googleOauth.iosUrlScheme,
+              process.env.EXPO_PUBLIC_IOS_URL_SCHEME,
             ]
           }
         ]
@@ -48,7 +47,7 @@ module.exports = {
       [
         "@react-native-google-signin/google-signin",
         {
-          iosUrlScheme: config.googleOauth.iosUrlScheme
+          iosUrlScheme: process.env.EXPO_PUBLIC_IOS_URL_SCHEME 
         }
       ],
       [
@@ -67,9 +66,9 @@ module.exports = {
       [
         "@sentry/react-native/expo",
         {
-          url: config.sentry.url,
-          project: config.sentry.project,
-          organization: config.sentry.organization,
+          url: process.env.EXPO_PUBLIC_SENTRY_URL,
+          project: process.env.EXPO_PUBLIC_SENTRY_PROJECT,
+          organization: process.env.EXPO_PUBLIC_SENTRY_ORGANIZATION,
         }
       ]
     ],

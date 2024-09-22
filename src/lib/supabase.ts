@@ -4,8 +4,26 @@ import 'react-native-url-polyfill/auto';
 import { type Database } from './db/database.types';
 import { Env } from './env';
 
-const SUPABASE_URL = Env.SUPABASE_URL!;
-const SUPABASE_ANON_KEY = Env.SUPABASE_ANON_KEY!;
+const SUPABASE_ANON_KEY = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
+const SUPABASE_URL = process.env.EXPO_PUBLIC_SUPABASE_URL;
+
+if (!SUPABASE_ANON_KEY) {
+  throw new Error(`
+    Missing Supabase anon key!
+
+    Find more information about the project specifc setup here: 
+    https://docs.native.express/setup/project
+  `);
+}
+
+if (!SUPABASE_URL) {
+  throw new Error(`
+    Missing Supabase url!
+
+    Find more information about the project specifc setup here: 
+    https://docs.native.express/setup/project
+  `);
+}
 
 export const supabase = createClient<Database>(
   SUPABASE_URL,

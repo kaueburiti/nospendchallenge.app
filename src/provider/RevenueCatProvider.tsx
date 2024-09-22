@@ -1,9 +1,8 @@
 import { createContext, type PropsWithChildren, useEffect, useState } from 'react';
 import Purchases, { type CustomerInfo, type PurchasesPackage } from 'react-native-purchases';
-import { Env } from '@/lib/env';
 
 const APIKeys = {
-    apple: Env.REVENUE_CAT_API_KEY_APPLE!
+    apple: process.env.EXPO_PUBLIC_REVENUE_CAT_API_KEY_APPLE
 }
 
 interface RevenueCatContextProps {

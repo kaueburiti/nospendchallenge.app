@@ -8,19 +8,11 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { SessionProvider } from '@/provider/SessionProvider';
 import { RevenueCatProvider } from '@/provider/RevenueCatProvider';
-import * as Sentry from '@sentry/react-native';
 import { useDeepLink } from '@/hooks/useDeepLink';
 import { initializeOneSignal } from '@/lib/one-signal';
-import { Env } from '@/lib/env';
-import { PostHogProvider } from 'posthog-react-native';
-import config from '../../config';
-import {ThemeProvider} from "@/provider/ThemeProvider";
-
-Env.SENTRY_DSN && Sentry.init({
-  dsn: Env.SENTRY_DSN
-  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
-  // enableSpotlight: __DEV__,
-});
+import { ThemeProvider } from "@/provider/ThemeProvider";
+import '../sentry';
+import { ConditionalPostHogProvider } from '@/provider/ConditionalPostHogProvider';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 void SplashScreen.preventAutoHideAsync();
@@ -53,10 +45,8 @@ export default function RootLayout() {
     <SessionProvider>
       <QueryClientProvider client={queryClient}>
         <RevenueCatProvider>
-          <PostHogProvider apiKey={Env.POSTHOG_API_KEY} options={{
-            host: config.posthogHost,
-          }}>
-          <ThemeProvider>
+          <ConditionalPostHogProvider>
+            <ThemeProvider>
               <Stack
                 screenOptions={{
                   headerShown: false,
@@ -64,8 +54,8 @@ export default function RootLayout() {
                 <Stack.Screen name="(protected)" />
                 <Stack.Screen name="(public)" />
               </Stack>
-          </ThemeProvider>
-            </PostHogProvider>
+            </ThemeProvider>
+          </ConditionalPostHogProvider>
         </RevenueCatProvider>
       </QueryClientProvider>
     </SessionProvider>
