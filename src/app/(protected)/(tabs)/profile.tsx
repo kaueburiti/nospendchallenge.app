@@ -20,7 +20,6 @@ import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { useSession } from '@/hooks/useSession';
 import { RevenueCatContext } from '@/provider/RevenueCatProvider';
 import Paywall from '../../../components/payment/paywall';
-import { Env } from '@/lib/env';
 import config from '../../../../config';
 import { ScrollView, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PaymentPlan } from '@/components/profile/PaymentPlan';
@@ -126,7 +125,7 @@ const ProfilePage = () => {
                   isDark={isDark}
                   onOpenDeleteAccountDialog={onOpenDeleteAccountDialog}
                 />
-                {Env.REVENUE_CAT_API_KEY_APPLE && (
+                {process.env.EXPO_PUBLIC_REVENUE_CAT_API_KEY_APPLE && (
                   <>
                     <Divider className="my-2" />
                     <PaymentPlan

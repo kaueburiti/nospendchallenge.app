@@ -9,22 +9,10 @@ declare const config: {
     androidPackageName: string;
     easProjectId: string;
   };
-  googleOauth: {
-    iosClientId: string;
-    iosUrlScheme: string;
-  };
   profilePage: {
     supportPage: string;
     contactPage: string;
   };
-  sentry: {
-    url: string;
-    project: string;
-    organization: string;
-  };
-  supabaseUrl: string;
-  oneSignalAppId: string;
-  posthogHost: string;
 };
 
 export = config;
