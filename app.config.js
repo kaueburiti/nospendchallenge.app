@@ -75,7 +75,7 @@ module.exports = {
         "expo-build-properties",
         {
           android: {
-            minSdkVersion: 23
+            minSdkVersion: 24
           }
         }
       ],
