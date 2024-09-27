@@ -15,7 +15,7 @@ const config = {
             dark: './src/assets/images/splash.dark.png'
         },
         iosBundleIdentifier: 'com.robinfaraj.nativeexpress', // TODO: Enter your iOS bundle identifier
-        androidPackageName: '', // TODO: Enter your Android package name
+        androidPackageName: 'com.robinfaraj.nativeexpress', // TODO: Enter your Android package name
         easProjectId: '', // TODO: Enter your EAS project ID
     },
     googleOauth: {
