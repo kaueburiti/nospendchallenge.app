@@ -47,7 +47,7 @@ module.exports = {
       [
         "@react-native-google-signin/google-signin",
         {
-          iosUrlScheme: process.env.EXPO_PUBLIC_IOS_URL_SCHEME 
+          iosUrlScheme: process.env.EXPO_PUBLIC_IOS_URL_SCHEME
         }
       ],
       [
@@ -70,7 +70,15 @@ module.exports = {
           project: process.env.EXPO_PUBLIC_SENTRY_PROJECT,
           organization: process.env.EXPO_PUBLIC_SENTRY_ORGANIZATION,
         }
-      ]
+      ],
+      [
+        "expo-build-properties",
+        {
+          android: {
+            minSdkVersion: 24
+          }
+        }
+      ],
     ],
     experiments: {
       typedRoutes: true

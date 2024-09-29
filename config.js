@@ -15,13 +15,8 @@ const config = {
             dark: './src/assets/images/splash.dark.png'
         },
         iosBundleIdentifier: 'com.robinfaraj.nativeexpress', // TODO: Enter your iOS bundle identifier
-        androidPackageName: '', // TODO: Enter your Android package name
+        androidPackageName: 'com.robinfaraj.nativeexpress', // TODO: Enter your Android package name
         easProjectId: '', // TODO: Enter your EAS project ID
-    },
-    googleOauth: {
-        // More information about Google OAuth in our docs: https://docs.native.express/authentication/overview
-        iosClientId: '803722982306-rkomc92ir03mkedcfdshnl7e6l1cvf3c.apps.googleusercontent.com',
-        iosUrlScheme: 'com.googleusercontent.apps.803722982306-rkomc92ir03mkedcfdshnl7e6l1cvf3c'
     },
     profilePage: {
         supportPage: 'https://x.com/robin_faraj',

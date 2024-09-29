@@ -15,7 +15,8 @@ export const useSignInWithGoogle = () => {
 
   useEffect(() => {
     GoogleSignin.configure({
-      iosClientId: process.env.EXPO_PUBLIC_IOS_CLIENT_ID,
+      webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
+      iosClientId: process.env.EXPO_PUBLIC_IOS_CLIENT_ID
     });
   }, []);
 
