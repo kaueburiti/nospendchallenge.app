@@ -3,6 +3,7 @@ import { useSimpleToast } from '../useSimpleToast';
 import { supabase } from '@/lib/supabase';
 import { type AuthError } from '@supabase/auth-js';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import config from "../../../config";
 
 type SignInWithGoogleParams = {
   onSuccess?: () => void;
@@ -15,8 +16,8 @@ export const useSignInWithGoogle = () => {
 
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
-      iosClientId: process.env.EXPO_PUBLIC_IOS_CLIENT_ID
+      webClientId: config.googleOauth.webClientId,
+      iosClientId: config.googleOauth.iosClientId,
     });
   }, []);
 
