@@ -1,5 +1,7 @@
 const config = require("./config.js");
 
+
+
 module.exports = {
   expo: {
     name: config.general.appName,
@@ -42,43 +44,43 @@ module.exports = {
       permissions: []
     },
     plugins: [
-      "expo-router",
-      "expo-localization",
-      [
-        "@react-native-google-signin/google-signin",
-        {
-          iosUrlScheme: process.env.EXPO_PUBLIC_IOS_URL_SCHEME
-        }
-      ],
-      [
-        "expo-image-picker",
-        {
-          photosPermission: "The app accesses your photos to let you share them with your friends."
-        }
-      ],
-      "expo-apple-authentication",
-      [
-        "onesignal-expo-plugin",
-        {
-          mode: "development"
-        }
-      ],
-      [
+      ...((process.env.EXPO_PUBLIC_SENTRY_URL && process.env.EXPO_PUBLIC_SENTRY_PROJECT && process.env.EXPO_PUBLIC_SENTRY_ORGANIZATION) ? [
         "@sentry/react-native/expo",
-        {
-          url: process.env.EXPO_PUBLIC_SENTRY_URL,
-          project: process.env.EXPO_PUBLIC_SENTRY_PROJECT,
-          organization: process.env.EXPO_PUBLIC_SENTRY_ORGANIZATION,
-        }
-      ],
-      [
-        "expo-build-properties",
-        {
-          android: {
-            minSdkVersion: 24
-          }
-        }
-      ],
+      {
+        url: process.env.EXPO_PUBLIC_SENTRY_URL,
+        project: process.env.EXPO_PUBLIC_SENTRY_PROJECT,
+        organization: process.env.EXPO_PUBLIC_SENTRY_ORGANIZATION,
+      },
+      ] : []),
+      "expo-router",
+          "expo-localization",
+          [
+            "@react-native-google-signin/google-signin",
+            {
+              iosUrlScheme: process.env.EXPO_PUBLIC_IOS_URL_SCHEME
+            }
+          ],
+          [
+            "expo-image-picker",
+            {
+              photosPermission: "The app accesses your photos to let you share them with your friends."
+            }
+          ],
+          "expo-apple-authentication",
+          [
+            "onesignal-expo-plugin",
+            {
+              mode: "development"
+            }
+          ],
+          [
+            "expo-build-properties",
+            {
+              android: {
+                minSdkVersion: 24
+              }
+            }
+          ],
     ],
     experiments: {
       typedRoutes: true
