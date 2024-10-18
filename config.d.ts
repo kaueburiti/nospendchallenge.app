@@ -13,6 +13,11 @@ declare const config: {
     supportPage: string;
     contactPage: string;
   };
+  googleOauth: {
+    iosClientId: string;
+    iosUrlScheme: string;
+    webClientId: string;
+  };
 };
 
 export = config;
