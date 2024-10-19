@@ -1,3 +1,4 @@
+const { locales } = require("expo-localization");
 const config = require("./config.js");
 
 
@@ -19,7 +20,10 @@ module.exports = {
         image: config.general.splashImage.dark,
         resizeMode: "contain",
         backgroundColor: "#000000"
-      }
+      },
+      extra: {
+        supportsRTL: true
+      },
     },
     ios: {
       supportsTablet: false,
@@ -47,11 +51,11 @@ module.exports = {
     plugins: [
       ...((process.env.EXPO_PUBLIC_SENTRY_URL && process.env.EXPO_PUBLIC_SENTRY_PROJECT && process.env.EXPO_PUBLIC_SENTRY_ORGANIZATION) ? [
         "@sentry/react-native/expo",
-      {
-        url: process.env.EXPO_PUBLIC_SENTRY_URL,
-        project: process.env.EXPO_PUBLIC_SENTRY_PROJECT,
-        organization: process.env.EXPO_PUBLIC_SENTRY_ORGANIZATION,
-      },
+        {
+          url: process.env.EXPO_PUBLIC_SENTRY_URL,
+          project: process.env.EXPO_PUBLIC_SENTRY_PROJECT,
+          organization: process.env.EXPO_PUBLIC_SENTRY_ORGANIZATION,
+        },
       ] : []),
       "expo-router",
       "expo-localization",

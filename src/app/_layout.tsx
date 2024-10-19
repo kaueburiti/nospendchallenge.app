@@ -13,6 +13,7 @@ import { initializeOneSignal } from '@/lib/one-signal';
 import { ThemeProvider } from "@/provider/ThemeProvider";
 import '../sentry';
 import { ConditionalPostHogProvider } from '@/provider/ConditionalPostHogProvider';
+import '../i18n'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 void SplashScreen.preventAutoHideAsync();

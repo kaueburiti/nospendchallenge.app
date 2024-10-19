@@ -12,10 +12,11 @@ import { supabase } from '@/lib/supabase';
 import { decode } from 'base64-arraybuffer';
 import { type User as SupabaseUser } from '@supabase/supabase-js';
 import { BottomDrawer } from '../BottomDrawer';
+import { i18n } from '@/i18n';
 
 const profileSchema = z.object({
-  full_name: z.string().min(2, 'Name must be at least 2 characters long').optional(),
-  avatar_url: z.string().url('Invalid avatar URL').optional(),
+  full_name: z.string().min(2, i18n.t('profile.validation_name_min_length')).optional(),
+  avatar_url: z.string().url(i18n.t('profile.validation_invalid_avatar_url')).optional(),
 });
 
 interface ImageData {
@@ -88,7 +89,7 @@ export const EditProfileDrawer = ({
         setValidationError(error.errors[0].message);
       } else {
         console.error('Error saving profile:', error);
-        Alert.alert('Error', 'Failed to save profile. Please try again.');
+        Alert.alert(i18n.t('profile.error_save'));
       }
     } finally {
       setUploading(false);
@@ -118,12 +119,12 @@ export const EditProfileDrawer = ({
       }
     } catch (error) {
       console.error('Error selecting avatar:', error);
-      Alert.alert('Error', 'Failed to select avatar. Please try again.');
+      Alert.alert(i18n.t('profile.error_avatar'));
     }
   };
 
   return (
-    <BottomDrawer isOpen={isOpen} onClose={onClose} title="Edit Profile">
+    <BottomDrawer isOpen={isOpen} onClose={onClose} title={i18n.t("profile.drawer_title")}>
       <VStack space="lg" className="flex-1 w-full p-4 mb-20">
         <Center className="w-full flex gap-4">
           <Pressable onPress={handleChangeAvatar}>
@@ -138,16 +139,16 @@ export const EditProfileDrawer = ({
             </Avatar>
           </Pressable>
           <Button onPress={handleChangeAvatar} variant="outline">
-            <ButtonText>Upload new profile image</ButtonText>
+            <ButtonText>{i18n.t("profile.drawer_image_upload_label")}</ButtonText>
           </Button>
         </Center>
         <VStack space="md">
-          <Text>Full Name</Text>
+          <Text>{i18n.t("profile.drawer_name_input_label")}</Text>
           <Input>
             <InputField
               value={name}
               onChangeText={setName}
-              placeholder="Enter your full name"
+              placeholder={i18n.t('profile.input_placeholder_name')}
             />
           </Input>
           {validationError && (
@@ -156,11 +157,11 @@ export const EditProfileDrawer = ({
         </VStack>
         <HStack space="md" className="justify-end mt-auto">
           <Button variant="outline" onPress={onClose}>
-            <ButtonText>Cancel</ButtonText>
+            <ButtonText>{i18n.t("profile.button_cancel")}</ButtonText>
           </Button>
           <Button onPress={handleSave} isDisabled={isLoading || uploading}>
             <ButtonText>
-              {isLoading || uploading ? 'Saving...' : 'Save'}
+              {isLoading || uploading ? i18n.t('button_saving') : i18n.t("profile.button_save")}
             </ButtonText>
           </Button>
         </HStack>

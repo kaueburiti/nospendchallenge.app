@@ -24,8 +24,9 @@ import config from '../../../../config';
 import { ScrollView, GestureHandlerRootView } from 'react-native-gesture-handler';
 import { PaymentPlan } from '@/components/profile/PaymentPlan';
 import * as WebBrowser from 'expo-web-browser';
-import {useTheme} from "@/hooks/useTheme";
-import {Icon} from "@/components/ui/icon";
+import { useTheme } from '@/hooks/useTheme';
+import { Icon } from '@/components/ui/icon';
+import { i18n } from '@/i18n';
 
 type ProfileSettingsProps = {
   toggleColorMode: () => void;
@@ -39,33 +40,35 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
   onOpenDeleteAccountDialog,
 }) => (
   <VStack space="lg">
-    <Heading className="mb-1">Settings</Heading>
+    <Heading className="mb-1">{i18n.t('profile.settings_title')}</Heading>
     <HStack className="justify-between items-center">
       <HStack space="md">
         <Icon as={SunMoon} />
-        <Text>Dark Mode</Text>
+        <Text>{i18n.t('profile.dark_mode')}</Text>
       </HStack>
       <Switch value={isDark} onValueChange={toggleColorMode} size="sm" />
     </HStack>
     <MenuItem
       icon={OctagonX}
       onPress={onOpenDeleteAccountDialog}
-      text="Delete Account"
+      text={i18n.t('profile.delete_account')}
     />
   </VStack>
 );
 
-
-
 const ProfileSupport: React.FC = () => (
   <VStack space="lg">
-    <Heading className="mb-1">Support</Heading>
+    <Heading className="mb-1">{i18n.t('profile.support_title')}</Heading>
     <MenuItem
       onPress={() => WebBrowser.openBrowserAsync(config.profilePage.supportPage)}
       icon={LifeBuoyIcon}
-      text="Get Help"
+      text={i18n.t('profile.get_help')}
     />
-    <MenuItem onPress={() => WebBrowser.openBrowserAsync(config.profilePage.contactPage)} icon={MessageSquareText} text="Contact" />
+    <MenuItem
+      onPress={() => WebBrowser.openBrowserAsync(config.profilePage.contactPage)}
+      icon={MessageSquareText}
+      text={i18n.t('profile.contact')}
+    />
   </VStack>
 );
 
@@ -81,7 +84,7 @@ const ProfileSignOut: React.FC<ProfileSignOutProps> = ({
     variant="outline"
     className="mt-auto"
     onPress={onOpenSignOutAlertDialog}>
-    <ButtonText>Sign out</ButtonText>
+    <ButtonText>{i18n.t('profile.sign_out')}</ButtonText>
   </Button>
 );
 
