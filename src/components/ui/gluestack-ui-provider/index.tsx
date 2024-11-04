@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { config } from './config';
 import {
   type ColorSchemeName,
@@ -31,10 +31,11 @@ export function GluestackUIProvider({
   style?: ViewProps['style'];
 }) {
   const colorScheme = useColorScheme();
-
   const colorSchemeName = getColorSchemeName(colorScheme, mode);
 
-  colorSchemeNW.set(mode);
+  useEffect(() => {
+    colorSchemeNW.set(mode);
+  }, [mode]);
 
   return (
     <View

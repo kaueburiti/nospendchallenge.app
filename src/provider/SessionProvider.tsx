@@ -1,3 +1,4 @@
+import { AppState } from 'react-native';
 import { type Session, type User } from '@supabase/supabase-js';
 import { SplashScreen, useRouter, useSegments } from 'expo-router';
 import React, {
@@ -72,6 +73,24 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
       void SplashScreen.hideAsync();
     }, 500);
   }, [initialized, session]);
+
+  // Handle session auto-refresh
+  useEffect(() => {
+    void supabase.auth.startAutoRefresh();
+
+    const subscription = AppState.addEventListener('change', (state) => {
+      if (state === 'active') {
+        void supabase.auth.startAutoRefresh();
+      } else if (state === 'background' || state === 'inactive') {
+        void supabase.auth.stopAutoRefresh();
+      }
+    });
+
+    return () => {
+      subscription.remove();
+      void supabase.auth.stopAutoRefresh();
+    };
+  }, []);
 
   return (
     <SessionContext.Provider
