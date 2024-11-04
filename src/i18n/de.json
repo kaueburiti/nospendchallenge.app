@@ -1,0 +1,41 @@
+{
+    "home": {
+      "tab_label": "Start",
+      "top_section_title": "Ausgewählte Apps",
+      "bottom_section_title": "Inhalt",
+      "banner_text": "Möchtest du vorgestellt werden?",
+      "banner_link_text": "Kontaktiere mich"
+    },
+    "profile": {
+      "tab_label": "Profil",
+      "settings_title": "Einstellungen",
+      "support_title": "Support",
+      "payment_status_full_access": "Pro Programm",
+      "payment_status_basic_access": "Basic Programm",
+      "payment_body_text": "Schalte exklusive Funktionen frei und verbessere dein Erlebnis",
+      "payment_button_label": "Jetzt upgraden",
+      "dark_mode": "Dunkelmodus",
+      "delete_account": "Konto löschen",
+      "get_help": "Hilfe erhalten",
+      "contact": "Kontakt",
+      "sign_out": "Abmelden",
+      "drawer_title": "Profil bearbeiten",
+      "drawer_image_upload_label": "Neues Profilbild hochladen",
+      "drawer_name_input_label": "Vollständiger Name",
+      "button_cancel": "Abbrechen",
+      "button_save": "Speichern",
+      "error_save": "Fehler beim Speichern des Profils. Bitte erneut versuchen.",
+      "error_avatar": "Fehler beim Auswählen des Avatars. Bitte erneut versuchen.",
+      "input_placeholder_name": "Gib deinen vollständigen Namen ein"
+    },
+    "category": {
+      "development": "Entwicklung",
+      "productivity": "Produktivität",
+      "artificial_intelligence": "Künstliche Intelligenz",
+      "seo": "SEO",
+      "design": "Design",
+      "communication": "Kommunikation",
+      "others": "Andere"
+    }
+  }
+  

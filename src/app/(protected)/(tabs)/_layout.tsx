@@ -4,6 +4,7 @@ import React from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { HomeIcon, User } from 'lucide-react-native';
 import {useTheme} from "@/hooks/useTheme";
+import { i18n } from '@/i18n';
 
 
 export default function TabLayout() {
@@ -19,7 +20,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="home"
         options={{
-          title: 'Home',
+          title: i18n.t("home.tab_label"),
           tabBarIcon: ({ color }) => (
             <TabBarIcon icon={HomeIcon} color={color} />
           ),
@@ -28,7 +29,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          title: 'Profile',
+          title: i18n.t("profile.tab_label"),
           tabBarIcon: ({ color }) => <TabBarIcon icon={User} color={color} />,
         }}
       />

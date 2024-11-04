@@ -4,13 +4,9 @@
   "version": "1.0.0",
   "scripts": {
     "start": "expo start",
-    "reset-project": "node ./scripts/reset-project.js",
     "android": "expo run:android",
     "ios": "expo run:ios",
-    "test": "jest --watchAll",
-    "lint": "expo lint",
-    "postinstall": "patch-package",
-    "web": "DARK_MODE=media undefined"
+    "lint": "expo lint"
   },
   "jest": {
     "preset": "jest-expo"
@@ -29,7 +25,7 @@
     "@gluestack-ui/image": "^0.1.10",
     "@gluestack-ui/input": "^0.1.31",
     "@gluestack-ui/link": "^0.1.22",
-    "@gluestack-ui/nativewind-utils": "^1.0.24",
+    "@gluestack-ui/nativewind-utils": "^1.0.25",
     "@gluestack-ui/overlay": "^0.1.15",
     "@gluestack-ui/pressable": "^0.1.16",
     "@gluestack-ui/slider": "^0.1.25",
@@ -65,9 +61,9 @@
     "expo-system-ui": "~3.0.7",
     "expo-web-browser": "~13.0.3",
     "i": "^0.3.7",
+    "i18n-js": "^4.5.0",
     "lucide-react-native": "^0.427.0",
     "nativewind": "4.1.4",
-    "npm": "^10.8.3",
     "onesignal-expo-plugin": "^2.0.3",
     "posthog-react-native": "^3.1.2",
     "r": "^0.0.5",

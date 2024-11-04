@@ -1,0 +1,40 @@
+{
+  "home": {
+    "tab_label": "Home",
+    "top_section_title": "Featured Apps",
+    "bottom_section_title": "Content",
+    "banner_text": "You want to get featured?",
+    "banner_link_text": "Contact me"
+  },
+  "profile": {
+    "tab_label": "Profile",
+    "settings_title": "Settings",
+    "support_title": "Support",
+    "payment_status_full_access": "Pro Program",
+    "payment_status_basic_access": "Basic Program",
+    "payment_body_text": "Unlock exclusive features and enhance your experience",
+    "payment_button_label": "Upgrade Now",
+    "dark_mode": "Dark Mode",
+    "delete_account": "Delete Account",
+    "get_help": "Get Help",
+    "contact": "Contact",
+    "sign_out": "Sign Out",
+    "drawer_title": "Edit Profile",
+    "drawer_image_upload_label": "Upload new profile image",
+    "drawer_name_input_label": "Full Name",
+    "button_cancel": "Cancel",
+    "button_save": "Save",
+    "error_save": "Failed to save profile. Please try again.",
+    "error_avatar": "Failed to select avatar. Please try again.",
+    "input_placeholder_name": "Enter your full name"
+  },
+  "category": {
+    "development": "Development",
+    "productivity": "Productivity",
+    "artificial_intelligence": "Artificial Intelligence",
+    "seo": "SEO",
+    "design": "Design",
+    "communication": "Communication",
+    "others": "Others"
+  }
+}
