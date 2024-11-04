@@ -4,7 +4,7 @@ import { ScrollView } from 'react-native';
 import { Box } from '@/components/ui';
 import { Text } from '@/components/ui';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
-import WebBrowser from 'expo-web-browser';
+import * as WebBrowser from 'expo-web-browser';
 import { Link, LinkText } from '@/components/ui';
 import BottomSection from '../../../components/home/BottomSection';
 import TopSection from '../../../components/home/TopSection';

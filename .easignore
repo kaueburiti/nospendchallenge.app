@@ -1,2 +1,4 @@
 # ignores all .env files
 .env*
+/android
+/ios
