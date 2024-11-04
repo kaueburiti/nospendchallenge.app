@@ -2,6 +2,7 @@ const config = require("./config.js");
 
 module.exports = {
     expo: {
+        owner: config.general.owner,
         name: config.general.appName,
         slug: config.general.slug,
         version: "1.0.0",

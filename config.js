@@ -7,6 +7,7 @@ const config = {
     general: {
         // You can find more information about the general setup in our docs: https://docs.native.express/setup/introduction
         appName: 'Native Express', // TODO: replace with your app name
+        owner: "your-expo-account-username", // TODO replace with owner (optional) 
         slug: 'native-express', // TODO: replace with your app slug
         icon: './src/assets/images/icon.png',
         scheme: 'nativeexpress', // TODO: replace with your app scheme

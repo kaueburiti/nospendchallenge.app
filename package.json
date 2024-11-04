@@ -3,10 +3,20 @@
   "main": "expo-router/entry",
   "version": "1.0.0",
   "scripts": {
-    "start": "expo start",
-    "android": "expo run:android",
-    "ios": "expo run:ios",
-    "lint": "expo lint"
+    "start": "npx expo start",
+    "android": "npx expo run:android",
+    "ios": "npx expo run:ios",
+    "lint": "npx expo lint",
+    "expo:doctor": "npx expo-doctor",
+    "pod:install": "cd ios && pod install",
+    "supabase:db-push": "supabase db push",
+    "supabase:db-push-remote": "supabase db push --linked",
+    "supabase:db-reset": "supabase db reset",
+    "supabase:db-reset-remote": "supabase db reset --linked",
+    "supabase:db-status": "supabase db status",
+    "supabase:db-status-remote": "supabase db status --linked",
+    "supabase:db-types": "npx supabase gen types --lang=typescript --project-id \"$PROJECT_REF\" --schema public > ./src/lib/db/database.types.ts"
+
   },
   "jest": {
     "preset": "jest-expo"
