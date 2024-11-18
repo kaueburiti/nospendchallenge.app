@@ -5,7 +5,6 @@ declare const config: {
     slug: string;
     icon: string;
     scheme: string;
-    splashImage: string;
     iosBundleIdentifier: string;
     androidPackageName: string;
     easProjectId: string;

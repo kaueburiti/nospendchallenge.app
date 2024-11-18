@@ -11,13 +11,9 @@ const config = {
         slug: 'native-express', // TODO: replace with your app slug
         icon: './src/assets/images/icon.png',
         scheme: 'nativeexpress', // TODO: replace with your app scheme
-        splashImage: {
-            light: './src/assets/images/splash.png',
-            dark: './src/assets/images/splash.dark.png'
-        },
         iosBundleIdentifier: 'com.robinfaraj.nativeexpress', // TODO: Enter your iOS bundle identifier
         androidPackageName: 'com.robinfaraj.nativeexpress', // TODO: Enter your Android package name
-        easProjectId: '', // TODO: Enter your EAS project ID
+        easProjectId: 'c3746970-9ea0-4a59-8860-c60b982261c9', // TODO: Enter your EAS project ID
     },
     googleOauth: {
         // More information about Google OAuth in our docs: https://docs.native.express/authentication/overview

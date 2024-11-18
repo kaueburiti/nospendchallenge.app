@@ -14,6 +14,7 @@ import { ThemeProvider } from "@/provider/ThemeProvider";
 import '../sentry';
 import { ConditionalPostHogProvider } from '@/provider/ConditionalPostHogProvider';
 import '../i18n'
+import { KeyboardProvider } from "react-native-keyboard-controller";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 void SplashScreen.preventAutoHideAsync();
@@ -22,7 +23,7 @@ export default function RootLayout() {
   useDeepLink();
 
   const [loaded] = useFonts({
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-require-imports
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
@@ -45,19 +46,21 @@ export default function RootLayout() {
   return (
     <SessionProvider>
       <QueryClientProvider client={queryClient}>
-        <RevenueCatProvider>
-          <ConditionalPostHogProvider>
-            <ThemeProvider>
-              <Stack
-                screenOptions={{
-                  headerShown: false,
-                }}>
-                <Stack.Screen name="(protected)" />
-                <Stack.Screen name="(public)" />
-              </Stack>
-            </ThemeProvider>
-          </ConditionalPostHogProvider>
-        </RevenueCatProvider>
+        <KeyboardProvider>
+          <RevenueCatProvider>
+            <ConditionalPostHogProvider>
+              <ThemeProvider>
+                <Stack
+                  screenOptions={{
+                    headerShown: false,
+                  }}>
+                  <Stack.Screen name="(protected)" />
+                  <Stack.Screen name="(public)" />
+                </Stack>
+              </ThemeProvider>
+            </ConditionalPostHogProvider>
+          </RevenueCatProvider>
+        </KeyboardProvider>
       </QueryClientProvider>
     </SessionProvider>
   );

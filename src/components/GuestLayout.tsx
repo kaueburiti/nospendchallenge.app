@@ -1,6 +1,5 @@
 import React from 'react';
-
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { VStack } from './ui/vstack';
 import { StatusBar } from 'expo-status-bar';
 import { ScrollView } from 'react-native';
@@ -38,3 +37,4 @@ export default function GuestLayout(props: GuestLayoutProps) {
     </SafeAreaView>
   );
 }
+
