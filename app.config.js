@@ -10,19 +10,7 @@ module.exports = {
         icon: config.general.icon,
         scheme: config.general.scheme,
         userInterfaceStyle: "automatic",
-        splash: {
-            image: config.general.splashImage.light,
-            resizeMode: "contain",
-            backgroundColor: "#ffffff",
-            dark: {
-                image: config.general.splashImage.dark,
-                resizeMode: "contain",
-                backgroundColor: "#000000"
-            },
-            extra: {
-                supportsRTL: true
-            },
-        },
+        newArchEnabled: true,
         ios: {
             supportsTablet: false,
             usesAppleSignIn: true,
@@ -47,6 +35,7 @@ module.exports = {
             permissions: []
         },
         plugins: [
+            "expo-font",
             ...(process.env.EXPO_PUBLIC_SENTRY_URL &&
             process.env.EXPO_PUBLIC_SENTRY_PROJECT &&
             process.env.EXPO_PUBLIC_SENTRY_ORGANIZATION
@@ -65,6 +54,19 @@ module.exports = {
                 "@react-native-google-signin/google-signin",
                 {
                     iosUrlScheme: config.googleOauth.iosUrlScheme
+                }
+            ],
+
+            [
+                "expo-splash-screen",
+                {
+                    image: config.general.icon,
+                    backgroundColor: "#ffffff",
+                    dark: {
+                        image: config.general.icon,
+                        backgroundColor: "#000000"
+                    },
+                    "imageWidth": 200
                 }
             ],
             [
