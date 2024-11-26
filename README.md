@@ -16,12 +16,12 @@
 </p>
 
 <div align="center">
-<a href="https://native.express"><img src="https://native-express-landingpage-6fxj626cs-robinsadeghpours-projects.vercel.app/opengraph-image.png" alt="NativeExpress" width="660"></a>
+<a href="https://native.express"><img src="https://native.express/opengraph-image.png" alt="NativeExpress" width="660"></a>
 </div>
 
 ## Key Features
 
-* Cross-platform compatibility (iOS, Android, Web) using Expo
+* iOS & Android support using Expo
 
 * Sleek UI with NativeWind and Tailwind CSS
 
@@ -29,15 +29,17 @@
 
 * Real-time collaboration with Supabase
 
-* Secure authentication and data storage
+* Secure authentication using Supabase
 
-* Push notifications for updates and collaboration
+* Push notifications using OneSignal
 
 * In-app purchases and subscriptions via RevenueCat
 
-* Comprehensive analytics with Posthog and UXCam
+* Comprehensive in-app analytics with Posthog
 
 * Error tracking and performance monitoring with Sentry
+
+* Internationalization support with i18n
 
 * Dark/Light mode support
 
