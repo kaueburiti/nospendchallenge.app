@@ -9,6 +9,7 @@ const config = {
         appName: 'Native Express', // TODO: replace with your app name
         owner: "your-expo-account-username", // TODO replace with owner (optional) 
         slug: 'native-express', // TODO: replace with your app slug
+        splashScreen: './src/assets/images/logo.png',
         icon: './src/assets/images/icon.png',
         scheme: 'nativeexpress', // TODO: replace with your app scheme
         iosBundleIdentifier: 'com.robinfaraj.nativeexpress', // TODO: Enter your iOS bundle identifier

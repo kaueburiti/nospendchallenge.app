@@ -9,8 +9,8 @@ BEGIN;
 -- Insert data into the data table
 INSERT INTO data (src, name, href, featured, description)
 VALUES
-    ('https://qpdwualqgmqaxfgoapyc.supabase.co/storage/v1/object/public/appboilerplate/product-images/appboilerplate-thumbnail.png',
-     'App Boilerplate', 'https://www.native.express/', true, 'The ultimate mobile native app boilerplate.'),
+    ('https://qpdwualqgmqaxfgoapyc.supabase.co/storage/v1/object/public/appboilerplate/product-images/nativeexpress-thumbnail.png?t=2024-11-24T15%3A52%3A54.043Z',
+     'Native Express', 'https://www.native.express/', true, 'The ultimate mobile native app boilerplate.'),
     ('https://qpdwualqgmqaxfgoapyc.supabase.co/storage/v1/object/public/appboilerplate/product-images/v0-thumbnail.jpeg?t=2024-08-16T14%3A00%3A41.048Z',
      'v0', 'https://v0.dev/', false, 'Generate, refine, and ship applications with AI.'),
     ('https://qpdwualqgmqaxfgoapyc.supabase.co/storage/v1/object/public/appboilerplate/product-images/listingcat-thumbnail.png',

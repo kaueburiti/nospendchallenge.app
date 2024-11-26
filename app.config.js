@@ -56,7 +56,6 @@ module.exports = {
                     iosUrlScheme: config.googleOauth.iosUrlScheme
                 }
             ],
-
             [
                 "expo-splash-screen",
                 {

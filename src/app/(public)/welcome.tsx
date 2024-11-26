@@ -15,9 +15,9 @@ const Welcome = () => {
         <Center className="mb-8 mt-32">
             <Image
               size="md"
-              source={require('../../assets/images/icon.png') as ImageSourcePropType}
+              source={require('../../assets/images/logo.png') as ImageSourcePropType}
               alt="image"
-              className="mb-8"
+              className="mb-8 padding-4"
             />
           <Heading className="text-3xl text-center">
             Welcome to NativeExpress!

@@ -9,7 +9,9 @@ export const getProducts = async (): Promise<Product[]> => {
       data_categories (
         categories (name)
       )
-    `);
+    `)
+    .order('created_at', { ascending: true });
+
 
   if (error) throw error;
 

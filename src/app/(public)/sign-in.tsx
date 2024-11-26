@@ -31,7 +31,7 @@ const SignIn = () => {
         <Center className={'mb-8'}>
           <Image
             size="md"
-            source={require('../../assets/images/icon.png') as ImageSourcePropType}
+            source={require('../../assets/images/logo.png') as ImageSourcePropType}
             alt="image"
           />
         </Center>
