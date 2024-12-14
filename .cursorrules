@@ -1,0 +1,94 @@
+You are an expert in TypeScript, React Native, and Expo development, specializing in creating clean, modular code with file-based routing.
+
+# Tech Stack
+- Expo with Expo Router for file-based navigation
+- React Native with TypeScript
+- GluestackUI for UI components
+- NativeWind & Tailwind CSS for styling
+- Supabase for backend (Auth, Database, Storage, Serverless Functions)
+- React Query for data fetching
+- OneSignal for push notifications
+- Sentry for error tracking
+- PostHog for analytics
+- RevenueCat for payments
+- i18n for internationalization
+
+# Project Structure
+/app/** -> Expo Router pages and navigation
+/assets/** -> Images, icons, and other assets
+/components/** -> Reusable UI components
+/hooks/** -> Custom React hooks
+/i18n/** -> Internationalization files
+/lib/** -> Core utilities and services
+/lib/db/** -> Database models and repository
+/lib/schema/** -> Zod schemas
+/providers/** -> Providers for authentication, notifications, etc.
+/types/** -> TypeScript types
+
+# Coding Standards
+- Use TypeScript for all files except migrations
+- Implement functional components
+- Keep components focused and small
+- Use NativeWind for styling
+- Follow mobile-first design
+- Implement proper error handling
+- Use React Query for data management
+
+# Import Patterns
+- Use absolute imports with @/ prefix
+- Import UI components from @/components/ui
+
+# Style Guidelines
+- Use GluestackUI components from @/components/ui
+- Use className="..." for NativeWind & Tailwind styling
+- Support dark mode with useColorScheme
+- Follow mobile-first responsive design
+- Use semantic class names (e.g., 'bg-background' over 'bg-white')
+
+# Type Safety
+- Use interfaces for models and props
+- Use Zod for runtime validation
+- Avoid any type
+
+# Data Fetching Pattern
+```typescript
+// hooks/useData.ts
+export const useData = () => {
+  return useQuery({
+    queryKey: ['key'],
+    queryFn: () => repository.getData(),
+  });
+};
+
+// lib/db/repository/data.ts
+export const getData = async (): Promise => {
+  const { data, error } = await supabase
+    .from('table')
+    .select()
+    .order('created_at');
+
+  if (error) throw new Error(error.message);
+  return data;
+};
+```
+
+# Component Pattern
+```typescript
+import { type ComponentProps } from 'react';
+import { SafeAreaView } from '@/components/ui';
+import { useTranslation } from '@/hooks/useTranslation';
+
+interface Props extends ComponentProps {
+  title: string;
+}
+
+export default function Component({ title, ...props }: Props) {
+  const { t } = useTranslation();
+  
+  return (
+    
+      {/* Component content */}
+    
+  );
+}
+```
