@@ -9,10 +9,8 @@ type DeleteAccountParams = {
   onError?: (error: Error) => void;
 };
 
-// Define a type for the expected response from the Edge Function
 type DeleteAccountResponse = {
   message: string;
-  // Add any other fields that your Edge Function might return
 };
 
 const deleteAccount = async (): Promise<DeleteAccountResponse> => {
@@ -28,7 +26,6 @@ const deleteAccount = async (): Promise<DeleteAccountResponse> => {
     throw new Error('No active session or missing access token');
   }
 
-  // Invoke the Supabase Edge function to delete the account
   const response =
       await supabase.functions.invoke<DeleteAccountResponse>('delete-account', {
         headers: {
@@ -36,7 +33,7 @@ const deleteAccount = async (): Promise<DeleteAccountResponse> => {
         },
       });
 
-  if ('error' in response) {
+  if (response.error) {
     console.error('Error invoking function:', response.error);
     throw response.error;
   }

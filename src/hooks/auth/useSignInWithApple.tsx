@@ -46,6 +46,18 @@ export const useSignInWithApple = () => {
       token: credential.identityToken,
     });
 
+    // quickfix for missing name with apple sign in: https://github.com/supabase/supabase-js/issues/899
+    if (user && credential.fullName.givenName && credential.fullName.familyName) {
+      await supabase.auth.updateUser({
+        data: {
+          ...user.user_metadata,
+          given_name: credential.fullName.givenName,
+          family_name: credential.fullName.familyName,
+          full_name: `${credential.fullName.givenName} ${credential.fullName.familyName}`
+        }
+      });
+    }
+
     if (error) {
       console.error('Supabase Sign-In Error:', error);
       showToast('error', 'Sign-In failed');
