@@ -6,11 +6,12 @@ import React, {
   type PropsWithChildren,
   useEffect,
   useState,
+  useContext,
 } from 'react';
-
 import { supabase } from '@/lib/supabase';
 import { signInWithOneSignal } from '@/lib/one-signal';
 import { useIdentifyUser } from '@/hooks/analytics/useIdentifyUser';
+import { RevenueCatContext } from '@/provider/RevenueCatProvider';
 
 void SplashScreen.preventAutoHideAsync();
 
@@ -34,47 +35,51 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
   const [initialized, setInitialized] = useState<boolean>(false);
 
   const { identifyUser: identifyPosthogUser } = useIdentifyUser();
+  const { identifyUser: identifyRevenueCatUser, logout: logoutRevenueCat } = useContext(RevenueCatContext);
 
-  /**
-   * Listens for changes in the session and updates the state accordingly
-   */
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
       setSession(session);
       setUser(session ? session.user : null);
+      
+      if (event === 'SIGNED_OUT') {
+        await logoutRevenueCat?.();
+      }
+      
       setInitialized(true);
     });
+
+    void supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setUser(session ? session.user : null);
+      setInitialized(true);
+    });
+
     return () => {
       data.subscription.unsubscribe();
     };
   }, []);
 
-  /**
-   * Handles the session and redirects the user to the appropriate route depending on their session status
-   */
   useEffect(() => {
     if (!initialized) return;
 
     const inProtectedGroup = segments[0] === '(protected)';
+    const inPublicGroup = segments[0] === '(public)';
 
     if (session && !inProtectedGroup) {
-      void signInWithOneSignal(session.user.id, session.user.email);
-      identifyPosthogUser(session.user.id, { email: session.user.email });
-      router.replace('/(protected)/(tabs)/home');
-    } else if (!session) {
+      void (async () => {
+        await Promise.all([
+          signInWithOneSignal(session.user.id, session.user.email),
+          identifyPosthogUser(session.user.id, { email: session.user.email }),
+          identifyRevenueCatUser?.(session.user.id),
+        ]);
+        router.replace('/(protected)/(tabs)/home');
+      })();
+    } else if (!session && !inPublicGroup) {
       router.replace('/(public)/welcome');
     }
+  }, [initialized, session, segments]);
 
-    /* HACK: Something must be rendered when determining the initial auth state... 
-    instead of creating a loading screen, we use the SplashScreen and hide it after
-    a small delay (500 ms)
-    */
-    setTimeout(() => {
-      void SplashScreen.hideAsync();
-    }, 500);
-  }, [initialized, session]);
-
-  // Handle session auto-refresh
   useEffect(() => {
     void supabase.auth.startAutoRefresh();
 
@@ -91,6 +96,10 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
       void supabase.auth.stopAutoRefresh();
     };
   }, []);
+
+  if (!initialized) {
+    return null;
+  }
 
   return (
     <SessionContext.Provider
