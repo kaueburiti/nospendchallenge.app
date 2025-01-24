@@ -10,6 +10,8 @@ interface RevenueCatContextProps {
     restorePermission: () => Promise<CustomerInfo>;
     packages: PurchasesPackage[];
     customerInfo?: CustomerInfo;
+    identifyUser: (userId: string) => Promise<CustomerInfo>;
+    logout: () => Promise<void>;
 }
 
 export const RevenueCatContext = createContext<Partial<RevenueCatContextProps>>({})
@@ -40,7 +42,29 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
         try {
             await Purchases.purchasePackage(selectedPackage);
         } catch(e) {
-            console.error(`Falied to purchase package ${selectedPackage.identifier}`, e)
+            console.error(`Failed to purchase package ${selectedPackage.identifier}`, e)
+            throw e;
+        }
+    }
+
+    const identifyUser = async (userId: string) => {
+        try {
+            const { customerInfo } = await Purchases.logIn(userId);
+            setCustomerInfo(customerInfo);
+            return customerInfo;
+        } catch (e) {
+            console.error('Failed to identify user with RevenueCat', e);
+            throw e;
+        }
+    }
+
+    const logout = async () => {
+        try {
+            await Purchases.logOut();
+            setCustomerInfo(undefined);
+        } catch (e) {
+            console.error('Failed to logout from RevenueCat', e);
+            throw e;
         }
     }
 
@@ -50,7 +74,9 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
                 purchasePackage,
                 restorePermission: () => Purchases.restorePurchases(),
                 packages,
-                customerInfo
+                customerInfo,
+                identifyUser,
+                logout
             }}
         >
             {children}

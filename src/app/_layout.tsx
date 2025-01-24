@@ -1,6 +1,6 @@
 import '../global.css';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect, useState } from 'react';
 import 'react-native-reanimated';
@@ -15,19 +15,28 @@ import '../sentry';
 import { ConditionalPostHogProvider } from '@/provider/ConditionalPostHogProvider';
 import '../i18n'
 import { KeyboardProvider } from "react-native-keyboard-controller";
+import { Spinner } from '@/components/ui/spinner';
+import { Box } from '@/components/ui';
+
+export {
+  ErrorBoundary,
+} from 'expo-router';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 void SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   useDeepLink();
+  const [queryClient] = useState(() => new QueryClient());
 
   const [loaded] = useFonts({
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-require-imports
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
   });
 
-  const [queryClient] = useState(() => new QueryClient());
+  useEffect(() => {
+    void initializeOneSignal();
+  }, []);
 
   useEffect(() => {
     if (loaded) {
@@ -35,12 +44,12 @@ export default function RootLayout() {
     }
   }, [loaded]);
 
-  useEffect(() => {
-    void initializeOneSignal()
-  }, []);
-
   if (!loaded) {
-    return null;
+    return (
+      <Box className="flex-1 justify-center items-center">
+        <Spinner size="large" color="$gray500" />
+      </Box>
+    );
   }
 
   return (
@@ -50,13 +59,7 @@ export default function RootLayout() {
           <RevenueCatProvider>
             <ConditionalPostHogProvider>
               <ThemeProvider>
-                <Stack
-                  screenOptions={{
-                    headerShown: false,
-                  }}>
-                  <Stack.Screen name="(protected)" />
-                  <Stack.Screen name="(public)" />
-                </Stack>
+                  <Slot />
               </ThemeProvider>
             </ConditionalPostHogProvider>
           </RevenueCatProvider>

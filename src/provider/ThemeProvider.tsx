@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useCallback } from 'react';
 import { GluestackUIProvider } from '@/components/ui';
 
 const defaultTheme: 'dark' | 'light' = 'light';
@@ -15,13 +15,12 @@ export const ThemeContext = createContext<ThemeContextType>({
     toggleColorMode: () => undefined,
 });
 
-
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [colorMode, setColorMode] = useState<'dark' | 'light'>(defaultTheme);
 
-    const toggleColorMode = () => {
+    const toggleColorMode = useCallback(() => {
         setColorMode(prev => (prev === 'light' ? 'dark' : 'light'));
-    };
+    }, []);
 
     const isDark = colorMode === 'dark';
 
