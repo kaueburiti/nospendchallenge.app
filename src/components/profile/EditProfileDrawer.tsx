@@ -47,6 +47,7 @@ export const EditProfileDrawer = ({
   const [name, setName] = useState<string>(
     (user?.user_metadata?.full_name as string) || '',
   );
+
   const [newImageData, setNewImageData] = useState<ImageData | null>(null);
   const [validationError, setValidationError] = useState('');
   const [uploading, setUploading] = useState(false);
@@ -64,7 +65,7 @@ export const EditProfileDrawer = ({
 
       if (newImageData) {
         const fileName = `${user?.id}.${newImageData.fileExtension}`;
-        const filePath = `${user?.id}/${fileName}`;
+        const filePath = `avatars/${fileName}`;
         const { data, error: uploadError } = await supabase.storage
           .from(process.env.EXPO_PUBLIC_SUPABASE_STORAGE_BUCKET!)
           .upload(filePath, decode(newImageData.base64), {
