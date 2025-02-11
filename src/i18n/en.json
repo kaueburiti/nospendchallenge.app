@@ -24,6 +24,7 @@
     "drawer_name_input_label": "Full Name",
     "button_cancel": "Cancel",
     "button_save": "Save",
+    "button_saving": "Saving...",
     "error_save": "Failed to save profile. Please try again.",
     "error_avatar": "Failed to select avatar. Please try again.",
     "input_placeholder_name": "Enter your full name"

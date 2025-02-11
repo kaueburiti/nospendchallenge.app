@@ -15,8 +15,14 @@ import { BottomDrawer } from '../BottomDrawer';
 import { i18n } from '@/i18n';
 
 const profileSchema = z.object({
-  full_name: z.string().min(2, i18n.t('profile.validation_name_min_length')).optional(),
-  avatar_url: z.string().url(i18n.t('profile.validation_invalid_avatar_url')).optional(),
+  full_name: z
+    .string()
+    .min(2, i18n.t('profile.validation_name_min_length'))
+    .optional(),
+  avatar_url: z
+    .string()
+    .url(i18n.t('profile.validation_invalid_avatar_url'))
+    .optional(),
 });
 
 interface ImageData {
@@ -38,7 +44,9 @@ export const EditProfileDrawer = ({
   onSave: (data: Partial<SupabaseUser['user_metadata']>) => Promise<void>;
   isLoading: boolean;
 }) => {
-  const [name, setName] = useState<string>((user?.user_metadata?.full_name as string) || '');
+  const [name, setName] = useState<string>(
+    (user?.user_metadata?.full_name as string) || '',
+  );
   const [newImageData, setNewImageData] = useState<ImageData | null>(null);
   const [validationError, setValidationError] = useState('');
   const [uploading, setUploading] = useState(false);
@@ -56,10 +64,9 @@ export const EditProfileDrawer = ({
 
       if (newImageData) {
         const fileName = `${user?.id}.${newImageData.fileExtension}`;
-        const filePath = `avatars/${fileName}`;
-
+        const filePath = `${user?.id}/${fileName}`;
         const { data, error: uploadError } = await supabase.storage
-          .from('appboilerplate')
+          .from(process.env.EXPO_PUBLIC_SUPABASE_STORAGE_BUCKET!)
           .upload(filePath, decode(newImageData.base64), {
             contentType: `image/${newImageData.fileExtension}`,
             upsert: true,
@@ -71,7 +78,7 @@ export const EditProfileDrawer = ({
 
         if (data) {
           const { data: publicUrlData } = supabase.storage
-            .from('appboilerplate')
+            .from(process.env.EXPO_PUBLIC_SUPABASE_STORAGE_BUCKET!)
             .getPublicUrl(filePath);
 
           profileData.avatar_url = `${publicUrlData.publicUrl}?t=${new Date().getTime()}`;
@@ -124,9 +131,12 @@ export const EditProfileDrawer = ({
   };
 
   return (
-    <BottomDrawer isOpen={isOpen} onClose={onClose} title={i18n.t("profile.drawer_title")}>
-      <VStack space="lg" className="flex-1 w-full p-4 mb-20">
-        <Center className="w-full flex gap-4">
+    <BottomDrawer
+      isOpen={isOpen}
+      onClose={onClose}
+      title={i18n.t('profile.drawer_title')}>
+      <VStack space="lg" className="mb-20 w-full flex-1 p-4">
+        <Center className="flex w-full gap-4">
           <Pressable onPress={handleChangeAvatar}>
             <Avatar size="2xl">
               <AvatarImage
@@ -139,11 +149,13 @@ export const EditProfileDrawer = ({
             </Avatar>
           </Pressable>
           <Button onPress={handleChangeAvatar} variant="outline">
-            <ButtonText>{i18n.t("profile.drawer_image_upload_label")}</ButtonText>
+            <ButtonText>
+              {i18n.t('profile.drawer_image_upload_label')}
+            </ButtonText>
           </Button>
         </Center>
         <VStack space="md">
-          <Text>{i18n.t("profile.drawer_name_input_label")}</Text>
+          <Text>{i18n.t('profile.drawer_name_input_label')}</Text>
           <Input>
             <InputField
               value={name}
@@ -155,13 +167,15 @@ export const EditProfileDrawer = ({
             <Text className="text-red-500">{validationError}</Text>
           )}
         </VStack>
-        <HStack space="md" className="justify-end mt-auto">
+        <HStack space="md" className="mt-auto justify-end">
           <Button variant="outline" onPress={onClose}>
-            <ButtonText>{i18n.t("profile.button_cancel")}</ButtonText>
+            <ButtonText>{i18n.t('profile.button_cancel')}</ButtonText>
           </Button>
           <Button onPress={handleSave} isDisabled={isLoading || uploading}>
             <ButtonText>
-              {isLoading || uploading ? i18n.t('button_saving') : i18n.t("profile.button_save")}
+              {isLoading || uploading
+                ? i18n.t('profile.button_saving')
+                : i18n.t('profile.button_save')}
             </ButtonText>
           </Button>
         </HStack>
