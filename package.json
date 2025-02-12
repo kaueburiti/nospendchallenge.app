@@ -15,7 +15,8 @@
     "supabase:db-reset-remote": "supabase db reset --linked",
     "supabase:db-status": "supabase db status",
     "supabase:db-status-remote": "supabase db status --linked",
-    "supabase:db-types": "npx supabase gen types --lang=typescript --project-id \"$PROJECT_REF\" --schema public > ./src/lib/db/database.types.ts"
+    "supabase:db-types": "npx supabase gen types --lang=typescript --project-id \"$PROJECT_REF\" --schema public > ./src/lib/db/database.types.ts",
+    "supabase:local-db-types": "npx supabase gen types --lang=typescript --local > ./src/lib/db/database.types.ts"
   },
   "jest": {
     "preset": "jest-expo"
