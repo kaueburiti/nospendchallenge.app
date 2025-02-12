@@ -41,10 +41,6 @@ export default function CreateChallenge() {
       end_date: endDay.toISOString(),
       owner_id: user.id,
     });
-
-    console.log(data);
-    console.log(startDay);
-    console.log(endDay);
   };
 
   return (
