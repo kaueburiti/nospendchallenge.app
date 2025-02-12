@@ -52,6 +52,38 @@ FROM data d
          JOIN unnest(dcm.categories) cat(name) ON true
          JOIN categories c ON c.name::text = cat.name;
 
+-- Insert user with password
+INSERT INTO auth.users (
+    id,
+    email,
+    encrypted_password,
+    email_confirmed_at,
+    raw_app_meta_data,
+    raw_user_meta_data,
+    aud,
+    role
+)
+VALUES (
+    'd7bed83c-44e0-4449-8f95-872f21b668c4',
+    'kauepbd@gmail.com',
+    crypt('Pass123!', gen_salt('bf')),
+    now(),
+    '{"provider":"email","providers":["email"]}',
+    '{}',
+    'authenticated',
+    'authenticated'
+);
+
+-- Insert challenge for the user
+INSERT INTO public.challenges (title, owner_id, total_days, start_date, end_date)
+VALUES (
+    'Year Challenge 2025',
+    'd7bed83c-44e0-4449-8f95-872f21b668c4',
+    346, -- Days between 2025-01-01 and 2025-12-12
+    '2025-01-01T00:00:00Z',
+    '2025-12-12T23:59:59Z'
+);
+
 -- Commit the transaction
 COMMIT;
 
