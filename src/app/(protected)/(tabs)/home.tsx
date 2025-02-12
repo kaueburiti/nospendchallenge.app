@@ -38,7 +38,6 @@ const Explorepage = () => {
           <Button
             className="mx-4 mt-4"
             onPress={() => {
-              console.log('create challenge');
               router.push('/(protected)/create-challenge');
             }}>
             <Text>{i18n.t('home.create_challenge')}</Text>

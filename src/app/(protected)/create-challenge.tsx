@@ -5,6 +5,8 @@ import FormInput from '@/components/auth/FormInput';
 import { useForm } from 'react-hook-form';
 import { router } from 'expo-router';
 import { i18n } from '@/i18n';
+import { useCreateChallenge } from '@/hooks/challenges';
+import { useSession } from '@/hooks/useSession';
 
 interface ChallengeForm {
   name: string;
@@ -12,6 +14,9 @@ interface ChallengeForm {
 }
 
 export default function CreateChallenge() {
+  const { user } = useSession();
+
+  const { mutate: createChallenge } = useCreateChallenge();
   const { control, handleSubmit } = useForm<ChallengeForm>({
     defaultValues: {
       name: '',
@@ -24,6 +29,18 @@ export default function CreateChallenge() {
     const endDay = new Date(
       startDay.getTime() + data.days * 24 * 60 * 60 * 1000,
     );
+
+    if (!user) {
+      console.error('User not found');
+      return;
+    }
+
+    createChallenge({
+      name: data.name,
+      start_date: startDay.toISOString(),
+      end_date: endDay.toISOString(),
+      owner_id: user.id,
+    });
 
     console.log(data);
     console.log(startDay);
