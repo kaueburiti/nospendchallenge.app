@@ -1,7 +1,7 @@
 import React from 'react';
 import Banner from '../../../components/Banner';
 import { ScrollView } from 'react-native';
-import { Box } from '@/components/ui';
+import { Box, Button } from '@/components/ui';
 import { Text } from '@/components/ui';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import * as WebBrowser from 'expo-web-browser';
@@ -11,28 +11,46 @@ import TopSection from '../../../components/home/TopSection';
 import config from '../../../../config';
 import { useProducts } from '@/hooks/product';
 import { i18n } from '@/i18n';
+import { router } from 'expo-router';
 
 const Explorepage = () => {
   const { data: products } = useProducts();
 
   return (
-    <SafeAreaView >
+    <SafeAreaView>
       <Banner>
         <Text className="text-content-0 text-white dark:text-black" size="sm">
-          {i18n.t("home.banner_text")} 
+          {i18n.t('home.banner_text')}
         </Text>
-        <Link onPress={() => WebBrowser.openBrowserAsync(config.profilePage.contactPage)}>
+        <Link
+          onPress={() =>
+            WebBrowser.openBrowserAsync(config.profilePage.contactPage)
+          }>
           <LinkText
             className="text-content-50 font-semibold text-white dark:text-black"
             size="sm">
-           {i18n.t("home.banner_link_text")} 
+            {i18n.t('home.banner_link_text')}
           </LinkText>
         </Link>
       </Banner>
-      <ScrollView className="flex-1 h-[1px]">
+      <ScrollView className="h-[1px] flex-1">
         <Box className={'flex flex-col gap-4'}>
-          <TopSection items={products ?? []} sectionTitle={i18n.t("home.top_section_title")} />
-          <BottomSection items={products ?? []} sectionTitle={i18n.t("home.bottom_section_title")} />
+          <Button
+            className="mx-4 mt-4"
+            onPress={() => {
+              console.log('create challenge');
+              router.push('/(protected)/create-challenge');
+            }}>
+            <Text>{i18n.t('home.create_challenge')}</Text>
+          </Button>
+          <TopSection
+            items={products ?? []}
+            sectionTitle={i18n.t('home.top_section_title')}
+          />
+          <BottomSection
+            items={products ?? []}
+            sectionTitle={i18n.t('home.bottom_section_title')}
+          />
         </Box>
       </ScrollView>
     </SafeAreaView>

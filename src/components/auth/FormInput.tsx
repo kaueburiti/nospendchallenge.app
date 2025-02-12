@@ -29,7 +29,7 @@ const FormInput: React.FC<FormInputProps> = ({
 }) => {
   const [isVisible, setIsVisible] = useState(!isPassword);
 
-  const handleToggleVisibility = () => setIsVisible((prev) => !prev);
+  const handleToggleVisibility = () => setIsVisible(prev => !prev);
 
   return (
     <FormControl isInvalid={!!errorMessage} isRequired={true}>
