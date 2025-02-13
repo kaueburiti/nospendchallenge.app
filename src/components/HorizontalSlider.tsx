@@ -20,7 +20,9 @@ const HorizontalSliderItem = ({
     <Pressable className="flex flex-1 flex-col gap-4" onPress={onPress}>
       <Box className="flex flex-1 flex-col gap-4">
         <Image
-          source={{ uri: 'https://placehold.co/400' }}
+          source={{
+            uri: (challenge.cover ?? 'https://placehold.co/400') as string,
+          }}
           alt={String(challenge.title)}
           className="h-64 w-64 rounded-md bg-slate-300"
           resizeMode="cover"
