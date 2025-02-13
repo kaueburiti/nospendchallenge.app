@@ -36,10 +36,11 @@ export default function CreateChallenge() {
     }
 
     createChallenge({
-      name: data.name,
+      title: data.name,
       start_date: startDay.toISOString(),
       end_date: endDay.toISOString(),
       owner_id: user.id,
+      total_days: data.days,
     });
   };
 

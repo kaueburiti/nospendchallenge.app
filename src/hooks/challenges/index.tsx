@@ -4,8 +4,6 @@ import {
   getChallenge,
 } from '@/lib/db/repository/challenge';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { router } from 'expo-router';
-
 export const useCreateChallenge = () => {
   const queryClient = useQueryClient();
 
