@@ -53,6 +53,7 @@ export type Database = {
         Row: {
           cover: string | null
           created_at: string
+          description: string | null
           end_date: string
           id: number
           owner_id: string
@@ -63,6 +64,7 @@ export type Database = {
         Insert: {
           cover?: string | null
           created_at?: string
+          description?: string | null
           end_date: string
           id?: number
           owner_id: string
@@ -73,6 +75,7 @@ export type Database = {
         Update: {
           cover?: string | null
           created_at?: string
+          description?: string | null
           end_date?: string
           id?: number
           owner_id?: string

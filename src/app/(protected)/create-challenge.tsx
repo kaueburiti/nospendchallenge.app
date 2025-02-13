@@ -15,6 +15,7 @@ import { decode } from 'base64-arraybuffer';
 interface ChallengeForm {
   name: string;
   days: number;
+  description: string;
 }
 
 interface ImageData {
@@ -31,6 +32,7 @@ export default function CreateChallenge() {
     defaultValues: {
       name: '',
       days: 0,
+      description: '',
     },
   });
 
@@ -66,7 +68,7 @@ export default function CreateChallenge() {
       const fileName = `${Math.random()}.${imageData.fileExtension}`;
       const filePath = `${user?.id}/${fileName}`;
 
-      const { data, error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from('challenges')
         .upload(filePath, decode(imageData.base64), {
           contentType: `image/${imageData.fileExtension}`,
@@ -109,6 +111,7 @@ export default function CreateChallenge() {
       owner_id: user.id,
       total_days: data.days,
       cover: coverUrl,
+      description: data.description,
     });
   };
 
@@ -138,6 +141,11 @@ export default function CreateChallenge() {
 
         <FormInput name="name" control={control} placeholder="Name" />
         <FormInput name="days" control={control} placeholder="Number of days" />
+        <FormInput
+          name="description"
+          control={control}
+          placeholder="Description"
+        />
         <Button onPress={handleSubmit(onSubmit)}>
           <Text>{i18n.t('challenge.create_button')}</Text>
         </Button>

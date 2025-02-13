@@ -24,12 +24,12 @@ const HorizontalSliderItem = ({
             uri: (challenge.cover ?? 'https://placehold.co/400') as string,
           }}
           alt={String(challenge.title)}
-          className="h-64 w-64 rounded-md bg-slate-300"
+          className="h-40 w-64 rounded-md bg-slate-300"
           resizeMode="cover"
         />
         <Box className="flex flex-col gap-1">
           <Heading className="mb-1">{challenge.title}</Heading>
-          <Text className="w-64">Lorem ipsum dolor sit amet</Text>
+          <Text className="w-64">{challenge.description}</Text>
         </Box>
       </Box>
     </Pressable>
