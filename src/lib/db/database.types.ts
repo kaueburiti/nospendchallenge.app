@@ -54,27 +54,62 @@ export type Database = {
           created_at: string
           end_date: string
           id: number
-          name: string
           owner_id: string
           start_date: string
+          title: string
+          total_days: number
         }
         Insert: {
           created_at?: string
           end_date: string
           id?: number
-          name: string
           owner_id: string
           start_date: string
+          title: string
+          total_days: number
         }
         Update: {
           created_at?: string
           end_date?: string
           id?: number
-          name?: string
           owner_id?: string
           start_date?: string
+          title?: string
+          total_days?: number
         }
         Relationships: []
+      }
+      checks: {
+        Row: {
+          challenge_id: number
+          created_at: string
+          date: string
+          id: number
+          user_id: string
+        }
+        Insert: {
+          challenge_id: number
+          created_at?: string
+          date: string
+          id?: number
+          user_id: string
+        }
+        Update: {
+          challenge_id?: number
+          created_at?: string
+          date?: string
+          id?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "checks_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       data: {
         Row: {
