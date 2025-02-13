@@ -24,3 +24,14 @@ export const getUserChallenges = async () => {
 
   return data;
 };
+
+export const getChallenge = async (id: string) => {
+  const { data, error } = await supabase
+    .from('challenges')
+    .select()
+    .eq('id', Number(id))
+    .single();
+
+  if (error) throw error;
+  return data;
+};

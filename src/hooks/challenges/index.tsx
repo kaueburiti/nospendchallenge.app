@@ -1,8 +1,10 @@
 import {
   createChallenge,
   getUserChallenges,
+  getChallenge,
 } from '@/lib/db/repository/challenge';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { router } from 'expo-router';
 
 export const useCreateChallenge = () => {
   const queryClient = useQueryClient();
@@ -23,5 +25,12 @@ export const useGetChallenges = () => {
   return useQuery({
     queryKey: ['challenges'],
     queryFn: getUserChallenges,
+  });
+};
+
+export const useChallenge = (id: string) => {
+  return useQuery({
+    queryKey: ['challenge', id],
+    queryFn: () => getChallenge(id),
   });
 };

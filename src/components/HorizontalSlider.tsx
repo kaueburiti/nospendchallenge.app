@@ -2,6 +2,7 @@ import React from 'react';
 import { Box, Heading, HStack, Image, Text } from './ui';
 import { Pressable, ScrollView } from 'react-native';
 import type { Tables } from '@/lib/db/database.types';
+import { router } from 'expo-router';
 interface HorizontalScrollerProps {
   items: Tables<'challenges'>[];
 }
@@ -46,7 +47,7 @@ const HorizontalSlider = ({ items: data }: HorizontalScrollerProps) => {
             <HorizontalSliderItem
               key={item.id}
               challenge={item}
-              onPress={() => console.log(item)}
+              onPress={() => router.push(`/challenge/${item.id}`)}
             />
           ))}
         </HStack>
