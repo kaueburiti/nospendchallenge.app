@@ -1,4 +1,7 @@
-import { createChallenge, getChallenges } from '@/lib/db/repository/challenge';
+import {
+  createChallenge,
+  getUserChallenges,
+} from '@/lib/db/repository/challenge';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 export const useCreateChallenge = () => {
@@ -19,6 +22,6 @@ export const useCreateChallenge = () => {
 export const useGetChallenges = () => {
   return useQuery({
     queryKey: ['challenges'],
-    queryFn: getChallenges,
+    queryFn: getUserChallenges,
   });
 };

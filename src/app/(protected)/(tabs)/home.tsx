@@ -12,9 +12,11 @@ import config from '../../../../config';
 import { useProducts } from '@/hooks/product';
 import { i18n } from '@/i18n';
 import { router } from 'expo-router';
+import { useGetChallenges } from '@/hooks/challenges';
 
 const Explorepage = () => {
   const { data: products } = useProducts();
+  const { data: challenges } = useGetChallenges();
 
   return (
     <SafeAreaView>
@@ -43,7 +45,7 @@ const Explorepage = () => {
             <Text>{i18n.t('home.create_challenge')}</Text>
           </Button>
           <TopSection
-            items={products ?? []}
+            items={challenges ?? []}
             sectionTitle={i18n.t('home.top_section_title')}
           />
           <BottomSection

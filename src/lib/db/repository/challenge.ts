@@ -13,8 +13,14 @@ export const createChallenge = async (
   return data;
 };
 
-export const getChallenges = async () => {
-  const { data, error } = await supabase.from('challenges').select();
+export const getUserChallenges = async () => {
+  const { data: user } = await supabase.auth.getUser();
+  const { data, error } = await supabase
+    .from('challenges')
+    .select()
+    .eq('owner_id', String(user.user?.id));
+
   if (error) throw error;
+
   return data;
 };
