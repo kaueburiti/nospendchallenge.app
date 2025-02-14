@@ -7,6 +7,7 @@ import TopSection from '../../../components/home/TopSection';
 import { i18n } from '@/i18n';
 import { useGetChallenges } from '@/hooks/challenges';
 import { useSession } from '@/hooks/useSession';
+import { Section } from '@/components/Section';
 
 const Explorepage = () => {
   const { data: challenges } = useGetChallenges();
@@ -15,7 +16,7 @@ const Explorepage = () => {
   return (
     <SafeAreaView>
       <ScrollView className="h-[1px] flex-1">
-        <Box className={'flex flex-col gap-8 px-4 md:px-0'}>
+        <Section className={'flex flex-col gap-8'}>
           <Box className="mt-8">
             <Heading size="xl">Hello,</Heading>
             <Heading size="3xl">{user?.user_metadata.full_name} 👋</Heading>
@@ -27,7 +28,7 @@ const Explorepage = () => {
           <Box className="">
             <Box className="bg-linear-to-r h-40 w-full rounded-lg bg-slate-200" />
           </Box>
-          <Box className="flex flex-1 flex-col px-4 pb-8 md:px-0">
+          <Box className="flex flex-1 flex-col pb-8">
             <Heading size="xl" className="mb-4">
               {i18n.t('home.bottom_section_title')}
             </Heading>
@@ -38,7 +39,7 @@ const Explorepage = () => {
               ))}
             </Box>
           </Box>
-        </Box>
+        </Section>
       </ScrollView>
     </SafeAreaView>
   );
