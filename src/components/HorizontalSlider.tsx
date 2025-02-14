@@ -4,7 +4,7 @@ import { Pressable, ScrollView } from 'react-native';
 import type { Tables } from '@/lib/db/database.types';
 import { router } from 'expo-router';
 import { Plus } from 'lucide-react-native';
-import { PlusIcon } from 'lucide-react-native';
+
 interface HorizontalScrollerProps {
   items: Tables<'challenges'>[];
 }
