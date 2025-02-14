@@ -3,6 +3,8 @@ import { Box, Heading, HStack, Image, Text } from './ui';
 import { Pressable, ScrollView } from 'react-native';
 import type { Tables } from '@/lib/db/database.types';
 import { router } from 'expo-router';
+import { Plus } from 'lucide-react-native';
+import { PlusIcon } from 'lucide-react-native';
 interface HorizontalScrollerProps {
   items: Tables<'challenges'>[];
 }
@@ -52,6 +54,17 @@ const HorizontalSlider = ({ items: data }: HorizontalScrollerProps) => {
               onPress={() => router.push(`/challenge/${item.id}`)}
             />
           ))}
+
+          <Pressable
+            className="flex flex-1 flex-col gap-4"
+            onPress={() => router.push('/(protected)/create-challenge')}>
+            <Box className="relative">
+              <Box className="h-40 w-64 rounded-md bg-slate-300" />
+              <Box className="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-slate-400/80">
+                <Plus size={46} color={'white'} />
+              </Box>
+            </Box>
+          </Pressable>
         </HStack>
       </ScrollView>
     </Box>
