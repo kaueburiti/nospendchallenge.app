@@ -1,32 +1,30 @@
 import React from 'react';
-import Banner from '../../../components/Banner';
 import { ScrollView } from 'react-native';
-import { Box, Button, Heading } from '@/components/ui';
+import { Box, Heading } from '@/components/ui';
 import { Text } from '@/components/ui';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
-import * as WebBrowser from 'expo-web-browser';
-import { Link, LinkText } from '@/components/ui';
-import BottomSection from '../../../components/home/BottomSection';
 import TopSection from '../../../components/home/TopSection';
-import config from '../../../../config';
-import { useProducts } from '@/hooks/product';
 import { i18n } from '@/i18n';
-import { router } from 'expo-router';
 import { useGetChallenges } from '@/hooks/challenges';
+import { useSession } from '@/hooks/useSession';
 
 const Explorepage = () => {
-  const { data: products } = useProducts();
   const { data: challenges } = useGetChallenges();
+  const { user } = useSession();
 
   return (
     <SafeAreaView>
       <ScrollView className="h-[1px] flex-1">
-        <Box className={'flex flex-col gap-8'}>
+        <Box className={'flex flex-col gap-8 px-4 md:px-0'}>
+          <Box className="mt-8">
+            <Heading size="xl">Hello,</Heading>
+            <Heading size="3xl">{user?.user_metadata.full_name} 👋</Heading>
+          </Box>
           <TopSection
             items={challenges ?? []}
             sectionTitle={i18n.t('home.top_section_title')}
           />
-          <Box className="px-4 md:px-0">
+          <Box className="">
             <Box className="bg-linear-to-r h-40 w-full rounded-lg bg-slate-200" />
           </Box>
           <Box className="flex flex-1 flex-col px-4 pb-8 md:px-0">

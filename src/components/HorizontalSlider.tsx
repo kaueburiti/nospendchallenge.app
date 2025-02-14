@@ -46,7 +46,7 @@ const HorizontalSlider = ({ items: data }: HorizontalScrollerProps) => {
         style={{ width: '100%' }}
         showsHorizontalScrollIndicator={false}
         scrollEventThrottle={50}>
-        <HStack space="md" className="w-full px-4 md:px-0">
+        <HStack space="md" className="w-full">
           {data.map(item => (
             <HorizontalSliderItem
               key={item.id}
