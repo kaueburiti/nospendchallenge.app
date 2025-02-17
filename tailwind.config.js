@@ -16,6 +16,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      gridTemplateColumns: {
+        'auto-fit': 'repeat(auto-fit, minmax(0, 20px))',
+      },
       colors: {
         primary: {
           0: 'rgb(var(--color-primary-0)/<alpha-value>)',

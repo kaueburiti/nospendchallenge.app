@@ -2,7 +2,6 @@ import React from 'react';
 import { Pressable, ScrollView, Image } from 'react-native';
 import {
   Avatar,
-  AvatarBadge,
   AvatarFallbackText,
   AvatarGroup,
   AvatarImage,
@@ -96,7 +95,9 @@ function ChallengeList() {
 
 function ChallengeItem({ challenge }: { challenge: Tables<'challenges'> }) {
   return (
-    <Pressable className="w-full">
+    <Pressable
+      className="w-full"
+      onPress={() => router.push(`/challenge/${challenge.id}`)}>
       <Box className="flex w-full flex-row justify-between gap-10">
         <Box className="flex flex-1 flex-row gap-4">
           <Image
