@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import {
   Avatar,
@@ -12,6 +12,7 @@ import {
   Text,
   Image,
   VStack,
+  ButtonText,
 } from '@/components/ui';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useChallenge } from '@/hooks/challenges';
@@ -22,12 +23,22 @@ import classNames from 'classnames';
 import { ProgressFilledTrack } from '@/components/ui/progress';
 import { Progress } from '@/components/ui/progress';
 import { Settings } from 'lucide-react-native';
+import FormInput from '@/components/auth/FormInput';
+import { useForm } from 'react-hook-form';
+import { ModalBody, ModalFooter } from '@/components/ui/modal';
+import { CloseIcon, Icon } from '@/components/ui/icon';
+import { ModalCloseButton, Modal } from '@/components/ui/modal';
+import { ModalHeader } from '@/components/ui/modal';
+import { ModalContent } from '@/components/ui/modal';
+import { ModalBackdrop } from '@/components/ui/modal';
 
 export default function ChallengeDetails() {
+  const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
+    useState<boolean>(false);
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: challenge, isLoading } = useChallenge(id);
   const { mutate: createCheck } = useCreateCheck();
-  // const { data: checks } = useGetUserChecksByChallenge(Number(id));
+  const { data: checks } = useGetUserChecksByChallenge(Number(id));
   const date = format(new Date(), 'yyyy-MM-dd');
 
   if (isLoading) {
@@ -134,7 +145,7 @@ export default function ChallengeDetails() {
                 </Box>
               </Box>
               <Box className="mt-4">
-                <Button onPress={handleCreateCheck} size="lg">
+                <Button onPress={() => setIsCheckInDrawerOpen(true)} size="lg">
                   <Text className="text-white">Check In</Text>
                 </Button>
               </Box>
@@ -182,6 +193,56 @@ export default function ChallengeDetails() {
           </VStack>
         </Box>
       </ScrollView>
+
+      <Modal
+        isOpen={isCheckInDrawerOpen}
+        onClose={() => setIsCheckInDrawerOpen(false)}
+        size="md">
+        <ModalBackdrop />
+        <ModalContent>
+          <ModalHeader>
+            <Heading size="md" className="text-typography-950">
+              Check In
+            </Heading>
+            <ModalCloseButton>
+              <Icon
+                as={CloseIcon}
+                size="md"
+                className="stroke-background-400 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900 group-[:hover]/modal-close-button:stroke-background-700"
+              />
+            </ModalCloseButton>
+          </ModalHeader>
+          <ModalBody>
+            <CheckInForm />
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              variant="outline"
+              action="secondary"
+              onPress={() => {
+                setIsCheckInDrawerOpen(false);
+              }}>
+              <ButtonText>Cancel</ButtonText>
+            </Button>
+            <Button
+              onPress={() => {
+                setIsCheckInDrawerOpen(false);
+              }}>
+              <ButtonText>Create Check In</ButtonText>
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </SafeAreaView>
   );
 }
+
+const CheckInForm = () => {
+  const { control } = useForm();
+  return (
+    <Box>
+      <FormInput control={control} name="date" placeholder="Date" />
+      <FormInput control={control} name="log" placeholder="Tell us about it" />
+    </Box>
+  );
+};
