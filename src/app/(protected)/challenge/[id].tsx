@@ -31,6 +31,7 @@ import { ModalCloseButton, Modal } from '@/components/ui/modal';
 import { ModalHeader } from '@/components/ui/modal';
 import { ModalContent } from '@/components/ui/modal';
 import { ModalBackdrop } from '@/components/ui/modal';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 export default function ChallengeDetails() {
   const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
@@ -239,10 +240,34 @@ export default function ChallengeDetails() {
 
 const CheckInForm = () => {
   const { control } = useForm();
+  const [date, setDate] = useState(new Date());
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    setShow(false);
+    setDate(currentDate);
+  };
+
+  const showMode = currentMode => {
+    setShow(true);
+    setMode(currentMode);
+  };
+
   return (
-    <Box>
-      <FormInput control={control} name="date" placeholder="Date" />
-      <FormInput control={control} name="log" placeholder="Tell us about it" />
-    </Box>
+    <SafeAreaView>
+      <Box className="mb-4 w-full flex-row items-center justify-between">
+        <Text>Check In Date:</Text>
+        <DateTimePicker
+          testID="dateTimePicker"
+          value={date}
+          mode={'date'}
+          onChange={onChange}
+        />
+      </Box>
+
+      <FormInput control={control} name="log" placeholder="How was it?" />
+    </SafeAreaView>
   );
 };
