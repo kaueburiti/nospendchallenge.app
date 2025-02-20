@@ -2,6 +2,7 @@ import {
   createChallenge,
   getUserChallenges,
   getChallenge,
+  updateChallenge,
 } from '@/lib/db/repository/challenge';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 export const useCreateChallenge = () => {
@@ -30,5 +31,16 @@ export const useChallenge = (id: string) => {
   return useQuery({
     queryKey: ['challenge', id],
     queryFn: () => getChallenge(id),
+  });
+};
+
+export const useUpdateChallenge = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: updateChallenge,
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['challenges'] });
+    },
   });
 };

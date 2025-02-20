@@ -35,3 +35,16 @@ export const getChallenge = async (id: string) => {
   if (error) throw error;
   return data;
 };
+
+export const updateChallenge = async (
+  challenge: Partial<Tables<'challenges'>> & { id: number },
+) => {
+  const { data, error } = await supabase
+    .from('challenges')
+    .update(challenge)
+    .eq('id', challenge.id)
+    .select();
+
+  if (error) throw error;
+  return data;
+};

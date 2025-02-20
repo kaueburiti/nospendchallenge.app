@@ -93,7 +93,12 @@ export default function ChallengeDetails() {
                 <Heading size="2xl" className="text-white">
                   {challenge.title}
                 </Heading>
-                <Settings size={24} color="white" />
+                <Button
+                  onPress={() => router.push(`/challenge/${id}/edit`)}
+                  variant="outline"
+                  action="secondary">
+                  <Settings size={24} color="white" />
+                </Button>
               </Box>
 
               <Box className="absolute right-4 top-1/2 aspect-square h-24 w-24 -translate-y-1/2 items-center justify-center rounded-full text-center text-4xl font-bold text-white">

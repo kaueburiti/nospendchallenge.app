@@ -43,6 +43,8 @@
     "create_title": "Create New Challenge",
     "name_placeholder": "Challenge Name",
     "length_placeholder": "Challenge Length (in days)",
-    "create_button": "Create Challenge"
+    "create_button": "Create Challenge",
+    "edit_title": "Edit Challenge",
+    "update_button": "Update Challenge"
   }
 }
