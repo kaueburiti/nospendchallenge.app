@@ -9,7 +9,6 @@ import {
   Heading,
   VStack,
 } from '@/components/ui';
-import { Text } from '@/components/ui';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { i18n } from '@/i18n';
 import { useGetChallenges } from '@/hooks/challenges';

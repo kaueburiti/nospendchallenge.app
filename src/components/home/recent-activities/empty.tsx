@@ -1,6 +1,7 @@
 import { Box, Button } from '@/components/ui';
 import { Heading } from '@/components/ui/heading';
 import { Text } from '@/components/ui/text';
+import { router } from 'expo-router';
 
 const RecentActivitiesEmptyState = () => {
   return (
@@ -11,7 +12,9 @@ const RecentActivitiesEmptyState = () => {
           Create your first activity to get started
         </Text>
       </Box>
-      <Button size="sm">
+      <Button
+        size="sm"
+        onPress={() => router.push('/(protected)/create-challenge')}>
         <Text className="text-sm text-white">Start First Challenge</Text>
       </Button>
     </Box>
