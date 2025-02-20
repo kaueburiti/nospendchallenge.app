@@ -11,11 +11,16 @@ import * as ImagePicker from 'expo-image-picker';
 import { supabase } from '@/lib/supabase';
 import { Pressable, Alert } from 'react-native';
 import { decode } from 'base64-arraybuffer';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Progress } from '@/components/ui/progress';
+import { ProgressFilledTrack } from '@/components/ui/progress';
 
 interface ChallengeForm {
   name: string;
   days: number;
   description: string;
+  startDate: Date;
+  endDate: Date;
 }
 
 interface ImageData {
@@ -26,13 +31,16 @@ interface ImageData {
 
 export default function CreateChallenge() {
   const { user } = useSession();
+  const [step, setStep] = React.useState(1);
   const [imageData, setImageData] = React.useState<ImageData | null>(null);
   const { mutate: createChallenge } = useCreateChallenge();
-  const { control, handleSubmit } = useForm<ChallengeForm>({
+  const { control, handleSubmit, watch } = useForm<ChallengeForm>({
     defaultValues: {
       name: '',
       days: 0,
       description: '',
+      startDate: new Date(),
+      endDate: new Date(),
     },
   });
 
@@ -89,16 +97,6 @@ export default function CreateChallenge() {
   };
 
   const onSubmit = async (data: ChallengeForm) => {
-    const startDay = new Date();
-    const endDay = new Date(
-      startDay.getTime() + data.days * 24 * 60 * 60 * 1000,
-    );
-
-    if (!user) {
-      console.error('User not found');
-      return;
-    }
-
     let coverUrl = null;
     if (imageData) {
       coverUrl = await uploadImage(imageData);
@@ -106,49 +104,121 @@ export default function CreateChallenge() {
 
     createChallenge({
       title: data.name,
-      start_date: startDay.toISOString(),
-      end_date: endDay.toISOString(),
-      owner_id: user.id,
+      start_date: data.startDate.toISOString(),
+      end_date: data.endDate.toISOString(),
+      owner_id: user!.id,
       total_days: data.days,
       cover: coverUrl,
       description: data.description,
     });
   };
 
+  const nextStep = () => setStep(prev => Math.min(prev + 1, 3));
+  const prevStep = () => setStep(prev => Math.max(prev - 1, 1));
+
+  const renderStep = () => {
+    switch (step) {
+      case 1:
+        return (
+          <>
+            <Text className="mb-4 text-lg">Step 1: Basic Information</Text>
+            <Pressable onPress={pickImage} className="mb-4">
+              <Box className="h-48 w-full items-center justify-center overflow-hidden rounded-lg bg-gray-200">
+                {imageData ? (
+                  <Image
+                    source={{ uri: imageData.uri }}
+                    className="h-full w-full"
+                    alt="Challenge cover"
+                  />
+                ) : (
+                  <Text>Tap to add cover image</Text>
+                )}
+              </Box>
+            </Pressable>
+            <FormInput
+              name="name"
+              control={control}
+              placeholder="Challenge Name"
+            />
+          </>
+        );
+      case 2:
+        return (
+          <>
+            <Text className="mb-4 text-lg">Step 2: Challenge Duration</Text>
+            <Box className="mb-4">
+              <Text className="mb-2">Start Date</Text>
+              <DateTimePicker
+                value={watch('startDate')}
+                mode="date"
+                onChange={(_, date) => {
+                  // if (date)
+                  // control._fieldsRef.current.startDate?._f.onChange(date);
+                }}
+              />
+            </Box>
+            <Box className="mb-4">
+              <Text className="mb-2">End Date</Text>
+              <DateTimePicker
+                value={watch('endDate')}
+                mode="date"
+                onChange={(_, date) => {
+                  // if (date)
+                  // control._fieldsRef.current.endDate?._f.onChange(date);
+                }}
+              />
+            </Box>
+          </>
+        );
+      case 3:
+        return (
+          <>
+            <Text className="mb-4 text-lg">Step 3: Challenge Description</Text>
+            <FormInput
+              name="description"
+              control={control}
+              placeholder="Describe your challenge"
+              numberOfLines={4}
+            />
+          </>
+        );
+    }
+  };
+
   return (
     <SafeAreaView>
       <Box className="p-4">
-        <Button onPress={() => router.back()}>
+        <Button onPress={() => router.back()} className="mb-4">
           <Text>Back</Text>
         </Button>
+
         <Text className="mb-6 text-2xl font-bold">
           {i18n.t('challenge.create_title')}
         </Text>
 
-        <Pressable onPress={pickImage} className="mb-4">
-          <Box className="h-48 w-full items-center justify-center overflow-hidden rounded-lg bg-gray-200">
-            {imageData ? (
-              <Image
-                source={{ uri: imageData.uri }}
-                className="h-full w-full"
-                alt="Challenge cover"
-              />
-            ) : (
-              <Text>Tap to add cover image</Text>
-            )}
-          </Box>
-        </Pressable>
+        <Progress value={(step / 3) * 100} className="mb-6">
+          <ProgressFilledTrack />
+        </Progress>
 
-        <FormInput name="name" control={control} placeholder="Name" />
-        <FormInput name="days" control={control} placeholder="Number of days" />
-        <FormInput
-          name="description"
-          control={control}
-          placeholder="Description"
-        />
-        <Button onPress={handleSubmit(onSubmit)}>
-          <Text>{i18n.t('challenge.create_button')}</Text>
-        </Button>
+        {renderStep()}
+
+        <Box className="mt-6 flex-row justify-between">
+          {step > 1 && (
+            <Button onPress={prevStep} variant="outline">
+              <Text>Previous</Text>
+            </Button>
+          )}
+
+          {step < 3 ? (
+            <Button onPress={nextStep} className="ml-auto">
+              <Text>Next</Text>
+            </Button>
+          ) : (
+            <Button onPress={handleSubmit(onSubmit)} className="ml-auto">
+              <Text>{i18n.t('challenge.create_button')}</Text>
+            </Button>
+          )}
+        </Box>
       </Box>
     </SafeAreaView>
   );
