@@ -21,6 +21,7 @@ import { Button } from '@/components/ui';
 import type { Tables } from '@/lib/db/database.types';
 import { Progress } from '@/components/ui/progress';
 import { ProgressFilledTrack } from '@/components/ui/progress';
+import RecentActivities from '@/components/home/recent-activities';
 
 const Explorepage = () => {
   const { user } = useSession();
@@ -47,40 +48,13 @@ const Explorepage = () => {
             <Box className="">
               <Box className="bg-linear-to-r h-40 w-full rounded-lg bg-slate-200" />
             </Box>
-            <Box className="flex flex-1 flex-col pb-8">
-              <Heading size="xl" className="mb-4">
-                {i18n.t('home.bottom_section_title')}
-              </Heading>
-
-              <VStack space="2xl">
-                {Array.from({ length: 3 }).map((_, index) => (
-                  <RecentActivity key={index} />
-                ))}
-              </VStack>
-            </Box>
+            <RecentActivities />
           </VStack>
         </Section>
       </ScrollView>
     </SafeAreaView>
   );
 };
-
-function RecentActivity() {
-  return (
-    <Box className="flex flex-row items-start justify-between gap-4">
-      <Box className="flex flex-row items-center justify-between gap-4">
-        <Box className="h-12 w-12 rounded-full bg-slate-300" />
-        <Box className="flex flex-col">
-          <Text className="text-lg font-semibold">You&apos;re rocking 🚀</Text>
-          <Text className="text-content-50">Congratulations!</Text>
-        </Box>
-      </Box>
-      <Box>
-        <Text className="text-content-50">2 days ago</Text>
-      </Box>
-    </Box>
-  );
-}
 
 function ChallengeList() {
   const { data: challenges } = useGetChallenges();
