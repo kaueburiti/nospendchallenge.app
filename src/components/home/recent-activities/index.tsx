@@ -6,9 +6,11 @@ import { i18n } from '@/i18n';
 import { useGetActivities } from '@/hooks/activities';
 import RecentActivitiesLoadingState from './loading';
 import ActivityItem from './item';
-
+import RecentActivitiesEmptyState from './empty';
 const RecentActivities = () => {
   const { data: activities, isLoading } = useGetActivities();
+  const showEmptyState = !isLoading && activities?.length === 0;
+  const showActivities = !isLoading && !showEmptyState;
 
   return (
     <Box className="flex flex-1 flex-col pb-8">
@@ -17,7 +19,8 @@ const RecentActivities = () => {
       </Heading>
 
       {isLoading && <RecentActivitiesLoadingState />}
-      {!isLoading && (
+      {showEmptyState && <RecentActivitiesEmptyState />}
+      {showActivities && (
         <VStack space="2xl">
           {activities?.map(activity => (
             <ActivityItem key={activity.id} activity={activity} />
