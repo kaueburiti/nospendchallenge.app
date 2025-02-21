@@ -17,12 +17,13 @@ import { Pressable, Alert } from 'react-native';
 import { decode } from 'base64-arraybuffer';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
+import type { Tables } from '@/lib/db/database.types';
+import { StartAndEndDates } from '@/components/home/challenges/form/start-and-end-date';
 
-interface ChallengeForm {
-  title: string;
-  description: string;
-  end_date: Date;
-}
+type ChallengeForm = Omit<
+  Tables<'challenges'>,
+  'id' | 'created_at' | 'updated_at'
+>;
 
 interface ImageData {
   uri: string;
@@ -42,7 +43,9 @@ export default function EditChallenge() {
     defaultValues: {
       title: challenge?.title ?? '',
       description: challenge?.description ?? '',
-      end_date: challenge?.end_date ? new Date(challenge.end_date) : new Date(),
+      end_date: String(
+        challenge?.end_date ? new Date(challenge.end_date) : new Date(),
+      ),
     },
   });
 
@@ -119,11 +122,15 @@ export default function EditChallenge() {
         id: Number(id),
         ...data,
         cover: coverUrl,
-        end_date: data.end_date.toISOString(),
+        end_date: String(data.end_date),
       },
       {
         onSuccess: () => {
           router.back();
+          console.log('Challenge updated');
+        },
+        onError: error => {
+          console.error('Error updating challenge:', error);
         },
       },
     );
@@ -198,19 +205,17 @@ export default function EditChallenge() {
         </Box>
 
         <Box className="mb-4">
-          <Text className="mb-2">End Date</Text>
-          <Box className="-ml-3">
-            <DateTimePicker
-              value={watch('end_date')}
-              mode="date"
-              minimumDate={new Date(challenge.start_date)}
-              onChange={(_, date) => {
-                if (date) {
-                  setValue('end_date', date);
-                }
-              }}
-            />
-          </Box>
+          <StartAndEndDates
+            start={{
+              date: new Date(challenge.start_date),
+              disabled: true,
+            }}
+            end={{
+              date: new Date(watch('end_date')),
+              disabled: true,
+              onChange: date => setValue('end_date', date),
+            }}
+          />
         </Box>
 
         <Box className="mt-8 flex-row justify-between gap-4">

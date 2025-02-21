@@ -14,6 +14,7 @@ import { decode } from 'base64-arraybuffer';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { BadgeText } from '@/components/ui/badge';
 import { Badge } from '@/components/ui/badge';
+import { StartAndEndDates } from '@/components/home/challenges/form/start-and-end-date';
 
 interface ChallengeForm {
   name: string;
@@ -159,36 +160,16 @@ export default function CreateChallenge() {
           </Box>
 
           <Box>
-            <Box className="flex-row justify-between gap-4">
-              <Box className="mb-4">
-                <Text className="mb-2">Start Date</Text>
-                <Box className="-ml-3">
-                  <DateTimePicker
-                    value={watch('startDate')}
-                    mode="date"
-                    onChange={(_, date) => {
-                      if (date) {
-                        setValue('startDate', date);
-                      }
-                    }}
-                  />
-                </Box>
-              </Box>
-              <Box className="mb-4">
-                <Text className="mb-2">End Date</Text>
-                <Box className="-ml-3">
-                  <DateTimePicker
-                    value={watch('endDate')}
-                    mode="date"
-                    onChange={(_, date) => {
-                      if (date) {
-                        setValue('endDate', date);
-                      }
-                    }}
-                  />
-                </Box>
-              </Box>
-            </Box>
+            <StartAndEndDates
+              start={{
+                date: watch('startDate'),
+                onChange: date => setValue('startDate', date),
+              }}
+              end={{
+                date: watch('endDate'),
+                onChange: date => setValue('endDate', date),
+              }}
+            />
             <Box>
               <Text className="mb-2">Suggestions:</Text>
               <Box className="flex-row gap-4">
