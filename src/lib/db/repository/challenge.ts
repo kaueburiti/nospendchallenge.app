@@ -48,3 +48,9 @@ export const updateChallenge = async (
   if (error) throw error;
   return data;
 };
+
+export const deleteChallenge = async (id: number) => {
+  const { error } = await supabase.from('challenges').delete().eq('id', id);
+
+  if (error) throw error;
+};

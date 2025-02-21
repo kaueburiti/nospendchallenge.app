@@ -5,16 +5,23 @@ import FormInput from '@/components/auth/FormInput';
 import { useForm } from 'react-hook-form';
 import { router, useLocalSearchParams } from 'expo-router';
 import { i18n } from '@/i18n';
-import { useChallenge, useUpdateChallenge } from '@/hooks/challenges';
+import {
+  useChallenge,
+  useUpdateChallenge,
+  useDeleteChallenge,
+} from '@/hooks/challenges';
 import { useSession } from '@/hooks/useSession';
 import * as ImagePicker from 'expo-image-picker';
 import { supabase } from '@/lib/supabase';
 import { Pressable, Alert } from 'react-native';
 import { decode } from 'base64-arraybuffer';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { format } from 'date-fns';
 
 interface ChallengeForm {
   title: string;
   description: string;
+  end_date: Date;
 }
 
 interface ImageData {
@@ -28,12 +35,14 @@ export default function EditChallenge() {
   const { user } = useSession();
   const { data: challenge, isLoading } = useChallenge(id);
   const { mutate: updateChallenge } = useUpdateChallenge();
+  const { mutate: deleteChallenge } = useDeleteChallenge();
   const [imageData, setImageData] = React.useState<ImageData | null>(null);
 
-  const { control, handleSubmit } = useForm<ChallengeForm>({
+  const { control, handleSubmit, watch, setValue } = useForm<ChallengeForm>({
     defaultValues: {
       title: challenge?.title ?? '',
       description: challenge?.description ?? '',
+      end_date: challenge?.end_date ? new Date(challenge.end_date) : new Date(),
     },
   });
 
@@ -110,12 +119,37 @@ export default function EditChallenge() {
         id: Number(id),
         ...data,
         cover: coverUrl,
+        end_date: data.end_date.toISOString(),
       },
       {
         onSuccess: () => {
           router.back();
         },
       },
+    );
+  };
+
+  const handleDelete = () => {
+    Alert.alert(
+      'Delete Challenge',
+      'Are you sure you want to delete this challenge? This action cannot be undone.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => {
+            deleteChallenge(Number(id), {
+              onSuccess: () => {
+                router.replace('/(protected)/(tabs)/home');
+              },
+            });
+          },
+        },
+      ],
     );
   };
 
@@ -156,9 +190,41 @@ export default function EditChallenge() {
           placeholder="Description"
         />
 
-        <Button onPress={handleSubmit(onSubmit)}>
-          <Text>{i18n.t('challenge.update_button')}</Text>
-        </Button>
+        <Box className="mb-4">
+          <Text className="mb-2">Start Date</Text>
+          <Box className="rounded-lg border border-gray-300 p-3">
+            <Text>{format(new Date(challenge.start_date), 'PP')}</Text>
+          </Box>
+        </Box>
+
+        <Box className="mb-4">
+          <Text className="mb-2">End Date</Text>
+          <Box className="-ml-3">
+            <DateTimePicker
+              value={watch('end_date')}
+              mode="date"
+              minimumDate={new Date(challenge.start_date)}
+              onChange={(_, date) => {
+                if (date) {
+                  setValue('end_date', date);
+                }
+              }}
+            />
+          </Box>
+        </Box>
+
+        <Box className="mt-8 flex-row justify-between gap-4">
+          <Button
+            onPress={handleDelete}
+            action="negative"
+            variant="outline"
+            className="flex-1">
+            <Text className="text-red-500">Delete Challenge</Text>
+          </Button>
+          <Button onPress={handleSubmit(onSubmit)} className="flex-1">
+            <Text>{i18n.t('challenge.update_button')}</Text>
+          </Button>
+        </Box>
       </Box>
     </SafeAreaView>
   );
