@@ -59,7 +59,6 @@ export type Database = {
           owner_id: string
           start_date: string
           title: string
-          total_days: number
         }
         Insert: {
           cover?: string | null
@@ -70,7 +69,6 @@ export type Database = {
           owner_id: string
           start_date: string
           title: string
-          total_days: number
         }
         Update: {
           cover?: string | null
@@ -81,7 +79,6 @@ export type Database = {
           owner_id?: string
           start_date?: string
           title?: string
-          total_days?: number
         }
         Relationships: []
       }
@@ -185,7 +182,12 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      get_challenge_total_days: {
+        Args: {
+          challenge_row: unknown
+        }
+        Returns: number
+      }
     }
     Enums: {
       category:

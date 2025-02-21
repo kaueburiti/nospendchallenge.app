@@ -106,7 +106,6 @@ export default function CreateChallenge() {
       start_date: data.startDate.toISOString(),
       end_date: data.endDate.toISOString(),
       owner_id: user!.id,
-      total_days: data.days,
       cover: coverUrl,
       description: data.description,
     });
@@ -168,8 +167,9 @@ export default function CreateChallenge() {
                     value={watch('startDate')}
                     mode="date"
                     onChange={(_, date) => {
-                      // if (date)
-                      // control._fieldsRef.current.startDate?._f.onChange(date);
+                      if (date) {
+                        setValue('startDate', date);
+                      }
                     }}
                   />
                 </Box>
@@ -181,8 +181,9 @@ export default function CreateChallenge() {
                     value={watch('endDate')}
                     mode="date"
                     onChange={(_, date) => {
-                      // if (date)
-                      // control._fieldsRef.current.endDate?._f.onChange(date);
+                      if (date) {
+                        setValue('endDate', date);
+                      }
                     }}
                   />
                 </Box>

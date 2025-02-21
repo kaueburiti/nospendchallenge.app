@@ -15,7 +15,6 @@ import { decode } from 'base64-arraybuffer';
 interface ChallengeForm {
   title: string;
   description: string;
-  total_days: number;
 }
 
 interface ImageData {
@@ -35,7 +34,6 @@ export default function EditChallenge() {
     defaultValues: {
       title: challenge?.title ?? '',
       description: challenge?.description ?? '',
-      total_days: challenge?.total_days ?? 0,
     },
   });
 
@@ -157,11 +155,7 @@ export default function EditChallenge() {
           control={control}
           placeholder="Description"
         />
-        <FormInput
-          name="total_days"
-          control={control}
-          placeholder="Number of days"
-        />
+
         <Button onPress={handleSubmit(onSubmit)}>
           <Text>{i18n.t('challenge.update_button')}</Text>
         </Button>
