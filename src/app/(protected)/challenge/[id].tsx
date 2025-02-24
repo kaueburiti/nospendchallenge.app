@@ -221,22 +221,6 @@ export default function ChallengeDetails() {
           <ModalBody>
             <CheckInForm />
           </ModalBody>
-          <ModalFooter>
-            <Button
-              variant="outline"
-              action="secondary"
-              onPress={() => {
-                setIsCheckInDrawerOpen(false);
-              }}>
-              <ButtonText>Cancel</ButtonText>
-            </Button>
-            <Button
-              onPress={() => {
-                setIsCheckInDrawerOpen(false);
-              }}>
-              <ButtonText>Create Check In</ButtonText>
-            </Button>
-          </ModalFooter>
         </ModalContent>
       </Modal>
     </SafeAreaView>
@@ -244,20 +228,22 @@ export default function ChallengeDetails() {
 }
 
 const CheckInForm = () => {
-  const { control } = useForm();
+  const { control, handleSubmit } = useForm({
+    defaultValues: {
+      message: '',
+    },
+  });
   const [date, setDate] = useState(new Date());
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
+  const { mutate: createCheck } = useCreateCheck();
+  const { id } = useLocalSearchParams<{ id: string }>();
 
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate;
-    setShow(false);
-    setDate(currentDate);
-  };
-
-  const showMode = currentMode => {
-    setShow(true);
-    setMode(currentMode);
+  const onSubmit = (data: { message: string }) => {
+    console.log(format(date, 'yyyy-MM-dd'));
+    createCheck({
+      challenge_id: Number(id),
+      date: format(date, 'yyyy-MM-dd'),
+      message: data.message,
+    });
   };
 
   return (
@@ -268,11 +254,33 @@ const CheckInForm = () => {
           testID="dateTimePicker"
           value={date}
           mode={'date'}
-          onChange={onChange}
+          onChange={(event, selectedDate) => {
+            if (selectedDate) {
+              setDate(selectedDate);
+            }
+          }}
         />
       </Box>
 
-      <FormInput control={control} name="log" placeholder="How was it?" />
+      <FormInput
+        control={control}
+        name="message"
+        placeholder="How was it?"
+        multiline
+        numberOfLines={4}
+      />
+
+      <Box className="mt-4 flex-row justify-end space-x-2">
+        <Button
+          variant="outline"
+          action="secondary"
+          onPress={() => setIsCheckInDrawerOpen(false)}>
+          <ButtonText>Cancel</ButtonText>
+        </Button>
+        <Button onPress={handleSubmit(onSubmit)}>
+          <ButtonText>Create Check In</ButtonText>
+        </Button>
+      </Box>
     </SafeAreaView>
   );
 };
