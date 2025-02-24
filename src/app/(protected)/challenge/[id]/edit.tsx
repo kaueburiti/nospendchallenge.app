@@ -15,7 +15,6 @@ import * as ImagePicker from 'expo-image-picker';
 import { supabase } from '@/lib/supabase';
 import { Pressable, Alert } from 'react-native';
 import { decode } from 'base64-arraybuffer';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { format } from 'date-fns';
 import type { Tables } from '@/lib/db/database.types';
 import { StartAndEndDates } from '@/components/home/challenges/form/start-and-end-date';
@@ -213,7 +212,7 @@ export default function EditChallenge() {
             end={{
               date: new Date(watch('end_date')),
               disabled: true,
-              onChange: date => setValue('end_date', date),
+              onChange: date => setValue('end_date', date.toISOString()),
             }}
           />
         </Box>

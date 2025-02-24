@@ -5,12 +5,20 @@ export const createCheck = async (
   check: Omit<Tables<'checks'>, 'id' | 'created_at' | 'updated_at' | 'user_id'>,
 ) => {
   const { data: user } = await supabase.auth.getUser();
+  const formattedDate = new Date(check.date).toISOString().split('T')[0];
   const { data, error } = await supabase
     .from('checks')
-    .insert({ ...check, user_id: String(user.user?.id) })
+    .insert({
+      ...check,
+      user_id: String(user.user?.id),
+      date: formattedDate,
+    })
     .select();
 
-  if (error) throw error;
+  if (error) {
+    console.error('Error details:', error);
+    throw error;
+  }
 
   return data;
 };
@@ -22,8 +30,6 @@ export const getUserChecksByChallenge = async (challengeId: number) => {
     .select()
     .eq('challenge_id', challengeId)
     .eq('user_id', String(user.user?.id));
-
-  console.log(challengeId, user.user?.id);
 
   if (error) throw error;
 

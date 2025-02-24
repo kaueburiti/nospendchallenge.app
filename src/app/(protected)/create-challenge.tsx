@@ -11,7 +11,6 @@ import * as ImagePicker from 'expo-image-picker';
 import { supabase } from '@/lib/supabase';
 import { Pressable, Alert } from 'react-native';
 import { decode } from 'base64-arraybuffer';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { BadgeText } from '@/components/ui/badge';
 import { Badge } from '@/components/ui/badge';
 import { StartAndEndDates } from '@/components/home/challenges/form/start-and-end-date';
@@ -124,7 +123,7 @@ export default function CreateChallenge() {
             {i18n.t('challenge.create_title')}
           </Heading>
           <Text className="text-md text-gray-500">
-            Let's get you started with a new challenge.
+            Let&apos;s get you started with a new challenge.
           </Text>
         </Box>
 

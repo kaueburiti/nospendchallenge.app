@@ -17,7 +17,7 @@ import {
 import { useLocalSearchParams, router } from 'expo-router';
 import { useChallenge } from '@/hooks/challenges';
 import { format } from 'date-fns';
-import { useCreateCheck, useGetUserChecksByChallenge } from '@/hooks/checks';
+import { useCreateCheck } from '@/hooks/checks';
 import { ScrollView } from 'react-native';
 import classNames from 'classnames';
 import { ProgressFilledTrack } from '@/components/ui/progress';
@@ -25,7 +25,7 @@ import { Progress } from '@/components/ui/progress';
 import { Settings } from 'lucide-react-native';
 import FormInput from '@/components/auth/FormInput';
 import { useForm } from 'react-hook-form';
-import { ModalBody, ModalFooter } from '@/components/ui/modal';
+import { ModalBody } from '@/components/ui/modal';
 import { CloseIcon, Icon } from '@/components/ui/icon';
 import { ModalCloseButton, Modal } from '@/components/ui/modal';
 import { ModalHeader } from '@/components/ui/modal';
@@ -38,9 +38,6 @@ export default function ChallengeDetails() {
     useState<boolean>(false);
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: challenge, isLoading } = useChallenge(id);
-  const { mutate: createCheck } = useCreateCheck();
-  const { data: checks } = useGetUserChecksByChallenge(Number(id));
-  const date = format(new Date(), 'yyyy-MM-dd');
 
   if (isLoading) {
     return (
@@ -61,13 +58,6 @@ export default function ChallengeDetails() {
       </SafeAreaView>
     );
   }
-
-  const handleCreateCheck = () => {
-    createCheck({
-      challenge_id: Number(id),
-      date: date,
-    });
-  };
 
   const days = Array.from({ length: 120 }, (_, index) => index + 1);
 
@@ -219,7 +209,11 @@ export default function ChallengeDetails() {
             </ModalCloseButton>
           </ModalHeader>
           <ModalBody>
-            <CheckInForm />
+            <CheckInForm
+              challengeId={id}
+              onSubmit={() => setIsCheckInDrawerOpen(false)}
+              onClose={() => setIsCheckInDrawerOpen(false)}
+            />
           </ModalBody>
         </ModalContent>
       </Modal>
@@ -227,7 +221,15 @@ export default function ChallengeDetails() {
   );
 }
 
-const CheckInForm = () => {
+const CheckInForm = ({
+  challengeId,
+  onSubmit: closeModal,
+  onClose,
+}: {
+  challengeId: string;
+  onSubmit: () => void;
+  onClose: () => void;
+}) => {
   const { control, handleSubmit } = useForm({
     defaultValues: {
       message: '',
@@ -235,15 +237,14 @@ const CheckInForm = () => {
   });
   const [date, setDate] = useState(new Date());
   const { mutate: createCheck } = useCreateCheck();
-  const { id } = useLocalSearchParams<{ id: string }>();
 
-  const onSubmit = (data: { message: string }) => {
-    console.log(format(date, 'yyyy-MM-dd'));
+  const onSubmit = async (data: { message: string }) => {
     createCheck({
-      challenge_id: Number(id),
+      challenge_id: Number(challengeId),
       date: format(date, 'yyyy-MM-dd'),
       message: data.message,
     });
+    closeModal();
   };
 
   return (
@@ -262,19 +263,10 @@ const CheckInForm = () => {
         />
       </Box>
 
-      <FormInput
-        control={control}
-        name="message"
-        placeholder="How was it?"
-        multiline
-        numberOfLines={4}
-      />
+      <FormInput control={control} name="message" placeholder="How was it?" />
 
       <Box className="mt-4 flex-row justify-end space-x-2">
-        <Button
-          variant="outline"
-          action="secondary"
-          onPress={() => setIsCheckInDrawerOpen(false)}>
+        <Button variant="outline" action="secondary" onPress={onClose}>
           <ButtonText>Cancel</ButtonText>
         </Button>
         <Button onPress={handleSubmit(onSubmit)}>
