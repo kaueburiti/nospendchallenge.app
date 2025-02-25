@@ -20,6 +20,7 @@ module.exports = {
         'auto-fit': 'repeat(auto-fit, minmax(0, 20px))',
       },
       colors: {
+        'nsc-primary': '#EF4444',
         primary: {
           0: 'rgb(var(--color-primary-0)/<alpha-value>)',
           50: 'rgb(var(--color-primary-50)/<alpha-value>)',
@@ -197,6 +198,21 @@ module.exports = {
         'soft-2': '0px 0px 20px rgba(38, 38, 38, 0.2)',
         'soft-3': '0px 0px 30px rgba(38, 38, 38, 0.1)',
         'soft-4': '0px 0px 40px rgba(38, 38, 38, 0.1)',
+      },
+
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+        shadow: {
+          '0%, 100%': { width: '100px', backgroundColor: '#D4D4D4' },
+          '50%': { width: '260px', backgroundColor: '#e5e7eb' },
+        },
+      },
+      animation: {
+        float: 'float 3s ease-in-out infinite',
+        shadow: 'shadow 3s ease-in-out infinite',
       },
     },
   },

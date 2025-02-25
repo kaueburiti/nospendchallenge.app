@@ -1,5 +1,5 @@
 import React from 'react';
-import { VStack } from '@/components/ui';
+import { Box, VStack } from '@/components/ui';
 import { Text } from '@/components/ui';
 import GuestLayout from '../../components/GuestLayout';
 import { Image } from '@/components/ui';
@@ -12,6 +12,7 @@ import { type ImageSourcePropType } from 'react-native';
 import SignUpForm from '../../components/sign-up/SignUpForm';
 import { LinkText } from '@/components/ui';
 import AuthButton from '../../components/auth/AuthButton';
+import { FloatingWoman } from './welcome';
 
 const SignUp = () => {
   const { signInWithGoogle } = useSignInWithGoogle();
@@ -27,19 +28,19 @@ const SignUp = () => {
 
   return (
     <GuestLayout>
-      <VStack className={'py-12 px-4 flex-1'}>
+      <VStack className={'flex-1 px-4 py-12'}>
         <Center className={'mb-8'}>
-          <Image
-            size="md"
-            source={require('../../assets/images/logo.png') as ImageSourcePropType}
-            alt="image"
-          />
+          <FloatingWoman width={300} height={300} />
         </Center>
-        <Heading className={'text-3xl text-center mb-8'}>
-          Create an account
-        </Heading>
+        <Box className="mb-8 flex flex-col items-center gap-2">
+          <Heading className={'text-center text-3xl'}>
+            Create an account
+          </Heading>
+          <Text>Start your journey to financial control</Text>
+        </Box>
+
         <SignUpForm />
-        <Text className={'text-center font-bold my-4'}>or</Text>
+        {/* <Text className={'text-center font-bold my-4'}>or</Text>
         <AuthButton
           provider="Google"
           onPress={handleGoogleSignIn}
@@ -47,8 +48,8 @@ const SignUp = () => {
         <AuthButton
           provider="Apple"
           onPress={handleAppleSignIn}
-        />
-        <Text className={'text-center mt-auto'}>
+        /> */}
+        <Text className={'mt-8 text-center'}>
           Already have an account?{' '}
           <ExpoLink href="/sign-in">
             <LinkText>Sign in</LinkText>

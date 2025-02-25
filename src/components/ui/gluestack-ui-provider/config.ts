@@ -3,18 +3,18 @@ import { vars } from 'nativewind';
 
 export const config = {
   light: vars({
-    '--color-primary-0': '179 179 179',
-    '--color-primary-50': '153 153 153',
-    '--color-primary-100': '128 128 128',
-    '--color-primary-200': '115 115 115',
-    '--color-primary-300': '102 102 102',
-    '--color-primary-400': '82 82 82',
-    '--color-primary-500': '51 51 51',
-    '--color-primary-600': '41 41 41',
-    '--color-primary-700': '31 31 31',
-    '--color-primary-800': '13 13 13',
-    '--color-primary-900': '10 10 10',
-    '--color-primary-950': '8 8 8',
+    '--color-primary-0': '255 153 153', // #ff9999 - lightest
+    '--color-primary-50': '255 140 140', // #ff8c8c
+    '--color-primary-100': '255 128 128', // #ff8080
+    '--color-primary-200': '255 121 121', // #ff7979 - base color
+    '--color-primary-300': '255 102 102', // #ff6666
+    '--color-primary-400': '255 89 89', // #ff5959
+    '--color-primary-500': '255 77 77', // #ff4d4d
+    '--color-primary-600': '255 64 64', // #ff4040
+    '--color-primary-700': '255 51 51', // #ff3333
+    '--color-primary-800': '255 38 38', // #ff2626
+    '--color-primary-900': '255 26 26', // #ff1a1a
+    '--color-primary-950': '255 13 13', // #ff0d0d - darkest
 
     /* Secondary  */
     '--color-secondary-0': '254 255 255',

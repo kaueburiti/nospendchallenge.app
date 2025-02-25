@@ -59,7 +59,7 @@ const SignInForm = () => {
       <Button
         variant="solid"
         size="lg"
-        className="mt-5 h-12"
+        className="mt-5 h-12 bg-[#ff7979]"
         onPress={handleSubmit(onSubmit)}
         disabled={isLoading}>
         <ButtonText className="text-sm">

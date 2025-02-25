@@ -13,15 +13,15 @@ type GuestLayoutProps = {
 export default function GuestLayout(props: GuestLayoutProps) {
   return (
     <SafeAreaView
-      className={'flex-1 bg-background-light dark:bg-background-dark'}
+      className={'flex-1 bg-[#f8f8f8] dark:bg-background-dark'}
       style={{ flex: 1 }}>
       <KeyboardAwareScrollView
         style={{ height: '100%', flex: 1 }}
         contentContainerStyle={{ flexGrow: 1 }}>
-        <Box className={'h-full flex-1 flex'}>
+        <Box className={'flex h-full flex-1'}>
           <StatusBar translucent style="auto" />
           <ScrollView
-            className={'flex-1 '}
+            className={'flex-1'}
             contentContainerStyle={{
               alignItems: 'center',
               flexGrow: 1,
@@ -37,4 +37,3 @@ export default function GuestLayout(props: GuestLayoutProps) {
     </SafeAreaView>
   );
 }
-

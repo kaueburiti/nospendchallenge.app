@@ -27,17 +27,19 @@ const SignIn = () => {
 
   return (
     <GuestLayout>
-      <VStack className={'py-12 px-4 flex-1'}>
+      <VStack className={'flex-1 px-4 py-12'}>
         <Center className={'mb-8'}>
           <Image
             size="md"
-            source={require('../../assets/images/logo.png') as ImageSourcePropType}
+            source={
+              require('../../assets/images/logo.png') as ImageSourcePropType
+            }
             alt="image"
           />
         </Center>
-        <Heading className={'text-3xl text-center mb-8'}>Sign in</Heading>
+        <Heading className={'mb-8 text-center text-3xl'}>Sign in</Heading>
         <SignInForm />
-        <Text className={'text-center font-bold my-4'}>or</Text>
+        {/* <Text className={'text-center font-bold my-4'}>or</Text>
         <AuthButton
           provider="Google"
           onPress={handleGoogleSignIn}
@@ -47,8 +49,8 @@ const SignIn = () => {
             provider="Apple"
             onPress={handleAppleSignIn}
           />
-        )}
-        <Text className="text-center mt-auto">
+        )} */}
+        <Text className="mt-auto text-center">
           Don&apos;t have an account?{' '}
           <ExpoLink href="/sign-up">
             <LinkText className="text-primary-500 underline">Sign up</LinkText>
