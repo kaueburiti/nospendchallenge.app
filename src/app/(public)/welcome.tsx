@@ -47,7 +47,9 @@ const Welcome = () => {
               }}
               variant="link"
               className="w-full flex-1">
-              <ButtonText>I already have an account</ButtonText>
+              <ButtonText className="underline">
+                I already have an account
+              </ButtonText>
             </Button>
           </Box>
         </VStack>

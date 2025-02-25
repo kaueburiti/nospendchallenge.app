@@ -12,7 +12,7 @@ import { type ImageSourcePropType } from 'react-native';
 import SignUpForm from '../../components/sign-up/SignUpForm';
 import { LinkText } from '@/components/ui';
 import AuthButton from '../../components/auth/AuthButton';
-import { FloatingWoman } from './welcome';
+import MeditatingWoman from '@/components/ui/illustrations/meditating-woman';
 
 const SignUp = () => {
   const { signInWithGoogle } = useSignInWithGoogle();
@@ -29,8 +29,8 @@ const SignUp = () => {
   return (
     <GuestLayout>
       <VStack className={'flex-1 px-4 py-12'}>
-        <Center className={'mb-8'}>
-          <FloatingWoman width={300} height={300} />
+        <Center className={'mb-6'}>
+          <MeditatingWoman width={300} height={300} />
         </Center>
         <Box className="mb-8 flex flex-col items-center gap-2">
           <Heading className={'text-center text-3xl'}>
@@ -52,7 +52,7 @@ const SignUp = () => {
         <Text className={'mt-8 text-center'}>
           Already have an account?{' '}
           <ExpoLink href="/sign-in">
-            <LinkText>Sign in</LinkText>
+            <LinkText className="text-primary-500 underline">Sign in</LinkText>
           </ExpoLink>
         </Text>
       </VStack>

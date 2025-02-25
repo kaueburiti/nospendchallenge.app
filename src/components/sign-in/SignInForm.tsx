@@ -53,7 +53,7 @@ const SignInForm = () => {
           onSubmitEditing={handleKeyPress}
         />
       </VStack>
-      <ExpoLink href="/forgot-password">
+      <ExpoLink href="/forgot-password" className="mt-2">
         <LinkText className="text-sm">Forgot password?</LinkText>
       </ExpoLink>
       <Button
