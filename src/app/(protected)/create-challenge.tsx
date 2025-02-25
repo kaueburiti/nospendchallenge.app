@@ -1,20 +1,19 @@
 import React from 'react';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
-import { Box, Button, Text, Image, Heading, ButtonText } from '@/components/ui';
+import { Box, Button, Text, Heading, ButtonText } from '@/components/ui';
 import FormInput from '@/components/auth/FormInput';
 import { useForm } from 'react-hook-form';
 import { router } from 'expo-router';
 import { i18n } from '@/i18n';
 import { useCreateChallenge } from '@/hooks/challenges';
 import { useSession } from '@/hooks/useSession';
-import * as ImagePicker from 'expo-image-picker';
 import { supabase } from '@/lib/supabase';
-import { Pressable, Alert } from 'react-native';
+import { Pressable } from 'react-native';
 import { decode } from 'base64-arraybuffer';
 import { BadgeText } from '@/components/ui/badge';
 import { Badge } from '@/components/ui/badge';
 import { StartAndEndDates } from '@/components/home/challenges/form/start-and-end-date';
-import { ImagePlus } from 'lucide-react-native';
+import PhotoUpload from '@/components/ui/photo-upload';
 
 interface ChallengeForm {
   name: string;
@@ -43,33 +42,6 @@ export default function CreateChallenge() {
       endDate: new Date(),
     },
   });
-
-  const pickImage = async () => {
-    try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [16, 9],
-        quality: 1,
-        base64: true,
-      });
-
-      if (!result.canceled && result.assets && result.assets.length > 0) {
-        const file = result.assets[0];
-        if (file.base64) {
-          const fileExt = file.uri.split('.').pop()?.toLowerCase() ?? 'png';
-          setImageData({
-            uri: file.uri,
-            base64: file.base64,
-            fileExtension: fileExt,
-          });
-        }
-      }
-    } catch (error) {
-      console.error('Error selecting image:', error);
-      Alert.alert('Failed to select image. Please try again.');
-    }
-  };
 
   const uploadImage = async (imageData: ImageData) => {
     try {
@@ -125,19 +97,10 @@ export default function CreateChallenge() {
         </Box>
 
         <>
-          <Pressable onPress={pickImage} className="mb-4 items-center">
-            <Box className="h-64 w-64 items-center justify-center overflow-hidden rounded-full border-[12px] border-primary-500 bg-primary-0">
-              {imageData ? (
-                <Image
-                  source={{ uri: imageData.uri }}
-                  className="h-full w-full"
-                  alt="Challenge cover"
-                />
-              ) : (
-                <ImagePlus size={64} color="white" />
-              )}
-            </Box>
-          </Pressable>
+          <PhotoUpload
+            onImageUpload={imageData => setImageData(imageData)}
+            uri={imageData?.uri}
+          />
 
           <Box className="my-4 flex w-full flex-col gap-4">
             <FormInput

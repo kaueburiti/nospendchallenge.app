@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
-import { Box, Button, Text, Image } from '@/components/ui';
+import { Box, Button, Text, ButtonText, Heading } from '@/components/ui';
 import FormInput from '@/components/auth/FormInput';
 import { useForm } from 'react-hook-form';
 import { router, useLocalSearchParams } from 'expo-router';
@@ -11,13 +11,13 @@ import {
   useDeleteChallenge,
 } from '@/hooks/challenges';
 import { useSession } from '@/hooks/useSession';
-import * as ImagePicker from 'expo-image-picker';
 import { supabase } from '@/lib/supabase';
-import { Pressable, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import { decode } from 'base64-arraybuffer';
 import { format } from 'date-fns';
 import type { Tables } from '@/lib/db/database.types';
 import { StartAndEndDates } from '@/components/home/challenges/form/start-and-end-date';
+import PhotoUpload from '@/components/ui/photo-upload';
 
 type ChallengeForm = Omit<
   Tables<'challenges'>,
@@ -57,33 +57,6 @@ export default function EditChallenge() {
       </SafeAreaView>
     );
   }
-
-  const pickImage = async () => {
-    try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [16, 9],
-        quality: 1,
-        base64: true,
-      });
-
-      if (!result.canceled && result.assets && result.assets.length > 0) {
-        const file = result.assets[0];
-        if (file.base64) {
-          const fileExt = file.uri.split('.').pop()?.toLowerCase() ?? 'png';
-          setImageData({
-            uri: file.uri,
-            base64: file.base64,
-            fileExtension: fileExt,
-          });
-        }
-      }
-    } catch (error) {
-      console.error('Error selecting image:', error);
-      Alert.alert('Failed to select image. Please try again.');
-    }
-  };
 
   const uploadImage = async (imageData: ImageData) => {
     try {
@@ -162,32 +135,19 @@ export default function EditChallenge() {
   return (
     <SafeAreaView>
       <Box className="p-4">
-        <Button onPress={() => router.back()}>
-          <Text>Back</Text>
-        </Button>
-        <Text className="mb-6 text-2xl font-bold">
-          {i18n.t('challenge.edit_title')}
-        </Text>
+        <Box className="mb-6 items-center">
+          <Heading size="2xl" className="mb-1">
+            {i18n.t('challenge.edit_title')}
+          </Heading>
+          <Text className="text-md text-gray-500">
+            Let&apos;s get you started with a new challenge.
+          </Text>
+        </Box>
 
-        <Pressable onPress={pickImage} className="mb-4">
-          <Box className="h-48 w-full items-center justify-center overflow-hidden rounded-lg bg-gray-200">
-            {imageData ? (
-              <Image
-                source={{ uri: imageData.uri }}
-                className="h-full w-full"
-                alt="Challenge cover"
-              />
-            ) : challenge.cover ? (
-              <Image
-                source={{ uri: challenge.cover }}
-                className="h-full w-full"
-                alt="Challenge cover"
-              />
-            ) : (
-              <Text>Tap to add cover image</Text>
-            )}
-          </Box>
-        </Pressable>
+        <PhotoUpload
+          onImageUpload={imageData => setImageData(imageData)}
+          uri={imageData?.uri ?? challenge.cover ?? undefined}
+        />
 
         <FormInput name="title" control={control} placeholder="Title" />
         <FormInput
@@ -217,18 +177,21 @@ export default function EditChallenge() {
           />
         </Box>
 
-        <Box className="mt-8 flex-row justify-between gap-4">
+        <Box className="mb-12 mt-8 flex-row justify-between gap-4">
           <Button
-            onPress={handleDelete}
-            action="negative"
-            variant="outline"
-            className="flex-1">
-            <Text className="text-red-500">Delete Challenge</Text>
+            onPress={() => router.back()}
+            className="flex-1"
+            variant="outline">
+            <ButtonText>Cancel</ButtonText>
           </Button>
           <Button onPress={handleSubmit(onSubmit)} className="flex-1">
-            <Text>{i18n.t('challenge.update_button')}</Text>
+            <ButtonText>{i18n.t('challenge.update_button')}</ButtonText>
           </Button>
         </Box>
+
+        <Button onPress={handleDelete} action="negative" variant="outline">
+          <Text className="text-red-500">Delete Challenge</Text>
+        </Button>
       </Box>
     </SafeAreaView>
   );
