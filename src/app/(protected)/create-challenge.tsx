@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
-import { Box, Button, Text, Image, Heading } from '@/components/ui';
+import { Box, Button, Text, Image, Heading, ButtonText } from '@/components/ui';
 import FormInput from '@/components/auth/FormInput';
 import { useForm } from 'react-hook-form';
 import { router } from 'expo-router';
@@ -14,6 +14,7 @@ import { decode } from 'base64-arraybuffer';
 import { BadgeText } from '@/components/ui/badge';
 import { Badge } from '@/components/ui/badge';
 import { StartAndEndDates } from '@/components/home/challenges/form/start-and-end-date';
+import { ImagePlus } from 'lucide-react-native';
 
 interface ChallengeForm {
   name: string;
@@ -113,11 +114,7 @@ export default function CreateChallenge() {
 
   return (
     <SafeAreaView>
-      <Box className="p-4">
-        <Button onPress={() => router.back()} className="mb-4">
-          <Text>Back</Text>
-        </Button>
-
+      <Box className="px-4 py-12">
         <Box className="mb-6 items-center">
           <Heading size="2xl" className="mb-1">
             {i18n.t('challenge.create_title')}
@@ -129,7 +126,7 @@ export default function CreateChallenge() {
 
         <>
           <Pressable onPress={pickImage} className="mb-4 items-center">
-            <Box className="h-64 w-64 items-center justify-center overflow-hidden rounded-full border-[12px] border-gray-300 bg-gray-200">
+            <Box className="h-64 w-64 items-center justify-center overflow-hidden rounded-full border-[12px] border-primary-500 bg-primary-0">
               {imageData ? (
                 <Image
                   source={{ uri: imageData.uri }}
@@ -137,9 +134,7 @@ export default function CreateChallenge() {
                   alt="Challenge cover"
                 />
               ) : (
-                <Text className="text-center text-xs">
-                  Tap to add cover image
-                </Text>
+                <ImagePlus size={64} color="white" />
               )}
             </Box>
           </Pressable>
@@ -186,7 +181,7 @@ export default function CreateChallenge() {
                     <Badge
                       size="md"
                       variant="outline"
-                      action={watch('days') === days ? 'info' : 'muted'}>
+                      action={watch('days') === days ? 'primary' : 'muted'}>
                       <BadgeText>{days} Days</BadgeText>
                     </Badge>
                   </Pressable>
@@ -196,9 +191,16 @@ export default function CreateChallenge() {
           </Box>
         </>
 
-        <Box className="mt-6 flex-row justify-between">
-          <Button onPress={handleSubmit(onSubmit)} className="ml-auto w-full">
-            <Text>{i18n.t('challenge.create_button')}</Text>
+        <Box className="mt-6 flex-row justify-between gap-4">
+          <Button
+            onPress={() => router.back()}
+            className="flex-1"
+            variant="outline">
+            <ButtonText>Cancel</ButtonText>
+          </Button>
+
+          <Button onPress={handleSubmit(onSubmit)} className="flex-1">
+            <ButtonText>{i18n.t('challenge.create_button')}</ButtonText>
           </Button>
         </Box>
       </Box>

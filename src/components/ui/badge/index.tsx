@@ -20,6 +20,7 @@ const badgeStyle = tva({
       success: 'bg-background-success border-success-300',
       info: 'bg-background-info border-info-300',
       muted: 'bg-background-muted border-background-300',
+      primary: 'bg-primary-500 border-primary-600',
     },
     variant: {
       solid: '',
@@ -43,6 +44,7 @@ const badgeTextStyle = tva({
       success: 'text-success-600',
       info: 'text-info-600',
       muted: 'text-background-800',
+      primary: 'text-white',
     },
     size: {
       sm: 'text-2xs',
@@ -126,8 +128,7 @@ const Badge = ({
         action,
         variant,
         size,
-      }}
-    >
+      }}>
       {children}
     </ContextView>
   );
@@ -152,8 +153,7 @@ const BadgeText = React.forwardRef<
         size,
         class: className,
       })}
-      {...props}
-    >
+      {...props}>
       {children}
     </Text>
   );
