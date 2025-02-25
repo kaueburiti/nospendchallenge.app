@@ -1,6 +1,6 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
-import { Box, Heading, VStack } from '@/components/ui';
+import { ScrollView, Text } from 'react-native';
+import { Box, ButtonText, Heading, VStack } from '@/components/ui';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { i18n } from '@/i18n';
 import { useSession } from '@/hooks/useSession';
@@ -12,17 +12,12 @@ import RecentActivities from '@/components/home/recent-activities';
 import ChallengeList from '@/components/home/challenges';
 
 const Explorepage = () => {
-  const { user } = useSession();
-
   return (
     <SafeAreaView>
       <ScrollView className="h-[1px] flex-1">
         <Section>
           <VStack space="4xl">
-            <Box className="mt-8">
-              <Heading size="xl">Hello,</Heading>
-              <Heading size="3xl">{user?.user_metadata.full_name} 👋</Heading>
-            </Box>
+            <Greeting />
             <Box className="flex flex-1 flex-col overflow-auto">
               <Box className="mb-6 flex flex-row items-center justify-between">
                 <Heading size="xl">{i18n.t('home.top_section_title')}</Heading>
@@ -45,3 +40,25 @@ const Explorepage = () => {
 };
 
 export default Explorepage;
+
+function Greeting() {
+  const { user } = useSession();
+  const fullName = user?.user_metadata.full_name as string | undefined;
+
+  if (!fullName) {
+    return (
+      <Box className="mt-8">
+        <Heading size="3xl">Hello 👋</Heading>
+      </Box>
+    );
+  }
+
+  const firstName = fullName.split(' ')[0];
+
+  return (
+    <Box className="mt-8">
+      <Heading size="xl">Hello,</Heading>
+      <Heading size="3xl">{firstName} 👋</Heading>
+    </Box>
+  );
+}
