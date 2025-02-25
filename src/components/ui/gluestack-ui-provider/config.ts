@@ -3,18 +3,18 @@ import { vars } from 'nativewind';
 
 export const config = {
   light: vars({
-    '--color-primary-0': '255 153 153', // #ff9999 - lightest
-    '--color-primary-50': '255 140 140', // #ff8c8c
-    '--color-primary-100': '255 128 128', // #ff8080
-    '--color-primary-200': '255 121 121', // #ff7979 - base color
-    '--color-primary-300': '255 102 102', // #ff6666
-    '--color-primary-400': '255 89 89', // #ff5959
-    '--color-primary-500': '255 77 77', // #ff4d4d
-    '--color-primary-600': '255 64 64', // #ff4040
-    '--color-primary-700': '255 51 51', // #ff3333
-    '--color-primary-800': '255 38 38', // #ff2626
-    '--color-primary-900': '255 26 26', // #ff1a1a
-    '--color-primary-950': '255 13 13', // #ff0d0d - darkest
+    '--color-primary-0': '255 180 180', // #ffb4b4 - most saturated
+    '--color-primary-50': '255 170 170', // #ffaaaa
+    '--color-primary-100': '255 160 160', // #ffa0a0
+    '--color-primary-200': '255 150 150', // #ff9696
+    '--color-primary-300': '255 140 140', // #ff8c8c
+    '--color-primary-400': '255 130 130', // #ff8282
+    '--color-primary-500': '255 121 121', // #ff7979 - base color
+    '--color-primary-600': '235 111 111', // #eb6f6f - desaturating
+    '--color-primary-700': '215 101 101', // #d76565
+    '--color-primary-800': '195 91 91', // #c35b5b
+    '--color-primary-900': '175 81 81', // #af5151
+    '--color-primary-950': '155 71 71', // #9b4747 - most desaturated
 
     /* Secondary  */
     '--color-secondary-0': '254 255 255',
