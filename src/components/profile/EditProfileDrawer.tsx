@@ -13,6 +13,7 @@ import { decode } from 'base64-arraybuffer';
 import { type User as SupabaseUser } from '@supabase/supabase-js';
 import { BottomDrawer } from '../BottomDrawer';
 import { i18n } from '@/i18n';
+import PhotoUpload from '../ui/photo-upload';
 
 const profileSchema = z.object({
   full_name: z
@@ -138,17 +139,14 @@ export const EditProfileDrawer = ({
       title={i18n.t('profile.drawer_title')}>
       <VStack space="lg" className="mb-20 w-full flex-1 p-4">
         <Center className="flex w-full gap-4">
-          <Pressable onPress={handleChangeAvatar}>
-            <Avatar size="2xl">
-              <AvatarImage
-                source={{
-                  uri: newImageData
-                    ? newImageData.uri
-                    : (user?.user_metadata?.avatar_url as string),
-                }}
-              />
-            </Avatar>
-          </Pressable>
+          <PhotoUpload
+            onImageUpload={imageData => setNewImageData(imageData)}
+            uri={
+              newImageData?.uri ??
+              (user?.user_metadata?.avatar_url as string) ??
+              undefined
+            }
+          />
           <Button onPress={handleChangeAvatar} variant="outline">
             <ButtonText>
               {i18n.t('profile.drawer_image_upload_label')}

@@ -75,11 +75,10 @@ VALUES (
 );
 
 -- Insert challenge for the user
-INSERT INTO public.challenges (title, owner_id, total_days, start_date, end_date)
+INSERT INTO public.challenges (title, owner_id, start_date, end_date)
 VALUES (
     'Year Challenge 2025',
     'd7bed83c-44e0-4449-8f95-872f21b668c4',
-    346, -- Days between 2025-01-01 and 2025-12-12
     '2025-01-01T00:00:00Z',
     '2025-12-12T23:59:59Z'
 );
