@@ -1,3 +1,5 @@
+import { supabase } from '@/lib/supabase';
+
 export type Activity = {
   id: number;
   title: string;
@@ -5,6 +7,7 @@ export type Activity = {
   created_at: string;
   user_id: string;
 };
+
 const mockActivities: Activity[] = [
   {
     id: 1,
@@ -30,10 +33,9 @@ const mockActivities: Activity[] = [
 ];
 
 export const getActivities = async () => {
-  // Uncomment for real implementation
-  // const { data, error } = await supabase.from('activities').select('*');
-  // if (error) throw error;
-  // return data;
+  const { data, error } = await supabase.from('activities').select('*');
+  if (error) throw error;
+  return data;
 
-  return mockActivities;
+  // return mockActivities;
 };

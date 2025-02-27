@@ -23,7 +23,10 @@ const RecentActivities = () => {
       {showActivities && (
         <VStack space="2xl">
           {activities?.map(activity => (
-            <ActivityItem key={activity.id} activity={activity} />
+            <ActivityItem
+              key={activity.id + activity.created_at}
+              activity={activity}
+            />
           ))}
         </VStack>
       )}

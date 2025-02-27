@@ -28,9 +28,6 @@ const Explorepage = () => {
               </Box>
               <ChallengeList />
             </Box>
-            <Box className="">
-              <Box className="bg-linear-to-r h-40 w-full rounded-lg bg-slate-200" />
-            </Box>
             <RecentActivities />
           </VStack>
         </Section>
