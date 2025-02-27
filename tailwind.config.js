@@ -20,7 +20,6 @@ module.exports = {
         'auto-fit': 'repeat(auto-fit, minmax(0, 20px))',
       },
       colors: {
-        'nsc-primary': '#EF4444',
         primary: {
           0: 'rgb(var(--color-primary-0)/<alpha-value>)',
           50: 'rgb(var(--color-primary-50)/<alpha-value>)',

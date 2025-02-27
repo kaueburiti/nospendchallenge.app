@@ -8,7 +8,7 @@ const RecentActivitiesEmptyState = () => {
     <Box className="mb-10 flex flex-1 flex-col items-center justify-center gap-4 rounded-lg bg-slate-200 p-10">
       <Box className="flex flex-col items-center justify-center">
         <Heading size="lg">No activities yet</Heading>
-        <Text className="text-content-50 text-center">
+        <Text className="text-center">
           Create your first activity to get started
         </Text>
       </Box>

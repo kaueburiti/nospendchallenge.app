@@ -10,17 +10,15 @@ import { SessionProvider } from '@/provider/SessionProvider';
 import { RevenueCatProvider } from '@/provider/RevenueCatProvider';
 import { useDeepLink } from '@/hooks/useDeepLink';
 import { initializeOneSignal } from '@/lib/one-signal';
-import { ThemeProvider } from "@/provider/ThemeProvider";
+import { ThemeProvider } from '@/provider/ThemeProvider';
 import '../sentry';
 import { ConditionalPostHogProvider } from '@/provider/ConditionalPostHogProvider';
-import '../i18n'
-import { KeyboardProvider } from "react-native-keyboard-controller";
+import '../i18n';
+import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { Spinner } from '@/components/ui/spinner';
 import { Box } from '@/components/ui';
 
-export {
-  ErrorBoundary,
-} from 'expo-router';
+export { ErrorBoundary } from 'expo-router';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 void SplashScreen.preventAutoHideAsync();
@@ -46,7 +44,7 @@ export default function RootLayout() {
 
   if (!loaded) {
     return (
-      <Box className="flex-1 justify-center items-center">
+      <Box className="flex-1 items-center justify-center">
         <Spinner size="large" color="$gray500" />
       </Box>
     );
@@ -59,7 +57,7 @@ export default function RootLayout() {
           <RevenueCatProvider>
             <ConditionalPostHogProvider>
               <ThemeProvider>
-                  <Slot />
+                <Slot />
               </ThemeProvider>
             </ConditionalPostHogProvider>
           </RevenueCatProvider>
