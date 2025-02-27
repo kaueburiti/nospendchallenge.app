@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { Box, Button, Text, Heading, ButtonText } from '@/components/ui';
-import FormInput from '@/components/auth/FormInput';
+import FormInput from '@/components/ui/form/input';
 import { useForm } from 'react-hook-form';
 import { router } from 'expo-router';
 import { i18n } from '@/i18n';
@@ -104,12 +104,14 @@ export default function CreateChallenge() {
 
           <Box className="my-4 flex w-full flex-col gap-4">
             <FormInput
+              label="Challenge Name"
               name="name"
               control={control}
               placeholder="#MyChallenge"
             />
 
             <FormInput
+              label="Challenge Description"
               name="description"
               control={control}
               placeholder="Describe your challenge"

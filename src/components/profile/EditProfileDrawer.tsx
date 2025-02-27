@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Pressable, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import { Button, ButtonText } from '../ui/button';
 import { VStack } from '../ui/vstack';
 import { HStack } from '../ui/hstack';
 import { Text } from '../ui/text';
-import { Avatar, AvatarImage } from '../ui/avatar';
 import { Center, Input, InputField } from '../ui';
 import * as ImagePicker from 'expo-image-picker';
 import { z } from 'zod';
@@ -14,6 +13,7 @@ import { type User as SupabaseUser } from '@supabase/supabase-js';
 import { BottomDrawer } from '../BottomDrawer';
 import { i18n } from '@/i18n';
 import PhotoUpload from '../ui/photo-upload';
+import FormInputLabel from '../ui/form/label';
 
 const profileSchema = z.object({
   full_name: z
@@ -153,8 +153,8 @@ export const EditProfileDrawer = ({
             </ButtonText>
           </Button>
         </Center>
-        <VStack space="md">
-          <Text>{i18n.t('profile.drawer_name_input_label')}</Text>
+        <VStack>
+          <FormInputLabel label={i18n.t('profile.drawer_name_input_label')} />
           <Input>
             <InputField
               value={name}

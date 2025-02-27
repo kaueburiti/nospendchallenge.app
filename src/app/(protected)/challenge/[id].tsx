@@ -23,7 +23,7 @@ import classNames from 'classnames';
 import { ProgressFilledTrack } from '@/components/ui/progress';
 import { Progress } from '@/components/ui/progress';
 import { Settings } from 'lucide-react-native';
-import FormInput from '@/components/auth/FormInput';
+import FormInput from '@/components/ui/form/input';
 import { useForm } from 'react-hook-form';
 import { ModalBody } from '@/components/ui/modal';
 import { CloseIcon, Icon } from '@/components/ui/icon';

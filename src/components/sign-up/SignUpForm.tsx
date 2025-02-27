@@ -5,7 +5,7 @@ import { Keyboard } from 'react-native';
 import { VStack } from '../ui/vstack';
 import { Button, ButtonText } from '../ui/button';
 import { useSignUp } from '@/hooks/auth/useSignUp';
-import FormInput from '../auth/FormInput';
+import FormInput from '@/components/ui/form/input';
 import { signUpSchema, type SignUpSchemaType } from '@/lib/schema/signUp';
 
 const SignUpForm = () => {

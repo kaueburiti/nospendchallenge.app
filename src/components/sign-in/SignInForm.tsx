@@ -7,7 +7,7 @@ import { Link as ExpoLink } from 'expo-router';
 import { LinkText } from '../ui/link';
 import { Button, ButtonText } from '../ui/button';
 import { useSignInWithPassword } from '@/hooks/auth/useSignInWithPassword';
-import FormInput from '../auth/FormInput';
+import FormInput from '@/components/ui/form/input';
 import { signInSchema, type SignInSchemaType } from '@/lib/schema/signIn';
 
 const SignInForm = () => {

@@ -8,9 +8,11 @@ import {
   FormControlErrorText,
 } from '@/components/ui';
 import { Input, InputField, InputIcon, InputSlot } from '@/components/ui/input';
+import FormInputLabel from './label';
 
 interface FormInputProps {
   name: string;
+  label?: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   control: Control<any>;
   placeholder: string;
@@ -21,6 +23,7 @@ interface FormInputProps {
 
 const FormInput: React.FC<FormInputProps> = ({
   name,
+  label,
   control,
   placeholder,
   errorMessage,
@@ -33,6 +36,7 @@ const FormInput: React.FC<FormInputProps> = ({
 
   return (
     <FormControl isInvalid={!!errorMessage} isRequired={true}>
+      {label && <FormInputLabel label={label} />}
       <Controller
         name={name}
         control={control}

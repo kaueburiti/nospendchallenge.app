@@ -1,7 +1,7 @@
 import React from 'react';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { Box, Button, Text, ButtonText, Heading } from '@/components/ui';
-import FormInput from '@/components/auth/FormInput';
+import FormInput from '@/components/ui/form/input';
 import { useForm } from 'react-hook-form';
 import { router, useLocalSearchParams } from 'expo-router';
 import { i18n } from '@/i18n';
