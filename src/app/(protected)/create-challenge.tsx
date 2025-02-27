@@ -1,6 +1,13 @@
 import React from 'react';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
-import { Box, Button, Text, Heading, ButtonText } from '@/components/ui';
+import {
+  Box,
+  Button,
+  Text,
+  Heading,
+  ButtonText,
+  VStack,
+} from '@/components/ui';
 import FormInput from '@/components/ui/form/input';
 import { useForm } from 'react-hook-form';
 import { router } from 'expo-router';
@@ -87,7 +94,7 @@ export default function CreateChallenge() {
   return (
     <SafeAreaView>
       <Box className="px-4 py-12">
-        <Box className="mb-6 items-center">
+        <Box className="mb-8 items-center">
           <Heading size="2xl" className="mb-1">
             {i18n.t('challenge.create_title')}
           </Heading>
@@ -96,29 +103,29 @@ export default function CreateChallenge() {
           </Text>
         </Box>
 
-        <>
+        <Box className="mb-6">
           <PhotoUpload
             onImageUpload={imageData => setImageData(imageData)}
             uri={imageData?.uri}
           />
+        </Box>
 
-          <Box className="my-4 flex w-full flex-col gap-4">
-            <FormInput
-              label="Challenge Name"
-              name="name"
-              control={control}
-              placeholder="#MyChallenge"
-            />
+        <VStack space="2xl">
+          <FormInput
+            label="Name"
+            name="name"
+            control={control}
+            placeholder="#MyChallenge"
+          />
 
-            <FormInput
-              label="Challenge Description"
-              name="description"
-              control={control}
-              placeholder="Describe your challenge"
-            />
-          </Box>
+          <FormInput
+            label="Description"
+            name="description"
+            control={control}
+            placeholder="Describe your challenge"
+          />
 
-          <Box>
+          <Box className="flex-col gap-2">
             <StartAndEndDates
               start={{
                 date: watch('startDate'),
@@ -130,7 +137,7 @@ export default function CreateChallenge() {
               }}
             />
             <Box>
-              <Text className="mb-2">Suggestions:</Text>
+              <Text className="mb-2 text-sm">Some suggestions:</Text>
               <Box className="flex-row gap-4">
                 {[30, 60, 90, 120].map(days => (
                   <Pressable
@@ -146,6 +153,7 @@ export default function CreateChallenge() {
                     <Badge
                       size="md"
                       variant="outline"
+                      className="rounded-lg"
                       action={watch('days') === days ? 'primary' : 'muted'}>
                       <BadgeText>{days} Days</BadgeText>
                     </Badge>
@@ -154,9 +162,9 @@ export default function CreateChallenge() {
               </Box>
             </Box>
           </Box>
-        </>
+        </VStack>
 
-        <Box className="mt-6 flex-row justify-between gap-4">
+        <Box className="mt-12 flex-row justify-between gap-4">
           <Button
             onPress={() => router.back()}
             className="flex-1"

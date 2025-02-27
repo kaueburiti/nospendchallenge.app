@@ -1,6 +1,7 @@
 import React from 'react';
 import { Box, Text } from '@/components/ui';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import FormInputLabel from '@/components/ui/form/label';
 
 type DatePickerFieldProps = {
   date: Date;
@@ -16,8 +17,8 @@ type StartAndEndDatesProps = {
 export function StartAndEndDates({ start, end }: StartAndEndDatesProps) {
   return (
     <Box className="flex-row gap-6">
-      <Box className="mb-4">
-        <Text className="mb-2">Start Date</Text>
+      <Box>
+        <FormInputLabel label="Start Date" />
         <Box className="-ml-3">
           <DateTimePicker
             disabled={start.disabled}
@@ -32,8 +33,8 @@ export function StartAndEndDates({ start, end }: StartAndEndDatesProps) {
           />
         </Box>
       </Box>
-      <Box className="mb-4">
-        <Text className="mb-2">End Date</Text>
+      <Box>
+        <FormInputLabel label="End Date" />
         <Box className="-ml-3">
           <DateTimePicker
             value={end.date}

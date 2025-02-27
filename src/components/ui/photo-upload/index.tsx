@@ -44,7 +44,7 @@ export default function PhotoUpload({ onImageUpload, uri }: PhotoUploadProps) {
   };
 
   return (
-    <Pressable onPress={pickImage} className="mb-4 items-center">
+    <Pressable onPress={pickImage} className="items-center">
       <Box className="h-64 w-64 items-center justify-center overflow-hidden rounded-full border-[12px] border-primary-500 bg-primary-0">
         {uri ? (
           <Image
