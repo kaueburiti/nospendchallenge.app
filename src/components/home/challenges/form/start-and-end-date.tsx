@@ -39,7 +39,9 @@ export function StartAndEndDates({ start, end }: StartAndEndDatesProps) {
           <DateTimePicker
             value={end.date}
             mode="date"
-            minimumDate={start.date}
+            minimumDate={
+              new Date(start.date.getTime() + 3 * 24 * 60 * 60 * 1000) // 3 days from start date
+            }
             onChange={(_, date) => {
               if (date) {
                 end.onChange?.(date);
