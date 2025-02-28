@@ -30,8 +30,10 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const createChallengeSchema = z.object({
-  name: z.string().min(4),
-  description: z.string().min(10),
+  name: z.string().min(4, { message: 'Name must be at least 4 characters' }),
+  description: z.string().min(10, {
+    message: 'Description must be at least 10 characters',
+  }),
   startDate: z.date(),
   endDate: z.date(),
 });
