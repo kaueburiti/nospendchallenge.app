@@ -13,16 +13,23 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { BadgeCheck } from 'lucide-react-native';
 import { Pressable } from 'react-native';
 import { useState } from 'react';
+import { useShowNotification } from '../notifications';
+import { router } from 'expo-router';
+
 export const useCreateChallenge = () => {
   const queryClient = useQueryClient();
-  const { triggerToast } = useShowToast();
+  const { triggerToast } = useShowNotification({
+    title: 'Congratulations 🎉',
+    description: 'Your challenge has been created successfully',
+    action: 'success',
+  });
 
   return useMutation({
     mutationFn: createChallenge,
-    onSuccess: () => {
-      console.log('Challenge created');
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['challenges'] });
       triggerToast();
-      void queryClient.invalidateQueries({ queryKey: ['challenges'] });
+      router.push('/(protected)/(tabs)/home');
     },
     onError: error => {
       console.error(error);

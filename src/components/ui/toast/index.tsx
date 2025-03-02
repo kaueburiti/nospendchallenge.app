@@ -80,27 +80,27 @@ const toastTitleStyle = tva({
     {
       variant: 'outline',
       action: 'error',
-      class: 'text-error-800',
+      class: 'text-error-500',
     },
     {
       variant: 'outline',
       action: 'warning',
-      class: 'text-warning-800',
+      class: 'text-warning-500',
     },
     {
       variant: 'outline',
       action: 'success',
-      class: 'text-success-700',
+      class: 'text-success-500',
     },
     {
       variant: 'outline',
       action: 'info',
-      class: 'text-info-800',
+      class: 'text-info-500',
     },
     {
       variant: 'outline',
       action: 'muted',
-      class: 'text-background-800',
+      class: 'text-background-500',
     },
   ],
 });
