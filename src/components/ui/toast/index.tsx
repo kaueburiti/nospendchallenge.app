@@ -22,7 +22,7 @@ const toastStyle = tva({
     action: {
       error: 'bg-error-800',
       warning: 'bg-warning-700',
-      success: 'bg-success-700',
+      success: 'bg-success-500',
       info: 'bg-info-700',
       muted: 'bg-background-800',
     },
@@ -51,11 +51,11 @@ const toastTitleStyle = tva({
     },
     size: {
       '2xs': 'text-2xs',
-      'xs': 'text-xs',
-      'sm': 'text-sm',
-      'md': 'text-base',
-      'lg': 'text-lg',
-      'xl': 'text-xl',
+      xs: 'text-xs',
+      sm: 'text-sm',
+      md: 'text-base',
+      lg: 'text-lg',
+      xl: 'text-xl',
       '2xl': 'text-2xl',
       '3xl': 'text-3xl',
       '4xl': 'text-4xl',
@@ -90,7 +90,7 @@ const toastTitleStyle = tva({
     {
       variant: 'outline',
       action: 'success',
-      class: 'text-success-800',
+      class: 'text-success-700',
     },
     {
       variant: 'outline',
@@ -122,11 +122,11 @@ const toastDescriptionStyle = tva({
     },
     size: {
       '2xs': 'text-2xs',
-      'xs': 'text-xs',
-      'sm': 'text-sm',
-      'md': 'text-base',
-      'lg': 'text-lg',
-      'xl': 'text-xl',
+      xs: 'text-xs',
+      sm: 'text-sm',
+      md: 'text-base',
+      lg: 'text-lg',
+      xl: 'text-xl',
       '2xl': 'text-2xl',
       '3xl': 'text-3xl',
       '4xl': 'text-4xl',
@@ -157,7 +157,7 @@ const Toast = React.forwardRef<React.ElementRef<typeof Root>, IToastProps>(
         {...props}
       />
     );
-  }
+  },
 );
 
 type IToastTitleProps = React.ComponentProps<typeof Text> & {
@@ -190,8 +190,7 @@ const ToastTitle = React.forwardRef<
           variant: parentVariant,
           action: parentAction,
         },
-      })}
-    >
+      })}>
       {children}
     </Text>
   );

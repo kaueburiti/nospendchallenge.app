@@ -17,7 +17,7 @@ import {
 } from 'react-hook-form';
 import { router } from 'expo-router';
 import { i18n } from '@/i18n';
-import { useCreateChallenge } from '@/hooks/challenges';
+import { useCreateChallenge, useShowToast } from '@/hooks/challenges';
 import { useSession } from '@/hooks/useSession';
 import { supabase } from '@/lib/supabase';
 import { Pressable, ScrollView } from 'react-native';
@@ -55,6 +55,7 @@ export default function CreateChallenge() {
   const { user } = useSession();
   const [imageData, setImageData] = React.useState<ImageData | null>(null);
   const { mutate: createChallenge } = useCreateChallenge();
+  const { triggerToast } = useShowToast();
   const {
     control,
     handleSubmit,
@@ -97,20 +98,26 @@ export default function CreateChallenge() {
   };
 
   const onSubmit = async (data: ChallengeForm) => {
-    console.log('SUBMIT', data);
-    // let coverUrl = null;
-    // if (imageData) {
-    //   coverUrl = await uploadImage(imageData);
-    // }
+    try {
+      let coverUrl = null;
+      if (imageData) {
+        coverUrl = await uploadImage(imageData);
+      }
 
-    // createChallenge({
-    //   title: data.name,
-    //   start_date: data.startDate.toISOString(),
-    //   end_date: data.endDate.toISOString(),
-    //   owner_id: user!.id,
-    //   cover: coverUrl,
-    //   description: data.description,
-    // });
+      createChallenge({
+        title: data.name,
+        start_date: data.startDate.toISOString(),
+        end_date: data.endDate.toISOString(),
+        owner_id: user!.id,
+        cover: coverUrl,
+        description: data.description,
+      });
+
+      router.back();
+      triggerToast();
+    } catch (error) {
+      console.error('Error creating challenge:', error);
+    }
   };
 
   const onError = (
@@ -185,6 +192,10 @@ export default function CreateChallenge() {
               <ButtonText>{i18n.t('challenge.create_button')}</ButtonText>
             </Button>
           </Box>
+
+          <Button onPress={triggerToast} className="flex-1" action="positive">
+            <ButtonText>Trigger Toast</ButtonText>
+          </Button>
         </Box>
       </ScrollView>
     </SafeAreaView>
