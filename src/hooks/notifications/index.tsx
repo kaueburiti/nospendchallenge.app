@@ -12,21 +12,25 @@ interface useShowNotificationProps {
   action: 'success' | 'error' | 'warning' | 'info';
 }
 
-export const useShowNotification = ({
-  title,
-  description,
-  action,
-}: useShowNotificationProps) => {
+export const useShowNotification = () => {
   const toast = useToast();
   const [toastId, setToastId] = useState<string>('0');
 
-  const triggerToast = () => {
+  const triggerToast = ({
+    title,
+    description,
+    action,
+  }: useShowNotificationProps) => {
     if (!toast.isActive(toastId)) {
-      showNewToast();
+      showNewToast({
+        title,
+        description,
+        action,
+      });
     }
   };
 
-  const getIcon = () => {
+  const getIcon = (action: 'success' | 'error' | 'warning' | 'info') => {
     switch (action) {
       case 'success':
         return BadgeCheck;
@@ -41,7 +45,7 @@ export const useShowNotification = ({
     }
   };
 
-  const getColor = () => {
+  const getColor = (action: 'success' | 'error' | 'warning' | 'info') => {
     switch (action) {
       case 'success':
         return 'text-success-500';
@@ -56,7 +60,11 @@ export const useShowNotification = ({
     }
   };
 
-  const showNewToast = () => {
+  const showNewToast = ({
+    title,
+    description,
+    action,
+  }: useShowNotificationProps) => {
     const newId = Math.random().toString();
     setToastId(newId);
 
@@ -74,11 +82,11 @@ export const useShowNotification = ({
             className="w-2/3 flex-row justify-between gap-6 p-4 shadow-hard-5">
             <HStack space="md" className="flex-row items-center gap-2">
               <Icon
-                as={getIcon()}
+                as={getIcon(action)}
                 width={24}
                 size="xl"
                 height={24}
-                className={getColor()}
+                className={getColor(action)}
               />
               <VStack space="xs">
                 <ToastTitle className="font-semibold">{title}</ToastTitle>

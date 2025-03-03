@@ -18,20 +18,26 @@ import { router } from 'expo-router';
 
 export const useCreateChallenge = () => {
   const queryClient = useQueryClient();
-  const { triggerToast } = useShowNotification({
-    title: 'Congratulations 🎉',
-    description: 'Your challenge has been created successfully',
-    action: 'success',
-  });
+  const { triggerToast } = useShowNotification();
 
   return useMutation({
     mutationFn: createChallenge,
     onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: ['challenges'] });
-      triggerToast();
+      triggerToast({
+        title: 'Congratulations 🎉',
+        description: 'Your challenge has been created successfully',
+        action: 'success',
+      });
       router.push('/(protected)/(tabs)/home');
+      void queryClient.invalidateQueries({ queryKey: ['challenges'] });
     },
     onError: error => {
+      triggerToast({
+        title: 'Oops!',
+        description: 'Something went wrong',
+        action: 'error',
+      });
+      console.log('Challenge creation failed');
       console.error(error);
     },
   });
