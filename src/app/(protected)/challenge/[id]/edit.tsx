@@ -1,10 +1,8 @@
 import React from 'react';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
-import { Box, Button, Text, ButtonText, Heading } from '@/components/ui';
-import FormInput from '@/components/ui/form/input';
+import { Box, Text } from '@/components/ui';
 import { useForm } from 'react-hook-form';
 import { router, useLocalSearchParams } from 'expo-router';
-import { i18n } from '@/i18n';
 import {
   useChallenge,
   useUpdateChallenge,
@@ -14,15 +12,12 @@ import { useSession } from '@/hooks/useSession';
 import { supabase } from '@/lib/supabase';
 import { Alert } from 'react-native';
 import { decode } from 'base64-arraybuffer';
-import { format } from 'date-fns';
-import type { Tables } from '@/lib/db/database.types';
-import { StartAndEndDates } from '@/components/home/challenges/form/start-and-end-date';
-import PhotoUpload from '@/components/ui/photo-upload';
-
-type ChallengeForm = Omit<
-  Tables<'challenges'>,
-  'id' | 'created_at' | 'updated_at'
->;
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  ChallengeForm,
+  challengeSchema,
+  type ChallengeFormData,
+} from '@/components/home/challenges/form/challenge-form';
 
 interface ImageData {
   uri: string;
@@ -38,15 +33,36 @@ export default function EditChallenge() {
   const { mutate: deleteChallenge } = useDeleteChallenge();
   const [imageData, setImageData] = React.useState<ImageData | null>(null);
 
-  const { control, handleSubmit, watch, setValue } = useForm<ChallengeForm>({
+  const {
+    control,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors },
+    reset,
+  } = useForm<ChallengeFormData>({
+    resolver: zodResolver(challengeSchema),
     defaultValues: {
-      title: challenge?.title ?? '',
-      description: challenge?.description ?? '',
-      end_date: String(
-        challenge?.end_date ? new Date(challenge.end_date) : new Date(),
-      ),
+      name: '',
+      description: '',
+      startDate: new Date(),
+      endDate: new Date(),
     },
   });
+
+  // Reset form when challenge data is loaded
+  React.useEffect(() => {
+    if (challenge) {
+      reset({
+        name: challenge.title,
+        description: challenge.description ?? '',
+        startDate: challenge.start_date
+          ? new Date(challenge.start_date)
+          : new Date(),
+        endDate: challenge.end_date ? new Date(challenge.end_date) : new Date(),
+      });
+    }
+  }, [challenge, reset]);
 
   if (isLoading || !challenge) {
     return (
@@ -83,7 +99,7 @@ export default function EditChallenge() {
     }
   };
 
-  const onSubmit = async (data: ChallengeForm) => {
+  const onSubmit = async (data: ChallengeFormData) => {
     let coverUrl = challenge.cover;
     if (imageData) {
       coverUrl = await uploadImage(imageData);
@@ -92,9 +108,11 @@ export default function EditChallenge() {
     updateChallenge(
       {
         id: Number(id),
-        ...data,
+        title: data.name,
+        description: data.description,
         cover: coverUrl,
-        end_date: String(data.end_date),
+        end_date: data.endDate.toISOString(),
+        start_date: data.startDate.toISOString(),
       },
       {
         onSuccess: () => {
@@ -134,65 +152,23 @@ export default function EditChallenge() {
 
   return (
     <SafeAreaView>
-      <Box className="p-4">
-        <Box className="mb-6 items-center">
-          <Heading size="2xl" className="mb-1">
-            {i18n.t('challenge.edit_title')}
-          </Heading>
-          <Text className="text-md text-gray-500">
-            Let&apos;s get you started with a new challenge.
-          </Text>
-        </Box>
-
-        <PhotoUpload
-          onImageUpload={imageData => setImageData(imageData)}
-          uri={imageData?.uri ?? challenge.cover ?? undefined}
-        />
-
-        <FormInput name="title" control={control} placeholder="Title" />
-        <FormInput
-          name="description"
-          control={control}
-          placeholder="Description"
-        />
-
-        <Box className="mb-4">
-          <Text className="mb-2">Start Date</Text>
-          <Box className="rounded-lg border border-gray-300 p-3">
-            <Text>{format(new Date(challenge.start_date), 'PP')}</Text>
-          </Box>
-        </Box>
-
-        <Box className="mb-4">
-          <StartAndEndDates
-            start={{
-              date: new Date(challenge.start_date),
-              disabled: true,
-            }}
-            end={{
-              date: new Date(watch('end_date')),
-              disabled: true,
-              onChange: date => setValue('end_date', date.toISOString()),
-            }}
-          />
-        </Box>
-
-        <Box className="mb-12 mt-8 flex-row justify-between gap-4">
-          <Button
-            onPress={() => router.back()}
-            className="flex-1"
-            variant="outline">
-            <ButtonText>Cancel</ButtonText>
-          </Button>
-          <Button onPress={handleSubmit(onSubmit)} className="flex-1">
-            <ButtonText>{i18n.t('challenge.update_button')}</ButtonText>
-          </Button>
-        </Box>
-
-        <Button onPress={handleDelete} action="negative" variant="outline">
-          <Text className="text-red-500">Delete Challenge</Text>
-        </Button>
-      </Box>
+      <ChallengeForm
+        title="Edit Challenge"
+        subtitle="Update your challenge details."
+        control={control}
+        watch={watch}
+        setValue={setValue}
+        handleSubmit={handleSubmit}
+        errors={errors}
+        onSubmit={onSubmit}
+        imageData={imageData}
+        setImageData={setImageData}
+        existingImageUrl={challenge.cover ?? undefined}
+        isStartDateDisabled={true}
+        submitButtonText="Update Challenge"
+        showDeleteButton={true}
+        onDelete={handleDelete}
+      />
     </SafeAreaView>
   );
 }
