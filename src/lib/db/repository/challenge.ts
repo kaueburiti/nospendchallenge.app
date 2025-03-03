@@ -13,12 +13,13 @@ export const createChallenge = async (
   return data;
 };
 
-export const getUserChallenges = async () => {
+export const getUserChallenges = async (limit = 10) => {
   const { data: user } = await supabase.auth.getUser();
   const { data, error } = await supabase
     .from('challenges')
     .select()
-    .eq('owner_id', String(user.user?.id));
+    .eq('owner_id', String(user.user?.id))
+    .limit(limit);
 
   if (error) throw error;
 

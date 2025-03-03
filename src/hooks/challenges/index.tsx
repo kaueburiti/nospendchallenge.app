@@ -43,10 +43,10 @@ export const useCreateChallenge = () => {
   });
 };
 
-export const useGetChallenges = () => {
+export const useGetChallenges = (limit = 10) => {
   return useQuery({
-    queryKey: ['challenges'],
-    queryFn: getUserChallenges,
+    queryKey: ['challenges', limit],
+    queryFn: () => getUserChallenges(limit),
   });
 };
 
