@@ -5,7 +5,7 @@ interface FormInputLabelProps {
   label: string;
 }
 
-const FormInputLabel: React.FC<FormInputLabelProps> = ({ label }) => {
+export const FormInputLabel: React.FC<FormInputLabelProps> = ({ label }) => {
   return (
     <Text className="text-md mb-2 font-semibold text-typography-600">
       {label}

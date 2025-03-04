@@ -7,32 +7,20 @@ import {
   AvatarImage,
   Box,
   Button,
-  Divider,
   Heading,
   Text,
   Image,
   VStack,
-  ButtonText,
 } from '@/components/ui';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useChallenge } from '@/hooks/challenges';
-import { format } from 'date-fns';
-import { useCreateCheck } from '@/hooks/checks';
 import { ScrollView } from 'react-native';
 import { ProgressFilledTrack } from '@/components/ui/progress';
 import { Progress } from '@/components/ui/progress';
 import { Settings } from 'lucide-react-native';
-import FormInput from '@/components/ui/form/input';
-import { useForm } from 'react-hook-form';
-import { ModalBody } from '@/components/ui/modal';
-import { CloseIcon, Icon } from '@/components/ui/icon';
-import { ModalCloseButton, Modal } from '@/components/ui/modal';
-import { ModalHeader } from '@/components/ui/modal';
-import { ModalContent } from '@/components/ui/modal';
-import { ModalBackdrop } from '@/components/ui/modal';
-import DateTimePicker from '@react-native-community/datetimepicker';
 import DaysGrid from '@/components/home/challenges/days-grid';
 import ChallengeScores from '@/components/home/challenges/scores';
+import CheckModal from '@/components/home/challenges/check/modal';
 
 export default function ChallengeDetails() {
   const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
@@ -152,89 +140,11 @@ export default function ChallengeDetails() {
         </Box>
       </ScrollView>
 
-      <Modal
+      <CheckModal
         isOpen={isCheckInDrawerOpen}
         onClose={() => setIsCheckInDrawerOpen(false)}
-        size="md">
-        <ModalBackdrop />
-        <ModalContent>
-          <ModalHeader>
-            <Heading size="md" className="text-typography-950">
-              Check In
-            </Heading>
-            <ModalCloseButton>
-              <Icon
-                as={CloseIcon}
-                size="md"
-                className="stroke-background-400 group-[:active]/modal-close-button:stroke-background-900 group-[:focus-visible]/modal-close-button:stroke-background-900 group-[:hover]/modal-close-button:stroke-background-700"
-              />
-            </ModalCloseButton>
-          </ModalHeader>
-          <ModalBody>
-            <CheckInForm
-              challengeId={id}
-              onSubmit={() => setIsCheckInDrawerOpen(false)}
-              onClose={() => setIsCheckInDrawerOpen(false)}
-            />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
+        challengeId={id}
+      />
     </SafeAreaView>
   );
 }
-
-const CheckInForm = ({
-  challengeId,
-  onSubmit: closeModal,
-  onClose,
-}: {
-  challengeId: string;
-  onSubmit: () => void;
-  onClose: () => void;
-}) => {
-  const { control, handleSubmit } = useForm({
-    defaultValues: {
-      message: '',
-    },
-  });
-  const [date, setDate] = useState(new Date());
-  const { mutate: createCheck } = useCreateCheck();
-
-  const onSubmit = async (data: { message: string }) => {
-    createCheck({
-      challenge_id: Number(challengeId),
-      date: format(date, 'yyyy-MM-dd'),
-      message: data.message,
-    });
-    closeModal();
-  };
-
-  return (
-    <SafeAreaView>
-      <Box className="mb-4 w-full flex-row items-center justify-between">
-        <Text>Check In Date:</Text>
-        <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode={'date'}
-          onChange={(event, selectedDate) => {
-            if (selectedDate) {
-              setDate(selectedDate);
-            }
-          }}
-        />
-      </Box>
-
-      <FormInput control={control} name="message" placeholder="How was it?" />
-
-      <Box className="mt-4 flex-row justify-end space-x-2">
-        <Button variant="outline" action="secondary" onPress={onClose}>
-          <ButtonText>Cancel</ButtonText>
-        </Button>
-        <Button onPress={handleSubmit(onSubmit)}>
-          <ButtonText>Create Check In</ButtonText>
-        </Button>
-      </Box>
-    </SafeAreaView>
-  );
-};
