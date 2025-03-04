@@ -11,13 +11,14 @@ import {
   Text,
   VStack,
   HStack,
+  ButtonText,
 } from '@/components/ui';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useChallenge } from '@/hooks/challenges';
-import { ScrollView } from 'react-native';
+import { Pressable, ScrollView } from 'react-native';
 import { ProgressFilledTrack } from '@/components/ui/progress';
 import { Progress } from '@/components/ui/progress';
-import { Settings } from 'lucide-react-native';
+import { ChevronLeftSquareIcon, Settings } from 'lucide-react-native';
 import DaysGrid from '@/components/home/challenges/days-grid';
 import ChallengeScores from '@/components/home/challenges/scores';
 import CheckModal from '@/components/home/challenges/check/modal';
@@ -53,7 +54,12 @@ export default function ChallengeDetails() {
   return (
     <SafeAreaView>
       <ScrollView className="h-[1px] flex-1">
-        <Box className="px-4 pb-16 pt-10">
+        <Box className="p-4 pb-16">
+          <Pressable
+            onPress={() => router.push('/(protected)/(tabs)/home')}
+            className="-ml-1 mb-4">
+            <ChevronLeftSquareIcon size={42} color="rgb(82,82,82)" />
+          </Pressable>
           <VStack space="lg">
             <HStack space="md" className="mb-6">
               <ChallengeCover challenge={challenge} size="2xl" />
