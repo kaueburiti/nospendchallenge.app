@@ -32,6 +32,7 @@ import { ModalContent } from '@/components/ui/modal';
 import { ModalBackdrop } from '@/components/ui/modal';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import DaysGrid from '@/components/home/challenges/days-grid';
+import ChallengeScores from '@/components/home/challenges/scores';
 
 export default function ChallengeDetails() {
   const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
@@ -145,28 +146,7 @@ export default function ChallengeDetails() {
               </Box>
             </Box>
 
-            <Box className="my-5 flex-row">
-              <VStack className="flex-1 items-center border-r border-outline-300 py-2">
-                <Heading size="4xl">23</Heading>
-                <Text size="xs">Days Left</Text>
-              </VStack>
-              <Divider
-                orientation="horizontal"
-                className="flex w-1 self-center bg-background-300"
-              />
-              <VStack className="flex-1 items-center border-r border-outline-300 py-2">
-                <Heading size="4xl">97</Heading>
-                <Text size="xs">Checks</Text>
-              </VStack>
-              <Divider
-                orientation="horizontal"
-                className="flex w-1 self-center bg-background-300 sm:hidden"
-              />
-              <VStack className="flex-1 items-center pt-2">
-                <Heading size="4xl">3</Heading>
-                <Text size="xs">Days Skipped</Text>
-              </VStack>
-            </Box>
+            <ChallengeScores />
             <DaysGrid />
           </VStack>
         </Box>
