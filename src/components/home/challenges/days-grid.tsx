@@ -27,7 +27,7 @@ export default function DaysGrid() {
     return days;
   };
 
-  const days = allDaysBetweenDates(challenge?.start_date, challenge?.end_date);
+  const days = allDaysBetweenDates(challenge?.start_date, challenge?.end_date); // BUG: This is adding one day more than the end date
 
   return (
     <Box className="mx-auto flex w-[336px] flex-row flex-wrap justify-start gap-2">

@@ -13,6 +13,7 @@ import { router } from 'expo-router';
 import type { Tables } from '@/lib/db/database.types';
 import { Progress } from '@/components/ui/progress';
 import { ProgressFilledTrack } from '@/components/ui/progress';
+import ChallengeCover from './cover';
 
 function ChallengeItem({ challenge }: { challenge: Tables<'challenges'> }) {
   return (
@@ -21,14 +22,7 @@ function ChallengeItem({ challenge }: { challenge: Tables<'challenges'> }) {
       onPress={() => router.push(`/challenge/${challenge.id}`)}>
       <Box className="flex w-full flex-row justify-between gap-10">
         <Box className="flex flex-1 flex-row gap-4">
-          <Image
-            source={{
-              uri: challenge.cover!,
-            }}
-            alt={String(challenge.title)}
-            className="h-14 w-14 rounded-md"
-            resizeMode="cover"
-          />
+          <ChallengeCover challenge={challenge} size="lg" />
           <VStack space="xs" className="flex-1">
             <Heading>{challenge.title}</Heading>
             <Progress

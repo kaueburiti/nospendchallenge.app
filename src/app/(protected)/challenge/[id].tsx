@@ -9,8 +9,8 @@ import {
   Button,
   Heading,
   Text,
-  Image,
   VStack,
+  HStack,
 } from '@/components/ui';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useChallenge } from '@/hooks/challenges';
@@ -21,6 +21,8 @@ import { Settings } from 'lucide-react-native';
 import DaysGrid from '@/components/home/challenges/days-grid';
 import ChallengeScores from '@/components/home/challenges/scores';
 import CheckModal from '@/components/home/challenges/check/modal';
+import ChallengeCover from '@/components/home/challenges/cover';
+import { differenceInDays, format } from 'date-fns';
 
 export default function ChallengeDetails() {
   const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
@@ -48,58 +50,69 @@ export default function ChallengeDetails() {
     );
   }
 
+  const startDate = new Date(challenge.start_date);
+  const endDate = new Date(challenge.end_date);
+  const today = new Date();
+  const daysPassed = differenceInDays(today, startDate);
+  const percentage = Math.max(
+    5,
+    (daysPassed / differenceInDays(endDate, startDate)) * 100,
+  );
+
   return (
     <SafeAreaView>
       <ScrollView className="h-[1px] flex-1">
         <Box className="px-4 pb-16 pt-10">
-          {/* <Button onPress={() => router.back()} className="mb-4">
-            <Text>Back</Text>
-          </Button> */}
+          <VStack space="lg">
+            <HStack space="md" className="mb-6">
+              <ChallengeCover challenge={challenge} size="2xl" />
 
-          <VStack space="md">
-            <Box className="h-32 w-full overflow-hidden rounded-md bg-black">
-              <Image
-                source={{
-                  uri: challenge.cover!,
-                }}
-                alt={String(challenge.title)}
-                className="h-full w-full opacity-70"
-              />
+              <VStack className="flex-1 justify-between">
+                <Box>
+                  <Box className="flex flex-row items-center justify-between">
+                    <Heading size="2xl">{challenge.title}</Heading>
+                    <Button
+                      onPress={() => router.push(`/challenge/${id}/edit`)}
+                      variant="link"
+                      action="secondary">
+                      <Settings size={24} color="rgb(82,82,82)" />
+                    </Button>
+                  </Box>
 
-              <Box className="absolute left-4 top-4 flex flex-row items-center justify-between">
-                <Heading size="2xl" className="text-white">
-                  {challenge.title}
-                </Heading>
-                <Button
-                  onPress={() => router.push(`/challenge/${id}/edit`)}
-                  variant="outline"
-                  action="secondary">
-                  <Settings size={24} color="white" />
-                </Button>
-              </Box>
+                  <Text className="text-sm">{challenge.description}</Text>
+                </Box>
 
-              <Box className="absolute right-4 top-1/2 aspect-square h-24 w-24 -translate-y-1/2 items-center justify-center rounded-full text-center text-4xl font-bold text-white">
-                <Text className="text-center text-4xl font-bold text-white">
-                  94%
-                </Text>
-              </Box>
+                <VStack className="justify-between gap-1">
+                  <HStack className="justify-between">
+                    <Text className="text-xs font-bold">
+                      {format(new Date(challenge.start_date), 'MMM d, yyyy')}
+                    </Text>
+                    <Text className="text-xs font-bold">
+                      {format(new Date(challenge.end_date), 'MMM d, yyyy')}
+                    </Text>
+                  </HStack>
 
-              <Box className="absolute bottom-0 left-0 right-0 h-10 w-full px-4">
-                <Progress
-                  value={80}
-                  size="2xl"
-                  orientation="horizontal"
-                  className="w-full">
-                  <ProgressFilledTrack />
-                </Progress>
-              </Box>
-            </Box>
+                  <Box className="w-full">
+                    <Progress
+                      value={percentage}
+                      size="2xl"
+                      orientation="horizontal"
+                      className="w-full">
+                      <ProgressFilledTrack />
+                    </Progress>
+                  </Box>
+                </VStack>
+              </VStack>
+            </HStack>
 
             <Box className="flex flex-row items-center justify-between">
               <Box className="">
                 <Heading size="lg">Challenge Crew</Heading>
                 <Box className="flex flex-row gap-4 pl-4">
                   <AvatarGroup>
+                    <Avatar size="md" className="border-2 border-white">
+                      <AvatarFallbackText>+</AvatarFallbackText>
+                    </Avatar>
                     <Avatar size="md" className="border-2 border-white">
                       <AvatarFallbackText>John Doe</AvatarFallbackText>
                       <AvatarImage

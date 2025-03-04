@@ -140,7 +140,9 @@ const AvatarFallbackText = React.forwardRef<
   );
 });
 
-type IAvatarImageProps = React.ComponentPropsWithoutRef<typeof UIAvatar.Image> &
+export type IAvatarImageProps = React.ComponentPropsWithoutRef<
+  typeof UIAvatar.Image
+> &
   VariantProps<typeof avatarImageStyle>;
 
 const AvatarImage = React.forwardRef<
