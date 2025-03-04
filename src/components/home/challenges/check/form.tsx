@@ -6,7 +6,7 @@ import FormInput from '@/components/ui/form/input';
 import { useForm } from 'react-hook-form';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FormInputLabel } from '@/components/ui/form/label';
-
+import { Text } from '@/components/ui/text';
 type CheckInFormProps = {
   challengeId: string;
   onSubmit: () => void;
@@ -23,9 +23,26 @@ export const CheckInForm = ({
       message: '',
     },
   });
+  const [errorMessage, setErrorMessage] = useState('');
   const [date, setDate] = useState(new Date());
   const { mutate: createCheck, isPending } = useCreateCheck(
     Number(challengeId),
+    {
+      onSuccess: () => {
+        closeModal();
+      },
+      onError: (error: Error) => {
+        if (
+          error.message.includes(
+            'duplicate key value violates unique constraint',
+          )
+        ) {
+          setErrorMessage('You already checked in this day');
+        } else {
+          setErrorMessage('Failed to create check in, please try again later');
+        }
+      },
+    },
   );
 
   const onSubmit = async (data: { message: string }) => {
@@ -34,12 +51,18 @@ export const CheckInForm = ({
       date: format(date, 'yyyy-MM-dd'),
       message: data.message,
     });
-    closeModal();
   };
 
   return (
     <VStack space="xl">
       <VStack space="lg">
+        {errorMessage && (
+          <Box className="flex-col">
+            <Text className="text-sm font-semibold text-red-500">
+              {errorMessage}
+            </Text>
+          </Box>
+        )}
         <Box className="flex-col">
           <FormInputLabel label="Check In Date:" />
           <Box className="-ml-4">
