@@ -14,7 +14,7 @@ const ChallengesPage = () => {
     <SafeAreaView>
       <ScrollView className="h-[1px] flex-1">
         <Section>
-          <VStack space="4xl">
+          <VStack space="4xl" className="px-2 py-8">
             <Box className="flex flex-1 flex-col overflow-auto">
               <Box className="mb-6 flex flex-row items-center justify-between">
                 <Heading size="3xl">Challenges</Heading>

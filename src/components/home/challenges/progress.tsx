@@ -37,7 +37,7 @@ export default function ChallengeProgressBar({
           value={percentage}
           size="2xl"
           orientation="horizontal"
-          className="w-full">
+          className="w-full rounded-md">
           <ProgressFilledTrack />
         </Progress>
       </Box>
