@@ -19,7 +19,6 @@ import { useChallenge } from '@/hooks/challenges';
 import { format } from 'date-fns';
 import { useCreateCheck } from '@/hooks/checks';
 import { ScrollView } from 'react-native';
-import classNames from 'classnames';
 import { ProgressFilledTrack } from '@/components/ui/progress';
 import { Progress } from '@/components/ui/progress';
 import { Settings } from 'lucide-react-native';
@@ -32,6 +31,7 @@ import { ModalHeader } from '@/components/ui/modal';
 import { ModalContent } from '@/components/ui/modal';
 import { ModalBackdrop } from '@/components/ui/modal';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import DaysGrid from '@/components/home/challenges/days-grid';
 
 export default function ChallengeDetails() {
   const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
@@ -59,15 +59,13 @@ export default function ChallengeDetails() {
     );
   }
 
-  const days = Array.from({ length: 120 }, (_, index) => index + 1);
-
   return (
     <SafeAreaView>
       <ScrollView className="h-[1px] flex-1">
-        <Box className="p-4">
-          <Button onPress={() => router.back()} className="mb-4">
+        <Box className="px-4 pb-16 pt-10">
+          {/* <Button onPress={() => router.back()} className="mb-4">
             <Text>Back</Text>
-          </Button>
+          </Button> */}
 
           <VStack space="md">
             <Box className="h-32 w-full overflow-hidden rounded-md bg-black">
@@ -169,23 +167,7 @@ export default function ChallengeDetails() {
                 <Text size="xs">Days Skipped</Text>
               </VStack>
             </Box>
-            <Box className="">
-              <Box className="flex flex-row flex-wrap justify-between">
-                {days.map(day => (
-                  <Box
-                    key={day}
-                    className={classNames(
-                      'm-1 h-10 w-10 items-center justify-center rounded-md bg-emerald-600',
-                      {
-                        'bg-gray-300':
-                          Math.random() < 0.5 && Math.random() > 0.4,
-                      },
-                    )}>
-                    <Text className="text-xs font-bold text-white">{day}</Text>
-                  </Box>
-                ))}
-              </Box>
-            </Box>
+            <DaysGrid />
           </VStack>
         </Box>
       </ScrollView>
