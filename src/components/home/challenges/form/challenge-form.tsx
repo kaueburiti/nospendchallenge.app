@@ -57,6 +57,7 @@ interface ChallengeFormProps {
   isStartDateDisabled?: boolean;
   submitButtonText?: string;
   showDeleteButton?: boolean;
+  isSubmitting?: boolean;
   onDelete?: () => void;
 }
 
@@ -77,6 +78,7 @@ export function ChallengeForm({
   submitButtonText = i18n.t('challenge.create_button'),
   showDeleteButton = false,
   onDelete,
+  isSubmitting = false,
 }: ChallengeFormProps) {
   return (
     <ScrollView className="h-[1px] flex-1">
@@ -140,8 +142,13 @@ export function ChallengeForm({
             <ButtonText>Cancel</ButtonText>
           </Button>
 
-          <Button onPress={handleSubmit(onSubmit, onError)} className="flex-1">
-            <ButtonText>{submitButtonText}</ButtonText>
+          <Button
+            onPress={handleSubmit(onSubmit, onError)}
+            className="flex-1"
+            disabled={isSubmitting}>
+            <ButtonText>
+              {isSubmitting ? 'Sending...' : submitButtonText}
+            </ButtonText>
           </Button>
         </Box>
 

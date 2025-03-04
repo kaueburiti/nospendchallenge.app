@@ -58,12 +58,28 @@ export const useChallenge = (id: string) => {
 };
 
 export const useUpdateChallenge = () => {
+  const { triggerToast } = useShowNotification();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: updateChallenge,
-    onSuccess: () => {
+    onSuccess: async () => {
+      triggerToast({
+        title: 'Challenge updated!',
+        description: 'Your challenge has been updated successfully',
+        action: 'success',
+      });
+      router.push('/(protected)/(tabs)/home');
       void queryClient.invalidateQueries({ queryKey: ['challenges'] });
+    },
+    onError: error => {
+      triggerToast({
+        title: 'Oops!',
+        description: 'Something went wrong',
+        action: 'error',
+      });
+      console.log('Challenge creation failed');
+      console.error(error);
     },
   });
 };

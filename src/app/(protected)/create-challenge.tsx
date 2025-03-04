@@ -7,7 +7,6 @@ import { useSession } from '@/hooks/useSession';
 import { supabase } from '@/lib/supabase';
 import { decode } from 'base64-arraybuffer';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { router } from 'expo-router';
 import {
   ChallengeForm,
   challengeSchema,
@@ -30,7 +29,7 @@ export default function CreateChallenge() {
     handleSubmit,
     watch,
     setValue,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<ChallengeFormData>({
     resolver: zodResolver(challengeSchema),
     defaultValues: {
@@ -73,21 +72,14 @@ export default function CreateChallenge() {
         coverUrl = await uploadImage(imageData);
       }
 
-      createChallenge(
-        {
-          title: data.name,
-          start_date: data.startDate.toISOString(),
-          end_date: data.endDate.toISOString(),
-          owner_id: user!.id,
-          cover: coverUrl,
-          description: data.description,
-        },
-        {
-          onSuccess: () => {
-            router.back();
-          },
-        },
-      );
+      createChallenge({
+        title: data.name,
+        start_date: data.startDate.toISOString(),
+        end_date: data.endDate.toISOString(),
+        owner_id: user!.id,
+        cover: coverUrl,
+        description: data.description,
+      });
     } catch (error) {
       console.error('Error creating challenge:', error);
     }
@@ -111,6 +103,7 @@ export default function CreateChallenge() {
         onError={onError}
         imageData={imageData}
         setImageData={setImageData}
+        isSubmitting={isSubmitting}
       />
     </SafeAreaView>
   );

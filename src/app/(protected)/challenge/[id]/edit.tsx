@@ -38,7 +38,7 @@ export default function EditChallenge() {
     handleSubmit,
     watch,
     setValue,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
   } = useForm<ChallengeFormData>({
     resolver: zodResolver(challengeSchema),
@@ -105,25 +105,14 @@ export default function EditChallenge() {
       coverUrl = await uploadImage(imageData);
     }
 
-    updateChallenge(
-      {
-        id: Number(id),
-        title: data.name,
-        description: data.description,
-        cover: coverUrl,
-        end_date: data.endDate.toISOString(),
-        start_date: data.startDate.toISOString(),
-      },
-      {
-        onSuccess: () => {
-          router.back();
-          console.log('Challenge updated');
-        },
-        onError: error => {
-          console.error('Error updating challenge:', error);
-        },
-      },
-    );
+    updateChallenge({
+      id: Number(id),
+      title: data.name,
+      description: data.description,
+      cover: coverUrl,
+      end_date: data.endDate.toISOString(),
+      start_date: data.startDate.toISOString(),
+    });
   };
 
   const handleDelete = () => {
@@ -168,6 +157,7 @@ export default function EditChallenge() {
         submitButtonText="Update Challenge"
         showDeleteButton={true}
         onDelete={handleDelete}
+        isSubmitting={isSubmitting}
       />
     </SafeAreaView>
   );

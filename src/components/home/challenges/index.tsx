@@ -7,8 +7,9 @@ import ChallengesLoadingState from './loading';
 
 function ChallengeList() {
   const { data: challenges, isLoading } = useGetChallenges(3);
-  const showEmptyState = !isLoading && challenges?.length === 0;
+  const showEmptyState = !isLoading && !challenges?.length;
   const showLoadingState = isLoading;
+  const showViewAllButton = !isLoading && challenges && challenges.length >= 3;
 
   return (
     <Box className="flex flex-col gap-8">
@@ -18,9 +19,11 @@ function ChallengeList() {
         <ChallengeItem key={challenge.id} challenge={challenge} />
       ))}
 
-      <Button variant="outline" className="mx-auto w-full max-w-32">
-        <ButtonText>View all</ButtonText>
-      </Button>
+      {showViewAllButton && (
+        <Button variant="outline" className="mx-auto w-full max-w-32">
+          <ButtonText>View all</ButtonText>
+        </Button>
+      )}
     </Box>
   );
 }
