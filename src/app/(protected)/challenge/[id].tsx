@@ -23,7 +23,7 @@ import ChallengeScores from '@/components/home/challenges/scores';
 import CheckModal from '@/components/home/challenges/check/modal';
 import ChallengeCover from '@/components/home/challenges/cover';
 import { differenceInDays, format } from 'date-fns';
-
+import ChallengeProgressBar from '@/components/home/challenges/progress';
 export default function ChallengeDetails() {
   const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
     useState<boolean>(false);
@@ -50,15 +50,6 @@ export default function ChallengeDetails() {
     );
   }
 
-  const startDate = new Date(challenge.start_date);
-  const endDate = new Date(challenge.end_date);
-  const today = new Date();
-  const daysPassed = differenceInDays(today, startDate);
-  const percentage = Math.max(
-    5,
-    (daysPassed / differenceInDays(endDate, startDate)) * 100,
-  );
-
   return (
     <SafeAreaView>
       <ScrollView className="h-[1px] flex-1">
@@ -82,26 +73,7 @@ export default function ChallengeDetails() {
                   <Text className="text-sm">{challenge.description}</Text>
                 </Box>
 
-                <VStack className="justify-between gap-1">
-                  <HStack className="justify-between">
-                    <Text className="text-xs font-bold">
-                      {format(new Date(challenge.start_date), 'MMM d, yyyy')}
-                    </Text>
-                    <Text className="text-xs font-bold">
-                      {format(new Date(challenge.end_date), 'MMM d, yyyy')}
-                    </Text>
-                  </HStack>
-
-                  <Box className="w-full">
-                    <Progress
-                      value={percentage}
-                      size="2xl"
-                      orientation="horizontal"
-                      className="w-full">
-                      <ProgressFilledTrack />
-                    </Progress>
-                  </Box>
-                </VStack>
+                <ChallengeProgressBar challenge={challenge} showDates />
               </VStack>
             </HStack>
 

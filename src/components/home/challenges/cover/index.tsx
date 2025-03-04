@@ -11,8 +11,8 @@ function ChallengeCover({
   size: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl';
 }) {
   return (
-    <Avatar size={size} className="border-2 border-white">
-      <AvatarFallbackText>{challenge.title}</AvatarFallbackText>
+    <Avatar size={size} className="rounded-md border-0">
+      <AvatarFallbackText className="text-3xl">#</AvatarFallbackText>
       <AvatarImage
         className="rounded-md"
         alt={String(challenge.title)}

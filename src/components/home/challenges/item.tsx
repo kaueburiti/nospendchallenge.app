@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, Image } from 'react-native';
+import { Pressable } from 'react-native';
 import {
   Avatar,
   AvatarFallbackText,
@@ -11,9 +11,8 @@ import {
 } from '@/components/ui';
 import { router } from 'expo-router';
 import type { Tables } from '@/lib/db/database.types';
-import { Progress } from '@/components/ui/progress';
-import { ProgressFilledTrack } from '@/components/ui/progress';
 import ChallengeCover from './cover';
+import ChallengeProgressBar from './progress';
 
 function ChallengeItem({ challenge }: { challenge: Tables<'challenges'> }) {
   return (
@@ -25,13 +24,7 @@ function ChallengeItem({ challenge }: { challenge: Tables<'challenges'> }) {
           <ChallengeCover challenge={challenge} size="lg" />
           <VStack space="xs" className="flex-1">
             <Heading>{challenge.title}</Heading>
-            <Progress
-              value={Math.random() * 100}
-              size="2xl"
-              orientation="horizontal"
-              className="w-full">
-              <ProgressFilledTrack />
-            </Progress>
+            <ChallengeProgressBar challenge={challenge} />
           </VStack>
         </Box>
         <Box className="flex flex-row gap-4">
