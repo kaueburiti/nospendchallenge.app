@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Text } from '@/components/ui';
+import { Box } from '@/components/ui';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import FormInputLabel from '@/components/ui/form/label';
 

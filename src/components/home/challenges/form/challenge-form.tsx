@@ -80,6 +80,9 @@ export function ChallengeForm({
   onDelete,
   isSubmitting = false,
 }: ChallengeFormProps) {
+  // TODO: Add a confirmation modal
+  // TODO: Add toast notification
+
   return (
     <ScrollView className="h-[1px] flex-1">
       <Box className="px-4 py-12">
@@ -183,7 +186,10 @@ function DaysSuggestions({
             onPress={() => {
               const startDate = watch('startDate');
               const endDate = new Date(startDate);
-              endDate.setDate(startDate.getDate() + period);
+              // The -1 is needed because we want to include both the start and end dates in our grid.
+              // For example: Jan 1 to Jan 3 is 2 days difference, but we want to show 3 days (1st, 2nd, and 3rd)
+              // So we need to subtract 1 from the period to get the correct number of days.
+              endDate.setDate(startDate.getDate() + (period - 1));
 
               setSelectedPeriod(period);
               setValue('endDate', endDate);

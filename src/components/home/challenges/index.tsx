@@ -5,11 +5,13 @@ import ChallengeItem from './item';
 import ChallengesEmptyState from './empty';
 import ChallengesLoadingState from './loading';
 
+const LIMIT = 5;
 function ChallengeList() {
-  const { data: challenges, isLoading } = useGetChallenges(3);
+  const { data: challenges, isLoading } = useGetChallenges(LIMIT);
   const showEmptyState = !isLoading && !challenges?.length;
   const showLoadingState = isLoading;
-  const showViewAllButton = !isLoading && challenges && challenges.length >= 3;
+  const showViewAllButton =
+    !isLoading && challenges && challenges.length >= LIMIT;
 
   return (
     <Box className="flex flex-col gap-8">

@@ -18,6 +18,9 @@ export default function DaysGrid() {
     const start = new Date(startDate);
     const end = new Date(endDate);
     const days = [];
+    // The +1 is needed because differenceInDays returns the number of days between dates,
+    // but we want to include both the start and end dates in our grid.
+    // For example: Jan 1 to Jan 3 is 2 days difference, but we want to show 3 days (1st, 2nd, and 3rd)
     const totalDays = differenceInDays(end, start) + 1;
 
     for (let i = 0; i < totalDays; i++) {
