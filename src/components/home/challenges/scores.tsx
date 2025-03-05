@@ -20,7 +20,7 @@ export default function ChallengeScores() {
   const today = new Date();
 
   // Calculate days left
-  const daysLeft = Math.max(0, differenceInDays(endDate, today));
+  const daysLeft = Math.max(0, differenceInDays(endDate, today) + 2);
 
   // Calculate total checks
   const totalChecks = checks?.length ?? 0;
@@ -37,7 +37,12 @@ export default function ChallengeScores() {
   );
 
   // Calculate skipped days (days that have passed but have no check)
-  const daysSkipped = allDays.filter(day => !checkedDays.has(day)).length;
+  const daysSkipped = allDays.filter(day => {
+    const todayStr = format(today, 'yyyy-MM-dd');
+    const sameDay = day === todayStr;
+
+    return !checkedDays.has(day) && !sameDay;
+  }).length;
 
   return (
     <Box className="my-5 flex-row">
