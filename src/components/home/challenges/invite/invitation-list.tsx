@@ -1,15 +1,8 @@
 import React from 'react';
-import {
-  Box,
-  Heading,
-  Text,
-  VStack,
-  HStack,
-  Badge,
-  BadgeText,
-} from '@/components/ui';
+import { Box, Heading, Text, VStack, HStack } from '@/components/ui';
 import { useInvitationsByChallenge } from '@/hooks/invitations';
 import { format } from 'date-fns';
+import { Badge, BadgeText } from '@/components/ui/badge';
 
 interface InvitationListProps {
   challengeId: number;
