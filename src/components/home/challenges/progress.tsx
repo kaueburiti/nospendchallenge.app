@@ -14,7 +14,7 @@ export default function ChallengeProgressBar({
   const startDate = new Date(challenge.start_date);
   const endDate = new Date(challenge.end_date);
   const today = new Date();
-  const daysPassed = differenceInDays(today, startDate);
+  const daysPassed = differenceInDays(today, startDate) + 1;
   const percentage = Math.max(
     5,
     (daysPassed / differenceInDays(endDate, startDate)) * 100,
@@ -44,3 +44,17 @@ export default function ChallengeProgressBar({
     </VStack>
   );
 }
+
+/*
+
+📆 Date calculations
+FIX: The calculation for skipped days is not working correctly.
+
+⭐ Feature requests
+FEATURE: Allow inviting friends to join a challenge.
+FEATURE: Create the activity automattic log
+FEATURE: Create challenges suggestions
+FEATURE: Add the rules field to the challenge
+FEATURE: Create a chat inside the challenge
+
+*/
