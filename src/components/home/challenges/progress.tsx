@@ -57,4 +57,9 @@ FEATURE: Create challenges suggestions
 FEATURE: Add the rules field to the challenge
 FEATURE: Create a chat inside the challenge
 
+BUG: The challenge invitations policies has to be disabled in order to invite friends to join a challenge
+BUG: The challenge participants policies has to be disabled in order to invite friends to join a challenge
+BUG: Update profile input glitch
+BUG: You should be able to create checks to challenges that you're participating in
+
 */
