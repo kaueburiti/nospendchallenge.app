@@ -52,12 +52,6 @@ export const getInvitationsByChallenge = async (challengeId: number) => {
 
 export const getUserInvitations = async () => {
   const { data: user } = await supabase.auth.getUser();
-  const { data: userData } = await supabase
-    .from('users')
-    .select('email')
-    .eq('id', user.user!.id)
-    .single();
-
   const { data, error } = await supabase
     .from('challenge_invitations')
     .select(
@@ -80,7 +74,7 @@ export const getUserInvitations = async () => {
       )
     `,
     )
-    .eq('invitee_email', userData!.email)
+    .eq('invitee_email', user.user!.email)
     .eq('status', 'pending');
 
   if (error) throw error;
