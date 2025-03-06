@@ -117,6 +117,14 @@ export default function ChallengeDetails() {
                     </Avatar>
                   </AvatarGroup>
                 </Box>
+
+                <Button
+                  onPress={() =>
+                    router.push(`/(protected)/challenge/${id}/invite`)
+                  }
+                  className="mt-4">
+                  <ButtonText>Invite Friends</ButtonText>
+                </Button>
               </Box>
               <Box className="mt-4">
                 <Button onPress={() => setIsCheckInDrawerOpen(true)} size="lg">

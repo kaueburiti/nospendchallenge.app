@@ -76,6 +76,73 @@ export type Database = {
         }
         Relationships: []
       }
+      challenge_invitations: {
+        Row: {
+          challenge_id: number
+          created_at: string
+          id: number
+          invitee_email: string
+          inviter_id: string
+          status: string
+          updated_at: string
+        }
+        Insert: {
+          challenge_id: number
+          created_at?: string
+          id?: number
+          invitee_email: string
+          inviter_id: string
+          status?: string
+          updated_at?: string
+        }
+        Update: {
+          challenge_id?: number
+          created_at?: string
+          id?: number
+          invitee_email?: string
+          inviter_id?: string
+          status?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_invitations_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      challenge_participants: {
+        Row: {
+          challenge_id: number
+          id: number
+          joined_at: string
+          user_id: string
+        }
+        Insert: {
+          challenge_id: number
+          id?: number
+          joined_at?: string
+          user_id: string
+        }
+        Update: {
+          challenge_id?: number
+          id?: number
+          joined_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_participants_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       challenges: {
         Row: {
           cover: string | null

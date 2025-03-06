@@ -10,6 +10,7 @@ import { router } from 'expo-router';
 import { Button } from '@/components/ui';
 import RecentActivities from '@/components/home/recent-activities';
 import ChallengeList from '@/components/home/challenges';
+import PendingInvitations from '@/components/home/challenges/invite/pending-invitations';
 
 const Explorepage = () => {
   return (
@@ -26,6 +27,7 @@ const Explorepage = () => {
                   <PlusCircle size={24} color="white" />
                 </Button>
               </Box>
+              <PendingInvitations />
               <ChallengeList />
             </Box>
             <RecentActivities />
