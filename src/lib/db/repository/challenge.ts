@@ -15,10 +15,20 @@ export const createChallenge = async (
 
 export const getUserChallenges = async (limit = 10) => {
   const { data: user } = await supabase.auth.getUser();
+  const userId = String(user.user?.id);
+
+  const challengeParticipants = await supabase
+    .from('challenge_participants')
+    .select()
+    .eq('user_id', userId);
+  const challengeIds = challengeParticipants?.data
+    ?.map(participant => participant.challenge_id)
+    .join(',');
+
   const { data, error } = await supabase
     .from('challenges')
     .select()
-    .eq('owner_id', String(user.user?.id))
+    .or(`owner_id.eq.${userId},id.in.(${challengeIds})`)
     .limit(limit);
 
   if (error) throw error;
