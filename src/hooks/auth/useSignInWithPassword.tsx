@@ -23,7 +23,7 @@ export const useSignInWithPassword = () => {
     setIsLoading(true);
 
     const { error } = await supabase.auth.signInWithPassword({
-      email,
+      email: email.toLowerCase(),
       password,
     });
 
