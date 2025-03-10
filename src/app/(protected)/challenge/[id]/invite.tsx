@@ -7,7 +7,7 @@ import InviteForm from '@/components/home/challenges/invite/invite-form';
 import InvitationList from '@/components/home/challenges/invite/invitation-list';
 import ParticipantList from '@/components/home/challenges/invite/participant-list';
 import { ScrollView } from 'react-native';
-
+import BackButton from '@/components/navigation/back-button';
 export default function InviteToChallengeScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: challenge, isLoading } = useChallenge(id);
@@ -19,6 +19,7 @@ export default function InviteToChallengeScreen() {
   return (
     <SafeAreaView>
       <ScrollView>
+        <BackButton />
         <Box className="p-4">
           <Heading size="xl" className="mb-4">
             Invite to Challenge

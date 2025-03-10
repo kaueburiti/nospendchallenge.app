@@ -3,7 +3,7 @@ import { Box, Heading, Text, VStack, HStack } from '@/components/ui';
 import { useInvitationsByChallenge } from '@/hooks/invitations';
 import { format } from 'date-fns';
 import { Badge, BadgeText } from '@/components/ui/badge';
-
+import BackButton from '@/components/navigation/back-button';
 interface InvitationListProps {
   challengeId: number;
 }
