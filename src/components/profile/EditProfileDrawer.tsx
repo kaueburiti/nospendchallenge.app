@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert } from 'react-native';
 import { Button, ButtonText } from '../ui/button';
 import { VStack } from '../ui/vstack';
@@ -7,16 +7,28 @@ import { Text } from '../ui/text';
 import { Center, Input, InputField } from '../ui';
 import * as ImagePicker from 'expo-image-picker';
 import { z } from 'zod';
-import { supabase } from '@/lib/supabase';
 import { decode } from 'base64-arraybuffer';
 import { type User as SupabaseUser } from '@supabase/supabase-js';
 import { BottomDrawer } from '../BottomDrawer';
 import { i18n } from '@/i18n';
 import PhotoUpload from '../ui/photo-upload';
 import FormInputLabel from '../ui/form/label';
+import {
+  useProfile,
+  useUpdateProfile,
+  useUploadAvatar,
+} from '@/hooks/useProfile';
 
 const profileSchema = z.object({
-  full_name: z
+  first_name: z
+    .string()
+    .min(2, i18n.t('profile.validation_name_min_length'))
+    .optional(),
+  last_name: z
+    .string()
+    .min(2, i18n.t('profile.validation_name_min_length'))
+    .optional(),
+  display_name: z
     .string()
     .min(2, i18n.t('profile.validation_name_min_length'))
     .optional(),
@@ -37,62 +49,66 @@ export const EditProfileDrawer = ({
   onClose,
   user,
   onSave,
-  isLoading,
+  isLoading: externalLoading,
 }: {
   isOpen: boolean;
   onClose: () => void;
   user: Partial<SupabaseUser> | null;
-  onSave: (data: Partial<SupabaseUser['user_metadata']>) => Promise<void>;
+  onSave: () => Promise<void>;
   isLoading: boolean;
 }) => {
-  const [name, setName] = useState<string>(
-    (user?.user_metadata?.full_name as string) || '',
-  );
+  const { data: profile, isLoading: isProfileLoading } = useProfile(user?.id);
+  const { mutate: updateProfile, isPending: isUpdating } = useUpdateProfile();
+  const { mutate: uploadAvatar, isPending: isUploading } = useUploadAvatar();
 
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [newImageData, setNewImageData] = useState<ImageData | null>(null);
   const [validationError, setValidationError] = useState('');
-  const [uploading, setUploading] = useState(false);
+
+  // Update form when profile data is loaded
+  useEffect(() => {
+    if (profile) {
+      setFirstName(profile.first_name || '');
+      setLastName(profile.last_name || '');
+    }
+  }, [profile]);
+
+  const isLoading =
+    externalLoading || isProfileLoading || isUpdating || isUploading;
 
   const handleSave = async () => {
     setValidationError('');
-    setUploading(true);
 
     try {
-      const profileData: Partial<SupabaseUser['user_metadata']> = {};
+      // Validate input data
+      const profileData = {
+        first_name: firstName,
+        last_name: lastName,
+        display_name: `${firstName} ${lastName}`.trim(),
+      };
 
-      if (name !== (user?.user_metadata?.full_name as string)) {
-        profileData.full_name = name;
-      }
+      profileSchema.parse(profileData);
 
+      // Handle image upload if there's a new image
       if (newImageData) {
-        const fileName = `${user?.id}.${newImageData.fileExtension}`;
-        const filePath = `avatars/${fileName}`;
-        const { data, error: uploadError } = await supabase.storage
-          .from(process.env.EXPO_PUBLIC_SUPABASE_STORAGE_BUCKET!)
-          .upload(filePath, decode(newImageData.base64), {
-            contentType: `image/${newImageData.fileExtension}`,
-            upsert: true,
-          });
-
-        if (uploadError) {
-          throw new Error(`Failed to upload avatar: ${uploadError.message}`);
-        }
-
-        if (data) {
-          const { data: publicUrlData } = supabase.storage
-            .from(process.env.EXPO_PUBLIC_SUPABASE_STORAGE_BUCKET!)
-            .getPublicUrl(filePath);
-
-          profileData.avatar_url = `${publicUrlData.publicUrl}?t=${new Date().getTime()}`;
-        }
+        uploadAvatar({
+          base64: newImageData.base64,
+          fileExtension: newImageData.fileExtension,
+        });
       }
 
-      if (Object.keys(profileData).length > 0) {
-        const validatedData = profileSchema.parse(profileData);
-        await onSave(validatedData);
-      }
-
-      onClose();
+      // Update profile data
+      updateProfile(profileData, {
+        onSuccess: async () => {
+          await onSave();
+          onClose();
+        },
+        onError: error => {
+          console.error('Error updating profile:', error);
+          Alert.alert(i18n.t('profile.error_save'));
+        },
+      });
     } catch (error) {
       if (error instanceof z.ZodError) {
         setValidationError(error.errors[0].message);
@@ -100,8 +116,6 @@ export const EditProfileDrawer = ({
         console.error('Error saving profile:', error);
         Alert.alert(i18n.t('profile.error_save'));
       }
-    } finally {
-      setUploading(false);
     }
   };
 
@@ -143,6 +157,7 @@ export const EditProfileDrawer = ({
             onImageUpload={imageData => setNewImageData(imageData)}
             uri={
               newImageData?.uri ??
+              profile?.avatar_url ??
               (user?.user_metadata?.avatar_url as string) ??
               undefined
             }
@@ -153,26 +168,42 @@ export const EditProfileDrawer = ({
             </ButtonText>
           </Button>
         </Center>
-        <VStack>
-          <FormInputLabel label={i18n.t('profile.drawer_name_input_label')} />
-          <Input>
-            <InputField
-              value={name}
-              onChangeText={setName}
-              placeholder={i18n.t('profile.input_placeholder_name')}
-            />
-          </Input>
+
+        <VStack space="md">
+          <VStack>
+            <FormInputLabel label={i18n.t('profile.drawer_first_name_label')} />
+            <Input>
+              <InputField
+                value={firstName}
+                onChangeText={setFirstName}
+                placeholder={i18n.t('profile.input_placeholder_first_name')}
+              />
+            </Input>
+          </VStack>
+
+          <VStack>
+            <FormInputLabel label={i18n.t('profile.drawer_last_name_label')} />
+            <Input>
+              <InputField
+                value={lastName}
+                onChangeText={setLastName}
+                placeholder={i18n.t('profile.input_placeholder_last_name')}
+              />
+            </Input>
+          </VStack>
+
           {validationError && (
             <Text className="text-red-500">{validationError}</Text>
           )}
         </VStack>
+
         <HStack space="md" className="mt-auto justify-end">
           <Button variant="outline" onPress={onClose}>
             <ButtonText>{i18n.t('profile.button_cancel')}</ButtonText>
           </Button>
-          <Button onPress={handleSave} isDisabled={isLoading || uploading}>
+          <Button onPress={handleSave} isDisabled={isLoading}>
             <ButtonText>
-              {isLoading || uploading
+              {isLoading
                 ? i18n.t('profile.button_saving')
                 : i18n.t('profile.button_save')}
             </ButtonText>
