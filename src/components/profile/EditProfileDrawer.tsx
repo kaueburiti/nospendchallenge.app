@@ -1,21 +1,22 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Alert } from 'react-native';
 import { Button, ButtonText } from '../ui/button';
 import { VStack } from '../ui/vstack';
 import { HStack } from '../ui/hstack';
-import { Text } from '../ui/text';
-import { Center, Input, InputField } from '../ui';
+import { Center } from '../ui';
 import * as ImagePicker from 'expo-image-picker';
 import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
 import { type User as SupabaseUser } from '@supabase/supabase-js';
 import { BottomDrawer } from '../BottomDrawer';
 import PhotoUpload from '../ui/photo-upload';
-import FormInputLabel from '../ui/form/label';
 import {
   useProfile,
   useUpdateProfile,
   useUploadAvatar,
 } from '@/hooks/useProfile';
+import FormInput from '../ui/form/input';
 
 const profileSchema = z.object({
   first_name: z
@@ -32,6 +33,8 @@ const profileSchema = z.object({
     .optional(),
   avatar_url: z.string().url('Invalid avatar URL').optional(),
 });
+
+type ProfileFormData = z.infer<typeof profileSchema>;
 
 interface ImageData {
   uri: string;
@@ -55,35 +58,42 @@ export const EditProfileDrawer = ({
   const { data: profile, isLoading: isProfileLoading } = useProfile(user?.id);
   const { mutate: updateProfile, isPending: isUpdating } = useUpdateProfile();
   const { mutate: uploadAvatar, isPending: isUploading } = useUploadAvatar();
+  const [newImageData, setNewImageData] = React.useState<ImageData | null>(
+    null,
+  );
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [newImageData, setNewImageData] = useState<ImageData | null>(null);
-  const [validationError, setValidationError] = useState('');
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<ProfileFormData>({
+    resolver: zodResolver(profileSchema),
+    defaultValues: {
+      first_name: '',
+      last_name: '',
+    },
+  });
 
   // Update form when profile data is loaded
   useEffect(() => {
     if (profile) {
-      setFirstName(profile.first_name ?? '');
-      setLastName(profile.last_name ?? '');
+      reset({
+        first_name: profile.first_name ?? '',
+        last_name: profile.last_name ?? '',
+      });
     }
-  }, [profile]);
+  }, [profile, reset]);
 
   const isLoading =
     externalLoading || isProfileLoading || isUpdating || isUploading;
 
-  const handleSave = async () => {
-    setValidationError('');
-
+  const onSubmit = async (data: ProfileFormData) => {
     try {
-      // Validate input data
       const profileData = {
-        first_name: firstName,
-        last_name: lastName,
-        display_name: `${firstName} ${lastName}`.trim(),
+        ...data,
+        display_name: `${data.first_name} ${data.last_name}`.trim(),
       };
-
-      profileSchema.parse(profileData);
 
       // Handle image upload if there's a new image
       if (newImageData) {
@@ -105,12 +115,8 @@ export const EditProfileDrawer = ({
         },
       });
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        setValidationError(error.errors[0].message);
-      } else {
-        console.error('Error saving profile:', error);
-        Alert.alert('Error saving profile');
-      }
+      console.error('Error saving profile:', error);
+      Alert.alert('Error saving profile');
     }
   };
 
@@ -160,42 +166,32 @@ export const EditProfileDrawer = ({
         </Center>
 
         <VStack space="md">
-          <VStack>
-            <FormInputLabel label="First Name" />
-            <Input>
-              <InputField
-                value={firstName}
-                onChangeText={setFirstName}
-                placeholder="Enter your first name"
-              />
-            </Input>
-          </VStack>
+          <FormInput
+            name="first_name"
+            placeholder="Enter your first name"
+            label="First Name"
+            control={control}
+            errorMessage={errors.first_name?.message}
+          />
 
-          <VStack>
-            <FormInputLabel label="Last Name" />
-            <Input>
-              <InputField
-                value={lastName}
-                onChangeText={setLastName}
-                placeholder="Enter your last name"
-              />
-            </Input>
-          </VStack>
-
-          {validationError && (
-            <Text className="text-red-500">{validationError}</Text>
-          )}
+          <FormInput
+            name="last_name"
+            placeholder="Enter your last name"
+            label="Last Name"
+            control={control}
+            errorMessage={errors.last_name?.message}
+          />
         </VStack>
-
-        <HStack space="md" className="mt-auto justify-end">
-          <Button variant="outline" onPress={onClose}>
-            <ButtonText>Cancel</ButtonText>
-          </Button>
-          <Button onPress={handleSave} isDisabled={isLoading}>
-            <ButtonText>{isLoading ? 'Saving...' : 'Save'}</ButtonText>
-          </Button>
-        </HStack>
       </VStack>
+
+      <HStack space="md" className="mt-auto justify-end">
+        <Button variant="outline" onPress={onClose}>
+          <ButtonText>Cancel</ButtonText>
+        </Button>
+        <Button onPress={handleSubmit(onSubmit)} isDisabled={isLoading}>
+          <ButtonText>{isLoading ? 'Saving...' : 'Save'}</ButtonText>
+        </Button>
+      </HStack>
     </BottomDrawer>
   );
 };
