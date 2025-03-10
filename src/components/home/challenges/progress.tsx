@@ -59,7 +59,7 @@ FEATURE: Create a chat inside the challenge
 
 BUG: The challenge invitations policies has to be disabled in order to invite friends to join a challenge
 BUG: The challenge participants policies has to be disabled in order to invite friends to join a challenge
-BUG: Update profile input glitch
+BUG: Update profile input glitch, you have to make the profile bucket public in order to see the profile picture
 BUG: You should be able to create checks to challenges that you're participating in
 
 */
