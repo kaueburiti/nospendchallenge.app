@@ -19,6 +19,7 @@ interface FormInputProps {
   errorMessage?: string;
   isPassword?: boolean;
   onSubmitEditing?: () => void;
+  autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
 }
 
 const FormInput: React.FC<FormInputProps> = ({
@@ -28,6 +29,7 @@ const FormInput: React.FC<FormInputProps> = ({
   placeholder,
   errorMessage,
   isPassword = false,
+  autoCapitalize = 'none',
   onSubmitEditing,
 }) => {
   const [isVisible, setIsVisible] = useState(!isPassword);
@@ -52,6 +54,7 @@ const FormInput: React.FC<FormInputProps> = ({
               onSubmitEditing={onSubmitEditing}
               returnKeyType={onSubmitEditing ? 'done' : 'next'}
               type={isVisible ? 'text' : 'password'}
+              autoCapitalize={autoCapitalize}
             />
             {isPassword && (
               <InputSlot onPress={handleToggleVisibility} className="pr-3">

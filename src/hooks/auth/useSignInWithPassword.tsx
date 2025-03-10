@@ -29,9 +29,14 @@ export const useSignInWithPassword = () => {
 
     if (error) {
       console.error('Sign in error:', error);
-      showToast('error', 'Sign in failed');
+      showToast(
+        'error',
+        'Ops, something went wrong',
+        'Invalid email or password, please try again.',
+      );
       onError?.(error);
     } else {
+      showToast('success', 'Welcome back!');
       onSuccess?.();
     }
 

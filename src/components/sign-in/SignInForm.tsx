@@ -13,13 +13,13 @@ import { signInSchema, type SignInSchemaType } from '@/lib/schema/signIn';
 const SignInForm = () => {
   const {
     control,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     handleSubmit,
     reset,
   } = useForm<SignInSchemaType>({
     resolver: zodResolver(signInSchema),
   });
-  const { signInWithPassword, isLoading } = useSignInWithPassword();
+  const { signInWithPassword } = useSignInWithPassword();
 
   const onSubmit = async (data: SignInSchemaType) => {
     await signInWithPassword({
@@ -61,9 +61,9 @@ const SignInForm = () => {
         size="lg"
         className="mt-5 h-12 bg-[#ff7979]"
         onPress={handleSubmit(onSubmit)}
-        disabled={isLoading}>
+        disabled={isSubmitting}>
         <ButtonText className="text-sm">
-          {isLoading ? 'Signing in...' : 'Continue'}
+          {isSubmitting ? 'Signing in...' : 'Continue'}
         </ButtonText>
       </Button>
     </>

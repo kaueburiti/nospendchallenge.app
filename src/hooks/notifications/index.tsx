@@ -30,36 +30,6 @@ export const useShowNotification = () => {
     }
   };
 
-  const getIcon = (action: 'success' | 'error' | 'warning' | 'info') => {
-    switch (action) {
-      case 'success':
-        return BadgeCheck;
-      case 'error':
-        return BadgeX;
-      case 'warning':
-        return BadgeAlert;
-      case 'info':
-        return BadgeInfo;
-      default:
-        return BadgeCheck;
-    }
-  };
-
-  const getColor = (action: 'success' | 'error' | 'warning' | 'info') => {
-    switch (action) {
-      case 'success':
-        return 'text-success-500';
-      case 'error':
-        return 'text-error-500';
-      case 'warning':
-        return 'text-warning-500';
-      case 'info':
-        return 'text-info-500';
-      default:
-        return 'text-success-500';
-    }
-  };
-
   const showNewToast = ({
     title,
     description,
@@ -107,4 +77,34 @@ export const useShowNotification = () => {
   };
 
   return { showNewToast, triggerToast };
+};
+
+export const getIcon = (action: 'success' | 'error' | 'warning' | 'info') => {
+  switch (action) {
+    case 'success':
+      return BadgeCheck;
+    case 'error':
+      return BadgeX;
+    case 'warning':
+      return BadgeAlert;
+    case 'info':
+      return BadgeInfo;
+    default:
+      return BadgeCheck;
+  }
+};
+
+export const getColor = (action: 'success' | 'error' | 'warning' | 'info') => {
+  switch (action) {
+    case 'success':
+      return 'text-success-500';
+    case 'error':
+      return 'text-error-500';
+    case 'warning':
+      return 'text-warning-500';
+    case 'info':
+      return 'text-info-500';
+    default:
+      return 'text-success-500';
+  }
 };
