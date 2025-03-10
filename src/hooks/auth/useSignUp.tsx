@@ -26,10 +26,10 @@ export const useSignUp = () => {
 
     if (error) {
       console.error('Sign up error:', error);
-      showToast('error', 'Sign up failed');
+      showToast('error', 'Ops, something went wrong', error.message);
       onError?.(error);
     } else {
-      showToast('success', 'Account created successfully');
+      showToast('success', 'Account successfully created!');
       onSuccess?.();
     }
 

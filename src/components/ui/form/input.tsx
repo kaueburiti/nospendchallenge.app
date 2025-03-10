@@ -66,8 +66,7 @@ const FormInput: React.FC<FormInputProps> = ({
       />
       {errorMessage && (
         <FormControlError>
-          <FormControlErrorIcon size="sm" as={AlertTriangle} />
-          <FormControlErrorText>{errorMessage}</FormControlErrorText>
+          <FormControlErrorText size="sm">{errorMessage}</FormControlErrorText>
         </FormControlError>
       )}
     </FormControl>
