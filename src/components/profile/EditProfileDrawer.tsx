@@ -7,10 +7,8 @@ import { Text } from '../ui/text';
 import { Center, Input, InputField } from '../ui';
 import * as ImagePicker from 'expo-image-picker';
 import { z } from 'zod';
-import { decode } from 'base64-arraybuffer';
 import { type User as SupabaseUser } from '@supabase/supabase-js';
 import { BottomDrawer } from '../BottomDrawer';
-import { i18n } from '@/i18n';
 import PhotoUpload from '../ui/photo-upload';
 import FormInputLabel from '../ui/form/label';
 import {
@@ -22,20 +20,17 @@ import {
 const profileSchema = z.object({
   first_name: z
     .string()
-    .min(2, i18n.t('profile.validation_name_min_length'))
+    .min(2, 'Name must be at least 2 characters long')
     .optional(),
   last_name: z
     .string()
-    .min(2, i18n.t('profile.validation_name_min_length'))
+    .min(2, 'Last Name must be at least 2 characters long')
     .optional(),
   display_name: z
     .string()
-    .min(2, i18n.t('profile.validation_name_min_length'))
+    .min(2, 'Display Name must be at least 2 characters long')
     .optional(),
-  avatar_url: z
-    .string()
-    .url(i18n.t('profile.validation_invalid_avatar_url'))
-    .optional(),
+  avatar_url: z.string().url('Invalid avatar URL').optional(),
 });
 
 interface ImageData {
@@ -69,8 +64,8 @@ export const EditProfileDrawer = ({
   // Update form when profile data is loaded
   useEffect(() => {
     if (profile) {
-      setFirstName(profile.first_name || '');
-      setLastName(profile.last_name || '');
+      setFirstName(profile.first_name ?? '');
+      setLastName(profile.last_name ?? '');
     }
   }, [profile]);
 
@@ -106,7 +101,7 @@ export const EditProfileDrawer = ({
         },
         onError: error => {
           console.error('Error updating profile:', error);
-          Alert.alert(i18n.t('profile.error_save'));
+          Alert.alert('Error saving profile');
         },
       });
     } catch (error) {
@@ -114,7 +109,7 @@ export const EditProfileDrawer = ({
         setValidationError(error.errors[0].message);
       } else {
         console.error('Error saving profile:', error);
-        Alert.alert(i18n.t('profile.error_save'));
+        Alert.alert('Error saving profile');
       }
     }
   };
@@ -142,15 +137,12 @@ export const EditProfileDrawer = ({
       }
     } catch (error) {
       console.error('Error selecting avatar:', error);
-      Alert.alert(i18n.t('profile.error_avatar'));
+      Alert.alert('Error uploading avatar');
     }
   };
 
   return (
-    <BottomDrawer
-      isOpen={isOpen}
-      onClose={onClose}
-      title={i18n.t('profile.drawer_title')}>
+    <BottomDrawer isOpen={isOpen} onClose={onClose} title="Edit Profile">
       <VStack space="lg" className="mb-20 w-full flex-1 p-4">
         <Center className="flex w-full gap-4">
           <PhotoUpload
@@ -163,31 +155,29 @@ export const EditProfileDrawer = ({
             }
           />
           <Button onPress={handleChangeAvatar} variant="outline">
-            <ButtonText>
-              {i18n.t('profile.drawer_image_upload_label')}
-            </ButtonText>
+            <ButtonText>Change Photo</ButtonText>
           </Button>
         </Center>
 
         <VStack space="md">
           <VStack>
-            <FormInputLabel label={i18n.t('profile.drawer_first_name_label')} />
+            <FormInputLabel label="First Name" />
             <Input>
               <InputField
                 value={firstName}
                 onChangeText={setFirstName}
-                placeholder={i18n.t('profile.input_placeholder_first_name')}
+                placeholder="Enter your first name"
               />
             </Input>
           </VStack>
 
           <VStack>
-            <FormInputLabel label={i18n.t('profile.drawer_last_name_label')} />
+            <FormInputLabel label="Last Name" />
             <Input>
               <InputField
                 value={lastName}
                 onChangeText={setLastName}
-                placeholder={i18n.t('profile.input_placeholder_last_name')}
+                placeholder="Enter your last name"
               />
             </Input>
           </VStack>
@@ -199,14 +189,10 @@ export const EditProfileDrawer = ({
 
         <HStack space="md" className="mt-auto justify-end">
           <Button variant="outline" onPress={onClose}>
-            <ButtonText>{i18n.t('profile.button_cancel')}</ButtonText>
+            <ButtonText>Cancel</ButtonText>
           </Button>
           <Button onPress={handleSave} isDisabled={isLoading}>
-            <ButtonText>
-              {isLoading
-                ? i18n.t('profile.button_saving')
-                : i18n.t('profile.button_save')}
-            </ButtonText>
+            <ButtonText>{isLoading ? 'Saving...' : 'Save'}</ButtonText>
           </Button>
         </HStack>
       </VStack>
