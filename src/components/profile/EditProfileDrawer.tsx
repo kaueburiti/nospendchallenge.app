@@ -120,50 +120,19 @@ export const EditProfileDrawer = ({
     }
   };
 
-  const handleChangeAvatar = async () => {
-    try {
-      const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        allowsEditing: true,
-        aspect: [1, 1],
-        quality: 1,
-        base64: true,
-      });
-
-      if (!result.canceled && result.assets && result.assets.length > 0) {
-        const file = result.assets[0];
-        if (file.base64) {
-          const fileExt = file.uri.split('.').pop()?.toLowerCase() ?? 'png';
-          setNewImageData({
-            uri: file.uri,
-            base64: file.base64,
-            fileExtension: fileExt,
-          });
-        }
-      }
-    } catch (error) {
-      console.error('Error selecting avatar:', error);
-      Alert.alert('Error uploading avatar');
-    }
-  };
-
   return (
     <BottomDrawer isOpen={isOpen} onClose={onClose} title="Edit Profile">
       <VStack space="lg" className="mb-20 w-full flex-1 p-4">
-        <Center className="flex w-full gap-4">
-          <PhotoUpload
-            onImageUpload={imageData => setNewImageData(imageData)}
-            uri={
-              newImageData?.uri ??
-              profile?.avatar_url ??
-              (user?.user_metadata?.avatar_url as string) ??
-              undefined
-            }
-          />
-          <Button onPress={handleChangeAvatar} variant="outline">
-            <ButtonText>Change Photo</ButtonText>
-          </Button>
-        </Center>
+        <PhotoUpload
+          onImageUpload={imageData => setNewImageData(imageData)}
+          fallbackText={`${profile?.first_name} ${profile?.last_name}`}
+          uri={
+            newImageData?.uri ??
+            profile?.avatar_url ??
+            (user?.user_metadata?.avatar_url as string) ??
+            undefined
+          }
+        />
 
         <VStack space="md">
           <FormInput
