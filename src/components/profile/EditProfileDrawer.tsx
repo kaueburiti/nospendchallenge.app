@@ -3,8 +3,6 @@ import { Alert } from 'react-native';
 import { Button, ButtonText } from '../ui/button';
 import { VStack } from '../ui/vstack';
 import { HStack } from '../ui/hstack';
-import { Center } from '../ui';
-import * as ImagePicker from 'expo-image-picker';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -120,18 +118,15 @@ export const EditProfileDrawer = ({
     }
   };
 
+  const avatar = newImageData?.uri ?? profile?.avatar_url ?? '';
+
   return (
     <BottomDrawer isOpen={isOpen} onClose={onClose} title="Edit Profile">
       <VStack space="lg" className="mb-20 w-full flex-1 p-4">
         <PhotoUpload
           onImageUpload={imageData => setNewImageData(imageData)}
           fallbackText={`${profile?.first_name} ${profile?.last_name}`}
-          uri={
-            newImageData?.uri ??
-            profile?.avatar_url ??
-            (user?.user_metadata?.avatar_url as string) ??
-            undefined
-          }
+          uri={avatar}
         />
 
         <VStack space="md">
