@@ -18,6 +18,7 @@ interface FormInputProps {
   placeholder: string;
   errorMessage?: string;
   isPassword?: boolean;
+  disabled?: boolean;
   onSubmitEditing?: () => void;
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
 }
@@ -28,6 +29,7 @@ const FormInput: React.FC<FormInputProps> = ({
   control,
   placeholder,
   errorMessage,
+  disabled = false,
   isPassword = false,
   autoCapitalize = 'none',
   onSubmitEditing,
@@ -43,8 +45,9 @@ const FormInput: React.FC<FormInputProps> = ({
         name={name}
         control={control}
         defaultValue=""
+        disabled={disabled}
         render={({ field: { onChange, onBlur, value } }) => (
-          <Input size={'xl'}>
+          <Input size={'xl'} isDisabled={disabled}>
             <InputField
               className="text-sm"
               placeholder={placeholder}
