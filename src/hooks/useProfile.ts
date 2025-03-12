@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { useSession } from './useSession';
-import { decode } from 'base64-arraybuffer';
+import useUploadImage from './storage';
 
 export interface Profile {
   id: string;
@@ -73,6 +73,7 @@ export const useUpdateProfile = () => {
 export const useUploadAvatar = () => {
   const { user } = useSession();
   const queryClient = useQueryClient();
+  const { upload } = useUploadImage();
 
   return useMutation({
     mutationFn: async ({
@@ -84,25 +85,14 @@ export const useUploadAvatar = () => {
     }) => {
       if (!user?.id) throw new Error('User not authenticated');
 
-      const fileName = `${user.id}.${fileExtension}`;
-      const filePath = `avatars/${fileName}`;
+      const publicUrl = await upload({
+        bucket: 'profiles',
+        name: 'profile-avatar',
+        path: `avatars/${user.id}`,
+        image: { uri: '', base64, fileExtension },
+      });
 
-      // Upload the image
-      const { error: uploadError } = await supabase.storage
-        .from(process.env.EXPO_PUBLIC_SUPABASE_STORAGE_BUCKET!)
-        .upload(filePath, decode(base64), {
-          contentType: `image/${fileExtension}`,
-          upsert: true,
-        });
-
-      if (uploadError) throw uploadError;
-
-      // Get the public URL
-      const { data: publicUrlData } = supabase.storage
-        .from(process.env.EXPO_PUBLIC_SUPABASE_STORAGE_BUCKET!)
-        .getPublicUrl(filePath);
-
-      const avatarUrl = `${publicUrlData.publicUrl}?t=${new Date().getTime()}`;
+      const avatarUrl = `${publicUrl}?t=${new Date().getTime()}`;
 
       // Update the profile with the new avatar URL
       const { data, error } = await supabase
