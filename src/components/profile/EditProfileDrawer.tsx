@@ -44,14 +44,10 @@ export const EditProfileDrawer = ({
   isOpen,
   onClose,
   user,
-  onSave,
-  isLoading: externalLoading,
 }: {
   isOpen: boolean;
   onClose: () => void;
   user: Partial<SupabaseUser> | null;
-  onSave: () => Promise<void>;
-  isLoading: boolean;
 }) => {
   const { data: profile, isLoading: isProfileLoading } = useProfile(user?.id);
   const { mutate: updateProfile, isPending: isUpdating } = useUpdateProfile();
@@ -83,8 +79,7 @@ export const EditProfileDrawer = ({
     }
   }, [profile, reset]);
 
-  const isLoading =
-    externalLoading || isProfileLoading || isUpdating || isUploading;
+  const isLoading = isProfileLoading || isUpdating || isUploading;
 
   const onSubmit = async (data: ProfileFormData) => {
     try {
@@ -104,7 +99,6 @@ export const EditProfileDrawer = ({
       // Update profile data
       updateProfile(profileData, {
         onSuccess: async () => {
-          await onSave();
           onClose();
         },
         onError: error => {
