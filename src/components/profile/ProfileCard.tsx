@@ -25,8 +25,6 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => {
   } = useDisclose(false);
 
   const { data: profile } = useProfile();
-
-  console.log('PROFILE', profile);
   return (
     <>
       <HStack>

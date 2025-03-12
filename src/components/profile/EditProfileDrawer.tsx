@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import { Alert } from 'react-native';
 import { Button, ButtonText } from '../ui/button';
 import { VStack } from '../ui/vstack';
 import { HStack } from '../ui/hstack';
@@ -15,6 +14,8 @@ import {
   useUploadAvatar,
 } from '@/hooks/useProfile';
 import FormInput from '../ui/form/input';
+import { Box } from '../ui/box';
+import { useSimpleToast } from '@/hooks/useSimpleToast';
 
 const profileSchema = z.object({
   first_name: z
@@ -29,6 +30,7 @@ const profileSchema = z.object({
     .string()
     .min(2, 'Display Name must be at least 2 characters long')
     .optional(),
+  email: z.string().email('Invalid email').readonly(),
   avatar_url: z.string().url('Invalid avatar URL').optional(),
 });
 
@@ -52,6 +54,7 @@ export const EditProfileDrawer = ({
   const { data: profile, isLoading: isProfileLoading } = useProfile(user?.id);
   const { mutate: updateProfile, isPending: isUpdating } = useUpdateProfile();
   const { mutate: uploadAvatar, isPending: isUploading } = useUploadAvatar();
+  const { showToast } = useSimpleToast();
   const [newImageData, setNewImageData] = React.useState<ImageData | null>(
     null,
   );
@@ -75,16 +78,18 @@ export const EditProfileDrawer = ({
       reset({
         first_name: profile.first_name ?? '',
         last_name: profile.last_name ?? '',
+        email: user?.email ?? '',
       });
     }
-  }, [profile, reset]);
+  }, [profile, reset, user]);
 
   const isLoading = isProfileLoading || isUpdating || isUploading;
 
   const onSubmit = async (data: ProfileFormData) => {
     try {
       const profileData = {
-        ...data,
+        first_name: data.first_name ?? '',
+        last_name: data.last_name ?? '',
         display_name: `${data.first_name} ${data.last_name}`.trim(),
       };
 
@@ -100,15 +105,16 @@ export const EditProfileDrawer = ({
       updateProfile(profileData, {
         onSuccess: async () => {
           onClose();
+          showToast('success', 'Profile updated successfully');
         },
         onError: error => {
           console.error('Error updating profile:', error);
-          Alert.alert('Error saving profile');
+          showToast('error', 'Error saving profile', 'Please, try again later');
         },
       });
     } catch (error) {
       console.error('Error saving profile:', error);
-      Alert.alert('Error saving profile');
+      showToast('error', 'Error saving profile', 'Please, try again later');
     }
   };
 
@@ -116,7 +122,7 @@ export const EditProfileDrawer = ({
 
   return (
     <BottomDrawer isOpen={isOpen} onClose={onClose} title="Edit Profile">
-      <VStack space="lg" className="mb-20 w-full flex-1 p-4">
+      <VStack space="4xl" className="mb-20 w-full flex-1 p-4">
         <PhotoUpload
           onImageUpload={imageData => setNewImageData(imageData)}
           fallbackText={`${profile?.first_name} ${profile?.last_name}`}
@@ -124,20 +130,34 @@ export const EditProfileDrawer = ({
         />
 
         <VStack space="md">
-          <FormInput
-            name="first_name"
-            placeholder="Enter your first name"
-            label="First Name"
-            control={control}
-            errorMessage={errors.first_name?.message}
-          />
+          <HStack space="md">
+            <Box className="flex-1">
+              <FormInput
+                name="first_name"
+                placeholder="Enter your first name"
+                label="First Name"
+                control={control}
+                errorMessage={errors.first_name?.message}
+              />
+            </Box>
+            <Box className="flex-1">
+              <FormInput
+                name="last_name"
+                placeholder="Enter your last name"
+                label="Last Name"
+                control={control}
+                errorMessage={errors.last_name?.message}
+              />
+            </Box>
+          </HStack>
 
           <FormInput
-            name="last_name"
-            placeholder="Enter your last name"
-            label="Last Name"
+            name="email"
+            placeholder="Enter your email"
+            label="Email"
             control={control}
-            errorMessage={errors.last_name?.message}
+            disabled={true}
+            errorMessage={errors.email?.message}
           />
         </VStack>
       </VStack>
