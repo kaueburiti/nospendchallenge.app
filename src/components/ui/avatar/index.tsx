@@ -30,6 +30,9 @@ const avatarStyle = tva({
       lg: 'w-16 h-16',
       xl: 'w-24 h-24',
       '2xl': 'w-32 h-32',
+      '3xl': 'w-40 h-40',
+      '4xl': 'w-48 h-48',
+      '5xl': 'w-56 h-56',
     },
   },
 });
@@ -45,6 +48,9 @@ const avatarFallbackTextStyle = tva({
       lg: 'text-xl',
       xl: 'text-3xl',
       '2xl': 'text-5xl',
+      '3xl': 'text-6xl',
+      '4xl': 'text-7xl',
+      '5xl': 'text-8xl',
     },
   },
 });
