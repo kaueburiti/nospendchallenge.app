@@ -1,6 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { useSession } from './useSession';
+import { decode } from 'base64-arraybuffer';
 
 export interface Profile {
   id: string;
@@ -14,7 +15,7 @@ export interface Profile {
 
 export const useProfile = (userId?: string) => {
   const { user } = useSession();
-  const id = userId || user?.id;
+  const id = userId ?? user?.id;
 
   return useQuery({
     queryKey: ['profile', id],
@@ -63,8 +64,8 @@ export const useUpdateProfile = () => {
 
       return data[0] as Profile;
     },
-    onSuccess: data => {
-      queryClient.invalidateQueries({ queryKey: ['profile'] });
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: ['profile'] });
     },
   });
 };
@@ -87,7 +88,7 @@ export const useUploadAvatar = () => {
       const filePath = `avatars/${fileName}`;
 
       // Upload the image
-      const { data: uploadData, error: uploadError } = await supabase.storage
+      const { error: uploadError } = await supabase.storage
         .from(process.env.EXPO_PUBLIC_SUPABASE_STORAGE_BUCKET!)
         .upload(filePath, decode(base64), {
           contentType: `image/${fileExtension}`,
@@ -120,7 +121,10 @@ export const useUploadAvatar = () => {
       return data[0] as Profile;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['profile'] });
+      void queryClient.invalidateQueries({ queryKey: ['profile'] });
+    },
+    onError: error => {
+      console.error('Error uploading avatar:', error);
     },
   });
 };
