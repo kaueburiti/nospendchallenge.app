@@ -15,6 +15,7 @@ import { Pressable } from 'react-native';
 import { useState } from 'react';
 import { useShowNotification } from '../notifications';
 import { router } from 'expo-router';
+import { useSimpleToast } from '../useSimpleToast';
 
 export const useCreateChallenge = () => {
   const queryClient = useQueryClient();
@@ -88,11 +89,21 @@ export const useUpdateChallenge = () => {
 
 export const useDeleteChallenge = () => {
   const queryClient = useQueryClient();
+  const { showToast } = useSimpleToast();
 
   return useMutation({
     mutationFn: deleteChallenge,
     onSuccess: () => {
+      showToast(
+        'success',
+        'Challenge deleted!',
+        'Your challenge has been deleted successfully',
+      );
       void queryClient.invalidateQueries({ queryKey: ['challenges'] });
+    },
+    onError: error => {
+      showToast('error', 'Oops!', 'Something went wrong, try again later');
+      console.error(error);
     },
   });
 };
