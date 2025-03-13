@@ -12,6 +12,7 @@ import {
   challengeSchema,
   type ChallengeFormData,
 } from '@/components/home/challenges/form/challenge-form';
+import useUploadImage from '@/hooks/storage';
 
 interface ImageData {
   uri: string;
@@ -21,6 +22,7 @@ interface ImageData {
 
 export default function CreateChallenge() {
   const { user } = useSession();
+  const { upload } = useUploadImage();
   const [imageData, setImageData] = React.useState<ImageData | null>(null);
   const { mutate: createChallenge } = useCreateChallenge();
 
@@ -40,36 +42,17 @@ export default function CreateChallenge() {
     },
   });
 
-  const uploadImage = async (imageData: ImageData) => {
-    try {
-      const fileName = `${Math.random()}.${imageData.fileExtension}`;
-      const filePath = `${user?.id}/${fileName}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from('challenges')
-        .upload(filePath, decode(imageData.base64), {
-          contentType: `image/${imageData.fileExtension}`,
-          upsert: true,
-        });
-
-      if (uploadError) throw uploadError;
-
-      const { data: publicUrlData } = supabase.storage
-        .from('challenges')
-        .getPublicUrl(filePath);
-
-      return publicUrlData.publicUrl;
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      return null;
-    }
-  };
-
   const onSubmit = async (data: ChallengeFormData) => {
     try {
       let coverUrl = null;
+
       if (imageData) {
-        coverUrl = await uploadImage(imageData);
+        coverUrl = await upload({
+          bucket: 'challenges',
+          name: `${Math.random().toString()}-cover`,
+          path: String(user?.id),
+          image: imageData,
+        });
       }
 
       createChallenge({
