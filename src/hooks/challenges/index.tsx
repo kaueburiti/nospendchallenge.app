@@ -23,14 +23,13 @@ export const useCreateChallenge = () => {
 
   return useMutation({
     mutationFn: createChallenge,
-    onSuccess: async challenges => {
+    onSuccess: async challenge => {
       triggerToast({
         title: 'Congratulations 🎉',
         description: 'Your challenge has been created successfully',
         action: 'success',
       });
 
-      const challenge = challenges[0];
       router.push(`/(protected)/challenge/${challenge.id}`);
       void queryClient.invalidateQueries({ queryKey: ['challenges'] });
     },
@@ -66,13 +65,13 @@ export const useUpdateChallenge = () => {
 
   return useMutation({
     mutationFn: updateChallenge,
-    onSuccess: async () => {
+    onSuccess: async challenge => {
       triggerToast({
         title: 'Challenge updated!',
         description: 'Your challenge has been updated successfully',
         action: 'success',
       });
-      router.push('/(protected)/(tabs)/home');
+      router.push(`/(protected)/challenge/${challenge.id}`);
       void queryClient.invalidateQueries({ queryKey: ['challenges'] });
     },
     onError: error => {

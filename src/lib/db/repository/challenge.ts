@@ -7,7 +7,9 @@ export const createChallenge = async (
   const { data, error } = await supabase
     .from('challenges')
     .insert(challenge)
-    .select();
+    .select()
+    .single();
+
   if (error) throw error;
 
   return data;
@@ -54,7 +56,8 @@ export const updateChallenge = async (
     .from('challenges')
     .update(challenge)
     .eq('id', challenge.id)
-    .select();
+    .select()
+    .single();
 
   if (error) throw error;
   return data;
