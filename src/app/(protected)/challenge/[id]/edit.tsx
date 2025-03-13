@@ -8,16 +8,14 @@ import {
   useUpdateChallenge,
   useDeleteChallenge,
 } from '@/hooks/challenges';
-import { useSession } from '@/hooks/useSession';
-import { supabase } from '@/lib/supabase';
 import { Alert } from 'react-native';
-import { decode } from 'base64-arraybuffer';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   ChallengeForm,
   challengeSchema,
   type ChallengeFormData,
 } from '@/components/home/challenges/form/challenge-form';
+import useUploadImage from '@/hooks/storage';
 
 interface ImageData {
   uri: string;
@@ -27,7 +25,7 @@ interface ImageData {
 
 export default function EditChallenge() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { user } = useSession();
+  const { upload } = useUploadImage();
   const { data: challenge, isLoading } = useChallenge(id);
   const { mutate: updateChallenge } = useUpdateChallenge();
   const { mutate: deleteChallenge } = useDeleteChallenge();
@@ -74,35 +72,15 @@ export default function EditChallenge() {
     );
   }
 
-  const uploadImage = async (imageData: ImageData) => {
-    try {
-      const fileName = `${Math.random()}.${imageData.fileExtension}`;
-      const filePath = `${user?.id}/${fileName}`;
-
-      const { error: uploadError } = await supabase.storage
-        .from('challenges')
-        .upload(filePath, decode(imageData.base64), {
-          contentType: `image/${imageData.fileExtension}`,
-          upsert: true,
-        });
-
-      if (uploadError) throw uploadError;
-
-      const { data: publicUrlData } = supabase.storage
-        .from('challenges')
-        .getPublicUrl(filePath);
-
-      return publicUrlData.publicUrl;
-    } catch (error) {
-      console.error('Error uploading image:', error);
-      return null;
-    }
-  };
-
   const onSubmit = async (data: ChallengeFormData) => {
     let coverUrl = challenge.cover;
     if (imageData) {
-      coverUrl = await uploadImage(imageData);
+      coverUrl = await upload({
+        bucket: 'challenges',
+        name: `${data.name}-cover-${challenge.id}.${imageData.fileExtension}`,
+        path: String(challenge.owner_id),
+        image: imageData,
+      });
     }
 
     updateChallenge({
