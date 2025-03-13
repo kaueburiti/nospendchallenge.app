@@ -58,7 +58,7 @@ export default function InviteForm({
   };
 
   return (
-    <Box className="p-4">
+    <Box>
       <VStack space="md">
         <Heading size="lg">Invite a Friend</Heading>
         <Text className="text-gray-500">

@@ -33,7 +33,7 @@ export default function ParticipantList({ challengeId }: ParticipantListProps) {
   }
 
   return (
-    <Box className="p-4">
+    <Box>
       <Heading size="md" className="mb-4">
         Participants
       </Heading>

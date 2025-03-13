@@ -1,13 +1,25 @@
 import React from 'react';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
-import { Box, Heading, Divider } from '@/components/ui';
-import { useLocalSearchParams } from 'expo-router';
+import {
+  Box,
+  Heading,
+  Divider,
+  HStack,
+  VStack,
+  Button,
+  Text,
+} from '@/components/ui';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useChallenge } from '@/hooks/challenges';
 import InviteForm from '@/components/home/challenges/invite/invite-form';
 import InvitationList from '@/components/home/challenges/invite/invitation-list';
 import ParticipantList from '@/components/home/challenges/invite/participant-list';
 import { ScrollView } from 'react-native';
 import BackButton from '@/components/navigation/back-button';
+import ChallengeProgressBar from '@/components/home/challenges/progress';
+import ChallengeCover from '@/components/home/challenges/cover';
+import { Settings } from 'lucide-react-native';
+
 export default function InviteToChallengeScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: challenge, isLoading } = useChallenge(id);
@@ -19,25 +31,31 @@ export default function InviteToChallengeScreen() {
   return (
     <SafeAreaView>
       <ScrollView>
-        <BackButton />
         <Box className="p-4">
+          <BackButton />
           <Heading size="xl" className="mb-4">
-            Invite to Challenge
+            Invite a friend to {challenge.title}
           </Heading>
-          <Heading size="md" className="mb-2">
-            {challenge.title}
-          </Heading>
+          <HStack space="md" className="mb-6">
+            <ChallengeCover challenge={challenge} size="md" />
+
+            <VStack className="flex-1 justify-between">
+              <ChallengeProgressBar challenge={challenge} showDates />
+            </VStack>
+          </HStack>
+
+          <VStack space="md">
+            <InviteForm challengeId={Number(id)} />
+
+            <Divider />
+
+            <ParticipantList challengeId={Number(id)} />
+
+            <Divider />
+
+            <InvitationList challengeId={Number(id)} />
+          </VStack>
         </Box>
-
-        <InviteForm challengeId={Number(id)} />
-
-        <Divider className="my-4" />
-
-        <ParticipantList challengeId={Number(id)} />
-
-        <Divider className="my-4" />
-
-        <InvitationList challengeId={Number(id)} />
       </ScrollView>
     </SafeAreaView>
   );

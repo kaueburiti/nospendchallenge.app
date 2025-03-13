@@ -25,7 +25,7 @@ export default function InvitationList({ challengeId }: InvitationListProps) {
   }
 
   return (
-    <Box className="p-4">
+    <Box>
       <Heading size="md" className="mb-4">
         Sent Invitations
       </Heading>
