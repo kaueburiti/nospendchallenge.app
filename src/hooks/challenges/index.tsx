@@ -77,7 +77,7 @@ export const useUpdateChallenge = () => {
     onError: error => {
       triggerToast({
         title: 'Oops!',
-        description: 'Something went wrong',
+        description: 'Something went wrong, try again later',
         action: 'error',
       });
       console.log('Challenge creation failed');

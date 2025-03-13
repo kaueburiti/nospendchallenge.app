@@ -4,8 +4,6 @@ import { type FieldErrors, useForm } from 'react-hook-form';
 import { i18n } from '@/i18n';
 import { useCreateChallenge } from '@/hooks/challenges';
 import { useSession } from '@/hooks/useSession';
-import { supabase } from '@/lib/supabase';
-import { decode } from 'base64-arraybuffer';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   ChallengeForm,
