@@ -22,19 +22,21 @@ export const useCreateChallenge = () => {
 
   return useMutation({
     mutationFn: createChallenge,
-    onSuccess: async () => {
+    onSuccess: async challenges => {
       triggerToast({
         title: 'Congratulations 🎉',
         description: 'Your challenge has been created successfully',
         action: 'success',
       });
-      router.push('/(protected)/(tabs)/home');
+
+      const challenge = challenges[0];
+      router.push(`/(protected)/challenge/${challenge.id}`);
       void queryClient.invalidateQueries({ queryKey: ['challenges'] });
     },
     onError: error => {
       triggerToast({
         title: 'Oops!',
-        description: 'Something went wrong',
+        description: 'Something went wrong, try again later',
         action: 'error',
       });
       console.log('Challenge creation failed');
