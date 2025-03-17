@@ -1,7 +1,3 @@
-import { CloseIcon } from '@/components/ui/icon';
-import { ToastDescription, HStack, VStack } from '@/components/ui';
-import { Icon } from '@/components/ui/icon';
-import { Toast, ToastTitle, useToast } from '@/components/ui/toast';
 import {
   createChallenge,
   getUserChallenges,
@@ -10,13 +6,10 @@ import {
   deleteChallenge,
 } from '@/lib/db/repository/challenge';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { BadgeCheck } from 'lucide-react-native';
-import { Pressable } from 'react-native';
-import { useState } from 'react';
 import { useShowNotification } from '../notifications';
 import { router } from 'expo-router';
 import { useSimpleToast } from '../useSimpleToast';
-
+import { useSession } from '../useSession';
 export const useCreateChallenge = () => {
   const queryClient = useQueryClient();
   const { triggerToast } = useShowNotification();
@@ -105,4 +98,10 @@ export const useDeleteChallenge = () => {
       console.error(error);
     },
   });
+};
+
+export const useIsChallengeOwner = (challengeId: string) => {
+  const { data: challenge } = useChallenge(challengeId);
+  const { user } = useSession();
+  return challenge?.owner_id === user?.id;
 };

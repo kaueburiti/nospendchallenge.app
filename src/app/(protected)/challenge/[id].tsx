@@ -10,7 +10,7 @@ import {
   ButtonText,
 } from '@/components/ui';
 import { useLocalSearchParams, router } from 'expo-router';
-import { useChallenge } from '@/hooks/challenges';
+import { useChallenge, useIsChallengeOwner } from '@/hooks/challenges';
 import { Pressable, ScrollView } from 'react-native';
 import { PlusCircle, Settings } from 'lucide-react-native';
 import DaysGrid from '@/components/home/challenges/days-grid';
@@ -19,7 +19,6 @@ import CheckModal from '@/components/home/challenges/check/modal';
 import ChallengeCover from '@/components/home/challenges/cover';
 import ChallengeProgressBar from '@/components/home/challenges/progress';
 import BackButton from '@/components/navigation/back-button';
-import { useSession } from '@/hooks/useSession';
 import ChallengeParticipantsList from '@/components/home/challenges/crew';
 
 export default function ChallengeDetails() {
@@ -27,8 +26,7 @@ export default function ChallengeDetails() {
     useState<boolean>(false);
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: challenge, isLoading } = useChallenge(id);
-  const { user } = useSession();
-  const userIsOwner = user?.id === challenge?.owner_id;
+  const isOwner = useIsChallengeOwner(id);
 
   if (isLoading) {
     return (
@@ -63,12 +61,15 @@ export default function ChallengeDetails() {
                 <Box>
                   <Box className="flex flex-row items-center justify-between">
                     <Heading size="2xl">{challenge.title}</Heading>
-                    <Button
-                      onPress={() => router.push(`/challenge/${id}/edit`)}
-                      variant="link"
-                      action="secondary">
-                      <Settings size={24} color="rgb(82,82,82)" />
-                    </Button>
+
+                    {isOwner && (
+                      <Button
+                        onPress={() => router.push(`/challenge/${id}/edit`)}
+                        variant="link"
+                        action="secondary">
+                        <Settings size={24} color="rgb(82,82,82)" />
+                      </Button>
+                    )}
                   </Box>
 
                   <Text className="text-sm">{challenge.description}</Text>
@@ -91,7 +92,7 @@ export default function ChallengeDetails() {
                 </Box>
                 <ChallengeParticipantsList challengeId={Number(id)} />
 
-                {userIsOwner && (
+                {isOwner && (
                   <Button
                     onPress={() =>
                       router.push(`/(protected)/challenge/${id}/invite`)
