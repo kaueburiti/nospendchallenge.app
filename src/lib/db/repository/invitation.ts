@@ -114,19 +114,7 @@ export const respondToInvitation = async (
 export const getChallengeParticipants = async (challengeId: number) => {
   const { data, error } = await supabase
     .from('challenge_participants')
-    .select(
-      `
-      id,
-      challenge_id,
-      user_id,
-      joined_at,
-      users:user_id (
-        id,
-        display_name,
-        avatar_url
-      )
-    `,
-    )
+    .select('*')
     .eq('challenge_id', challengeId);
 
   if (error) throw error;

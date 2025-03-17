@@ -1,10 +1,6 @@
 import React, { useState } from 'react';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import {
-  Avatar,
-  AvatarFallbackText,
-  AvatarGroup,
-  AvatarImage,
   Box,
   Button,
   Heading,
@@ -24,6 +20,8 @@ import ChallengeCover from '@/components/home/challenges/cover';
 import ChallengeProgressBar from '@/components/home/challenges/progress';
 import BackButton from '@/components/navigation/back-button';
 import { useSession } from '@/hooks/useSession';
+import ChallengeParticipantsList from '@/components/home/challenges/crew';
+
 export default function ChallengeDetails() {
   const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
     useState<boolean>(false);
@@ -83,37 +81,7 @@ export default function ChallengeDetails() {
             <Box className="flex flex-row items-center justify-between">
               <Box className="">
                 <Heading size="lg">Challenge Crew</Heading>
-                <Box className="flex flex-row gap-4 pl-4">
-                  <AvatarGroup>
-                    <Avatar size="md" className="border-2 border-white">
-                      <AvatarFallbackText>+</AvatarFallbackText>
-                    </Avatar>
-                    <Avatar size="md" className="border-2 border-white">
-                      <AvatarFallbackText>John Doe</AvatarFallbackText>
-                      <AvatarImage
-                        source={{
-                          uri: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
-                        }}
-                      />
-                    </Avatar>
-                    <Avatar size="md" className="border-2 border-white">
-                      <AvatarFallbackText>John Doe</AvatarFallbackText>
-                      <AvatarImage
-                        source={{
-                          uri: 'https://images.unsplash.com/photo-1603415526960-f7e0328c63b1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80',
-                        }}
-                      />
-                    </Avatar>
-                    <Avatar size="md" className="border-2 border-white">
-                      <AvatarFallbackText>John Doe</AvatarFallbackText>
-                      <AvatarImage
-                        source={{
-                          uri: 'https://images.unsplash.com/photo-1614289371518-722f2615943d?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80',
-                        }}
-                      />
-                    </Avatar>
-                  </AvatarGroup>
-                </Box>
+                <ChallengeParticipantsList challengeId={Number(id)} />
 
                 {userIsOwner && (
                   <Button
