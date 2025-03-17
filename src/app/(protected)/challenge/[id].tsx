@@ -91,16 +91,6 @@ export default function ChallengeDetails() {
                   </Pressable>
                 </Box>
                 <ChallengeParticipantsList challengeId={Number(id)} />
-
-                {isOwner && (
-                  <Button
-                    onPress={() =>
-                      router.push(`/(protected)/challenge/${id}/invite`)
-                    }
-                    className="mt-4">
-                    <ButtonText>Invite Friends</ButtonText>
-                  </Button>
-                )}
               </Box>
             </Box>
 
