@@ -20,10 +20,13 @@ export const useInviteToChallengeByEmail = (challengeId: number) => {
   });
 };
 
-export const useInvitationsByChallenge = (challengeId: number) => {
+export const useInvitationsByChallenge = (
+  challengeId: number,
+  status: 'pending' | 'accepted' | 'declined' = 'pending',
+) => {
   return useQuery({
-    queryKey: ['invitations', challengeId],
-    queryFn: () => getInvitationsByChallenge(challengeId),
+    queryKey: ['invitations', challengeId, status],
+    queryFn: () => getInvitationsByChallenge(challengeId, status),
   });
 };
 

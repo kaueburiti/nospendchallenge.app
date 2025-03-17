@@ -3,7 +3,6 @@ import { Box, Heading, Text, VStack, HStack } from '@/components/ui';
 import { useInvitationsByChallenge } from '@/hooks/invitations';
 import { format } from 'date-fns';
 import { Badge, BadgeText } from '@/components/ui/badge';
-import BackButton from '@/components/navigation/back-button';
 interface InvitationListProps {
   challengeId: number;
 }
@@ -13,7 +12,7 @@ export default function InvitationList({ challengeId }: InvitationListProps) {
     useInvitationsByChallenge(challengeId);
 
   if (isLoading) {
-    return <Text>Loading invitations...</Text>;
+    return <Text>Loading pending invitations...</Text>;
   }
 
   if (!invitations || invitations.length === 0) {
@@ -27,7 +26,7 @@ export default function InvitationList({ challengeId }: InvitationListProps) {
   return (
     <Box>
       <Heading size="md" className="mb-4">
-        Sent Invitations
+        Pending Invitations
       </Heading>
       <VStack space="md">
         {invitations.map(invitation => (
