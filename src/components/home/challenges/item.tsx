@@ -28,11 +28,7 @@ function ChallengeItem({ challenge }: { challenge: Tables<'challenges'> }) {
             <ChallengeProgressBar challenge={challenge} />
           </VStack>
         </Box>
-        <ChallengeParticipantsList
-          showInviteButton={false}
-          size="sm"
-          challengeId={challenge.id}
-        />
+        <ChallengeParticipantsList size="sm" challengeId={challenge.id} />
       </Box>
     </Pressable>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
-import { ScrollView, Text } from 'react-native';
-import { Box, ButtonText, Heading, VStack } from '@/components/ui';
+import { ScrollView } from 'react-native';
+import { Box, Heading, VStack } from '@/components/ui';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { i18n } from '@/i18n';
 import { useSession } from '@/hooks/useSession';

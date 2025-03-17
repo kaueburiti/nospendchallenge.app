@@ -11,8 +11,8 @@ import {
 } from '@/components/ui';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useChallenge } from '@/hooks/challenges';
-import { ScrollView } from 'react-native';
-import { Settings } from 'lucide-react-native';
+import { Pressable, ScrollView } from 'react-native';
+import { PlusCircle, Settings } from 'lucide-react-native';
 import DaysGrid from '@/components/home/challenges/days-grid';
 import ChallengeScores from '@/components/home/challenges/scores';
 import CheckModal from '@/components/home/challenges/check/modal';
@@ -78,9 +78,17 @@ export default function ChallengeDetails() {
               </VStack>
             </HStack>
 
-            <Box className="flex flex-row items-center justify-between">
-              <Box className="">
-                <Heading size="lg">Challenge Crew</Heading>
+            <Box className="flex flex-row items-center justify-between gap-4">
+              <Box className="flex-1">
+                <Box className="flex flex-row items-center gap-2">
+                  <Heading size="lg">Participants</Heading>
+                  <Pressable
+                    onPress={() =>
+                      router.push(`/(protected)/challenge/${id}/invite`)
+                    }>
+                    <PlusCircle size={22} color="rgb(82,82,82)" />
+                  </Pressable>
+                </Box>
                 <ChallengeParticipantsList challengeId={Number(id)} />
 
                 {userIsOwner && (
@@ -93,13 +101,13 @@ export default function ChallengeDetails() {
                   </Button>
                 )}
               </Box>
-              <Box className="mt-4">
-                <Button onPress={() => setIsCheckInDrawerOpen(true)} size="lg">
-                  <Text className="text-white">Check In</Text>
-                </Button>
-              </Box>
             </Box>
 
+            <Box className="mt-4">
+              <Button onPress={() => setIsCheckInDrawerOpen(true)} size="lg">
+                <Text className="text-white">Create a check In</Text>
+              </Button>
+            </Box>
             <ChallengeScores />
             <DaysGrid />
           </VStack>
