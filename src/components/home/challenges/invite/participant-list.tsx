@@ -9,8 +9,10 @@ import {
   AvatarFallbackText,
   AvatarImage,
 } from '@/components/ui';
-import { useChallengeParticipants } from '@/hooks/invitations';
-import { format } from 'date-fns';
+import { useChallengeParticipants } from '@/hooks/participants';
+import { type Tables } from '@/lib/db/database.types';
+import { useChallenge } from '@/hooks/challenges';
+import { Badge } from '@/components/ui/badge';
 
 interface ParticipantListProps {
   challengeId: number;
@@ -39,29 +41,49 @@ export default function ParticipantList({ challengeId }: ParticipantListProps) {
       </Heading>
       <VStack space="md">
         {participants.map(participant => (
-          <HStack
+          <ChallengeParticipant
             key={participant.id}
-            className="items-center rounded-lg bg-gray-100 p-3">
-            <Avatar className="mr-3">
-              {participant.users?.avatar_url ? (
-                <AvatarImage source={{ uri: participant.users.avatar_url }} />
-              ) : (
-                <AvatarFallbackText>
-                  {participant.users?.display_name?.substring(0, 2) || 'U'}
-                </AvatarFallbackText>
-              )}
-            </Avatar>
-            <VStack>
-              <Text className="font-medium">
-                {participant.users?.display_name || 'User'}
-              </Text>
-              <Text className="text-xs text-gray-500">
-                Joined {format(new Date(participant.joined_at), 'MMM d, yyyy')}
-              </Text>
-            </VStack>
-          </HStack>
+            participant={participant}
+            challengeId={challengeId}
+          />
         ))}
       </VStack>
     </Box>
+  );
+}
+
+export function ChallengeParticipant({
+  participant,
+  challengeId,
+}: {
+  participant: Tables<'profiles'>;
+  challengeId: number;
+}) {
+  const { data: challenge } = useChallenge(String(challengeId));
+  const isOwner = challenge?.owner_id === participant.id;
+
+  return (
+    <HStack
+      key={participant.id}
+      className="items-center rounded-lg border border-gray-200 bg-gray-100 p-3">
+      <Avatar className="mr-3" size="sm">
+        {participant.avatar_url ? (
+          <AvatarImage source={{ uri: participant.avatar_url }} />
+        ) : (
+          <AvatarFallbackText>
+            {participant.display_name?.substring(0, 2)}
+          </AvatarFallbackText>
+        )}
+      </Avatar>
+      <HStack className="flex-1 justify-between">
+        <Text className="font-medium">{participant.display_name}</Text>
+
+        {isOwner && (
+          <Badge variant="outline" className="rounded-lg">
+            <Text className="text-2xs">Owner</Text>
+          </Badge>
+        )}
+      </HStack>
+    </HStack>
   );
 }

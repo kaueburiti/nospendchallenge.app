@@ -58,10 +58,3 @@ export const useRespondToInvitation = () => {
     },
   });
 };
-
-export const useChallengeParticipants = (challengeId: number) => {
-  return useQuery({
-    queryKey: ['participants', challengeId],
-    queryFn: () => getChallengeParticipants(challengeId),
-  });
-};

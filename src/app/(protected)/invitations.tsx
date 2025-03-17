@@ -1,8 +1,9 @@
 import React from 'react';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
-import { Box, Heading, Text, VStack, ScrollView } from '@/components/ui';
+import { Box, Heading, Text, VStack } from '@/components/ui';
 import { useUserInvitations } from '@/hooks/invitations';
 import PendingInvitations from '@/components/home/challenges/invite/pending-invitations';
+import { ScrollView } from 'react-native';
 
 export default function InvitationsScreen() {
   const { data: invitations, isLoading } = useUserInvitations();
@@ -23,7 +24,7 @@ export default function InvitationsScreen() {
           ) : !invitations || invitations.length === 0 ? (
             <Box className="items-center justify-center rounded-lg bg-gray-100 p-8">
               <Text className="text-center text-gray-500">
-                You don't have any pending invitations
+                You don&apos;t have any pending invitations
               </Text>
             </Box>
           ) : (

@@ -117,6 +117,8 @@ export const getChallengeParticipants = async (challengeId: number) => {
     .select('*')
     .eq('challenge_id', challengeId);
 
+  console.log(data);
+
   if (error) throw error;
   return data;
 };
