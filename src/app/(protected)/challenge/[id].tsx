@@ -23,12 +23,14 @@ import CheckModal from '@/components/home/challenges/check/modal';
 import ChallengeCover from '@/components/home/challenges/cover';
 import ChallengeProgressBar from '@/components/home/challenges/progress';
 import BackButton from '@/components/navigation/back-button';
-
+import { useSession } from '@/hooks/useSession';
 export default function ChallengeDetails() {
   const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
     useState<boolean>(false);
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: challenge, isLoading } = useChallenge(id);
+  const { user } = useSession();
+  const userIsOwner = user?.id === challenge?.owner_id;
 
   if (isLoading) {
     return (
@@ -113,13 +115,15 @@ export default function ChallengeDetails() {
                   </AvatarGroup>
                 </Box>
 
-                <Button
-                  onPress={() =>
-                    router.push(`/(protected)/challenge/${id}/invite`)
-                  }
-                  className="mt-4">
-                  <ButtonText>Invite Friends</ButtonText>
-                </Button>
+                {userIsOwner && (
+                  <Button
+                    onPress={() =>
+                      router.push(`/(protected)/challenge/${id}/invite`)
+                    }
+                    className="mt-4">
+                    <ButtonText>Invite Friends</ButtonText>
+                  </Button>
+                )}
               </Box>
               <Box className="mt-4">
                 <Button onPress={() => setIsCheckInDrawerOpen(true)} size="lg">
