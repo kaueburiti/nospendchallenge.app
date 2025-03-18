@@ -60,13 +60,15 @@ export default function PhotoUpload({
     }
   };
 
+  const source = imageUri ? { uri: imageUri } : undefined;
   return (
     <Pressable
       onPress={handleImageSelection}
       className="flex flex-col items-center gap-4">
       <Avatar size="5xl" className="border-2 border-white">
         <AvatarFallbackText className="mt-4">{fallbackText}</AvatarFallbackText>
-        {imageUri && <AvatarImage source={{ uri: imageUri }} />}
+        {/* BUG: AvatarImage doesn't show the image right after changing the image */}
+        {source && <AvatarImage source={source} />}
       </Avatar>
 
       <Button variant="outline" onPress={handleImageSelection}>

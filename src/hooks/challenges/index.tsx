@@ -64,8 +64,13 @@ export const useUpdateChallenge = () => {
         description: 'Your challenge has been updated successfully',
         action: 'success',
       });
+
+      // BUG: Invalidating the challenge query key doesn't trigger a re-render of the challenge details page
+      void queryClient.invalidateQueries({
+        queryKey: ['challenges', challenge.id],
+      });
+
       router.push(`/(protected)/challenge/${challenge.id}`);
-      void queryClient.invalidateQueries({ queryKey: ['challenges'] });
     },
     onError: error => {
       triggerToast({
@@ -103,5 +108,6 @@ export const useDeleteChallenge = () => {
 export const useIsChallengeOwner = (challengeId: string) => {
   const { data: challenge } = useChallenge(challengeId);
   const { user } = useSession();
+
   return challenge?.owner_id === user?.id;
 };
