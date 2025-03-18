@@ -63,28 +63,30 @@ export default function PendingInvitations() {
       </Heading>
       <VStack space="md">
         {invitations.map(invitation => (
-          <Box key={invitation.id} className="rounded-lg bg-gray-100 p-4">
-            <Text className="mb-1 font-bold">
-              {invitation.challenges?.title}
-            </Text>
-            <Text className="mb-3 text-sm text-gray-600">
-              Starts{' '}
-              {format(
-                new Date(invitation.challenges?.start_date || ''),
-                'MMM d, yyyy',
-              )}
-            </Text>
+          <Box
+            key={invitation.id}
+            className="flex flex-row items-center justify-between rounded-lg border border-gray-200 bg-gray-100 p-4">
+            <Box>
+              <Text className="font-bold">{invitation.challenges?.title}</Text>
+              <Text className="text-xs text-gray-600">
+                Starts{' '}
+                {format(
+                  new Date(invitation.challenges?.start_date || ''),
+                  'MMM d, yyyy',
+                )}
+              </Text>
+            </Box>
 
-            <HStack className="mt-2 justify-between">
+            <HStack className="mt-2 flex flex-row justify-between gap-2">
               <Button
-                size="sm"
+                size="xs"
                 variant="outline"
                 action="negative"
                 onPress={() => handleDecline(invitation.id)}>
                 <ButtonText>Decline</ButtonText>
               </Button>
 
-              <Button size="sm" onPress={() => handleAccept(invitation.id)}>
+              <Button size="xs" onPress={() => handleAccept(invitation.id)}>
                 <ButtonText>Accept</ButtonText>
               </Button>
             </HStack>

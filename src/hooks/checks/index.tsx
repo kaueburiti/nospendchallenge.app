@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   createCheck,
+  getAllChecksByChallenge,
   getUserChecksByChallenge,
 } from '@/lib/db/repository/check';
 
@@ -36,5 +37,12 @@ export const useGetUserChecksByChallenge = (challengeId: number) => {
   return useQuery({
     queryKey: ['checks', challengeId],
     queryFn: () => getUserChecksByChallenge(challengeId),
+  });
+};
+
+export const useGetAllChallengeChecks = (challengeId: number) => {
+  return useQuery({
+    queryKey: ['checks', challengeId, 'all'],
+    queryFn: () => getAllChecksByChallenge(challengeId),
   });
 };

@@ -45,8 +45,9 @@ export const getAllChecksByChallenge = async (challengeId: number) => {
       *,
       profiles:user_id (
         id,
-        username,
-        full_name,
+        display_name,
+        first_name,
+        last_name,
         avatar_url
       )
     `,
@@ -54,7 +55,10 @@ export const getAllChecksByChallenge = async (challengeId: number) => {
     .eq('challenge_id', challengeId)
     .order('date', { ascending: false });
 
-  if (error) throw error;
+  if (error) {
+    console.error('Error fetching checks with profiles:', error);
+    throw error;
+  }
 
   return data;
 };
