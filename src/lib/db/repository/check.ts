@@ -36,8 +36,13 @@ export const getUserChecksByChallenge = async (challengeId: number) => {
   return data;
 };
 
-// Get all checks for a challenge (for all participants)
-export const getAllChecksByChallenge = async (challengeId: number) => {
+type CheckWithProfile = Tables<'checks'> & {
+  profiles: Tables<'profiles'> | null;
+};
+
+export const getAllChecksByChallenge = async (
+  challengeId: number,
+): Promise<CheckWithProfile[]> => {
   const { data, error } = await supabase
     .from('checks')
     .select(

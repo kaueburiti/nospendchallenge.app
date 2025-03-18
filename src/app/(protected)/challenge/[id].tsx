@@ -1,18 +1,10 @@
 import React, { useState } from 'react';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
-import {
-  Box,
-  Button,
-  Heading,
-  Text,
-  VStack,
-  HStack,
-  ButtonText,
-} from '@/components/ui';
+import { Box, Button, Heading, Text, VStack, HStack } from '@/components/ui';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useChallenge, useIsChallengeOwner } from '@/hooks/challenges';
 import { Pressable, ScrollView } from 'react-native';
-import { PlusCircle, Settings } from 'lucide-react-native';
+import { PlusCircle, Settings, BadgeCheck } from 'lucide-react-native';
 import DaysGrid from '@/components/home/challenges/days-grid';
 import ChallengeScores from '@/components/home/challenges/scores';
 import CheckModal from '@/components/home/challenges/check/modal';
@@ -20,6 +12,8 @@ import ChallengeCover from '@/components/home/challenges/cover';
 import ChallengeProgressBar from '@/components/home/challenges/progress';
 import BackButton from '@/components/navigation/back-button';
 import ChallengeParticipantsList from '@/components/home/challenges/crew';
+import { useGetAllChallengeChecks } from '@/hooks/checks';
+import { format } from 'date-fns';
 
 export default function ChallengeDetails() {
   const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
@@ -27,6 +21,7 @@ export default function ChallengeDetails() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: challenge, isLoading } = useChallenge(id);
   const isOwner = useIsChallengeOwner(id);
+  const { data: checks } = useGetAllChallengeChecks(Number(id));
 
   if (isLoading) {
     return (
@@ -79,10 +74,12 @@ export default function ChallengeDetails() {
               </VStack>
             </HStack>
 
-            <Box className="flex flex-row items-center justify-between gap-4">
+            <Box className="flex flex-row items-start justify-between gap-4">
               <Box className="flex-1">
                 <Box className="flex flex-row items-center gap-2">
-                  <Heading size="lg">Participants</Heading>
+                  <Heading size="lg" className="mb-1">
+                    Participants
+                  </Heading>
                   <Pressable
                     onPress={() =>
                       router.push(`/(protected)/challenge/${id}/invite`)
@@ -91,6 +88,38 @@ export default function ChallengeDetails() {
                   </Pressable>
                 </Box>
                 <ChallengeParticipantsList challengeId={Number(id)} />
+              </Box>
+
+              <Box>
+                <Box className="flex flex-row items-center gap-2">
+                  <Heading size="lg" className="mb-1">
+                    Last Checks
+                  </Heading>
+                  <Pressable
+                    onPress={() =>
+                      router.push(`/(protected)/challenge/${id}/invite`)
+                    }>
+                    <PlusCircle size={22} color="rgb(82,82,82)" />
+                  </Pressable>
+                </Box>
+
+                <Box className="flex-col gap-1">
+                  {checks?.map(check => (
+                    <Box
+                      key={check.id}
+                      className="flex flex-row items-center gap-1">
+                      <BadgeCheck size={14} color="rgb(82,82,82)" />
+                      <Text size="sm" key={check.id}>
+                        <Text
+                          className="font-bold text-typography-500"
+                          size="sm">
+                          {check.profiles?.display_name}
+                        </Text>{' '}
+                        - {format(new Date(check.date), 'MMM d, yyyy')}
+                      </Text>
+                    </Box>
+                  ))}
+                </Box>
               </Box>
             </Box>
 
