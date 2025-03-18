@@ -53,9 +53,13 @@ const main = async () => {
   // Create 10 users with profiles
   const users = [];
   for (let i = 1; i <= 10; i++) {
-    const email = faker.internet.email();
     const firstName = faker.person.firstName();
     const lastName = faker.person.lastName();
+    const email = faker.internet.email({
+      firstName,
+      lastName,
+      allowSpecialCharacters: false,
+    });
 
     // Create auth.users entry
     const user = await supabase.auth.admin.createUser({
@@ -89,39 +93,37 @@ const main = async () => {
     });
   }
 
-  // Create 2 challenges per user
-  // for (const user of users) {
-  //   await supabase
-  //     .from('challenges')
-  //     .insert({
-  //       owner_id: user.id,
-  //       title: `#${faker.lorem.word()}`,
-  //       description: faker.lorem.paragraph(),
-  //       start_date: faker.date.recent(),
-  //       end_date: faker.date.future(),
-  //       cover: faker.image.url(),
-  //     })
-  //     .select()
-  //     .single();
-  // }
+  // For each user, create 1 challenge
+  for (const user of users) {
+    const challenge = await supabase
+      .from('challenges')
+      .insert({
+        owner_id: user.id,
+        title: `#${faker.lorem.word()}`,
+        description: faker.lorem.paragraph(),
+        start_date: faker.date.recent(),
+        end_date: faker.date.future(),
+        cover: faker.image.url(),
+      })
+      .select()
+      .single();
 
-  // const allChallenges = await supabase.from('challenges').select('*');
-  // const allUsers = await supabase.from('profiles').select('*');
+    console.log('Challenge created:', challenge.data?.title);
+  }
 
-  // // For each challenge, send 5 invitations to other users
-  // for (const challenge of allChallenges.data!) {
-  //   for (let i = 0; i < 5; i++) {
-  //     const randomUser =
-  //       allUsers.data![Math.floor(Math.random() * allUsers.data!.length)];
-  //     await supabase.from('challenge_invitations').insert({
-  //       challenge_id: challenge.id,
-  //       user_id: randomUser.id,
-  //       status: 'pending',
-  //       created_at: faker.date.recent(),
-  //       updated_at: faker.date.recent(),
-  //     });
-  //   }
-  // }
+  // For each challenge, create 5 participants
+  const challenges = await supabase.from('challenges').select('*');
+  for (const challenge of challenges.data!) {
+    for (let i = 0; i < 5; i++) {
+      const randomUser = users[Math.floor(Math.random() * users.length)];
+      await supabase.from('challenge_participants').insert({
+        challenge_id: challenge.id,
+        user_id: randomUser.id,
+      });
+
+      console.log('Participant created:', randomUser.email);
+    }
+  }
 
   console.log('Database seeded successfully!');
   console.log('Created users:', users.map(u => u.email).join(', '));
