@@ -10,7 +10,6 @@ import {
   Input,
   InputField,
   VStack,
-  Heading,
   Text,
   HStack,
 } from '@/components/ui';

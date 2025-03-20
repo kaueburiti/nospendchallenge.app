@@ -46,13 +46,13 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
 }) => (
   <VStack space="lg">
     <Heading className="mb-1">{i18n.t('profile.settings_title')}</Heading>
-    <HStack className="items-center justify-between">
+    {/* <HStack className="items-center justify-between">
       <HStack space="md">
         <Icon as={SunMoon} />
         <Text>{i18n.t('profile.dark_mode')}</Text>
       </HStack>
       <Switch value={isDark} onValueChange={toggleColorMode} size="sm" />
-    </HStack>
+    </HStack> */}
     <MenuItem
       icon={OctagonX}
       onPress={onOpenDeleteAccountDialog}
@@ -105,7 +105,6 @@ const ProfileSecurity: React.FC<ProfileSecurityProps> = ({
   onOpenChangePasswordDrawer,
 }) => (
   <VStack space="lg">
-    <Heading className="mb-1">{i18n.t('profile.security_title')}</Heading>
     <MenuItem
       icon={Lock}
       onPress={onOpenChangePasswordDrawer}
@@ -159,7 +158,6 @@ const ProfilePage = () => {
                   isDark={isDark}
                   onOpenDeleteAccountDialog={onOpenDeleteAccountDialog}
                 />
-                <Divider className="my-2" />
                 <ProfileSecurity
                   onOpenChangePasswordDrawer={onOpenChangePasswordDrawer}
                 />
