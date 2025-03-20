@@ -8,7 +8,7 @@ import RecentActivitiesLoadingState from './loading';
 import ActivityItem from './item';
 import RecentActivitiesEmptyState from './empty';
 const RecentActivities = () => {
-  const { data: activities, isLoading } = useGetActivities();
+  const { data: activities, isLoading } = useGetActivities('20');
   const showEmptyState = !isLoading && activities?.length === 0;
   const showActivities = !isLoading && !showEmptyState;
 

@@ -10,7 +10,9 @@
     "bottom_section_title": "Recent Activities",
     "banner_text": "You want to get featured?",
     "banner_link_text": "Contact me",
-    "create_challenge": "Create Challenge"
+    "create_challenge": "Create Challenge",
+    "no_activities": "No recent activities",
+    "no_activities_description": "Your recent activities will appear here"
   },
   "profile": {
     "tab_label": "Profile",

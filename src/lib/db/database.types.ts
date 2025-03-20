@@ -76,6 +76,41 @@ export type Database = {
         }
         Relationships: []
       }
+      challenge_activities: {
+        Row: {
+          challenge_id: number
+          created_at: string
+          description: string
+          id: number
+          title: string
+          user_id: string
+        }
+        Insert: {
+          challenge_id: number
+          created_at?: string
+          description: string
+          id?: number
+          title: string
+          user_id: string
+        }
+        Update: {
+          challenge_id?: number
+          created_at?: string
+          description?: string
+          id?: number
+          title?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_activities_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       challenge_invitations: {
         Row: {
           challenge_id: number
@@ -207,6 +242,13 @@ export type Database = {
             columns: ["challenge_id"]
             isOneToOne: false
             referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "checks_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
             referencedColumns: ["id"]
           },
         ]
