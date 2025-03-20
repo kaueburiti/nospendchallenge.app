@@ -28,7 +28,7 @@ const Explorepage = () => {
                 </Button>
               </Box>
               <PendingInvitations />
-              <ChallengeList />
+              <ChallengeList limit={3} />
             </Box>
             <RecentActivities />
           </VStack>
