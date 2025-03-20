@@ -3,12 +3,12 @@ import { Heading } from '@/components/ui/heading';
 import { Box } from '@/components/ui';
 import React from 'react';
 import { i18n } from '@/i18n';
-import { useGetActivities } from '@/hooks/activities';
+import { useChallengesActivities } from '@/hooks/activities';
 import RecentActivitiesLoadingState from './loading';
 import ActivityItem from './item';
 import RecentActivitiesEmptyState from './empty';
 const RecentActivities = () => {
-  const { data: activities, isLoading } = useGetActivities('20');
+  const { data: activities, isLoading } = useChallengesActivities(['20']);
   const showEmptyState = !isLoading && activities?.length === 0;
   const showActivities = !isLoading && !showEmptyState;
 

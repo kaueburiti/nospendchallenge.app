@@ -1,12 +1,11 @@
 import React from 'react';
-import { Box, HStack, Text } from '@/components/ui';
-import { Avatar } from '@/components/ui/avatar';
+import { Box, HStack, Pressable, Text } from '@/components/ui';
 import { formatDistanceToNow } from 'date-fns';
-import { ChallengeActivityWithRelations } from '@/hooks/activities';
 import { useRouter } from 'expo-router';
+import { type Tables } from '@/lib/db/database.types';
 
 interface ActivityItemProps {
-  activity: ChallengeActivityWithRelations;
+  activity: Tables<'challenge_activities'>;
 }
 
 const ActivityItem = ({ activity }: ActivityItemProps) => {
@@ -22,36 +21,22 @@ const ActivityItem = ({ activity }: ActivityItemProps) => {
   };
 
   return (
-    <Box className="bg-card rounded-lg p-4" onPress={handlePress} pressable>
-      <HStack space="md" alignItems="center">
-        {activity.user_avatar_url ? (
-          <Avatar
-            size="md"
-            source={{ uri: activity.user_avatar_url }}
-            fallbackText={activity.user_display_name?.substring(0, 2) || '??'}
-          />
-        ) : (
-          <Box className="bg-primary/20 flex h-10 w-10 items-center justify-center rounded-full">
-            <Text className="text-primary font-medium">👤</Text>
-          </Box>
-        )}
-
+    <Pressable onPress={handlePress} className="bg-card rounded-lg p-4">
+      <HStack space="md">
         <Box className="flex-1">
           <Text className="font-medium">{activity.title}</Text>
           <Text className="text-muted-foreground text-sm">
             {activity.description}
           </Text>
 
-          {activity.challenge_title && (
-            <Text className="text-primary mt-1 text-xs">
-              {activity.challenge_title}
-            </Text>
+          {activity.title && (
+            <Text className="text-primary mt-1 text-xs">{activity.title}</Text>
           )}
 
           <Text className="text-muted-foreground mt-1 text-xs">{timeAgo}</Text>
         </Box>
       </HStack>
-    </Box>
+    </Pressable>
   );
 };
 
