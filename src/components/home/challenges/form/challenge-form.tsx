@@ -80,9 +80,6 @@ export function ChallengeForm({
   onDelete,
   isSubmitting = false,
 }: ChallengeFormProps) {
-  // TODO: Add a confirmation modal
-  // TODO: Add toast notification
-
   return (
     <ScrollView className="h-[1px] flex-1">
       <Box className="px-4 py-12">

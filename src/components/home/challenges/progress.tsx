@@ -51,7 +51,6 @@ export default function ChallengeProgressBar({
 FIX: The calculation for skipped days is not working correctly.
 
 ⭐ Feature requests
-FEATURE: Allow inviting friends to join a challenge.
 FEATURE: Create the activity automattic log
 FEATURE: Create challenges suggestions
 FEATURE: Add the rules field to the challenge

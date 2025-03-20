@@ -1,4 +1,9 @@
 {
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save",
+    "error_occurred": "An error occurred. Please try again."
+  },
   "home": {
     "tab_label": "Home",
     "top_section_title": "Your Challenges",
@@ -28,7 +33,16 @@
     "button_saving": "Saving...",
     "error_save": "Failed to save profile. Please try again.",
     "error_avatar": "Failed to select avatar. Please try again.",
-    "input_placeholder_name": "Enter your full name"
+    "input_placeholder_name": "Enter your full name",
+    "security_title": "Security",
+    "change_password": "Change Password",
+    "change_password_description": "Enter your current password and a new password to update your credentials.",
+    "current_password": "Current Password",
+    "new_password": "New Password",
+    "confirm_password": "Confirm New Password",
+    "current_password_incorrect": "Current password is incorrect",
+    "password_update_failed": "Failed to update password",
+    "password_updated": "Password updated successfully"
   },
   "category": {
     "development": "Development",
@@ -46,5 +60,9 @@
     "create_button": "Create Challenge",
     "edit_title": "Edit Challenge",
     "update_button": "Update Challenge"
+  },
+  "validation": {
+    "password_min_length": "Password must be at least 6 characters",
+    "passwords_must_match": "Passwords must match"
   }
 }
