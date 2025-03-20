@@ -21,17 +21,15 @@ const ActivityItem = ({ activity }: ActivityItemProps) => {
   };
 
   return (
-    <Pressable onPress={handlePress} className="bg-card rounded-lg p-4">
+    <Pressable
+      onPress={handlePress}
+      className="bg-card rounded-lg border border-gray-200 bg-gray-100 p-4">
       <HStack space="md">
         <Box className="flex-1">
-          <Text className="font-medium">{activity.title}</Text>
+          <Text className="font-bold">{activity.title} 🎉</Text>
           <Text className="text-muted-foreground text-sm">
             {activity.description}
           </Text>
-
-          {activity.title && (
-            <Text className="text-primary mt-1 text-xs">{activity.title}</Text>
-          )}
 
           <Text className="text-muted-foreground mt-1 text-xs">{timeAgo}</Text>
         </Box>

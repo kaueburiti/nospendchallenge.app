@@ -7,8 +7,12 @@ import { useChallengesActivities } from '@/hooks/activities';
 import RecentActivitiesLoadingState from './loading';
 import ActivityItem from './item';
 import RecentActivitiesEmptyState from './empty';
+import { useGetChallenges } from '@/hooks/challenges';
 const RecentActivities = () => {
-  const { data: activities, isLoading } = useChallengesActivities(['20']);
+  const { data: challenges } = useGetChallenges(10);
+  const { data: activities, isLoading } = useChallengesActivities(
+    challenges?.map(challenge => challenge.id.toString()) ?? [],
+  );
   const showEmptyState = !isLoading && activities?.length === 0;
   const showActivities = !isLoading && !showEmptyState;
 

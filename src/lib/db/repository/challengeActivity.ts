@@ -3,6 +3,7 @@ import { type Tables } from '@/lib/db/database.types';
 
 export const getChallengeActivities = async (
   ids: string[],
+  limit = 5,
 ): Promise<Tables<'challenge_activities'>[]> => {
   const { data, error } = await supabase
     .from('challenge_activities')
@@ -13,7 +14,7 @@ export const getChallengeActivities = async (
     )
     .order('created_at', { ascending: false })
     .in('challenge_id', ids.map(Number))
-    .limit(20);
+    .limit(limit);
 
   console.log('ACTIVITY DATA', data);
 
