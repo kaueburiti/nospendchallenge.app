@@ -28,7 +28,7 @@ const ChallengesPage = () => {
         <Section>
           <VStack space="4xl" className="px-2 py-8">
             <Box className="flex flex-1 flex-col overflow-auto">
-              <Box className="mb-6 flex flex-row items-center justify-between">
+              <Box className="mb-4 flex flex-row items-center justify-between">
                 <Heading size="3xl">Challenges</Heading>
                 <Box className="flex-row gap-2">
                   {hasPendingInvitations && (

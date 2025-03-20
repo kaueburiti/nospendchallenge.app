@@ -14,6 +14,7 @@ import BackButton from '@/components/navigation/back-button';
 import ChallengeParticipantsList from '@/components/home/challenges/crew';
 import { useGetAllChallengeChecks } from '@/hooks/checks';
 import { format } from 'date-fns';
+import RecentActivities from '@/components/home/recent-activities';
 
 export default function ChallengeDetails() {
   const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
@@ -21,7 +22,6 @@ export default function ChallengeDetails() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: challenge, isLoading } = useChallenge(id);
   const isOwner = useIsChallengeOwner(id);
-  const { data: checks } = useGetAllChallengeChecks(Number(id));
 
   if (isLoading) {
     return (
@@ -69,13 +69,11 @@ export default function ChallengeDetails() {
 
                   <Text className="text-sm">{challenge.description}</Text>
                 </Box>
-
-                <ChallengeProgressBar challenge={challenge} showDates />
               </VStack>
             </HStack>
 
             <Box className="flex flex-row items-start justify-between gap-4">
-              <Box className="flex-1">
+              <Box className="shrink-0">
                 <Box className="flex flex-row items-center gap-2">
                   <Heading size="lg" className="mb-1">
                     Participants
@@ -90,8 +88,15 @@ export default function ChallengeDetails() {
                 <ChallengeParticipantsList challengeId={Number(id)} />
               </Box>
 
-              <Box>
+              <Box className="grow">
                 <Box className="flex flex-row items-center gap-2">
+                  <Heading size="lg" className="mb-1">
+                    Challenge Progress
+                  </Heading>
+                </Box>
+                <ChallengeProgressBar challenge={challenge} showDates />
+
+                {/* <Box className="flex flex-row items-center gap-2">
                   <Heading size="lg" className="mb-1">
                     Last Checks
                   </Heading>
@@ -119,17 +124,24 @@ export default function ChallengeDetails() {
                       </Text>
                     </Box>
                   ))}
-                </Box>
+                </Box> */}
               </Box>
             </Box>
 
-            <Box className="mt-4">
+            <ChallengeScores />
+            <Box>
               <Button onPress={() => setIsCheckInDrawerOpen(true)} size="lg">
                 <Text className="text-white">Create a check In</Text>
               </Button>
             </Box>
-            <ChallengeScores />
-            <DaysGrid />
+            <RecentActivities id={id} />
+
+            <Box>
+              <Heading size="xl" className="mb-4">
+                My Checks
+              </Heading>
+              <DaysGrid />
+            </Box>
           </VStack>
         </Box>
       </ScrollView>

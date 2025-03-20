@@ -20,7 +20,7 @@ const Explorepage = () => {
           <VStack space="4xl">
             <Greeting />
             <Box className="flex flex-1 flex-col overflow-auto">
-              <Box className="mb-6 flex flex-row items-center justify-between">
+              <Box className="mb-4 flex flex-row items-center justify-between">
                 <Heading size="xl">{i18n.t('home.top_section_title')}</Heading>
                 <Button
                   onPress={() => router.push('/(protected)/create-challenge')}>

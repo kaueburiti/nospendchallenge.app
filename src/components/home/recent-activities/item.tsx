@@ -25,13 +25,14 @@ const ActivityItem = ({ activity }: ActivityItemProps) => {
       onPress={handlePress}
       className="bg-card rounded-lg border border-gray-200 bg-gray-100 p-4">
       <HStack space="md">
-        <Box className="flex-1">
-          <Text className="font-bold">{activity.title} 🎉</Text>
-          <Text className="text-muted-foreground text-sm">
+        <Box className="flex-1 gap-1">
+          <Box className="flex flex-row items-center justify-between">
+            <Text className="text-sm font-bold">{activity.title} 🎉</Text>
+            <Text className="text-muted-foreground text-sm">{timeAgo}</Text>
+          </Box>
+          <Text className="text-muted-foreground text-xs">
             {activity.description}
           </Text>
-
-          <Text className="text-muted-foreground mt-1 text-xs">{timeAgo}</Text>
         </Box>
       </HStack>
     </Pressable>
