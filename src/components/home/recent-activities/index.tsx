@@ -7,14 +7,14 @@ import { useChallengesActivities } from '@/hooks/activities';
 import RecentActivitiesLoadingState from './loading';
 import ActivityItem from './item';
 import RecentActivitiesEmptyState from './empty';
-import { useGetChallenges } from '@/hooks/challenges';
 
-const RecentActivities = ({ id }: { id?: string }) => {
-  const { data: challenges } = useGetChallenges(10);
-  const ids = id
-    ? [id]
-    : (challenges?.map(challenge => challenge.id.toString()) ?? []);
-  const { data: activities, isLoading } = useChallengesActivities(ids, 3);
+interface RecentActivitiesProps {
+  id?: string; // Optional challenge ID
+}
+
+const RecentActivities = ({ id }: RecentActivitiesProps) => {
+  const ids = id ? [id] : [];
+  const { data: activities, isLoading } = useChallengesActivities(ids);
   const showEmptyState = !isLoading && activities?.length === 0;
   const showActivities = !isLoading && !showEmptyState;
 

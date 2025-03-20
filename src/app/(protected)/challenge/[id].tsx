@@ -1,24 +1,31 @@
 import React, { useState } from 'react';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
-import { Box, Button, Heading, Text, VStack, HStack } from '@/components/ui';
+import {
+  Box,
+  Button,
+  Heading,
+  Text,
+  VStack,
+  HStack,
+  Pressable,
+} from '@/components/ui';
 import { useLocalSearchParams, router } from 'expo-router';
 import { useChallenge, useIsChallengeOwner } from '@/hooks/challenges';
-import { Pressable, ScrollView } from 'react-native';
-import { PlusCircle, Settings, BadgeCheck } from 'lucide-react-native';
-import DaysGrid from '@/components/home/challenges/days-grid';
-import ChallengeScores from '@/components/home/challenges/scores';
+import { ScrollView } from 'react-native';
+import { Settings } from 'lucide-react-native';
 import CheckModal from '@/components/home/challenges/check/modal';
 import ChallengeCover from '@/components/home/challenges/cover';
-import ChallengeProgressBar from '@/components/home/challenges/progress';
 import BackButton from '@/components/navigation/back-button';
-import ChallengeParticipantsList from '@/components/home/challenges/crew';
-import { useGetAllChallengeChecks } from '@/hooks/checks';
-import { format } from 'date-fns';
-import RecentActivities from '@/components/home/recent-activities';
+import ChallengeDetailsTab from '@/components/challenge/details-tab';
+import ChallengeActivitiesTab from '@/components/challenge/activities-tab';
+import ChallengeParticipantsTab from '@/components/challenge/participants-tab';
 
 export default function ChallengeDetails() {
   const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
     useState<boolean>(false);
+  const [activeTab, setActiveTab] = useState<
+    'details' | 'activities' | 'participants'
+  >('details');
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: challenge, isLoading } = useChallenge(id);
   const isOwner = useIsChallengeOwner(id);
@@ -45,106 +52,91 @@ export default function ChallengeDetails() {
 
   return (
     <SafeAreaView>
-      <ScrollView className="h-[1px] flex-1">
-        <Box className="p-4 pb-16">
+      <Box className="flex-1">
+        <Box className="p-4">
           <BackButton />
-          <VStack space="lg">
-            <HStack space="md" className="mb-6">
-              <ChallengeCover challenge={challenge} size="2xl" />
+          <HStack space="md" className="mb-6">
+            <ChallengeCover challenge={challenge} size="2xl" />
 
-              <VStack className="flex-1 justify-between">
-                <Box>
-                  <Box className="flex flex-row items-center justify-between">
-                    <Heading size="2xl">{challenge.title}</Heading>
+            <VStack className="flex-1 justify-between">
+              <Box>
+                <Box className="flex flex-row items-center justify-between">
+                  <Heading size="2xl">{challenge.title}</Heading>
 
-                    {isOwner && (
-                      <Button
-                        onPress={() => router.push(`/challenge/${id}/edit`)}
-                        variant="link"
-                        action="secondary">
-                        <Settings size={24} color="rgb(82,82,82)" />
-                      </Button>
-                    )}
-                  </Box>
-
-                  <Text className="text-sm">{challenge.description}</Text>
+                  {isOwner && (
+                    <Button
+                      onPress={() => router.push(`/challenge/${id}/edit`)}
+                      variant="link"
+                      action="secondary">
+                      <Settings size={24} color="rgb(82,82,82)" />
+                    </Button>
+                  )}
                 </Box>
-              </VStack>
-            </HStack>
 
-            <Box className="flex flex-row items-start justify-between gap-4">
-              <Box className="shrink-0">
-                <Box className="flex flex-row items-center gap-2">
-                  <Heading size="lg" className="mb-1">
-                    Participants
-                  </Heading>
-                  <Pressable
-                    onPress={() =>
-                      router.push(`/(protected)/challenge/${id}/invite`)
-                    }>
-                    <PlusCircle size={22} color="rgb(82,82,82)" />
-                  </Pressable>
-                </Box>
-                <ChallengeParticipantsList challengeId={Number(id)} />
+                <Text className="text-sm">{challenge.description}</Text>
               </Box>
+            </VStack>
+          </HStack>
 
-              <Box className="grow">
-                <Box className="flex flex-row items-center gap-2">
-                  <Heading size="lg" className="mb-1">
-                    Challenge Progress
-                  </Heading>
-                </Box>
-                <ChallengeProgressBar challenge={challenge} showDates />
-
-                {/* <Box className="flex flex-row items-center gap-2">
-                  <Heading size="lg" className="mb-1">
-                    Last Checks
-                  </Heading>
-                  <Pressable
-                    onPress={() =>
-                      router.push(`/(protected)/challenge/${id}/invite`)
-                    }>
-                    <PlusCircle size={22} color="rgb(82,82,82)" />
-                  </Pressable>
-                </Box>
-
-                <Box className="flex-col gap-1">
-                  {checks?.map(check => (
-                    <Box
-                      key={check.id}
-                      className="flex flex-row items-center gap-1">
-                      <BadgeCheck size={14} color="rgb(82,82,82)" />
-                      <Text size="sm" key={check.id}>
-                        <Text
-                          className="font-bold text-typography-500"
-                          size="sm">
-                          {check.profiles?.display_name}
-                        </Text>{' '}
-                        - {format(new Date(check.date), 'MMM d, yyyy')}
-                      </Text>
-                    </Box>
-                  ))}
-                </Box> */}
-              </Box>
-            </Box>
-
-            <ChallengeScores />
-            <Box>
-              <Button onPress={() => setIsCheckInDrawerOpen(true)} size="lg">
-                <Text className="text-white">Create a check In</Text>
-              </Button>
-            </Box>
-            <RecentActivities id={id} />
-
-            <Box>
-              <Heading size="xl" className="mb-4">
-                My Checks
-              </Heading>
-              <DaysGrid />
-            </Box>
-          </VStack>
+          {/* Tab Navigation */}
+          <HStack className="mb-4 border-b border-gray-200">
+            <Pressable
+              onPress={() => setActiveTab('details')}
+              className={`flex-1 items-center pb-2 ${
+                activeTab === 'details' ? 'border-primary border-b-2' : ''
+              }`}>
+              <Text
+                className={`font-medium ${
+                  activeTab === 'details' ? 'text-primary' : 'text-gray-500'
+                }`}>
+                Details
+              </Text>
+            </Pressable>
+            <Pressable
+              onPress={() => setActiveTab('activities')}
+              className={`flex-1 items-center pb-2 ${
+                activeTab === 'activities' ? 'border-primary border-b-2' : ''
+              }`}>
+              <Text
+                className={`font-medium ${
+                  activeTab === 'activities' ? 'text-primary' : 'text-gray-500'
+                }`}>
+                Activities
+              </Text>
+            </Pressable>
+            <Pressable
+              onPress={() => setActiveTab('participants')}
+              className={`flex-1 items-center pb-2 ${
+                activeTab === 'participants' ? 'border-primary border-b-2' : ''
+              }`}>
+              <Text
+                className={`font-medium ${
+                  activeTab === 'participants'
+                    ? 'text-primary'
+                    : 'text-gray-500'
+                }`}>
+                Participants
+              </Text>
+            </Pressable>
+          </HStack>
         </Box>
-      </ScrollView>
+
+        {/* Tab Content */}
+        <Box className="flex-1">
+          {activeTab === 'details' ? (
+            <ChallengeDetailsTab
+              challenge={challenge}
+              challengeId={id}
+              isOwner={isOwner}
+              onCheckIn={() => setIsCheckInDrawerOpen(true)}
+            />
+          ) : activeTab === 'activities' ? (
+            <ChallengeActivitiesTab challengeId={id} />
+          ) : (
+            <ChallengeParticipantsTab challengeId={Number(id)} />
+          )}
+        </Box>
+      </Box>
 
       <CheckModal
         isOpen={isCheckInDrawerOpen}
