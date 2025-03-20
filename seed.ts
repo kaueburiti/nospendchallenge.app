@@ -103,7 +103,7 @@ const main = async () => {
         description: faker.lorem.paragraph(),
         start_date: faker.date.recent(),
         end_date: faker.date.future(),
-        cover: faker.image.url(),
+        cover: faker.image.urlLoremFlickr({ category: 'nature' }),
       })
       .select()
       .single();
