@@ -51,16 +51,9 @@ export default function ChallengeProgressBar({
 FIX: The calculation for skipped days is not working correctly.
 
 ⭐ Feature requests
-FEATURE: Create the activity automattic log
 FEATURE: Create challenges suggestions
 FEATURE: Add the rules field to the challenge
 FEATURE: Create a chat inside the challenge
 
-BUG: The challenge invitations policies has to be disabled in order to invite friends to join a challenge
-BUG: The challenge participants policies has to be disabled in order to invite friends to join a challenge
 BUG: Update profile input glitch, you have to make the profile bucket public in order to see the profile picture
-BUG: You should be able to create checks to challenges that you're participating in
-BUG: Profile and challenges buckets should be public
-
-
 */
