@@ -8,6 +8,7 @@ import GuestLayout from '../../components/GuestLayout';
 import { Span } from '@expo/html-elements';
 import MeditatingWoman from '@/components/ui/illustrations/meditating-woman';
 
+// FEATURE: Add a splash screen
 const Welcome = () => {
   return (
     <GuestLayout>
