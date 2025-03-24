@@ -4,7 +4,6 @@ import { ScrollView } from 'react-native';
 import DaysGrid from '@/components/home/challenges/days-grid';
 import ChallengeScores from '@/components/home/challenges/scores';
 import ChallengeProgressBar from '@/components/home/challenges/progress';
-import RecentActivities from '@/components/home/recent-activities';
 import { type Tables } from '@/lib/db/database.types';
 
 interface ChallengeDetailsTabProps {
@@ -16,8 +15,6 @@ interface ChallengeDetailsTabProps {
 
 const ChallengeDetailsTab = ({
   challenge,
-  challengeId,
-  isOwner,
   onCheckIn,
 }: ChallengeDetailsTabProps) => {
   return (

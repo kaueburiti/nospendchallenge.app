@@ -37,8 +37,8 @@ export default function ChallengeParticipantsTab({
   }
 
   return (
-    <Box>
-      <Heading size="md" className="mb-4">
+    <Box className="p-4">
+      <Heading size="lg" className="mb-4">
         Participants
       </Heading>
       <VStack space="md">

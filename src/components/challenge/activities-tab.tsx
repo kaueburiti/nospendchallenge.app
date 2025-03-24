@@ -39,13 +39,18 @@ const ChallengeActivitiesTab = ({
   }
 
   return (
-    <FlatList
-      data={activities}
-      keyExtractor={item => item.id.toString()}
-      renderItem={({ item }) => <ActivityItem activity={item} />}
-      ItemSeparatorComponent={() => <Box className="h-2" />}
-      contentContainerStyle={{ padding: 16 }}
-    />
+    <Box className="p-4">
+      <Heading size="lg" className="mb-4">
+        Activities
+      </Heading>
+      <FlatList
+        data={activities}
+        keyExtractor={item => item.id.toString()}
+        renderItem={({ item }) => <ActivityItem activity={item} />}
+        ItemSeparatorComponent={() => <Box className="h-2" />}
+        contentContainerStyle={{ padding: 16 }}
+      />
+    </Box>
   );
 };
 
