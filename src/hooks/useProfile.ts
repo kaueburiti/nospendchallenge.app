@@ -57,7 +57,7 @@ export const useUpdateProfile = () => {
       if (profileData.display_name || profileData.avatar_url) {
         await supabase.auth.updateUser({
           data: {
-            full_name: profileData.display_name,
+            display_name: profileData.display_name,
             avatar_url: profileData.avatar_url,
           },
         });

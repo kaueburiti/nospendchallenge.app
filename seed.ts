@@ -67,7 +67,7 @@ const main = async () => {
       password: 'Pass123!', // You might want to use a more secure password
       email_confirm: true,
       user_metadata: {
-        full_name: `${firstName} ${lastName}`,
+        display_name: `${firstName} ${lastName}`,
       },
     });
 

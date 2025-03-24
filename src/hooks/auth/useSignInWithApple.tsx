@@ -21,7 +21,7 @@ export const useSignInWithApple = () => {
 
     const credential = await AppleAuthentication.signInAsync({
       requestedScopes: [
-        AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+        AppleAuthentication.AppleAuthenticationScope.display_name,
         AppleAuthentication.AppleAuthenticationScope.EMAIL,
       ],
     }).catch(error => {
@@ -47,14 +47,18 @@ export const useSignInWithApple = () => {
     });
 
     // quickfix for missing name with apple sign in: https://github.com/supabase/supabase-js/issues/899
-    if (user && credential.fullName?.givenName && credential.fullName?.familyName) {
+    if (
+      user &&
+      credential.fullName?.givenName &&
+      credential.fullName?.familyName
+    ) {
       await supabase.auth.updateUser({
         data: {
           ...user.user_metadata,
           given_name: credential.fullName.givenName,
           family_name: credential.fullName.familyName,
-          full_name: `${credential.fullName.givenName} ${credential.fullName.familyName}`
-        }
+          display_name: `${credential.fullName.givenName} ${credential.fullName.familyName}`,
+        },
       });
     }
 

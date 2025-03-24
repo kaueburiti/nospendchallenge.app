@@ -111,6 +111,48 @@ export type Database = {
           },
         ]
       }
+      challenge_chat_messages: {
+        Row: {
+          challenge_id: number
+          created_at: string
+          id: string
+          message: string
+          profile_id: string
+          updated_at: string | null
+        }
+        Insert: {
+          challenge_id: number
+          created_at?: string
+          id?: string
+          message: string
+          profile_id: string
+          updated_at?: string | null
+        }
+        Update: {
+          challenge_id?: number
+          created_at?: string
+          id?: string
+          message?: string
+          profile_id?: string
+          updated_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "challenge_chat_messages_challenge_id_fkey"
+            columns: ["challenge_id"]
+            isOneToOne: false
+            referencedRelation: "challenges"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "challenge_chat_messages_profile_id_fkey"
+            columns: ["profile_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       challenge_invitations: {
         Row: {
           challenge_id: number

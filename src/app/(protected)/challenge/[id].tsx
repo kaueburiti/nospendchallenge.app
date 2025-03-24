@@ -19,12 +19,13 @@ import BackButton from '@/components/navigation/back-button';
 import ChallengeDetailsTab from '@/components/challenge/details-tab';
 import ChallengeActivitiesTab from '@/components/challenge/activities-tab';
 import ChallengeParticipantsTab from '@/components/challenge/participants-tab';
+import ChallengeChatTab from '@/components/challenge/chat-tab';
 
 export default function ChallengeDetails() {
   const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
     useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<
-    'details' | 'activities' | 'participants'
+    'details' | 'activities' | 'participants' | 'chat'
   >('details');
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: challenge, isLoading } = useChallenge(id);
@@ -79,10 +80,13 @@ export default function ChallengeDetails() {
           </HStack>
 
           {/* Tab Navigation */}
-          <HStack className="mb-4 border-b border-gray-200">
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            className="mb-4 border-b border-gray-200">
             <Pressable
               onPress={() => setActiveTab('details')}
-              className={`flex-1 items-center pb-2 ${
+              className={`items-center px-4 pb-2 ${
                 activeTab === 'details' ? 'border-primary border-b-2' : ''
               }`}>
               <Text
@@ -94,7 +98,7 @@ export default function ChallengeDetails() {
             </Pressable>
             <Pressable
               onPress={() => setActiveTab('activities')}
-              className={`flex-1 items-center pb-2 ${
+              className={`items-center px-4 pb-2 ${
                 activeTab === 'activities' ? 'border-primary border-b-2' : ''
               }`}>
               <Text
@@ -105,8 +109,20 @@ export default function ChallengeDetails() {
               </Text>
             </Pressable>
             <Pressable
+              onPress={() => setActiveTab('chat')}
+              className={`items-center px-4 pb-2 ${
+                activeTab === 'chat' ? 'border-primary border-b-2' : ''
+              }`}>
+              <Text
+                className={`font-medium ${
+                  activeTab === 'chat' ? 'text-primary' : 'text-gray-500'
+                }`}>
+                Chat
+              </Text>
+            </Pressable>
+            <Pressable
               onPress={() => setActiveTab('participants')}
-              className={`flex-1 items-center pb-2 ${
+              className={`items-center px-4 pb-2 ${
                 activeTab === 'participants' ? 'border-primary border-b-2' : ''
               }`}>
               <Text
@@ -118,7 +134,7 @@ export default function ChallengeDetails() {
                 Participants
               </Text>
             </Pressable>
-          </HStack>
+          </ScrollView>
         </Box>
 
         {/* Tab Content */}
@@ -132,6 +148,8 @@ export default function ChallengeDetails() {
             />
           ) : activeTab === 'activities' ? (
             <ChallengeActivitiesTab challengeId={id} />
+          ) : activeTab === 'chat' ? (
+            <ChallengeChatTab challengeId={id} />
           ) : (
             <ChallengeParticipantsTab challengeId={Number(id)} />
           )}

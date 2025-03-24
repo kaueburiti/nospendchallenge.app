@@ -42,7 +42,7 @@ export default Explorepage;
 
 function Greeting() {
   const { user } = useSession();
-  const fullName = user?.user_metadata.full_name as string | undefined;
+  const fullName = user?.user_metadata.display_name as string | undefined;
 
   if (!fullName) {
     return (
