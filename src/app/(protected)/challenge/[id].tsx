@@ -12,7 +12,15 @@ import {
 import { useLocalSearchParams, router } from 'expo-router';
 import { useChallenge, useIsChallengeOwner } from '@/hooks/challenges';
 import { ScrollView } from 'react-native';
-import { Settings } from 'lucide-react-native';
+import {
+  BellRing,
+  CheckCheck,
+  CheckCircle2,
+  Grid2x2Check,
+  MessageCircle,
+  Settings,
+  Users,
+} from 'lucide-react-native';
 import CheckModal from '@/components/home/challenges/check/modal';
 import ChallengeCover from '@/components/home/challenges/cover';
 import BackButton from '@/components/navigation/back-button';
@@ -80,61 +88,37 @@ export default function ChallengeDetails() {
           </HStack>
 
           {/* Tab Navigation */}
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            className="mb-4 border-b border-gray-200">
+          <Box className="mb-4 flex flex-row border-b border-gray-200">
             <Pressable
               onPress={() => setActiveTab('details')}
-              className={`items-center px-4 pb-2 ${
+              className={`w-1/4 items-center px-4 pb-2 ${
                 activeTab === 'details' ? 'border-primary border-b-2' : ''
               }`}>
-              <Text
-                className={`font-medium ${
-                  activeTab === 'details' ? 'text-primary' : 'text-gray-500'
-                }`}>
-                Details
-              </Text>
+              <CheckCheck size={24} color="rgb(82,82,82)" />
+            </Pressable>
+
+            <Pressable
+              onPress={() => setActiveTab('chat')}
+              className={`w-1/4 items-center px-4 pb-2 ${
+                activeTab === 'chat' ? 'border-primary border-b-2' : ''
+              }`}>
+              <MessageCircle size={24} color="rgb(82,82,82)" />
             </Pressable>
             <Pressable
               onPress={() => setActiveTab('activities')}
-              className={`items-center px-4 pb-2 ${
+              className={`w-1/4 items-center px-4 pb-2 ${
                 activeTab === 'activities' ? 'border-primary border-b-2' : ''
               }`}>
-              <Text
-                className={`font-medium ${
-                  activeTab === 'activities' ? 'text-primary' : 'text-gray-500'
-                }`}>
-                Activities
-              </Text>
-            </Pressable>
-            <Pressable
-              onPress={() => setActiveTab('chat')}
-              className={`items-center px-4 pb-2 ${
-                activeTab === 'chat' ? 'border-primary border-b-2' : ''
-              }`}>
-              <Text
-                className={`font-medium ${
-                  activeTab === 'chat' ? 'text-primary' : 'text-gray-500'
-                }`}>
-                Chat
-              </Text>
+              <BellRing size={24} color="rgb(82,82,82)" />
             </Pressable>
             <Pressable
               onPress={() => setActiveTab('participants')}
-              className={`items-center px-4 pb-2 ${
+              className={`w-1/4 items-center px-4 pb-2 ${
                 activeTab === 'participants' ? 'border-primary border-b-2' : ''
               }`}>
-              <Text
-                className={`font-medium ${
-                  activeTab === 'participants'
-                    ? 'text-primary'
-                    : 'text-gray-500'
-                }`}>
-                Participants
-              </Text>
+              <Users size={24} color="rgb(82,82,82)" />
             </Pressable>
-          </ScrollView>
+          </Box>
         </Box>
 
         {/* Tab Content */}
