@@ -269,6 +269,7 @@ const ChallengeChatTab = ({ challengeId }: ChallengeChatTabProps) => {
             name: currentUser?.name ?? '',
             avatar: currentUser?.avatar ?? '',
           }}
+          renderUsernameOnMessage={true}
           renderBubble={renderBubble}
           renderMessageText={renderMessageText}
           renderInputToolbar={renderInputToolbar}
