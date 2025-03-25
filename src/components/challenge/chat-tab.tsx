@@ -256,7 +256,7 @@ const ChallengeChatTab = ({ challengeId }: ChallengeChatTabProps) => {
   }
 
   return (
-    <Box className="flex-1">
+    <Box className="flex-1 p-6">
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
