@@ -9,9 +9,10 @@ import {
 } from '@/lib/db/repository/chat';
 import type { ChatMessage, UpdateMessageParams } from '@/types/chat';
 import type { IMessage } from 'react-native-gifted-chat';
-
+import { useSimpleToast } from '@/hooks/useSimpleToast';
 export const useChallengeChatMessages = (challengeId: string) => {
   const queryClient = useQueryClient();
+  const toast = useSimpleToast();
   const queryKey = ['challenge', challengeId, 'messages'];
   const [currentUser, setCurrentUser] = useState<{
     id: string;
@@ -59,7 +60,16 @@ export const useChallengeChatMessages = (challengeId: string) => {
   const { mutate: sendMessage, isPending: isSending } = useMutation({
     mutationFn: (text: string) => sendChallengeMessage(challengeId, text),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey });
+      void queryClient.invalidateQueries({ queryKey });
+    },
+    onError: error => {
+      toast.showToast(
+        'error',
+        'Something went wrong',
+        'Error sending message, please try again.',
+      );
+
+      console.error('Error sending message', error);
     },
   });
 
@@ -68,7 +78,16 @@ export const useChallengeChatMessages = (challengeId: string) => {
     mutationFn: ({ messageId, message }: UpdateMessageParams) =>
       updateChallengeMessage(messageId, message),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey });
+      void queryClient.invalidateQueries({ queryKey });
+    },
+    onError: error => {
+      toast.showToast(
+        'error',
+        'Something went wrong',
+        'Error updating message, please try again.',
+      );
+
+      console.error('Error updating message', error);
     },
   });
 
@@ -76,7 +95,16 @@ export const useChallengeChatMessages = (challengeId: string) => {
   const { mutate: deleteMessage, isPending: isDeleting } = useMutation({
     mutationFn: (messageId: string) => deleteChallengeMessage(messageId),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey });
+      void queryClient.invalidateQueries({ queryKey });
+    },
+    onError: error => {
+      toast.showToast(
+        'error',
+        'Something went wrong',
+        'Error deleting message, please try again.',
+      );
+
+      console.error('Error deleting message', error);
     },
   });
 
