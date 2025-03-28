@@ -19,7 +19,7 @@ const ChallengeDetailsTab = ({
 }: ChallengeDetailsTabProps) => {
   return (
     <ScrollView>
-      <VStack space="lg" className="p-4">
+      <VStack space="lg" className="p-4 pt-0">
         <Box>
           <Heading size="lg" className="mb-1">
             Challenge Progress

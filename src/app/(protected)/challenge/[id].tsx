@@ -88,7 +88,7 @@ export default function ChallengeDetails() {
           </HStack>
 
           {/* Tab Navigation */}
-          <Box className="mb-4 flex flex-row border-b border-gray-200">
+          <Box className="flex flex-row border-b border-gray-200">
             <Pressable
               onPress={() => setActiveTab('details')}
               className={`w-1/4 items-center px-4 pb-2 ${

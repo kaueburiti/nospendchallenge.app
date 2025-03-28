@@ -39,7 +39,7 @@ const ChallengeActivitiesTab = ({
   }
 
   return (
-    <Box className="p-4">
+    <Box className="p-4 pt-0">
       <Heading size="lg" className="mb-4">
         Activities
       </Heading>
