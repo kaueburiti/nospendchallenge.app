@@ -12,8 +12,8 @@ const config = {
     splashScreen: './src/assets/images/logo.png',
     icon: './src/assets/images/icon.png',
     scheme: 'nospendchallenge', // TODO: replace with your app scheme
-    iosBundleIdentifier: 'com.company.nospendchallenge', // TODO: Enter your iOS bundle identifier
-    androidPackageName: 'com.company.nospendchallenge', // TODO: Enter your Android package name
+    iosBundleIdentifier: 'com.company.nospendchallengeapp', // TODO: Enter your iOS bundle identifier
+    androidPackageName: 'com.company.nospendchallengeapp', // TODO: Enter your Android package name
     easProjectId: '6ad4b39b-00b5-41de-88c5-599dcfe97089', // TODO: Enter your EAS project ID
   },
   googleOauth: {
