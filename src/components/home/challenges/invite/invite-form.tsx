@@ -62,7 +62,7 @@ export default function InviteForm({
   return (
     <Box>
       <VStack space="md">
-        <Heading size="lg">Invite a Friend</Heading>
+        <Heading size="md">Invite a Friend</Heading>
         <Text className="text-gray-500">
           Enter your friend's email to invite them to join this challenge
         </Text>

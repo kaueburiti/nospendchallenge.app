@@ -8,11 +8,14 @@ import {
   Avatar,
   AvatarFallbackText,
   AvatarImage,
+  Divider,
 } from '@/components/ui';
 import { useChallengeParticipants } from '@/hooks/participants';
 import { type Tables } from '@/lib/db/database.types';
-import { useChallenge } from '@/hooks/challenges';
+import { useChallenge, useIsChallengeOwner } from '@/hooks/challenges';
 import { Badge } from '@/components/ui/badge';
+import InviteForm from '../home/challenges/invite/invite-form';
+import InvitationList from '../home/challenges/invite/invitation-list';
 
 interface ChallengeParticipantsTabProps {
   challengeId: number;
@@ -23,6 +26,7 @@ export default function ChallengeParticipantsTab({
 }: ChallengeParticipantsTabProps) {
   const { data: participants, isLoading } =
     useChallengeParticipants(challengeId);
+  const isOwner = useIsChallengeOwner(String(challengeId));
 
   if (isLoading) {
     return <Text>Loading participants...</Text>;
@@ -37,18 +41,28 @@ export default function ChallengeParticipantsTab({
   }
 
   return (
-    <Box className="p-4">
-      <Heading size="lg" className="mb-4">
-        Participants
-      </Heading>
-      <VStack space="md">
-        {participants.map(participant => (
-          <ChallengeParticipant
-            key={participant.id}
-            participant={participant}
-            challengeId={challengeId}
-          />
-        ))}
+    <Box className="p-4 pt-0">
+      <VStack space="4xl">
+        <Box>
+          <Heading size="md" className="mb-4">
+            Participants
+          </Heading>
+          {participants.map(participant => (
+            <ChallengeParticipant
+              key={participant.id}
+              participant={participant}
+              challengeId={challengeId}
+            />
+          ))}
+        </Box>
+
+        {isOwner && (
+          <>
+            <InviteForm challengeId={Number(challengeId)} />
+
+            <InvitationList challengeId={Number(challengeId)} />
+          </>
+        )}
       </VStack>
     </Box>
   );
