@@ -17,7 +17,8 @@ import type {
 } from 'react-hook-form';
 import { router } from 'expo-router';
 import { i18n } from '@/i18n';
-import { Pressable, ScrollView } from 'react-native';
+import { Pressable } from 'react-native';
+import { ScrollView } from '@/components/ui/scroll-view';
 import { StartAndEndDates } from '@/components/home/challenges/form/start-and-end-date';
 import PhotoUpload from '@/components/ui/photo-upload';
 import { z } from 'zod';

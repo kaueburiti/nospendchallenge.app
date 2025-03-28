@@ -9,11 +9,8 @@ import {
   LifeBuoyIcon,
   MessageSquareText,
   OctagonX,
-  SunMoon,
   Lock,
 } from 'lucide-react-native';
-import { HStack, Text } from '@/components/ui';
-import { Switch } from '@/components/ui';
 import { ProfileCard } from '@/components/profile/ProfileCard';
 import SignOutAlertDialog from '../../../components/profile/SignOutAlertDialog';
 import DeleteAccountAlertDialog from '../../../components/profile/DeleteAccountAlertDialog';
@@ -29,7 +26,6 @@ import {
 import { PaymentPlan } from '@/components/profile/PaymentPlan';
 import * as WebBrowser from 'expo-web-browser';
 import { useTheme } from '@/hooks/useTheme';
-import { Icon } from '@/components/ui/icon';
 import { i18n } from '@/i18n';
 import ChangePasswordDrawer from '@/components/profile/ChangePasswordDrawer';
 

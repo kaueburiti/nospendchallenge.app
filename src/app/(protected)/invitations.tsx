@@ -3,7 +3,7 @@ import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { Box, Heading, Text, VStack } from '@/components/ui';
 import { useUserInvitations } from '@/hooks/invitations';
 import PendingInvitations from '@/components/home/challenges/invite/pending-invitations';
-import { ScrollView } from 'react-native';
+import { ScrollView } from '@/components/ui/scroll-view';
 
 export default function InvitationsScreen() {
   const { data: invitations, isLoading } = useUserInvitations();

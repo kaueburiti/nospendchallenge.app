@@ -2,7 +2,7 @@ import React from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 import { VStack } from './ui/vstack';
 import { StatusBar } from 'expo-status-bar';
-import { ScrollView } from 'react-native';
+import { ScrollView } from '@/components/ui/scroll-view';
 import { Box } from './ui/box';
 import { SafeAreaView } from './ui/SafeAreaView';
 

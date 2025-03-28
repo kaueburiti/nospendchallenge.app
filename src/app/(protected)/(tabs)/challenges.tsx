@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView } from '@/components/ui/scroll-view';
 import {
   Box,
   Heading,
@@ -9,7 +9,6 @@ import {
   ButtonText,
 } from '@/components/ui';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
-import { i18n } from '@/i18n';
 import { Section } from '@/components/Section';
 import { PlusCircle, Mail } from 'lucide-react-native';
 import { router } from 'expo-router';

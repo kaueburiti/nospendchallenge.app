@@ -6,7 +6,7 @@ import { useChallenge, useIsChallengeOwner } from '@/hooks/challenges';
 import InviteForm from '@/components/home/challenges/invite/invite-form';
 import InvitationList from '@/components/home/challenges/invite/invitation-list';
 import ParticipantList from '@/components/home/challenges/invite/participant-list';
-import { ScrollView } from 'react-native';
+import { ScrollView } from '@/components/ui/scroll-view';
 import BackButton from '@/components/navigation/back-button';
 import ChallengeProgressBar from '@/components/home/challenges/progress';
 import ChallengeCover from '@/components/home/challenges/cover';

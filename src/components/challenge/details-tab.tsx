@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Button, Heading, Text, VStack } from '@/components/ui';
-import { ScrollView } from 'react-native';
+import { ScrollView } from '@/components/ui/scroll-view';
 import DaysGrid from '@/components/home/challenges/days-grid';
 import ChallengeScores from '@/components/home/challenges/scores';
 import ChallengeProgressBar from '@/components/home/challenges/progress';
