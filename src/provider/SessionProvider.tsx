@@ -35,17 +35,18 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
   const [initialized, setInitialized] = useState<boolean>(false);
 
   const { identifyUser: identifyPosthogUser } = useIdentifyUser();
-  const { identifyUser: identifyRevenueCatUser, logout: logoutRevenueCat } = useContext(RevenueCatContext);
+  const { identifyUser: identifyRevenueCatUser, logout: logoutRevenueCat } =
+    useContext(RevenueCatContext);
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
       setSession(session);
       setUser(session ? session.user : null);
-      
+
       if (event === 'SIGNED_OUT') {
         await logoutRevenueCat?.();
       }
-      
+
       setInitialized(true);
     });
 
@@ -65,8 +66,9 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
 
     const inProtectedGroup = segments[0] === '(protected)';
     const inPublicGroup = segments[0] === '(public)';
+    const isPrivacyPolicy = segments[0] === 'privacy-policy';
 
-    if (session && !inProtectedGroup) {
+    if (session && !inProtectedGroup && !isPrivacyPolicy) {
       void (async () => {
         await Promise.all([
           signInWithOneSignal(session.user.id, session.user.email),
@@ -75,7 +77,7 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
         ]);
         router.replace('/(protected)/(tabs)/home');
       })();
-    } else if (!session && !inPublicGroup) {
+    } else if (!session && !inPublicGroup && !isPrivacyPolicy) {
       router.replace('/(public)/welcome');
     }
   }, [initialized, session, segments]);
@@ -83,7 +85,7 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
   useEffect(() => {
     void supabase.auth.startAutoRefresh();
 
-    const subscription = AppState.addEventListener('change', (state) => {
+    const subscription = AppState.addEventListener('change', state => {
       if (state === 'active') {
         void supabase.auth.startAutoRefresh();
       } else if (state === 'background' || state === 'inactive') {

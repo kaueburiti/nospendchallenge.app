@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Box, Heading, VStack } from '@/components/ui';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';

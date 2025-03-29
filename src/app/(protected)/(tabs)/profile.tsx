@@ -28,6 +28,7 @@ import * as WebBrowser from 'expo-web-browser';
 import { useTheme } from '@/hooks/useTheme';
 import { i18n } from '@/i18n';
 import ChangePasswordDrawer from '@/components/profile/ChangePasswordDrawer';
+import { router } from 'expo-router';
 
 type ProfileSettingsProps = {
   toggleColorMode: () => void;
@@ -57,25 +58,23 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
   </VStack>
 );
 
-const ProfileSupport: React.FC = () => (
-  <VStack space="lg">
-    <Heading className="mb-1">{i18n.t('profile.support_title')}</Heading>
-    <MenuItem
-      onPress={() =>
-        WebBrowser.openBrowserAsync(config.profilePage.supportPage)
-      }
-      icon={LifeBuoyIcon}
-      text={i18n.t('profile.get_help')}
-    />
-    <MenuItem
-      onPress={() =>
-        WebBrowser.openBrowserAsync(config.profilePage.contactPage)
-      }
-      icon={MessageSquareText}
-      text={i18n.t('profile.contact')}
-    />
-  </VStack>
-);
+const ProfileSupport: React.FC = () => {
+  return (
+    <VStack space="lg">
+      <Heading className="mb-1">{i18n.t('profile.support_title')}</Heading>
+      <MenuItem
+        onPress={() => router.push('/privacy-policy')}
+        icon={LifeBuoyIcon}
+        text={i18n.t('profile.get_help')}
+      />
+      <MenuItem
+        onPress={() => {}}
+        icon={MessageSquareText}
+        text={i18n.t('profile.contact')}
+      />
+    </VStack>
+  );
+};
 
 type ProfileSignOutProps = {
   onOpenSignOutAlertDialog: () => void;
