@@ -16,8 +16,6 @@ export const getChallengeActivities = async (
     .in('challenge_id', ids.map(Number))
     .limit(limit);
 
-  console.log('ACTIVITY DATA', data);
-
   if (error) throw new Error(error.message);
   return data || [];
 };
