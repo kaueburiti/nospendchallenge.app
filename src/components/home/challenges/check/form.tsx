@@ -7,6 +7,8 @@ import { useForm } from 'react-hook-form';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FormInputLabel } from '@/components/ui/form/label';
 import { Text } from '@/components/ui/text';
+import { Analytics } from '@/lib/analytics';
+
 type CheckInFormProps = {
   challengeId: string;
   onSubmit: () => void;
@@ -46,11 +48,14 @@ export const CheckInForm = ({
   );
 
   const onSubmit = async (data: { message: string }) => {
+    const formattedDate = format(date, 'yyyy-MM-dd');
     createCheck({
       challenge_id: Number(challengeId),
-      date: format(date, 'yyyy-MM-dd'),
+      date: formattedDate,
       message: data.message,
     });
+
+    Analytics.challenge.checkIn(challengeId, formattedDate, data.message);
   };
 
   return (

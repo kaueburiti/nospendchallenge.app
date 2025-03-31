@@ -20,6 +20,10 @@ import { Box } from '@/components/ui';
 
 export { ErrorBoundary } from 'expo-router';
 
+import Aptabase from '@aptabase/react-native';
+
+Aptabase.init(process.env.EXPO_PUBLIC_APTABASE_API_KEY!);
+
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 void SplashScreen.preventAutoHideAsync();
 

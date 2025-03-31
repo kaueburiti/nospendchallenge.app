@@ -12,6 +12,7 @@ import { supabase } from '@/lib/supabase';
 import { signInWithOneSignal } from '@/lib/one-signal';
 import { useIdentifyUser } from '@/hooks/analytics/useIdentifyUser';
 import { RevenueCatContext } from '@/provider/RevenueCatProvider';
+import { Analytics } from '@/lib/analytics';
 
 void SplashScreen.preventAutoHideAsync();
 
@@ -26,6 +27,14 @@ export const SessionContext = createContext<SessionContextProps>({
   session: null,
   initialized: false,
 });
+
+export const useSession = () => {
+  const context = useContext(SessionContext);
+  if (!context) {
+    throw new Error('useSession must be used within a SessionProvider');
+  }
+  return context;
+};
 
 export const SessionProvider = ({ children }: PropsWithChildren) => {
   const router = useRouter();
@@ -44,7 +53,10 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
       setUser(session ? session.user : null);
 
       if (event === 'SIGNED_OUT') {
+        Analytics.auth.signedOut(session?.user.id ?? 'unknown');
         await logoutRevenueCat?.();
+      } else if (event === 'SIGNED_IN') {
+        Analytics.auth.signedIn(session?.user.id ?? 'unknown');
       }
 
       setInitialized(true);
@@ -53,6 +65,9 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
     void supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session ? session.user : null);
+      if (session?.user) {
+        Analytics.auth.signedIn(session.user.id);
+      }
       setInitialized(true);
     });
 

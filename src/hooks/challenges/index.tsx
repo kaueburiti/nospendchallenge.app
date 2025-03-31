@@ -10,6 +10,8 @@ import { useShowNotification } from '../notifications';
 import { router } from 'expo-router';
 import { useSimpleToast } from '../useSimpleToast';
 import { useSession } from '../useSession';
+import { Analytics } from '@/lib/analytics';
+
 export const useCreateChallenge = () => {
   const queryClient = useQueryClient();
   const { triggerToast } = useShowNotification();
@@ -17,6 +19,8 @@ export const useCreateChallenge = () => {
   return useMutation({
     mutationFn: createChallenge,
     onSuccess: async challenge => {
+      Analytics.challenge.created(String(challenge.id), challenge.title);
+
       triggerToast({
         title: 'Congratulations 🎉',
         description: 'Your challenge has been created successfully',
@@ -27,6 +31,8 @@ export const useCreateChallenge = () => {
       void queryClient.invalidateQueries({ queryKey: ['challenges'] });
     },
     onError: error => {
+      Analytics.error.occurred(error, 'challenge_creation');
+
       triggerToast({
         title: 'Oops!',
         description: 'Something went wrong, try again later',
@@ -53,32 +59,31 @@ export const useChallenge = (id: string) => {
 };
 
 export const useUpdateChallenge = () => {
-  const { triggerToast } = useShowNotification();
   const queryClient = useQueryClient();
+  const { triggerToast } = useShowNotification();
 
   return useMutation({
     mutationFn: updateChallenge,
     onSuccess: async challenge => {
+      Analytics.challenge.updated(String(challenge.id), challenge.title);
+
       triggerToast({
-        title: 'Challenge updated!',
+        title: 'Success!',
         description: 'Your challenge has been updated successfully',
         action: 'success',
       });
 
-      // BUG: Invalidating the challenge query key doesn't trigger a re-render of the challenge details page
-      void queryClient.invalidateQueries({
-        queryKey: ['challenges', challenge.id],
-      });
-
-      router.push(`/(protected)/challenge/${challenge.id}`);
+      void queryClient.invalidateQueries({ queryKey: ['challenges'] });
     },
     onError: error => {
+      Analytics.error.occurred(error, 'challenge_update');
+
       triggerToast({
         title: 'Oops!',
         description: 'Something went wrong, try again later',
         action: 'error',
       });
-      console.log('Challenge creation failed');
+      console.log('Challenge update failed');
       console.error(error);
     },
   });
@@ -86,20 +91,30 @@ export const useUpdateChallenge = () => {
 
 export const useDeleteChallenge = () => {
   const queryClient = useQueryClient();
-  const { showToast } = useSimpleToast();
+  const { triggerToast } = useShowNotification();
 
   return useMutation({
     mutationFn: deleteChallenge,
-    onSuccess: () => {
-      showToast(
-        'success',
-        'Challenge deleted!',
-        'Your challenge has been deleted successfully',
-      );
+    onSuccess: async (_, challengeId) => {
+      Analytics.challenge.deleted(String(challengeId), 'Deleted Challenge');
+
+      triggerToast({
+        title: 'Success!',
+        description: 'Your challenge has been deleted successfully',
+        action: 'success',
+      });
+
       void queryClient.invalidateQueries({ queryKey: ['challenges'] });
     },
     onError: error => {
-      showToast('error', 'Oops!', 'Something went wrong, try again later');
+      Analytics.error.occurred(error, 'challenge_deletion');
+
+      triggerToast({
+        title: 'Oops!',
+        description: 'Something went wrong, try again later',
+        action: 'error',
+      });
+      console.log('Challenge deletion failed');
       console.error(error);
     },
   });

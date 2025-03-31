@@ -14,6 +14,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useInviteToChallengeByEmail } from '@/hooks/invitations';
 import { Alert } from 'react-native';
 import { useSimpleToast } from '@/hooks/useSimpleToast';
+import { Analytics } from '@/lib/analytics';
 
 const inviteSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -49,11 +50,13 @@ export default function InviteForm({
   const onSubmit = (data: InviteFormData) => {
     inviteByEmail(data.email, {
       onSuccess: () => {
+        Analytics.challenge.invited(String(challengeId), data.email);
         showToast('success', 'Invitation sent successfully');
         reset();
         onSuccess?.();
       },
       onError: error => {
+        Analytics.error.occurred(error, 'challenge_invitation');
         showToast('error', 'Ops, something went wrong', error.message);
       },
     });
