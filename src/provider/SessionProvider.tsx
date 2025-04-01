@@ -9,23 +9,17 @@ import React, {
   useContext,
 } from 'react';
 import { supabase } from '@/lib/supabase';
-import { signInWithOneSignal } from '@/lib/one-signal';
-import { useIdentifyUser } from '@/hooks/analytics/useIdentifyUser';
-import { RevenueCatContext } from '@/provider/RevenueCatProvider';
-import { Analytics } from '@/lib/analytics';
 
 void SplashScreen.preventAutoHideAsync();
 
-type SessionContextProps = {
-  user: User | null;
+interface SessionContextProps {
   session: Session | null;
-  initialized?: boolean;
-};
+  isLoading: boolean;
+}
 
 export const SessionContext = createContext<SessionContextProps>({
-  user: null,
   session: null,
-  initialized: false,
+  isLoading: true,
 });
 
 export const useSession = () => {
@@ -39,63 +33,46 @@ export const useSession = () => {
 export const SessionProvider = ({ children }: PropsWithChildren) => {
   const router = useRouter();
   const segments = useSegments();
-  const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
-  const [initialized, setInitialized] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isLayoutMounted, setIsLayoutMounted] = useState(false);
 
-  const { identifyUser: identifyPosthogUser } = useIdentifyUser();
-  const { identifyUser: identifyRevenueCatUser, logout: logoutRevenueCat } =
-    useContext(RevenueCatContext);
-
+  // Set layout mounted after initial render
   useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
-      setSession(session);
-      setUser(session ? session.user : null);
-
-      if (event === 'SIGNED_OUT') {
-        Analytics.auth.signedOut(session?.user.id ?? 'unknown');
-        await logoutRevenueCat?.();
-      } else if (event === 'SIGNED_IN') {
-        Analytics.auth.signedIn(session?.user.id ?? 'unknown');
-      }
-
-      setInitialized(true);
-    });
-
-    void supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session ? session.user : null);
-      if (session?.user) {
-        Analytics.auth.signedIn(session.user.id);
-      }
-      setInitialized(true);
-    });
-
-    return () => {
-      data.subscription.unsubscribe();
-    };
+    setIsLayoutMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!initialized) return;
+    void supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+      setIsLoading(false);
+    });
 
-    const inProtectedGroup = segments[0] === '(protected)';
-    const inPublicGroup = segments[0] === '(public)';
-    const isPrivacyPolicy = segments[0] === 'privacy-policy';
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      setIsLoading(false);
+    });
 
-    if (session && !inProtectedGroup && !isPrivacyPolicy) {
-      void (async () => {
-        await Promise.all([
-          signInWithOneSignal(session.user.id, session.user.email),
-          identifyPosthogUser(session.user.id, { email: session.user.email }),
-          identifyRevenueCatUser?.(session.user.id),
-        ]);
+    return () => subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => {
+    if (!isLoading && isLayoutMounted) {
+      const inProtectedGroup = segments[0] === '(protected)';
+      const inPublicGroup = segments[0] === '(public)';
+      const isPrivacyPolicy = segments[0] === 'privacy-policy';
+
+      if (session && !inProtectedGroup && !isPrivacyPolicy) {
         router.replace('/(protected)/(tabs)/home');
-      })();
-    } else if (!session && !inPublicGroup && !isPrivacyPolicy) {
-      router.replace('/(public)/welcome');
+      } else if (!session && !inPublicGroup && !isPrivacyPolicy) {
+        requestAnimationFrame(() => {
+          router.replace('/(public)/welcome');
+        });
+      }
     }
-  }, [initialized, session, segments]);
+  }, [isLoading, session, segments, isLayoutMounted]);
 
   useEffect(() => {
     void supabase.auth.startAutoRefresh();
@@ -114,17 +91,12 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
     };
   }, []);
 
-  if (!initialized) {
+  if (isLoading) {
     return null;
   }
 
   return (
-    <SessionContext.Provider
-      value={{
-        user,
-        session,
-        initialized,
-      }}>
+    <SessionContext.Provider value={{ session, isLoading }}>
       {children}
     </SessionContext.Provider>
   );
