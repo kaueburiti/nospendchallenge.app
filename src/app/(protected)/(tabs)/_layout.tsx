@@ -4,10 +4,11 @@ import React from 'react';
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { HomeIcon, TrophyIcon, User } from 'lucide-react-native';
 import { useTheme } from '@/hooks/useTheme';
-import { i18n } from '@/i18n';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function TabLayout() {
   const { isDark } = useTheme();
+  const { t } = useTranslation();
 
   return (
     <Tabs
@@ -19,7 +20,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="home"
         options={{
-          title: i18n.t('home.tab_label'),
+          title: t('home.tab_label'),
           tabBarIcon: ({ color }) => (
             <TabBarIcon icon={HomeIcon} color={color} />
           ),
@@ -28,7 +29,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="challenges"
         options={{
-          title: 'Challenges',
+          title: t('challenge.tab_label'),
           tabBarIcon: ({ color }) => (
             <TabBarIcon icon={TrophyIcon} color={color} />
           ),
@@ -37,7 +38,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="profile"
         options={{
-          title: i18n.t('profile.tab_label'),
+          title: t('profile.tab_label'),
           tabBarIcon: ({ color }) => <TabBarIcon icon={User} color={color} />,
         }}
       />

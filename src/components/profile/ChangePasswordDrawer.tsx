@@ -16,7 +16,7 @@ import {
 import { BottomDrawer } from '@/components/BottomDrawer';
 import { supabase } from '@/lib/supabase';
 import { useSimpleToast } from '@/hooks/useSimpleToast';
-import { i18n } from '@/i18n';
+import { useTranslation } from '@/hooks/useTranslation';
 import { z } from 'zod';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -28,32 +28,32 @@ interface ChangePasswordDrawerProps {
   onClose: () => void;
 }
 
-const passwordSchema = z
-  .object({
-    currentPassword: z
-      .string()
-      .min(6, i18n.t('validation.password_min_length')),
-    newPassword: z.string().min(6, i18n.t('validation.password_min_length')),
-    confirmPassword: z
-      .string()
-      .min(6, i18n.t('validation.password_min_length')),
-  })
-  .refine(data => data.newPassword === data.confirmPassword, {
-    message: i18n.t('validation.passwords_must_match'),
-    path: ['confirmPassword'],
-  });
-
-type PasswordFormData = z.infer<typeof passwordSchema>;
+type PasswordFormData = {
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
 
 const ChangePasswordDrawer: React.FC<ChangePasswordDrawerProps> = ({
   isOpen,
   onClose,
 }) => {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const toast = useSimpleToast();
+
+  const schema = z
+    .object({
+      currentPassword: z.string().min(6, t('validation.password_min_length')),
+      newPassword: z.string().min(6, t('validation.password_min_length')),
+      confirmPassword: z.string().min(6, t('validation.password_min_length')),
+    })
+    .refine(data => data.newPassword === data.confirmPassword, {
+      message: t('validation.passwords_must_match'),
+    });
 
   const {
     control,
@@ -61,12 +61,7 @@ const ChangePasswordDrawer: React.FC<ChangePasswordDrawerProps> = ({
     reset,
     formState: { errors },
   } = useForm<PasswordFormData>({
-    resolver: zodResolver(passwordSchema),
-    defaultValues: {
-      currentPassword: '',
-      newPassword: '',
-      confirmPassword: '',
-    },
+    resolver: zodResolver(schema),
   });
 
   const onSubmit = async (data: PasswordFormData) => {
@@ -80,7 +75,7 @@ const ChangePasswordDrawer: React.FC<ChangePasswordDrawerProps> = ({
       });
 
       if (signInError) {
-        toast.showToast('error', i18n.t('profile.current_password_incorrect'));
+        toast.showToast('error', t('profile.current_password_incorrect'));
         setIsLoading(false);
         return;
       }
@@ -91,14 +86,14 @@ const ChangePasswordDrawer: React.FC<ChangePasswordDrawerProps> = ({
       });
 
       if (updateError) {
-        toast.showToast('error', i18n.t('profile.password_update_failed'));
+        toast.showToast('error', t('profile.password_update_failed'));
       } else {
-        toast.showToast('success', i18n.t('profile.password_updated'));
+        toast.showToast('success', t('profile.password_updated'));
         reset();
         onClose();
       }
     } catch (error) {
-      toast.showToast('error', i18n.t('common.error_occurred'));
+      toast.showToast('error', t('common.error_occurred'));
     } finally {
       setIsLoading(false);
     }
@@ -113,9 +108,9 @@ const ChangePasswordDrawer: React.FC<ChangePasswordDrawerProps> = ({
     <BottomDrawer
       isOpen={isOpen}
       onClose={handleClose}
-      title={i18n.t('profile.change_password')}>
+      title={t('profile.change_password')}>
       <VStack space="3xl">
-        <Text>{i18n.t('profile.change_password_description')}</Text>
+        <Text>{t('profile.change_password_description')}</Text>
 
         <VStack space="md">
           <Controller
@@ -125,7 +120,7 @@ const ChangePasswordDrawer: React.FC<ChangePasswordDrawerProps> = ({
               <FormControl isInvalid={!!errors.currentPassword}>
                 <FormControlLabel>
                   <FormControlLabelText>
-                    {i18n.t('profile.current_password')}
+                    {t('profile.current_password')}
                   </FormControlLabelText>
                 </FormControlLabel>
                 <Input>
@@ -161,7 +156,7 @@ const ChangePasswordDrawer: React.FC<ChangePasswordDrawerProps> = ({
               <FormControl isInvalid={!!errors.newPassword}>
                 <FormControlLabel>
                   <FormControlLabelText>
-                    {i18n.t('profile.new_password')}
+                    {t('profile.new_password')}
                   </FormControlLabelText>
                 </FormControlLabel>
                 <Input>
@@ -195,7 +190,7 @@ const ChangePasswordDrawer: React.FC<ChangePasswordDrawerProps> = ({
               <FormControl isInvalid={!!errors.confirmPassword}>
                 <FormControlLabel>
                   <FormControlLabelText>
-                    {i18n.t('profile.confirm_password')}
+                    {t('profile.confirm_password')}
                   </FormControlLabelText>
                 </FormControlLabel>
                 <Input>
@@ -230,10 +225,10 @@ const ChangePasswordDrawer: React.FC<ChangePasswordDrawerProps> = ({
             action="secondary"
             onPress={handleClose}
             className="mr-2">
-            <ButtonText>{i18n.t('common.cancel')}</ButtonText>
+            <ButtonText>{t('common.cancel')}</ButtonText>
           </Button>
           <Button onPress={handleSubmit(onSubmit)} isDisabled={isLoading}>
-            <ButtonText>{i18n.t('common.save')}</ButtonText>
+            <ButtonText>{t('common.save')}</ButtonText>
           </Button>
         </HStack>
       </VStack>

@@ -1,0 +1,204 @@
+{
+  "common": {
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "error_occurred": "Ocorreu um erro. Por favor, tente novamente."
+  },
+  "home": {
+    "tab_label": "Início",
+    "top_section_title": "Seus Desafios",
+    "bottom_section_title": "Atividades Recentes",
+    "banner_text": "Quer ser destaque?",
+    "banner_link_text": "Entre em contato",
+    "create_challenge": "Criar Desafio",
+    "no_activities": "Nenhuma atividade recente",
+    "no_activities_description": "Suas atividades recentes aparecerão aqui"
+  },
+  "profile": {
+    "tab_label": "Perfil",
+    "settings_title": "Configurações da Conta",
+    "support_title": "Suporte",
+    "payment_status_full_access": "Programa Pro",
+    "payment_status_basic_access": "Programa Básico",
+    "payment_body_text": "Desbloqueie recursos exclusivos e melhore sua experiência",
+    "payment_button_label": "Fazer Upgrade",
+    "dark_mode": "Modo Escuro",
+    "delete_account": "Excluir Conta",
+    "get_help": "Termos de Serviço",
+    "contact": "Contato",
+    "sign_out": "Sair",
+    "drawer_title": "Editar Perfil",
+    "drawer_image_upload_label": "Enviar nova foto de perfil",
+    "drawer_name_input_label": "Nome Completo",
+    "button_cancel": "Cancelar",
+    "button_save": "Salvar",
+    "button_saving": "Salvando...",
+    "error_save": "Falha ao salvar perfil. Por favor, tente novamente.",
+    "error_avatar": "Falha ao selecionar avatar. Por favor, tente novamente.",
+    "input_placeholder_name": "Digite seu nome completo",
+    "security_title": "Segurança",
+    "change_password": "Alterar Senha",
+    "change_password_description": "Digite sua senha atual e uma nova senha para atualizar suas credenciais.",
+    "current_password": "Senha Atual",
+    "new_password": "Nova Senha",
+    "confirm_password": "Confirmar Nova Senha",
+    "current_password_incorrect": "Senha atual incorreta",
+    "password_update_failed": "Falha ao atualizar senha",
+    "password_updated": "Senha atualizada com sucesso"
+  },
+  "category": {
+    "development": "Desenvolvimento",
+    "productivity": "Produtividade",
+    "artificial_intelligence": "Inteligência Artificial",
+    "seo": "SEO",
+    "design": "Design",
+    "communication": "Comunicação",
+    "others": "Outros"
+  },
+  "challenge": {
+    "title": "Desafios",
+    "tab_label": "Desafios",
+    "create_title": "Criar Novo Desafio",
+    "name_placeholder": "Nome do Desafio",
+    "length_placeholder": "Duração do Desafio (em dias)",
+    "create_button": "Criar Desafio",
+    "edit_title": "Editar Desafio",
+    "update_button": "Atualizar Desafio",
+    "subtitle_create": "Vamos começar um novo desafio.",
+    "subtitle_edit": "Atualize os detalhes do seu desafio.",
+    "check_in_date": "Data do Check-in:",
+    "check_in_placeholder": "Como foi?",
+    "check_in_label": "Conte-nos como você está se sentindo hoje",
+    "start_date": "Data de Início",
+    "end_date": "Data de Término",
+    "description_placeholder": "Descreva seu desafio",
+    "progress_title": "Progresso do Desafio",
+    "create_check_in": "Criar um Check-in",
+    "my_checks": "Meus Check-ins",
+    "loading_activities": "Carregando atividades...",
+    "activities_title": "Atividades",
+    "activities_empty_description": "As atividades aparecerão aqui conforme os participantes se juntam e completam os dias do desafio.",
+    "loading_participants": "Carregando participantes...",
+    "no_participants": "Nenhum participante ainda",
+    "participants_title": "Participantes",
+    "participant_owner": "Dono",
+    "days_left": "Dias Restantes",
+    "total_checks": "Check-ins",
+    "days_skipped": "Dias Pulados",
+    "errors": {
+      "name_required": "Nome é obrigatório",
+      "description_required": "Descrição é obrigatória",
+      "amount_required": "Valor deve ser maior que 0"
+    }
+  },
+  "validation": {
+    "password_min_length": "A senha deve ter pelo menos 6 caracteres",
+    "passwords_must_match": "As senhas devem corresponder"
+  },
+  "chat": {
+    "edit_message": "Editar Mensagem",
+    "update_message_prompt": "Atualize sua mensagem:",
+    "cancel": "Cancelar",
+    "update": "Atualizar",
+    "success": "Sucesso",
+    "message_updated": "Mensagem atualizada",
+    "error": "Erro",
+    "delete_message": "Excluir Mensagem",
+    "delete_message_confirm": "Tem certeza que deseja excluir esta mensagem?",
+    "delete": "Excluir",
+    "message_deleted": "Mensagem excluída",
+    "loading_messages": "Carregando mensagens...",
+    "error_loading_messages": "Erro ao carregar mensagens",
+    "message_placeholder": "Digite uma mensagem...",
+    "message_options": "Opções de Mensagem"
+  },
+  "auth": {
+    "email": "E-mail",
+    "password": "Senha",
+    "confirm_password": "Confirmar Senha",
+    "forgot_password": "Esqueceu a senha?",
+    "sign_in": "Entrar",
+    "sign_up": "Cadastrar",
+    "signing_in": "Entrando...",
+    "signing_up": "Cadastrando...",
+    "continue": "Continuar",
+    "create_account": "Criar Conta",
+    "reset_password": "Redefinir Senha",
+    "reset_password_description": "Digite seu endereço de e-mail e enviaremos instruções para redefinir sua senha.",
+    "send_instructions": "Enviar Instruções",
+    "instructions_sent": "Instruções de redefinição de senha enviadas para seu e-mail",
+    "error_send_instructions": "Falha ao enviar instruções de redefinição de senha"
+  },
+  "empty": {
+    "no_challenges": "Nenhum desafio ainda",
+    "no_activities": "Nenhuma atividade ainda",
+    "create_first": "Crie seu primeiro desafio para começar!",
+    "start_challenge": "Iniciar um Desafio"
+  },
+  "invite": {
+    "title": "Convidar um Amigo",
+    "description": "Digite o e-mail do seu amigo para convidá-lo a participar deste desafio",
+    "email_placeholder": "amigo@exemplo.com",
+    "sending": "Enviando...",
+    "send": "Enviar Convite",
+    "success": "Convite enviado com sucesso",
+    "accept_success_title": "Sucesso",
+    "accept_success_message": "Você se juntou ao desafio!",
+    "decline_success_title": "Sucesso",
+    "decline_success_message": "Convite recusado",
+    "pending_title": "Convites Pendentes",
+    "starts": "Inicia",
+    "decline": "Recusar",
+    "accept": "Aceitar",
+    "loading_participants": "Carregando participantes...",
+    "no_participants": "Nenhum participante ainda",
+    "participants": "Participantes",
+    "owner": "Dono",
+    "loading_invitations": "Carregando convites pendentes...",
+    "no_invitations": "Nenhum convite enviado ainda",
+    "pending_invitations": "Convites Pendentes",
+    "sent": "Enviado",
+    "status": {
+      "pending": "Pendente",
+      "accepted": "Aceito",
+      "declined": "Recusado"
+    },
+    "errors": {
+      "invalid_email": "Por favor, digite um endereço de e-mail válido"
+    }
+  },
+  "toast": {
+    "profile": {
+      "update_success": "Perfil atualizado com sucesso",
+      "update_error": "Falha ao atualizar o perfil do usuário",
+      "save_error": "Erro ao salvar perfil",
+      "try_again": "Por favor, tente novamente mais tarde"
+    },
+    "password": {
+      "update_success": "Senha atualizada com sucesso",
+      "update_error": "Falha ao atualizar a senha"
+    },
+    "account": {
+      "delete_success": "Conta excluída com sucesso",
+      "delete_error": "Falha ao excluir conta",
+      "sign_out_error": "Falha ao sair"
+    },
+    "auth": {
+      "apple_sign_in_error": "Falha no login com Apple",
+      "apple_sign_in_no_token": "Falha no login com Apple: Sem token de identidade",
+      "sign_in_error": "Falha no login",
+      "sign_up_success": "Conta criada com sucesso!",
+      "sign_up_error": "Ops, algo deu errado",
+      "session_set_success": "Sessão definida com sucesso",
+      "session_set_error": "Falha ao definir sessão",
+      "reset_password_success": "Instruções de redefinição de senha enviadas para seu e-mail",
+      "reset_password_error": "Falha ao enviar instruções de redefinição de senha",
+      "welcome_back": "Bem-vindo de volta!",
+      "google_not_available": "Login com Google não está disponível",
+      "google_sign_in_error": "Falha no login com Google"
+    },
+    "payment": {
+      "error": "Ops! Algo deu errado!"
+    }
+  }
+}

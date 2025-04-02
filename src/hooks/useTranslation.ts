@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import * as Localization from 'expo-localization';
 import { I18n } from 'i18n-js';
 import en from '@/i18n/en.json';
+import ptBr from '@/i18n/pt-BR.json';
 
 /**
  * Hook for handling translations across the app
@@ -11,6 +12,7 @@ export const useTranslation = () => {
   const i18n = useMemo(() => {
     const i18nInstance = new I18n({
       en,
+      'pt-BR': ptBr,
       // Add other languages here when needed
     });
 

@@ -14,12 +14,14 @@ import { PlusCircle, Mail } from 'lucide-react-native';
 import { router } from 'expo-router';
 import ChallengeList from '@/components/home/challenges';
 import { useUserInvitations } from '@/hooks/invitations';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const ChallengesPage = () => {
   const { data: invitations, isLoading: isLoadingInvitations } =
     useUserInvitations();
   const hasPendingInvitations =
     !isLoadingInvitations && invitations && invitations.length > 0;
+  const { t } = useTranslation();
 
   return (
     <SafeAreaView>
@@ -28,7 +30,7 @@ const ChallengesPage = () => {
           <VStack space="4xl" className="px-2 py-8">
             <Box className="flex flex-1 flex-col overflow-auto">
               <Box className="mb-4 flex flex-row items-center justify-between">
-                <Heading size="3xl">Challenges</Heading>
+                <Heading size="3xl">{t('challenge.title')}</Heading>
                 <Box className="flex-row gap-2">
                   {hasPendingInvitations && (
                     <Button

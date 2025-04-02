@@ -10,7 +10,7 @@ import { Avatar, AvatarFallbackText, AvatarImage } from '../ui/avatar';
 import { type User as SupabaseUser } from '@supabase/supabase-js';
 import { useDisclose } from '@gluestack-ui/hooks';
 import { EditProfileDrawer } from './EditProfileDrawer';
-import { i18n } from '@/i18n';
+import { useTranslation } from '@/hooks/useTranslation';
 import { useProfile } from '@/hooks/useProfile';
 
 interface ProfileCardProps {
@@ -25,6 +25,8 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => {
   } = useDisclose(false);
 
   const { data: profile } = useProfile();
+  const { t } = useTranslation();
+
   return (
     <>
       <HStack>
@@ -48,7 +50,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => {
                 <LinkText
                   size="sm"
                   className="text-typography-500 no-underline hover:text-typography-500 active:text-typography-500">
-                  {i18n.t('profile.drawer_title')}
+                  {t('profile.drawer_title')}
                 </LinkText>
               </Link>
             </VStack>

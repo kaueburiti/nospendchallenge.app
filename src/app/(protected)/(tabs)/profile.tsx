@@ -26,108 +26,100 @@ import {
 import { PaymentPlan } from '@/components/profile/PaymentPlan';
 import * as WebBrowser from 'expo-web-browser';
 import { useTheme } from '@/hooks/useTheme';
-import { i18n } from '@/i18n';
+import { useTranslation } from '@/hooks/useTranslation';
 import ChangePasswordDrawer from '@/components/profile/ChangePasswordDrawer';
 import { router } from 'expo-router';
 
-type ProfileSettingsProps = {
-  toggleColorMode: () => void;
-  isDark: boolean;
+interface ProfileSettingsProps {
   onOpenDeleteAccountDialog: () => void;
-};
+}
 
 const ProfileSettings: React.FC<ProfileSettingsProps> = ({
-  toggleColorMode,
-  isDark,
   onOpenDeleteAccountDialog,
-}) => (
-  <VStack space="lg">
-    <Heading className="mb-1">{i18n.t('profile.settings_title')}</Heading>
-    {/* <HStack className="items-center justify-between">
-      <HStack space="md">
-        <Icon as={SunMoon} />
-        <Text>{i18n.t('profile.dark_mode')}</Text>
-      </HStack>
-      <Switch value={isDark} onValueChange={toggleColorMode} size="sm" />
-    </HStack> */}
-    <MenuItem
-      icon={OctagonX}
-      onPress={onOpenDeleteAccountDialog}
-      text={i18n.t('profile.delete_account')}
-    />
-  </VStack>
-);
-
-const ProfileSupport: React.FC = () => {
+}) => {
+  const { t } = useTranslation();
   return (
     <VStack space="lg">
-      <Heading className="mb-1">{i18n.t('profile.support_title')}</Heading>
+      <Heading className="mb-1">{t('profile.settings_title')}</Heading>
       <MenuItem
-        onPress={() => router.push('/privacy-policy')}
-        icon={LifeBuoyIcon}
-        text={i18n.t('profile.get_help')}
-      />
-      <MenuItem
-        onPress={() => {}}
-        icon={MessageSquareText}
-        text={i18n.t('profile.contact')}
+        icon={OctagonX}
+        onPress={onOpenDeleteAccountDialog}
+        text={t('profile.delete_account')}
       />
     </VStack>
   );
 };
 
-type ProfileSignOutProps = {
+const ProfileSupport: React.FC = () => {
+  const { t } = useTranslation();
+  return (
+    <VStack space="lg">
+      <Heading className="mb-1">{t('profile.support_title')}</Heading>
+      <MenuItem
+        onPress={() => router.push('/privacy-policy')}
+        icon={LifeBuoyIcon}
+        text={t('profile.get_help')}
+      />
+      <MenuItem
+        onPress={() => router.push('/update-password')}
+        icon={MessageSquareText}
+        text={t('profile.contact')}
+      />
+    </VStack>
+  );
+};
+
+interface SignOutButtonProps {
   onOpenSignOutAlertDialog: () => void;
-};
+}
 
-const ProfileSignOut: React.FC<ProfileSignOutProps> = ({
+const SignOutButton: React.FC<SignOutButtonProps> = ({
   onOpenSignOutAlertDialog,
-}) => (
-  <Button
-    action="secondary"
-    variant="outline"
-    className="mt-auto"
-    onPress={onOpenSignOutAlertDialog}>
-    <ButtonText>{i18n.t('profile.sign_out')}</ButtonText>
-  </Button>
-);
-
-type ProfileSecurityProps = {
-  onOpenChangePasswordDrawer: () => void;
+}) => {
+  const { t } = useTranslation();
+  return (
+    <Button
+      variant="outline"
+      className="mt-auto"
+      onPress={onOpenSignOutAlertDialog}>
+      <ButtonText>{t('profile.sign_out')}</ButtonText>
+    </Button>
+  );
 };
+
+interface ProfileSecurityProps {
+  onOpenChangePasswordDrawer: () => void;
+}
 
 const ProfileSecurity: React.FC<ProfileSecurityProps> = ({
   onOpenChangePasswordDrawer,
-}) => (
-  <VStack space="lg">
-    <MenuItem
-      icon={Lock}
-      onPress={onOpenChangePasswordDrawer}
-      text={i18n.t('profile.change_password')}
-    />
-  </VStack>
-);
+}) => {
+  const { t } = useTranslation();
+  return (
+    <VStack space="lg">
+      <MenuItem
+        icon={Lock}
+        onPress={onOpenChangePasswordDrawer}
+        text={t('profile.change_password')}
+      />
+    </VStack>
+  );
+};
 
 const ProfilePage = () => {
+  const { t } = useTranslation();
   const [showPaywall, setShowPaywall] = useState(false);
-  const {
-    isOpen: openSignOutAlertDialog,
-    onOpen: onOpenSignOutAlertDialog,
-    onClose: onCloseSignOutAlertDialog,
-  } = useDisclose(false);
-  const {
-    isOpen: openDeleteAccountDialog,
-    onOpen: onOpenDeleteAccountDialog,
-    onClose: onCloseDeleteAccountDialog,
-  } = useDisclose(false);
-  const {
-    isOpen: openChangePasswordDrawer,
-    onOpen: onOpenChangePasswordDrawer,
-    onClose: onCloseChangePasswordDrawer,
-  } = useDisclose(false);
+  const { session } = useSession();
+  const { isDark, toggleColorMode } = useTheme();
+  const [showDeleteAccountDialog, setShowDeleteAccountDialog] = useState(false);
+  const [showSignOutAlertDialog, setShowSignOutAlertDialog] = useState(false);
+  const [showChangePasswordDrawer, setShowChangePasswordDrawer] =
+    useState(false);
 
-  const { toggleColorMode, isDark } = useTheme();
-  const { user } = useSession();
+  const onOpenDeleteAccountDialog = () => setShowDeleteAccountDialog(true);
+  const onOpenSignOutAlertDialog = () => setShowSignOutAlertDialog(true);
+  const onOpenChangePasswordDrawer = () => setShowChangePasswordDrawer(true);
+
   const { customerInfo } = useContext(RevenueCatContext);
   const activeEntitlements = customerInfo?.activeSubscriptions;
 
@@ -142,15 +134,13 @@ const ProfilePage = () => {
           onPurchaseCancelled={() => setShowPaywall(false)}
         />
       ) : (
-        <SafeAreaView>
+        <SafeAreaView className="bg-background flex-1">
           <GestureHandlerRootView>
             <ScrollView className="flex flex-1">
               <VStack className="flex-1 px-5 py-4" space="lg">
-                <ProfileCard user={user} />
+                <ProfileCard user={session?.user ?? null} />
                 <Divider className="my-2" />
                 <ProfileSettings
-                  toggleColorMode={toggleColorMode}
-                  isDark={isDark}
                   onOpenDeleteAccountDialog={onOpenDeleteAccountDialog}
                 />
                 <ProfileSecurity
@@ -168,21 +158,25 @@ const ProfilePage = () => {
                 <Divider className="my-2" />
                 <ProfileSupport />
                 <Divider className="my-2" />
-                <ProfileSignOut
+                <SignOutButton
                   onOpenSignOutAlertDialog={onOpenSignOutAlertDialog}
                 />
               </VStack>
               <SignOutAlertDialog
-                onCloseSignOutAlertDialog={onCloseSignOutAlertDialog}
-                openSignOutAlertDialog={openSignOutAlertDialog}
+                onCloseSignOutAlertDialog={() =>
+                  setShowSignOutAlertDialog(false)
+                }
+                openSignOutAlertDialog={showSignOutAlertDialog}
               />
               <DeleteAccountAlertDialog
-                openDeleteAccountDialog={openDeleteAccountDialog}
-                onCloseDeleteAccountDialog={onCloseDeleteAccountDialog}
+                openDeleteAccountDialog={showDeleteAccountDialog}
+                onCloseDeleteAccountDialog={() =>
+                  setShowDeleteAccountDialog(false)
+                }
               />
               <ChangePasswordDrawer
-                isOpen={openChangePasswordDrawer}
-                onClose={onCloseChangePasswordDrawer}
+                isOpen={showChangePasswordDrawer}
+                onClose={() => setShowChangePasswordDrawer(false)}
               />
             </ScrollView>
           </GestureHandlerRootView>

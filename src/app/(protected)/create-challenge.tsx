@@ -1,90 +1,74 @@
 import React from 'react';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
-import { type FieldErrors, useForm } from 'react-hook-form';
-import { i18n } from '@/i18n';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from '@/hooks/useTranslation';
 import { useCreateChallenge } from '@/hooks/challenges';
 import { useSession } from '@/hooks/useSession';
 import { zodResolver } from '@hookform/resolvers/zod';
+import ChallengeForm from '@/components/home/challenges/form/challenge-form';
 import {
-  ChallengeForm,
   challengeSchema,
-  type ChallengeFormData,
-} from '@/components/home/challenges/form/challenge-form';
-import useUploadImage from '@/hooks/storage';
-
-interface ImageData {
-  uri: string;
-  base64: string;
-  fileExtension: string;
-}
+  type ChallengeSchemaType,
+} from '@/lib/schema/challenge';
+import { useRouter } from 'expo-router';
 
 export default function CreateChallenge() {
-  const { user } = useSession();
-  const { upload } = useUploadImage();
-  const [imageData, setImageData] = React.useState<ImageData | null>(null);
-  const { mutate: createChallenge } = useCreateChallenge();
+  const { t } = useTranslation();
+  const { session } = useSession();
+  const { mutate: createChallenge, isPending } = useCreateChallenge();
+  const router = useRouter();
 
   const {
     control,
     handleSubmit,
-    watch,
-    setValue,
-    formState: { errors, isSubmitting },
-  } = useForm<ChallengeFormData>({
+    formState: { errors },
+  } = useForm<ChallengeSchemaType>({
     resolver: zodResolver(challengeSchema),
     defaultValues: {
       name: '',
       description: '',
       startDate: new Date(),
-      endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+      endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
+      type: 'spending',
+      amount: 0,
     },
   });
 
-  const onSubmit = async (data: ChallengeFormData) => {
+  const onSubmit = async (data: ChallengeSchemaType) => {
     try {
-      let coverUrl = null;
-
-      if (imageData) {
-        coverUrl = await upload({
-          bucket: 'challenges',
-          name: `${Math.random().toString()}-cover`,
-          path: String(user?.id),
-          image: imageData,
-        });
-      }
-
-      createChallenge({
-        title: data.name,
-        start_date: data.startDate.toISOString(),
-        end_date: data.endDate.toISOString(),
-        owner_id: user!.id,
-        cover: coverUrl,
-        description: data.description,
-      });
+      createChallenge(
+        {
+          title: data.name,
+          description: data.description,
+          start_date: data.startDate.toISOString(),
+          end_date: data.endDate.toISOString(),
+          owner_id: session?.user?.id ?? '',
+          cover: null,
+        },
+        {
+          onSuccess: () => {
+            router.push('/(protected)/(tabs)/home');
+          },
+        },
+      );
     } catch (error) {
       console.error('Error creating challenge:', error);
     }
   };
 
-  const onError = (errors: FieldErrors<ChallengeFormData>) => {
-    console.log(errors);
-  };
-
   return (
     <SafeAreaView>
       <ChallengeForm
-        title={i18n.t('challenge.create_title')}
-        subtitle="Let's get you started with a new challenge."
-        control={control}
-        watch={watch}
-        setValue={setValue}
-        handleSubmit={handleSubmit}
-        errors={errors}
         onSubmit={onSubmit}
-        onError={onError}
-        imageData={imageData}
-        setImageData={setImageData}
-        isSubmitting={isSubmitting}
+        isLoading={isPending}
+        defaultValues={{
+          name: '',
+          description: '',
+          startDate: new Date(),
+          endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+          type: 'spending',
+          amount: 0,
+        }}
       />
     </SafeAreaView>
   );

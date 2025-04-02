@@ -56,6 +56,8 @@
     "others": "Others"
   },
   "challenge": {
+    "title": "Challenges",
+    "tab_label": "Challenges",
     "create_title": "Create New Challenge",
     "name_placeholder": "Challenge Name",
     "length_placeholder": "Challenge Length (in days)",
