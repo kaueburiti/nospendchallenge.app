@@ -14,6 +14,11 @@ import {
   MessageText,
   InputToolbar,
   Send,
+  IMessage,
+  BubbleProps,
+  MessageTextProps,
+  InputToolbarProps,
+  SendProps,
 } from 'react-native-gifted-chat';
 import { Feather } from '@expo/vector-icons';
 import { useChallengeChatMessages } from '@/hooks/useChallengeChatMessages';
@@ -28,7 +33,7 @@ import {
   ModalHeader,
   ModalBody,
 } from '@/components/ui/modal';
-import { FeatherIcon, Icon } from 'lucide-react-native';
+import { Edit, Trash, X } from 'lucide-react-native';
 
 interface ChallengeChatTabProps {
   challengeId: string;
@@ -53,7 +58,7 @@ const ChallengeChatTab = ({ challengeId }: ChallengeChatTabProps) => {
   } = useChallengeChatMessages(challengeId);
 
   const renderBubble = useCallback(
-    props => {
+    (props: BubbleProps<IMessage>) => {
       return (
         <Bubble
           {...props}
@@ -80,7 +85,7 @@ const ChallengeChatTab = ({ challengeId }: ChallengeChatTabProps) => {
   );
 
   const renderMessageText = useCallback(
-    props => {
+    (props: MessageTextProps<IMessage>) => {
       return (
         <MessageText
           {...props}
@@ -99,7 +104,7 @@ const ChallengeChatTab = ({ challengeId }: ChallengeChatTabProps) => {
   );
 
   const renderInputToolbar = useCallback(
-    props => {
+    (props: InputToolbarProps<IMessage>) => {
       return (
         <InputToolbar
           {...props}
@@ -114,7 +119,7 @@ const ChallengeChatTab = ({ challengeId }: ChallengeChatTabProps) => {
   );
 
   const renderSend = useCallback(
-    props => {
+    (props: SendProps<IMessage>) => {
       return (
         <Send
           {...props}
@@ -136,10 +141,10 @@ const ChallengeChatTab = ({ challengeId }: ChallengeChatTabProps) => {
   );
 
   const onLongPress = useCallback(
-    (context, message) => {
+    (_context: unknown, message: IMessage) => {
       // Only allow editing/deleting own messages
       if (message.user._id === currentUser?.id) {
-        setSelectedMessage(message);
+        setSelectedMessage(message as ChatMessageType);
         setModalVisible(true);
       }
     },
@@ -154,15 +159,15 @@ const ChallengeChatTab = ({ challengeId }: ChallengeChatTabProps) => {
       // In a real implementation, you would open a modal or implement in-place editing
       // For simplicity, we'll use a prompt here
       Alert.prompt(
-        t('Edit Message'),
-        t('Update your message:'),
+        t('chat.edit_message'),
+        t('chat.update_message_prompt'),
         [
           {
-            text: t('Cancel'),
+            text: t('chat.cancel'),
             style: 'cancel',
           },
           {
-            text: t('Update'),
+            text: t('chat.update'),
             onPress: text => {
               if (text?.trim()) {
                 updateMessage(
@@ -173,14 +178,14 @@ const ChallengeChatTab = ({ challengeId }: ChallengeChatTabProps) => {
                   {
                     onSuccess: () => {
                       toast.show({
-                        title: t('Success'),
-                        description: t('Message updated'),
+                        title: t('chat.success'),
+                        description: t('chat.message_updated'),
                         status: 'success',
                       });
                     },
                     onError: error => {
                       toast.show({
-                        title: t('Error'),
+                        title: t('chat.error'),
                         description: error.message,
                         status: 'error',
                       });
@@ -202,38 +207,34 @@ const ChallengeChatTab = ({ challengeId }: ChallengeChatTabProps) => {
       // Close the modal first
       setModalVisible(false);
 
-      Alert.alert(
-        t('Delete Message'),
-        t('Are you sure you want to delete this message?'),
-        [
-          {
-            text: t('Cancel'),
-            style: 'cancel',
+      Alert.alert(t('chat.delete_message'), t('chat.delete_message_confirm'), [
+        {
+          text: t('chat.cancel'),
+          style: 'cancel',
+        },
+        {
+          text: t('chat.delete'),
+          style: 'destructive',
+          onPress: () => {
+            deleteMessage(selectedMessage._id, {
+              onSuccess: () => {
+                toast.show({
+                  title: t('chat.success'),
+                  description: t('chat.message_deleted'),
+                  status: 'success',
+                });
+              },
+              onError: error => {
+                toast.show({
+                  title: t('chat.error'),
+                  description: error.message,
+                  status: 'error',
+                });
+              },
+            });
           },
-          {
-            text: t('Delete'),
-            style: 'destructive',
-            onPress: () => {
-              deleteMessage(selectedMessage._id, {
-                onSuccess: () => {
-                  toast.show({
-                    title: t('Success'),
-                    description: t('Message deleted'),
-                    status: 'success',
-                  });
-                },
-                onError: error => {
-                  toast.show({
-                    title: t('Error'),
-                    description: error.message,
-                    status: 'error',
-                  });
-                },
-              });
-            },
-          },
-        ],
-      );
+        },
+      ]);
     }
   }, [selectedMessage, deleteMessage, t, toast]);
 
@@ -241,7 +242,7 @@ const ChallengeChatTab = ({ challengeId }: ChallengeChatTabProps) => {
     return (
       <View style={styles.centered}>
         <ActivityIndicator size="large" color="#6366f1" />
-        <Text style={styles.loadingText}>{t('Loading messages...')}</Text>
+        <Text style={styles.loadingText}>{t('chat.loading_messages')}</Text>
       </View>
     );
   }
@@ -249,7 +250,7 @@ const ChallengeChatTab = ({ challengeId }: ChallengeChatTabProps) => {
   if (error) {
     return (
       <View style={styles.centered}>
-        <Text style={styles.errorText}>{t('Error loading messages')}</Text>
+        <Text style={styles.errorText}>{t('chat.error_loading_messages')}</Text>
         <Text style={styles.errorMessage}>{error.message}</Text>
       </View>
     );
@@ -275,7 +276,7 @@ const ChallengeChatTab = ({ challengeId }: ChallengeChatTabProps) => {
           renderInputToolbar={renderInputToolbar}
           renderSend={renderSend}
           onLongPress={onLongPress}
-          placeholder={t('Type a message...')}
+          placeholder={t('chat.message_placeholder')}
           alwaysShowSend
           scrollToBottomComponent={() => (
             <Feather name="chevron-down" size={24} color="#6366f1" />
@@ -286,23 +287,26 @@ const ChallengeChatTab = ({ challengeId }: ChallengeChatTabProps) => {
       {/* Simple Modal instead of ActionSheet */}
       <Modal isOpen={modalVisible} onClose={() => setModalVisible(false)}>
         <ModalContent>
-          <ModalHeader>{t('Message Options')}</ModalHeader>
+          <ModalHeader>{t('chat.message_options')}</ModalHeader>
           <ModalBody>
             <VStack space="md">
-              <Button
-                variant="outline"
-                onPress={handleEdit}
-                leftIcon={<FeatherIcon size="sm" />}>
-                {t('Edit Message')}
+              <Button variant="outline" onPress={handleEdit}>
+                <Box className="flex-row items-center space-x-2">
+                  <Edit size={20} />
+                  <Text>{t('chat.edit_message')}</Text>
+                </Box>
               </Button>
-              <Button
-                variant="outline"
-                onPress={handleDelete}
-                leftIcon={<FeatherIcon size="sm" />}>
-                {t('Delete Message')}
+              <Button variant="outline" onPress={handleDelete}>
+                <Box className="flex-row items-center space-x-2">
+                  <Trash size={20} />
+                  <Text>{t('chat.delete_message')}</Text>
+                </Box>
               </Button>
-              <Button variant="solid" onPress={() => setModalVisible(false)}>
-                {t('Cancel')}
+              <Button variant="outline" onPress={() => setModalVisible(false)}>
+                <Box className="flex-row items-center space-x-2">
+                  <X size={20} />
+                  <Text>{t('chat.cancel')}</Text>
+                </Box>
               </Button>
             </VStack>
           </ModalBody>

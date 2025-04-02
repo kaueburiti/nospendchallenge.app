@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
 import * as Localization from 'expo-localization';
 import { I18n } from 'i18n-js';
-import { en } from '@/i18n/en';
-import { useColorScheme } from './useColorScheme';
+import en from '@/i18n/en.json';
 
 /**
  * Hook for handling translations across the app

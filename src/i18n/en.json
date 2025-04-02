@@ -23,7 +23,7 @@
     "payment_body_text": "Unlock exclusive features and enhance your experience",
     "payment_button_label": "Upgrade Now",
     "dark_mode": "Dark Mode",
-    "delete_account": "Delete Account",
+    "delete_account": "Delete Account!!!",
     "get_help": "Terms of Service",
     "contact": "Contact",
     "sign_out": "Sign Out",
@@ -66,5 +66,22 @@
   "validation": {
     "password_min_length": "Password must be at least 6 characters",
     "passwords_must_match": "Passwords must match"
+  },
+  "chat": {
+    "edit_message": "Edit Message",
+    "update_message_prompt": "Update your message:",
+    "cancel": "Cancel",
+    "update": "Update",
+    "success": "Success",
+    "message_updated": "Message updated",
+    "error": "Error",
+    "delete_message": "Delete Message",
+    "delete_message_confirm": "Are you sure you want to delete this message?",
+    "delete": "Delete",
+    "message_deleted": "Message deleted",
+    "loading_messages": "Loading messages...",
+    "error_loading_messages": "Error loading messages",
+    "message_placeholder": "Type a message...",
+    "message_options": "Message Options"
   }
 }

@@ -51,6 +51,8 @@ export default function RootLayout() {
     );
   }
 
+  console.log(process.env.EXPO_PUBLIC_SUPABASE_URL);
+
   return (
     <SessionProvider>
       <QueryClientProvider client={queryClient}>
