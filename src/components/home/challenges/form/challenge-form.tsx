@@ -1,213 +1,160 @@
 import React from 'react';
-import {
-  Box,
-  Button,
-  Text,
-  Heading,
-  ButtonText,
-  VStack,
-} from '@/components/ui';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { VStack, HStack } from '@/components/ui';
+import { Button, ButtonText } from '@/components/ui';
 import FormInput from '@/components/ui/form/input';
-import type {
-  Control,
-  FieldErrors,
-  UseFormWatch,
-  UseFormSetValue,
-  UseFormHandleSubmit,
-} from 'react-hook-form';
-import { router } from 'expo-router';
-import { i18n } from '@/i18n';
-import { Pressable } from 'react-native';
-import { ScrollView } from '@/components/ui/scroll-view';
-import { StartAndEndDates } from '@/components/home/challenges/form/start-and-end-date';
-import PhotoUpload from '@/components/ui/photo-upload';
-import { z } from 'zod';
-import { Badge } from '@/components/ui/badge';
-import classNames from 'classnames';
-
-export const challengeSchema = z.object({
-  name: z.string().min(4, { message: 'Name must be at least 4 characters' }),
-  description: z.string().min(10, {
-    message: 'Description must be at least 10 characters',
-  }),
-  startDate: z.date(),
-  endDate: z.date(),
-});
-
-export type ChallengeFormData = z.infer<typeof challengeSchema>;
-
-interface ImageData {
-  uri: string;
-  base64: string;
-  fileExtension: string;
-}
+import {
+  challengeSchema,
+  type ChallengeSchemaType,
+} from '@/lib/schema/challenge';
+import { useTranslation } from '@/hooks/useTranslation';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 interface ChallengeFormProps {
-  title: string;
-  subtitle: string;
-  control: Control<ChallengeFormData>;
-  watch: UseFormWatch<ChallengeFormData>;
-  setValue: UseFormSetValue<ChallengeFormData>;
-  handleSubmit: UseFormHandleSubmit<ChallengeFormData>;
-  errors: FieldErrors<ChallengeFormData>;
-  onSubmit: (data: ChallengeFormData) => Promise<void>;
-  onError?: (errors: FieldErrors<ChallengeFormData>) => void;
-  imageData: ImageData | null;
-  setImageData: (data: ImageData | null) => void;
-  existingImageUrl?: string;
-  isStartDateDisabled?: boolean;
-  submitButtonText?: string;
-  showDeleteButton?: boolean;
-  isSubmitting?: boolean;
-  onDelete?: () => void;
+  onSubmit: (data: ChallengeSchemaType) => Promise<void>;
+  isLoading?: boolean;
+  defaultValues?: Partial<ChallengeSchemaType>;
 }
 
-export function ChallengeForm({
-  title,
-  subtitle,
-  control,
-  watch,
-  setValue,
-  handleSubmit,
-  errors,
+export default function ChallengeForm({
   onSubmit,
-  onError,
-  imageData,
-  setImageData,
-  existingImageUrl,
-  isStartDateDisabled = false,
-  submitButtonText = i18n.t('challenge.create_button'),
-  showDeleteButton = false,
-  onDelete,
-  isSubmitting = false,
+  isLoading,
+  defaultValues,
 }: ChallengeFormProps) {
+  const { t } = useTranslation();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    setValue,
+  } = useForm<ChallengeSchemaType>({
+    resolver: zodResolver(challengeSchema),
+    defaultValues,
+  });
+
+  const [showStartDate, setShowStartDate] = React.useState(false);
+  const [showEndDate, setShowEndDate] = React.useState(false);
+
+  const startDate = watch('startDate');
+  const endDate = watch('endDate');
+  const type = watch('type');
+
   return (
-    <ScrollView className="h-[1px] flex-1">
-      <Box className="px-4 py-12">
-        <Box className="mb-8 items-center">
-          <Heading size="2xl" className="mb-1">
-            {title}
-          </Heading>
-          <Text className="text-md text-gray-500">{subtitle}</Text>
-        </Box>
+    <VStack className="flex-1 gap-4">
+      <FormInput
+        control={control}
+        name="name"
+        label={t('challenge.name_placeholder')}
+        placeholder={t('challenge.name_placeholder')}
+        errorMessage={errors.name?.message ? t(errors.name.message) : undefined}
+      />
 
-        <Box className="mb-6">
-          <PhotoUpload
-            onImageUpload={imageData => setImageData(imageData)}
-            uri={imageData?.uri ?? existingImageUrl}
-          />
-        </Box>
+      <FormInput
+        control={control}
+        name="description"
+        label={t('challenge.description_placeholder')}
+        placeholder={t('challenge.description_placeholder')}
+        errorMessage={
+          errors.description?.message
+            ? t(errors.description.message)
+            : undefined
+        }
+      />
 
-        <VStack space="2xl">
-          <FormInput
-            label="Name"
-            name="name"
-            control={control}
-            placeholder="#MyChallenge"
-            errorMessage={errors.name?.message}
-          />
+      <FormInput
+        control={control}
+        name="amount"
+        label={t('challenge.amount_placeholder')}
+        placeholder={t('challenge.amount_placeholder')}
+        errorMessage={
+          errors.amount?.message ? t(errors.amount.message) : undefined
+        }
+      />
 
-          <FormInput
-            label="Description"
-            name="description"
-            control={control}
-            placeholder="Describe your challenge"
-            errorMessage={errors.description?.message}
-          />
-
-          <Box className="flex-col gap-2">
-            <StartAndEndDates
-              start={{
-                date: watch('startDate'),
-                onChange: !isStartDateDisabled
-                  ? date => setValue('startDate', date)
-                  : undefined,
-                disabled: isStartDateDisabled,
-              }}
-              end={{
-                date: watch('endDate'),
-                onChange: date => setValue('endDate', date),
-              }}
-            />
-            {!isStartDateDisabled && (
-              <DaysSuggestions watch={watch} setValue={setValue} />
-            )}
-          </Box>
-        </VStack>
-
-        <Box className="mt-12 flex-row justify-between gap-4">
+      <VStack space="sm">
+        <ButtonText className="text-sm font-medium text-gray-700">
+          {t('challenge.type_placeholder')}
+        </ButtonText>
+        <HStack space="sm">
           <Button
-            onPress={() => router.back()}
+            variant={type === 'spending' ? 'solid' : 'outline'}
+            size="lg"
             className="flex-1"
-            variant="outline">
-            <ButtonText>Cancel</ButtonText>
+            onPress={() => setValue('type', 'spending')}>
+            <ButtonText>{t('challenge.type_spending')}</ButtonText>
           </Button>
-
           <Button
-            onPress={handleSubmit(onSubmit, onError)}
+            variant={type === 'saving' ? 'solid' : 'outline'}
+            size="lg"
             className="flex-1"
-            disabled={isSubmitting}>
-            <ButtonText>
-              {isSubmitting ? 'Sending...' : submitButtonText}
-            </ButtonText>
+            onPress={() => setValue('type', 'saving')}>
+            <ButtonText>{t('challenge.type_saving')}</ButtonText>
           </Button>
-        </Box>
-
-        {showDeleteButton && onDelete && (
-          <Box className="mt-4">
-            <Button onPress={onDelete} action="negative" variant="outline">
-              <ButtonText>Delete Challenge</ButtonText>
-            </Button>
-          </Box>
+        </HStack>
+        {errors.type?.message && (
+          <ButtonText className="text-sm text-red-500">
+            {t(errors.type.message)}
+          </ButtonText>
         )}
-      </Box>
-    </ScrollView>
-  );
-}
+      </VStack>
 
-function DaysSuggestions({
-  watch,
-  setValue,
-}: {
-  watch: UseFormWatch<ChallengeFormData>;
-  setValue: UseFormSetValue<ChallengeFormData>;
-}) {
-  const [selectedPeriod, setSelectedPeriod] = React.useState<number>(0);
+      <Button
+        variant="outline"
+        size="lg"
+        onPress={() => setShowStartDate(true)}>
+        <ButtonText>
+          {startDate
+            ? startDate.toLocaleDateString()
+            : t('challenge.start_date_placeholder')}
+        </ButtonText>
+      </Button>
 
-  return (
-    <Box>
-      <Text className="mb-2 text-sm">Some suggestions:</Text>
-      <Box className="flex-row gap-4">
-        {[30, 60, 90, 120].map(period => (
-          <Pressable
-            key={period}
-            onPress={() => {
-              const startDate = watch('startDate');
-              const endDate = new Date(startDate);
-              // The -1 is needed because we want to include both the start and end dates in our grid.
-              // For example: Jan 1 to Jan 3 is 2 days difference, but we want to show 3 days (1st, 2nd, and 3rd)
-              // So we need to subtract 1 from the period to get the correct number of days.
-              endDate.setDate(startDate.getDate() + (period - 1));
+      <Button variant="outline" size="lg" onPress={() => setShowEndDate(true)}>
+        <ButtonText>
+          {endDate
+            ? endDate.toLocaleDateString()
+            : t('challenge.end_date_placeholder')}
+        </ButtonText>
+      </Button>
 
-              setSelectedPeriod(period);
-              setValue('endDate', endDate);
-            }}>
-            <Badge
-              size="sm"
-              variant="outline"
-              className="rounded-lg"
-              action={selectedPeriod === period ? 'primary' : 'muted'}>
-              <Text
-                className={classNames(
-                  'text-sm',
-                  selectedPeriod === period && 'text-white',
-                )}>
-                {period} Days
-              </Text>
-            </Badge>
-          </Pressable>
-        ))}
-      </Box>
-    </Box>
+      {showStartDate && (
+        <DateTimePicker
+          value={startDate || new Date()}
+          mode="date"
+          onChange={(event, date) => {
+            setShowStartDate(false);
+            if (date) {
+              setValue('startDate', date);
+            }
+          }}
+        />
+      )}
+
+      {showEndDate && (
+        <DateTimePicker
+          value={endDate || new Date()}
+          mode="date"
+          onChange={(event, date) => {
+            setShowEndDate(false);
+            if (date) {
+              setValue('endDate', date);
+            }
+          }}
+        />
+      )}
+
+      <Button
+        variant="solid"
+        size="lg"
+        className="mt-5 h-12 bg-[#ff7979]"
+        onPress={handleSubmit(onSubmit)}
+        isDisabled={isLoading}>
+        <ButtonText>
+          {isLoading ? t('common.save') : t('challenge.create_button')}
+        </ButtonText>
+      </Button>
+    </VStack>
   );
 }

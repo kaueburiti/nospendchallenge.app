@@ -1,8 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
 import { useSimpleToast } from '../useSimpleToast';
-import { useSignOut } from "@/hooks/auth/useSignOut";
+import { useSignOut } from '@/hooks/auth/useSignOut';
 import { type FunctionsError } from '@supabase/supabase-js';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type DeleteAccountParams = {
   onSuccess?: () => void;
@@ -14,7 +15,10 @@ type DeleteAccountResponse = {
 };
 
 const deleteAccount = async (): Promise<DeleteAccountResponse> => {
-  const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+  const {
+    data: { session },
+    error: sessionError,
+  } = await supabase.auth.getSession();
 
   if (sessionError) {
     console.error('Session Error:', sessionError);
@@ -26,12 +30,14 @@ const deleteAccount = async (): Promise<DeleteAccountResponse> => {
     throw new Error('No active session or missing access token');
   }
 
-  const response =
-      await supabase.functions.invoke<DeleteAccountResponse>('delete-account', {
-        headers: {
-          Authorization: `Bearer ${session.access_token}`,
-        },
-      });
+  const response = await supabase.functions.invoke<DeleteAccountResponse>(
+    'delete-account',
+    {
+      headers: {
+        Authorization: `Bearer ${session.access_token}`,
+      },
+    },
+  );
 
   if (response.error) {
     console.error('Error invoking function:', response.error);
@@ -47,23 +53,27 @@ const deleteAccount = async (): Promise<DeleteAccountResponse> => {
   return data;
 };
 
-export const useDeleteAccount = () => {
+export function useDeleteAccount() {
+  const { t } = useTranslation();
   const { showToast } = useSimpleToast();
   const { signOut } = useSignOut();
 
   const mutation = useMutation({
     mutationFn: deleteAccount,
     onSuccess: async () => {
-      showToast('success', 'Account deleted successfully');
+      showToast('success', t('toast.account.delete_success'));
       await signOut({});
     },
     onError: (error: FunctionsError | Error) => {
       console.error('Delete account error:', error.message);
-      showToast('error', 'Failed to delete account');
+      showToast('error', t('toast.account.delete_error'));
     },
   });
 
-  const handleDeleteAccount = async ({ onSuccess, onError }: DeleteAccountParams) => {
+  const handleDeleteAccount = async ({
+    onSuccess,
+    onError,
+  }: DeleteAccountParams) => {
     try {
       await mutation.mutateAsync();
       onSuccess?.();
@@ -76,4 +86,4 @@ export const useDeleteAccount = () => {
     isLoading: mutation.isPending,
     deleteAccount: handleDeleteAccount,
   };
-};
+}

@@ -23,7 +23,7 @@
     "payment_body_text": "Unlock exclusive features and enhance your experience",
     "payment_button_label": "Upgrade Now",
     "dark_mode": "Dark Mode",
-    "delete_account": "Delete Account!!!",
+    "delete_account": "Delete Account",
     "get_help": "Terms of Service",
     "contact": "Contact",
     "sign_out": "Sign Out",
@@ -61,7 +61,33 @@
     "length_placeholder": "Challenge Length (in days)",
     "create_button": "Create Challenge",
     "edit_title": "Edit Challenge",
-    "update_button": "Update Challenge"
+    "update_button": "Update Challenge",
+    "subtitle_create": "Let's get you started with a new challenge.",
+    "subtitle_edit": "Update your challenge details.",
+    "check_in_date": "Check In Date:",
+    "check_in_placeholder": "How was it?",
+    "check_in_label": "Tell us how are you feeling today",
+    "start_date": "Start Date",
+    "end_date": "End Date",
+    "description_placeholder": "Describe your challenge",
+    "progress_title": "Challenge Progress",
+    "create_check_in": "Create a Check In",
+    "my_checks": "My Checks",
+    "loading_activities": "Loading activities...",
+    "activities_title": "Activities",
+    "activities_empty_description": "Activities will appear here as participants join and complete challenge days.",
+    "loading_participants": "Loading participants...",
+    "no_participants": "No participants yet",
+    "participants_title": "Participants",
+    "participant_owner": "Owner",
+    "days_left": "Days Left",
+    "total_checks": "Checks",
+    "days_skipped": "Days Skipped",
+    "errors": {
+      "name_required": "Name is required",
+      "description_required": "Description is required",
+      "amount_required": "Amount must be greater than 0"
+    }
   },
   "validation": {
     "password_min_length": "Password must be at least 6 characters",
@@ -83,5 +109,94 @@
     "error_loading_messages": "Error loading messages",
     "message_placeholder": "Type a message...",
     "message_options": "Message Options"
+  },
+  "auth": {
+    "email": "Email",
+    "password": "Password",
+    "confirm_password": "Confirm Password",
+    "forgot_password": "Forgot password?",
+    "sign_in": "Sign In",
+    "sign_up": "Sign Up",
+    "signing_in": "Signing in...",
+    "signing_up": "Signing up...",
+    "continue": "Continue",
+    "create_account": "Create Account",
+    "reset_password": "Reset Password",
+    "reset_password_description": "Enter your email address and we'll send you instructions to reset your password.",
+    "send_instructions": "Send Instructions",
+    "instructions_sent": "Password reset instructions sent to your email",
+    "error_send_instructions": "Failed to send reset password instructions"
+  },
+  "empty": {
+    "no_challenges": "No challenges yet",
+    "no_activities": "No activities yet",
+    "create_first": "Create your first challenge to get started!",
+    "start_challenge": "Start a Challenge"
+  },
+  "invite": {
+    "title": "Invite a Friend",
+    "description": "Enter your friend's email to invite them to join this challenge",
+    "email_placeholder": "friend@example.com",
+    "sending": "Sending...",
+    "send": "Send Invitation",
+    "success": "Invitation sent successfully",
+    "accept_success_title": "Success",
+    "accept_success_message": "You have joined the challenge!",
+    "decline_success_title": "Success",
+    "decline_success_message": "Invitation declined",
+    "pending_title": "Pending Invitations",
+    "starts": "Starts",
+    "decline": "Decline",
+    "accept": "Accept",
+    "loading_participants": "Loading participants...",
+    "no_participants": "No participants yet",
+    "participants": "Participants",
+    "owner": "Owner",
+    "loading_invitations": "Loading pending invitations...",
+    "no_invitations": "No invitations sent yet",
+    "pending_invitations": "Pending Invitations",
+    "sent": "Sent",
+    "status": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "declined": "Declined"
+    },
+    "errors": {
+      "invalid_email": "Please enter a valid email address"
+    }
+  },
+  "toast": {
+    "profile": {
+      "update_success": "Profile updated successfully",
+      "update_error": "Failed to update the user profile",
+      "save_error": "Error saving profile",
+      "try_again": "Please, try again later"
+    },
+    "password": {
+      "update_success": "Password updated successfully",
+      "update_error": "Failed to update the password"
+    },
+    "account": {
+      "delete_success": "Account deleted successfully",
+      "delete_error": "Failed to delete account",
+      "sign_out_error": "Sign out failed"
+    },
+    "auth": {
+      "apple_sign_in_error": "Apple Sign-In failed",
+      "apple_sign_in_no_token": "Apple Sign-In failed: No identity token",
+      "sign_in_error": "Sign-In failed",
+      "sign_up_success": "Account successfully created!",
+      "sign_up_error": "Ops, something went wrong",
+      "session_set_success": "Session set successfully",
+      "session_set_error": "Failed to set session",
+      "reset_password_success": "Password reset instructions sent to your email",
+      "reset_password_error": "Failed to send reset password instructions",
+      "welcome_back": "Welcome back!",
+      "google_not_available": "Google Sign-In is not available",
+      "google_sign_in_error": "Google Sign-In failed"
+    },
+    "payment": {
+      "error": "Oops. Something went wrong!"
+    }
   }
 }

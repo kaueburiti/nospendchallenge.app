@@ -3,6 +3,7 @@ import { useSimpleToast } from '../useSimpleToast';
 import { supabase } from '@/lib/supabase';
 import { type AuthError } from '@supabase/auth-js';
 import * as AppleAuthentication from 'expo-apple-authentication';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type SignInWithAppleParams = {
   onSuccess?: () => void;
@@ -10,6 +11,7 @@ type SignInWithAppleParams = {
 };
 
 export const useSignInWithApple = () => {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const { showToast } = useSimpleToast();
 
@@ -26,13 +28,13 @@ export const useSignInWithApple = () => {
       ],
     }).catch(error => {
       console.error('Apple Authentication Error:', error);
-      showToast('error', 'Apple Sign-In failed');
+      showToast('error', t('toast.auth.apple_sign_in_error'));
       onError?.(error as Error | AuthError);
       return null;
     });
 
     if (!credential?.identityToken) {
-      showToast('error', 'Apple Sign-In failed: No identity token');
+      showToast('error', t('toast.auth.apple_sign_in_no_token'));
       onError?.(new Error('No identity token'));
       setIsLoading(false);
       return;
@@ -64,7 +66,7 @@ export const useSignInWithApple = () => {
 
     if (error) {
       console.error('Supabase Sign-In Error:', error);
-      showToast('error', 'Sign-In failed');
+      showToast('error', t('toast.auth.sign_in_error'));
       onError?.(error);
     } else {
       onSuccess?.();

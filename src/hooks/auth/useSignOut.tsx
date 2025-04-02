@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useSimpleToast } from '../useSimpleToast';
 import type { AuthError } from '@supabase/auth-js';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type SignOutParams = {
   onSuccess?: () => void;
@@ -9,6 +10,7 @@ type SignOutParams = {
 };
 
 export const useSignOut = () => {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const { showToast } = useSimpleToast();
 
@@ -19,7 +21,7 @@ export const useSignOut = () => {
 
     if (error) {
       console.error('Sign up error:', error);
-      showToast('error', 'Sign out failed');
+      showToast('error', t('toast.account.sign_out_error'));
       onError?.(error);
     } else {
       onSuccess?.();

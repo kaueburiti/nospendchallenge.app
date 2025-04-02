@@ -13,23 +13,25 @@ import { useChallengeParticipants } from '@/hooks/participants';
 import { type Tables } from '@/lib/db/database.types';
 import { useChallenge } from '@/hooks/challenges';
 import { Badge } from '@/components/ui/badge';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface ParticipantListProps {
   challengeId: number;
 }
 
 export default function ParticipantList({ challengeId }: ParticipantListProps) {
+  const { t } = useTranslation();
   const { data: participants, isLoading } =
     useChallengeParticipants(challengeId);
 
   if (isLoading) {
-    return <Text>Loading participants...</Text>;
+    return <Text>{t('invite.loading_participants')}</Text>;
   }
 
   if (!participants || participants.length === 0) {
     return (
       <Box className="p-4">
-        <Text className="text-gray-500">No participants yet</Text>
+        <Text className="text-gray-500">{t('invite.no_participants')}</Text>
       </Box>
     );
   }
@@ -37,7 +39,7 @@ export default function ParticipantList({ challengeId }: ParticipantListProps) {
   return (
     <Box>
       <Heading size="md" className="mb-4">
-        Participants
+        {t('invite.participants')}
       </Heading>
       <VStack space="md">
         {participants.map(participant => (
@@ -59,6 +61,7 @@ export function ChallengeParticipant({
   participant: Tables<'profiles'>;
   challengeId: number;
 }) {
+  const { t } = useTranslation();
   const { data: challenge } = useChallenge(String(challengeId));
   const isOwner = challenge?.owner_id === participant.id;
 
@@ -80,7 +83,7 @@ export function ChallengeParticipant({
 
         {isOwner && (
           <Badge variant="outline" className="rounded-lg">
-            <Text className="text-2xs">Owner</Text>
+            <Text className="text-2xs">{t('invite.owner')}</Text>
           </Badge>
         )}
       </HStack>

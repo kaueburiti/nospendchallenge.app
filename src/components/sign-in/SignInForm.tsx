@@ -9,65 +9,65 @@ import { Button, ButtonText } from '../ui/button';
 import { useSignInWithPassword } from '@/hooks/auth/useSignInWithPassword';
 import FormInput from '@/components/ui/form/input';
 import { signInSchema, type SignInSchemaType } from '@/lib/schema/signIn';
+import { useTranslation } from '@/hooks/useTranslation';
 
-const SignInForm = () => {
+export default function SignInForm() {
+  const { t } = useTranslation();
   const {
     control,
-    formState: { errors, isSubmitting },
     handleSubmit,
-    reset,
+    formState: { isSubmitting, errors },
   } = useForm<SignInSchemaType>({
     resolver: zodResolver(signInSchema),
   });
-  const { signInWithPassword } = useSignInWithPassword();
+
+  const { signInWithPassword, isLoading } = useSignInWithPassword();
 
   const onSubmit = async (data: SignInSchemaType) => {
+    Keyboard.dismiss();
     await signInWithPassword({
       email: data.email,
       password: data.password,
-      onSuccess: () => reset(),
+      onSuccess: () => {
+        // Handle success
+      },
     });
   };
 
-  const handleKeyPress = () => {
-    Keyboard.dismiss();
-    void handleSubmit(onSubmit)();
-  };
-
   return (
-    <>
-      <VStack className="justify-between gap-4">
-        <FormInput
-          name="email"
-          control={control}
-          placeholder="Email"
-          errorMessage={errors.email?.message}
-          onSubmitEditing={handleKeyPress}
-        />
-        <FormInput
-          name="password"
-          control={control}
-          placeholder="Password"
-          errorMessage={errors.password?.message}
-          isPassword
-          onSubmitEditing={handleKeyPress}
-        />
-      </VStack>
+    <VStack className="justify-between gap-4">
+      <FormInput
+        control={control}
+        name="email"
+        placeholder={t('auth.email')}
+        autoCapitalize="none"
+        errorMessage={errors.email?.message}
+      />
+
+      <FormInput
+        control={control}
+        name="password"
+        placeholder={t('auth.password')}
+        isPassword
+        errorMessage={errors.password?.message}
+      />
+
       <ExpoLink href="/forgot-password" className="mt-2">
-        <LinkText className="text-sm">Forgot password?</LinkText>
+        <LinkText className="text-sm">{t('auth.forgot_password')}</LinkText>
       </ExpoLink>
+
       <Button
         variant="solid"
         size="lg"
         className="mt-5 h-12 bg-[#ff7979]"
         onPress={handleSubmit(onSubmit)}
-        disabled={isSubmitting}>
+        isDisabled={isLoading || isSubmitting}>
         <ButtonText className="text-sm">
-          {isSubmitting ? 'Signing in...' : 'Continue'}
+          {isLoading || isSubmitting
+            ? t('auth.signing_in')
+            : t('auth.continue')}
         </ButtonText>
       </Button>
-    </>
+    </VStack>
   );
-};
-
-export default SignInForm;
+}

@@ -16,6 +16,7 @@ import { useChallenge, useIsChallengeOwner } from '@/hooks/challenges';
 import { Badge } from '@/components/ui/badge';
 import InviteForm from '../home/challenges/invite/invite-form';
 import InvitationList from '../home/challenges/invite/invitation-list';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface ChallengeParticipantsTabProps {
   challengeId: number;
@@ -24,18 +25,19 @@ interface ChallengeParticipantsTabProps {
 export default function ChallengeParticipantsTab({
   challengeId,
 }: ChallengeParticipantsTabProps) {
+  const { t } = useTranslation();
   const { data: participants, isLoading } =
     useChallengeParticipants(challengeId);
   const isOwner = useIsChallengeOwner(String(challengeId));
 
   if (isLoading) {
-    return <Text>Loading participants...</Text>;
+    return <Text>{t('challenge.loading_participants')}</Text>;
   }
 
   if (!participants || participants.length === 0) {
     return (
       <Box className="p-4">
-        <Text className="text-gray-500">No participants yet</Text>
+        <Text className="text-gray-500">{t('challenge.no_participants')}</Text>
       </Box>
     );
   }
@@ -45,7 +47,7 @@ export default function ChallengeParticipantsTab({
       <VStack space="4xl">
         <Box>
           <Heading size="md" className="mb-4">
-            Participants
+            {t('challenge.participants_title')}
           </Heading>
           {participants.map(participant => (
             <ChallengeParticipant
@@ -75,6 +77,7 @@ export function ChallengeParticipant({
   participant: Tables<'profiles'>;
   challengeId: number;
 }) {
+  const { t } = useTranslation();
   const { data: challenge } = useChallenge(String(challengeId));
   const isOwner = challenge?.owner_id === participant.id;
 
@@ -96,7 +99,7 @@ export function ChallengeParticipant({
 
         {isOwner && (
           <Badge variant="outline" className="rounded-lg">
-            <Text className="text-2xs">Owner</Text>
+            <Text className="text-2xs">{t('challenge.participant_owner')}</Text>
           </Badge>
         )}
       </HStack>

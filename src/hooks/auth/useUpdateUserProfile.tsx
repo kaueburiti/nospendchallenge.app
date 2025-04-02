@@ -3,6 +3,7 @@ import { supabase } from '@/lib/supabase';
 import { useSimpleToast } from '../useSimpleToast';
 import type { AuthError } from '@supabase/auth-js';
 import { type User } from '@supabase/supabase-js';
+import { useTranslation } from '@/hooks/useTranslation';
 
 type UserProfileParams = {
   data: Partial<User['user_metadata']>;
@@ -11,6 +12,7 @@ type UserProfileParams = {
 };
 
 export const useUpdateUserProfile = () => {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const { showToast } = useSimpleToast();
 
@@ -27,10 +29,10 @@ export const useUpdateUserProfile = () => {
 
     if (error) {
       console.error('Error updating user profile:', error);
-      showToast('error', 'Failed to update the user profile');
+      showToast('error', t('toast.profile.update_error'));
       onError?.(error);
     } else {
-      showToast('success', 'Profile updated successfully');
+      showToast('success', t('toast.profile.update_success'));
       onSuccess?.();
     }
 

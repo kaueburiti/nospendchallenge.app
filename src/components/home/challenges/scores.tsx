@@ -4,8 +4,10 @@ import { useLocalSearchParams } from 'expo-router';
 import { useChallenge } from '@/hooks/challenges';
 import { useGetUserChecksByChallenge } from '@/hooks/checks';
 import { differenceInDays, eachDayOfInterval, format } from 'date-fns';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function ChallengeScores() {
+  const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: challenge, isLoading: isLoadingChallenge } = useChallenge(id);
   const { data: checks, isLoading: isLoadingChecks } =
@@ -48,7 +50,7 @@ export default function ChallengeScores() {
     <Box className="my-5 flex-row">
       <VStack className="flex-1 items-center border-r border-outline-300 py-2">
         <Heading size="4xl">{daysLeft}</Heading>
-        <Text size="xs">Days Left</Text>
+        <Text size="xs">{t('challenge.days_left')}</Text>
       </VStack>
       <Divider
         orientation="horizontal"
@@ -56,7 +58,7 @@ export default function ChallengeScores() {
       />
       <VStack className="flex-1 items-center border-r border-outline-300 py-2">
         <Heading size="4xl">{totalChecks}</Heading>
-        <Text size="xs">Checks</Text>
+        <Text size="xs">{t('challenge.total_checks')}</Text>
       </VStack>
       <Divider
         orientation="horizontal"
@@ -64,7 +66,7 @@ export default function ChallengeScores() {
       />
       <VStack className="flex-1 items-center pt-2">
         <Heading size="4xl">{daysSkipped}</Heading>
-        <Text size="xs">Days Skipped</Text>
+        <Text size="xs">{t('challenge.days_skipped')}</Text>
       </VStack>
     </Box>
   );
