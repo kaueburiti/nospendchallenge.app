@@ -65,7 +65,9 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
       const isPrivacyPolicy = segments[0] === 'privacy-policy';
 
       if (session && !inProtectedGroup && !isPrivacyPolicy) {
-        router.replace('/(protected)/(tabs)/home');
+        requestAnimationFrame(() => {
+          router.replace('/(protected)/(tabs)/home');
+        });
       } else if (!session && !inPublicGroup && !isPrivacyPolicy) {
         requestAnimationFrame(() => {
           router.replace('/(public)/welcome');
