@@ -49,6 +49,7 @@ export default function ChallengeParticipantsTab({
           <Heading size="md" className="mb-4">
             {t('challenge.participants_title')}
           </Heading>
+
           {participants.map(participant => (
             <ChallengeParticipant
               key={participant.id}
@@ -84,16 +85,7 @@ export function ChallengeParticipant({
   return (
     <HStack
       key={participant.id}
-      className="items-center rounded-lg border border-gray-200 bg-gray-100 p-3">
-      <Avatar className="mr-3" size="sm">
-        {participant.avatar_url ? (
-          <AvatarImage source={{ uri: participant.avatar_url }} />
-        ) : (
-          <AvatarFallbackText>
-            {participant.display_name?.substring(0, 2)}
-          </AvatarFallbackText>
-        )}
-      </Avatar>
+      className="mb-2 items-center rounded-lg border border-gray-200 bg-gray-100 p-3">
       <HStack className="flex-1 justify-between">
         <Text className="font-medium">{participant.display_name}</Text>
 
