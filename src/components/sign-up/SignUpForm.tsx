@@ -7,14 +7,13 @@ import { Button, ButtonText } from '../ui/button';
 import { useSignUp } from '@/hooks/auth/useSignUp';
 import FormInput from '@/components/ui/form/input';
 import { signUpSchema, type SignUpSchemaType } from '@/lib/schema/signUp';
-import { useTranslation } from '@/hooks/useTranslation';
 
-export default function SignUpForm() {
-  const { t } = useTranslation();
+const SignUpForm = () => {
   const {
     control,
+    formState: { errors },
     handleSubmit,
-    formState: { isSubmitting, errors },
+    reset,
   } = useForm<SignUpSchemaType>({
     resolver: zodResolver(signUpSchema),
   });
@@ -22,48 +21,56 @@ export default function SignUpForm() {
   const { signUp, isLoading } = useSignUp();
 
   const onSubmit = async (data: SignUpSchemaType) => {
+    await signUp({
+      email: data.email,
+      password: data.password,
+      onSuccess: () => reset(),
+    });
+  };
+
+  const handleKeyPress = () => {
     Keyboard.dismiss();
-    await signUp(data);
+    void handleSubmit(onSubmit)();
   };
 
   return (
-    <VStack className="justify-between gap-4">
-      <FormInput
-        control={control}
-        name="email"
-        placeholder={t('auth.email')}
-        autoCapitalize="none"
-        errorMessage={errors.email?.message}
-      />
-
-      <FormInput
-        control={control}
-        name="password"
-        placeholder={t('auth.password')}
-        isPassword
-        errorMessage={errors.password?.message}
-      />
-
-      <FormInput
-        control={control}
-        name="confirmPassword"
-        placeholder={t('auth.confirm_password')}
-        isPassword
-        errorMessage={errors.confirmPassword?.message}
-      />
+    <>
+      <VStack className="justify-between gap-4">
+        <FormInput
+          name="email"
+          control={control}
+          placeholder="Email"
+          errorMessage={errors.email?.message}
+        />
+        <FormInput
+          name="password"
+          control={control}
+          placeholder="Password"
+          errorMessage={errors.password?.message}
+          isPassword
+        />
+        <FormInput
+          name="confirmPassword"
+          control={control}
+          placeholder="Confirm Password"
+          errorMessage={errors.confirmPassword?.message}
+          isPassword
+          onSubmitEditing={handleKeyPress}
+        />
+      </VStack>
 
       <Button
         variant="solid"
         size="lg"
         className="mt-5 h-12 bg-[#ff7979]"
         onPress={handleSubmit(onSubmit)}
-        isDisabled={isLoading || isSubmitting}>
+        disabled={isLoading}>
         <ButtonText className="text-sm">
-          {isLoading || isSubmitting
-            ? t('auth.signing_up')
-            : t('auth.create_account')}
+          {isLoading ? 'Signing up...' : 'Create Account'}
         </ButtonText>
       </Button>
-    </VStack>
+    </>
   );
-}
+};
+
+export default SignUpForm;

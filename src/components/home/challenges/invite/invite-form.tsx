@@ -15,10 +15,9 @@ import { useInviteToChallengeByEmail } from '@/hooks/invitations';
 import { Alert } from 'react-native';
 import { useSimpleToast } from '@/hooks/useSimpleToast';
 import { Analytics } from '@/lib/analytics';
-import { useTranslation } from '@/hooks/useTranslation';
 
 const inviteSchema = z.object({
-  email: z.string().email({ message: 'invite.errors.invalid_email' }),
+  email: z.string().email({ message: 'Please enter a valid email address' }),
 });
 
 type InviteFormData = z.infer<typeof inviteSchema>;
@@ -32,7 +31,6 @@ export default function InviteForm({
   challengeId,
   onSuccess,
 }: InviteFormProps) {
-  const { t } = useTranslation();
   const { showToast } = useSimpleToast();
   const {
     control,
@@ -53,13 +51,13 @@ export default function InviteForm({
     inviteByEmail(data.email, {
       onSuccess: () => {
         Analytics.challenge.invited(String(challengeId), data.email);
-        showToast('success', t('invite.success'));
+        showToast('success', 'Invitation sent successfully');
         reset();
         onSuccess?.();
       },
       onError: error => {
         Analytics.error.occurred(error, 'challenge_invitation');
-        showToast('error', t('common.error'), error.message);
+        showToast('error', 'Ops, something went wrong', error.message);
       },
     });
   };
@@ -67,23 +65,23 @@ export default function InviteForm({
   return (
     <Box>
       <VStack space="md">
-        <Heading size="md">{t('invite.title')}</Heading>
-        <Text className="text-gray-500">{t('invite.description')}</Text>
+        <Heading size="md">Invite a Friend</Heading>
+        <Text className="text-gray-500">
+          Enter your friend's email to invite them to join this challenge
+        </Text>
 
         <FormInput
           name="email"
           control={control}
-          placeholder={t('invite.email_placeholder')}
-          errorMessage={
-            errors.email?.message ? t(errors.email.message) : undefined
-          }
+          placeholder="friend@example.com"
+          errorMessage={errors.email?.message}
         />
 
         <Button
           onPress={handleSubmit(onSubmit)}
           disabled={isSubmitting || isPending}>
           <ButtonText>
-            {isPending ? t('invite.sending') : t('invite.send')}
+            {isPending ? 'Sending...' : 'Send Invitation'}
           </ButtonText>
         </Button>
       </VStack>

@@ -3,25 +3,22 @@ import { Box, Heading, Text, VStack, HStack } from '@/components/ui';
 import { useInvitationsByChallenge } from '@/hooks/invitations';
 import { format } from 'date-fns';
 import { Badge, BadgeText } from '@/components/ui/badge';
-import { useTranslation } from '@/hooks/useTranslation';
-
 interface InvitationListProps {
   challengeId: number;
 }
 
 export default function InvitationList({ challengeId }: InvitationListProps) {
-  const { t } = useTranslation();
   const { data: invitations, isLoading } =
     useInvitationsByChallenge(challengeId);
 
   if (isLoading) {
-    return <Text>{t('invite.loading_invitations')}</Text>;
+    return <Text>Loading pending invitations...</Text>;
   }
 
   if (!invitations || invitations.length === 0) {
     return (
       <Box className="p-4">
-        <Text className="text-gray-500">{t('invite.no_invitations')}</Text>
+        <Text className="text-gray-500">No invitations sent yet</Text>
       </Box>
     );
   }
@@ -29,7 +26,7 @@ export default function InvitationList({ challengeId }: InvitationListProps) {
   return (
     <Box>
       <Heading size="md" className="mb-4">
-        {t('invite.pending_invitations')}
+        Pending Invitations
       </Heading>
       <VStack space="md">
         {invitations.map(invitation => (
@@ -39,8 +36,7 @@ export default function InvitationList({ challengeId }: InvitationListProps) {
             <VStack>
               <Text className="font-medium">{invitation.invitee_email}</Text>
               <Text className="text-xs text-gray-500">
-                {t('invite.sent')}{' '}
-                {format(new Date(invitation.created_at), 'MMM d, yyyy')}
+                Sent {format(new Date(invitation.created_at), 'MMM d, yyyy')}
               </Text>
             </VStack>
             <Badge
@@ -54,10 +50,10 @@ export default function InvitationList({ challengeId }: InvitationListProps) {
               }>
               <BadgeText>
                 {invitation.status === 'pending'
-                  ? t('invite.status.pending')
+                  ? 'Pending'
                   : invitation.status === 'accepted'
-                    ? t('invite.status.accepted')
-                    : t('invite.status.declined')}
+                    ? 'Accepted'
+                    : 'Declined'}
               </BadgeText>
             </Badge>
           </HStack>

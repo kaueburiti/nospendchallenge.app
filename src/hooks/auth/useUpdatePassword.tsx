@@ -3,7 +3,6 @@ import { supabase } from '@/lib/supabase';
 import { useSimpleToast } from '../useSimpleToast';
 import type { AuthError } from '@supabase/auth-js';
 import { useSignOut } from './useSignOut';
-import { useTranslation } from '@/hooks/useTranslation';
 
 type SignOutParams = {
   newPassword: string;
@@ -12,7 +11,6 @@ type SignOutParams = {
 };
 
 export const useUpdatePassword = () => {
-  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(false);
   const { showToast } = useSimpleToast();
   const { signOut } = useSignOut();
@@ -27,10 +25,10 @@ export const useUpdatePassword = () => {
     const { error } = await supabase.auth.updateUser({ password: newPassword });
     if (error) {
       console.error('Error updating password:', error);
-      showToast('error', t('toast.password.update_error'));
+      showToast('error', 'Failed to update the password');
       onError?.(error);
     } else {
-      showToast('success', t('toast.password.update_success'));
+      showToast('success', 'Password updated successfully');
       await signOut({});
       onSuccess?.();
     }

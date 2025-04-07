@@ -15,10 +15,8 @@ import {
 import { format } from 'date-fns';
 import { Alert } from 'react-native';
 import { router } from 'expo-router';
-import { useTranslation } from '@/hooks/useTranslation';
 
 export default function PendingInvitations() {
-  const { t } = useTranslation();
   const { data: invitations, isLoading } = useUserInvitations();
   const { mutate: respondToInvitation } = useRespondToInvitation();
 
@@ -35,13 +33,10 @@ export default function PendingInvitations() {
       { invitationId, status: 'accepted' },
       {
         onSuccess: () => {
-          Alert.alert(
-            t('invite.accept_success_title'),
-            t('invite.accept_success_message'),
-          );
+          Alert.alert('Success', 'You have joined the challenge!');
         },
         onError: error => {
-          Alert.alert(t('common.error'), error.message);
+          Alert.alert('Error', error.message);
         },
       },
     );
@@ -52,13 +47,10 @@ export default function PendingInvitations() {
       { invitationId, status: 'declined' },
       {
         onSuccess: () => {
-          Alert.alert(
-            t('invite.decline_success_title'),
-            t('invite.decline_success_message'),
-          );
+          Alert.alert('Success', 'Invitation declined');
         },
         onError: error => {
-          Alert.alert(t('common.error'), error.message);
+          Alert.alert('Error', error.message);
         },
       },
     );
@@ -67,7 +59,7 @@ export default function PendingInvitations() {
   return (
     <Box className="mb-4 p-4">
       <Heading size="lg" className="mb-4">
-        {t('invite.pending_title')}
+        Pending Invitations
       </Heading>
       <VStack space="md">
         {invitations.map(invitation => (
@@ -77,7 +69,7 @@ export default function PendingInvitations() {
             <Box>
               <Text className="font-bold">{invitation.challenges?.title}</Text>
               <Text className="text-xs text-gray-600">
-                {t('invite.starts')}{' '}
+                Starts{' '}
                 {format(
                   new Date(invitation.challenges?.start_date || ''),
                   'MMM d, yyyy',
@@ -91,11 +83,11 @@ export default function PendingInvitations() {
                 variant="outline"
                 action="negative"
                 onPress={() => handleDecline(invitation.id)}>
-                <ButtonText>{t('invite.decline')}</ButtonText>
+                <ButtonText>Decline</ButtonText>
               </Button>
 
               <Button size="xs" onPress={() => handleAccept(invitation.id)}>
-                <ButtonText>{t('invite.accept')}</ButtonText>
+                <ButtonText>Accept</ButtonText>
               </Button>
             </HStack>
           </Box>
