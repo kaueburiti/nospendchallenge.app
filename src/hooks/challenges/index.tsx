@@ -122,7 +122,7 @@ export const useDeleteChallenge = () => {
 
 export const useIsChallengeOwner = (challengeId: string) => {
   const { data: challenge } = useChallenge(challengeId);
-  const { user } = useSession();
+  const { session } = useSession();
 
-  return challenge?.owner_id === user?.id;
+  return challenge?.owner_id === session?.user?.id;
 };

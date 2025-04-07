@@ -1,7 +1,7 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { supabase } from '@/lib/supabase';
-import { useSession } from './useSession';
 import useUploadImage from './storage';
+import { useSession } from '@/provider/SessionProvider';
 
 export interface Profile {
   id: string;
@@ -15,8 +15,8 @@ export interface Profile {
 }
 
 export const useProfile = (userId?: string) => {
-  const { user } = useSession();
-  const id = userId ?? user?.id;
+  const { session } = useSession();
+  const id = userId ?? session?.user?.id;
 
   return useQuery({
     queryKey: ['profile', id],
@@ -37,18 +37,18 @@ export const useProfile = (userId?: string) => {
 };
 
 export const useUpdateProfile = () => {
-  const { user } = useSession();
+  const { session } = useSession();
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (profileData: Partial<Profile>) => {
-      if (!user?.id) throw new Error('User not authenticated');
+      if (!session?.user?.id) throw new Error('User not authenticated');
 
       // Update profile in the database
       const { data, error } = await supabase
         .from('profiles')
         .update(profileData)
-        .eq('id', user.id)
+        .eq('id', session.user.id)
         .select();
 
       if (error) throw error;
@@ -72,7 +72,7 @@ export const useUpdateProfile = () => {
 };
 
 export const useUploadAvatar = () => {
-  const { user } = useSession();
+  const { session } = useSession();
   const queryClient = useQueryClient();
   const { upload } = useUploadImage();
 
@@ -84,12 +84,12 @@ export const useUploadAvatar = () => {
       base64: string;
       fileExtension: string;
     }) => {
-      if (!user?.id) throw new Error('User not authenticated');
+      if (!session?.user?.id) throw new Error('User not authenticated');
 
       const publicUrl = await upload({
         bucket: 'profiles',
         name: 'profile-avatar',
-        path: `avatars/${user.id}`,
+        path: `avatars/${session.user.id}`,
         image: { uri: '', base64, fileExtension },
       });
 
@@ -99,7 +99,7 @@ export const useUploadAvatar = () => {
       const { data, error } = await supabase
         .from('profiles')
         .update({ avatar_url: avatarUrl })
-        .eq('id', user.id)
+        .eq('id', session.user.id)
         .select();
 
       if (error) throw error;

@@ -47,7 +47,7 @@ export default Explorepage;
 
 function Greeting() {
   const { session } = useSession();
-  const fullName = session?.user?.user_metadata?.display_name as
+  const fullName = session?.user?.user_metadata?.full_name as
     | string
     | undefined;
 
