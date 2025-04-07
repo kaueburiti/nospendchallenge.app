@@ -1,19 +1,17 @@
 import React from 'react';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { useForm } from 'react-hook-form';
-import { useTranslation } from '@/hooks/useTranslation';
 import { useCreateChallenge } from '@/hooks/challenges';
 import { useSession } from '@/hooks/useSession';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  ChallengeForm,
-  challengeSchema,
-  type ChallengeFormData,
-} from '@/components/home/challenges/form/challenge-form';
+import { ChallengeForm } from '@/components/home/challenges/form/challenge-form';
 import { useRouter } from 'expo-router';
+import {
+  challengeSchema,
+  type ChallengeSchemaType,
+} from '@/lib/schema/challenge';
 
 export default function CreateChallenge() {
-  const { t } = useTranslation();
   const { session } = useSession();
   const { mutate: createChallenge, isPending } = useCreateChallenge();
   const router = useRouter();
@@ -24,23 +22,21 @@ export default function CreateChallenge() {
     formState: { errors, isSubmitting },
     watch,
     setValue,
-  } = useForm<ChallengeFormData>({
+  } = useForm<ChallengeSchemaType>({
     resolver: zodResolver(challengeSchema),
     defaultValues: {
-      name: '',
+      title: '',
       description: '',
       startDate: new Date(),
       endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days from now
-      type: 'spending',
-      amount: 0,
     },
   });
 
-  const onSubmit = async (data: ChallengeFormData) => {
+  const onSubmit = async (data: ChallengeSchemaType) => {
     try {
       createChallenge(
         {
-          title: data?.name,
+          title: data?.title,
           description: data?.description,
           start_date: data?.startDate.toISOString(),
           end_date: data?.endDate.toISOString(),
@@ -71,7 +67,7 @@ export default function CreateChallenge() {
         handleSubmit={handleSubmit}
         isSubmitting={isSubmitting}
         imageData={null}
-        setImageData={() => {}}
+        setImageData={() => null}
       />
     </SafeAreaView>
   );

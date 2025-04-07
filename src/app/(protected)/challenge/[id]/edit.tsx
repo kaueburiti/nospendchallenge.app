@@ -10,12 +10,10 @@ import {
 } from '@/hooks/challenges';
 import { Alert } from 'react-native';
 import { zodResolver } from '@hookform/resolvers/zod';
-import {
-  ChallengeForm,
-  challengeSchema,
-  type ChallengeFormData,
-} from '@/components/home/challenges/form/challenge-form';
+import { ChallengeForm } from '@/components/home/challenges/form/challenge-form';
 import useUploadImage from '@/hooks/storage';
+import { type ChallengeSchemaType } from '@/lib/schema/challenge';
+import { challengeSchema } from '@/lib/schema/challenge';
 
 interface ImageData {
   uri: string;
@@ -38,10 +36,10 @@ export default function EditChallenge() {
     setValue,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<ChallengeFormData>({
+  } = useForm<ChallengeSchemaType>({
     resolver: zodResolver(challengeSchema),
     defaultValues: {
-      name: '',
+      title: '',
       description: '',
       startDate: new Date(),
       endDate: new Date(),
@@ -52,7 +50,7 @@ export default function EditChallenge() {
   React.useEffect(() => {
     if (challenge) {
       reset({
-        name: challenge.title,
+        title: challenge.title,
         description: challenge.description ?? '',
         startDate: challenge.start_date
           ? new Date(challenge.start_date)
@@ -72,12 +70,12 @@ export default function EditChallenge() {
     );
   }
 
-  const onSubmit = async (data: ChallengeFormData) => {
+  const onSubmit = async (data: ChallengeSchemaType) => {
     let coverUrl = challenge.cover;
     if (imageData) {
       coverUrl = await upload({
         bucket: 'challenges',
-        name: `${data.name}-cover-${challenge.id}.${imageData.fileExtension}`,
+        name: `${data.title}-cover-${challenge.id}.${imageData.fileExtension}`,
         path: String(challenge.owner_id),
         image: imageData,
       });
@@ -85,7 +83,7 @@ export default function EditChallenge() {
 
     updateChallenge({
       id: Number(id),
-      title: data.name,
+      title: data.title,
       description: data.description,
       cover: coverUrl,
       end_date: data.endDate.toISOString(),
