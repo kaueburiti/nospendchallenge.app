@@ -5,11 +5,11 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useCreateChallenge } from '@/hooks/challenges';
 import { useSession } from '@/hooks/useSession';
 import { zodResolver } from '@hookform/resolvers/zod';
-import ChallengeForm from '@/components/home/challenges/form/challenge-form';
 import {
+  ChallengeForm,
   challengeSchema,
-  type ChallengeSchemaType,
-} from '@/lib/schema/challenge';
+  type ChallengeFormData,
+} from '@/components/home/challenges/form/challenge-form';
 import { useRouter } from 'expo-router';
 
 export default function CreateChallenge() {
@@ -21,8 +21,10 @@ export default function CreateChallenge() {
   const {
     control,
     handleSubmit,
-    formState: { errors },
-  } = useForm<ChallengeSchemaType>({
+    formState: { errors, isSubmitting },
+    watch,
+    setValue,
+  } = useForm<ChallengeFormData>({
     resolver: zodResolver(challengeSchema),
     defaultValues: {
       name: '',
@@ -34,14 +36,14 @@ export default function CreateChallenge() {
     },
   });
 
-  const onSubmit = async (data: ChallengeSchemaType) => {
+  const onSubmit = async (data: ChallengeFormData) => {
     try {
       createChallenge(
         {
-          title: data.name,
-          description: data.description,
-          start_date: data.startDate.toISOString(),
-          end_date: data.endDate.toISOString(),
+          title: data?.name,
+          description: data?.description,
+          start_date: data?.startDate.toISOString(),
+          end_date: data?.endDate.toISOString(),
           owner_id: session?.user?.id ?? '',
           cover: null,
         },
@@ -59,16 +61,17 @@ export default function CreateChallenge() {
   return (
     <SafeAreaView>
       <ChallengeForm
+        title="Create Challenge"
+        subtitle="Create a new challenge"
         onSubmit={onSubmit}
-        isLoading={isPending}
-        defaultValues={{
-          name: '',
-          description: '',
-          startDate: new Date(),
-          endDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
-          type: 'spending',
-          amount: 0,
-        }}
+        control={control}
+        errors={errors}
+        watch={watch}
+        setValue={setValue}
+        handleSubmit={handleSubmit}
+        isSubmitting={isSubmitting}
+        imageData={null}
+        setImageData={() => {}}
       />
     </SafeAreaView>
   );

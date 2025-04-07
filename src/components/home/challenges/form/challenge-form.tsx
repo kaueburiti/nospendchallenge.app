@@ -104,7 +104,7 @@ export function ChallengeForm({
             name="name"
             control={control}
             placeholder="#MyChallenge"
-            errorMessage={errors.name?.message}
+            errorMessage={errors?.name?.message}
           />
 
           <FormInput
@@ -112,7 +112,7 @@ export function ChallengeForm({
             name="description"
             control={control}
             placeholder="Describe your challenge"
-            errorMessage={errors.description?.message}
+            errorMessage={errors?.description?.message}
           />
 
           <Box className="flex-col gap-2">
