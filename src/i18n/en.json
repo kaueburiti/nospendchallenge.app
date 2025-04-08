@@ -63,16 +63,6 @@
     "password_update_failed": "Failed to update password",
     "password_updated": "Password updated successfully"
   },
-  "category": {
-    "development": "Development",
-    "productivity": "Productivity",
-    "artificial_intelligence": "Artificial Intelligence",
-    "seo": "SEO",
-    "design": "Design",
-    "communication": "Communication",
-    "others": "Others"
-  },
-
   "validation": {
     "password_min_length": "Password must be at least 6 characters",
     "passwords_must_match": "Passwords must match"
