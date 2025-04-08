@@ -24,7 +24,7 @@ const ChallengeDetailsTab = ({
       <VStack space="lg" className="p-4 pt-0">
         <Box>
           <Heading size="lg" className="mb-1">
-            Challenge Progress
+            {t('challenge.challenge_progress')}
           </Heading>
           <ChallengeProgressBar challenge={challenge} showDates />
         </Box>

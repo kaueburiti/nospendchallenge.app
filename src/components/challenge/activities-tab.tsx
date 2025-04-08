@@ -3,7 +3,7 @@ import { Box, Heading, Text, VStack } from '@/components/ui';
 import { useChallengesActivities } from '@/hooks/activities';
 import ActivityItem from '@/components/home/recent-activities/item';
 import { FlatList } from 'react-native';
-
+import { useTranslation } from '@/hooks/useTranslation';
 interface ChallengeActivitiesTabProps {
   challengeId: string;
 }
@@ -11,6 +11,7 @@ interface ChallengeActivitiesTabProps {
 const ChallengeActivitiesTab = ({
   challengeId,
 }: ChallengeActivitiesTabProps) => {
+  const { t } = useTranslation();
   const { data: activities, isLoading } = useChallengesActivities(
     [challengeId],
     50,
@@ -19,7 +20,7 @@ const ChallengeActivitiesTab = ({
   if (isLoading) {
     return (
       <Box className="p-4">
-        <Text>Loading activities...</Text>
+        <Text>{t('activities.loading')}</Text>
       </Box>
     );
   }
@@ -28,11 +29,10 @@ const ChallengeActivitiesTab = ({
     return (
       <Box className="items-center justify-center p-4">
         <Heading size="md" className="mb-2">
-          No activities yet
+          {t('activities.no_activities')}
         </Heading>
         <Text className="text-muted-foreground text-center">
-          Activities will appear here as participants join and complete
-          challenge days.
+          {t('activities.no_activities_description')}
         </Text>
       </Box>
     );
@@ -41,7 +41,7 @@ const ChallengeActivitiesTab = ({
   return (
     <Box className="p-4 pt-0">
       <Heading size="lg" className="mb-4">
-        Activities
+        {t('activities.title')}
       </Heading>
       <FlatList
         data={activities}

@@ -30,6 +30,7 @@
     "create_button": "Create Challenge",
     "edit_title": "Edit Challenge",
     "update_button": "Update Challenge",
+    "challenge_progress": "Challenge Progress",
     "create": {
       "title": "Create Challenge",
       "description": "Start a new challenge now!"
@@ -196,6 +197,12 @@
   "validation": {
     "password_min_length": "Password must be at least 6 characters",
     "passwords_must_match": "Passwords must match"
+  },
+  "activities": {
+    "title": "Activities",
+    "no_activities": "No activities yet",
+    "no_activities_description": "Activities will appear here as participants join and complete challenge days.",
+    "loading": "Loading activities..."
   },
   "chat": {
     "edit_message": "Edit Message",
