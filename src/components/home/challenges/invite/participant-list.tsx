@@ -64,6 +64,7 @@ export function ChallengeParticipant({
 }) {
   const { data: challenge } = useChallenge(String(challengeId));
   const isOwner = challenge?.owner_id === participant.id;
+  const { t } = useTranslation();
 
   return (
     <HStack
@@ -83,7 +84,9 @@ export function ChallengeParticipant({
 
         {isOwner && (
           <Badge variant="outline" className="rounded-lg">
-            <Text className="text-2xs">Owner</Text>
+            <Text className="text-2xs">
+              {t('participants.participant_owner')}
+            </Text>
           </Badge>
         )}
       </HStack>

@@ -4,8 +4,10 @@ import { Box, Heading, Text, VStack } from '@/components/ui';
 import { useUserInvitations } from '@/hooks/invitations';
 import PendingInvitations from '@/components/home/challenges/invite/pending-invitations';
 import { ScrollView } from '@/components/ui/scroll-view';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function InvitationsScreen() {
+  const { t } = useTranslation();
   const { data: invitations, isLoading } = useUserInvitations();
 
   return (
@@ -13,18 +15,18 @@ export default function InvitationsScreen() {
       <ScrollView>
         <Box className="p-4">
           <Heading size="2xl" className="mb-2">
-            Invitations
+            {t('invitations.title')}
           </Heading>
           <Text className="mb-6 text-gray-500">
-            Manage your challenge invitations
+            {t('invitations.description')}
           </Text>
 
           {isLoading ? (
-            <Text>Loading invitations...</Text>
+            <Text>{t('invitations.loading')}</Text>
           ) : !invitations || invitations.length === 0 ? (
             <Box className="items-center justify-center rounded-lg bg-gray-100 p-8">
               <Text className="text-center text-gray-500">
-                You don&apos;t have any pending invitations
+                {t('invitations.no_invitations')}
               </Text>
             </Box>
           ) : (

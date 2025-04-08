@@ -1,17 +1,20 @@
 import React from 'react';
-import { Box, Heading, Text, VStack, HStack } from '@/components/ui';
-import { useInvitationsByChallenge } from '@/hooks/invitations';
-import { format } from 'date-fns';
+import { Box, Heading, HStack, Text, VStack } from '@/components/ui';
 import { Badge, BadgeText } from '@/components/ui/badge';
+import { format } from 'date-fns';
 import { useTranslation } from '@/hooks/useTranslation';
+import { type Tables } from '@/lib/db/database.types';
+
 interface InvitationListProps {
-  challengeId: number;
+  invitations: Tables<'challenge_invitations'>[];
+  isLoading: boolean;
 }
 
-export default function InvitationList({ challengeId }: InvitationListProps) {
+export default function InvitationList({
+  invitations,
+  isLoading,
+}: InvitationListProps) {
   const { t } = useTranslation();
-  const { data: invitations, isLoading } =
-    useInvitationsByChallenge(challengeId);
 
   if (isLoading) {
     return <Text>{t('participants.loading')}</Text>;
@@ -26,10 +29,8 @@ export default function InvitationList({ challengeId }: InvitationListProps) {
   }
 
   return (
-    <Box>
-      <Heading size="md" className="mb-4">
-        {t('participants.pending_invites')}
-      </Heading>
+    <VStack space="sm">
+      <Heading size="md">{t('participants.pending_invites')}</Heading>
       <VStack space="md">
         {invitations.map(invitation => (
           <HStack
@@ -38,9 +39,11 @@ export default function InvitationList({ challengeId }: InvitationListProps) {
             <VStack>
               <Text className="font-medium">{invitation.invitee_email}</Text>
               <Text className="text-xs text-gray-500">
-                Sent {format(new Date(invitation.created_at), 'MMM d, yyyy')}
+                {t('common.sent')}{' '}
+                {format(new Date(invitation.created_at), 'MMM d, yyyy')}
               </Text>
             </VStack>
+
             <Badge
               variant="solid"
               action={
@@ -52,15 +55,15 @@ export default function InvitationList({ challengeId }: InvitationListProps) {
               }>
               <BadgeText>
                 {invitation.status === 'pending'
-                  ? 'Pending'
+                  ? t('participants.status.pending')
                   : invitation.status === 'accepted'
-                    ? 'Accepted'
-                    : 'Declined'}
+                    ? t('participants.status.accepted')
+                    : t('participants.status.rejected')}
               </BadgeText>
             </Badge>
           </HStack>
         ))}
       </VStack>
-    </Box>
+    </VStack>
   );
 }

@@ -14,51 +14,58 @@ import {
 } from '../ui';
 import { XIcon } from 'lucide-react-native';
 import { useSignOut } from '@/hooks/auth/useSignOut';
-import {Icon} from "@/components/ui/icon";
+import { Icon } from '@/components/ui/icon';
+import { useTranslation } from '@/hooks/useTranslation';
 
-const SignOutAlertDialog = ({
-  openSignOutAlertDialog,
-  onCloseSignOutAlertDialog,
-}: {
-  openSignOutAlertDialog: boolean;
-  onCloseSignOutAlertDialog: () => void;
-}) => {
+interface SignOutAlertDialogProps {
+  showAlertDialog: boolean;
+  setShowAlertDialog: (show: boolean) => void;
+}
+
+export default function SignOutAlertDialog({
+  showAlertDialog,
+  setShowAlertDialog,
+}: SignOutAlertDialogProps) {
+  const { t } = useTranslation();
   const { signOut } = useSignOut();
 
-  const handleSignOut = async () => {
-    await signOut({});
-    onCloseSignOutAlertDialog();
+  const handleSignOut = () => {
+    signOut({});
+    setShowAlertDialog(false);
   };
 
   return (
     <AlertDialog
-      isOpen={openSignOutAlertDialog}
-      onClose={onCloseSignOutAlertDialog}>
+      isOpen={showAlertDialog}
+      onClose={() => {
+        setShowAlertDialog(false);
+      }}>
       <AlertDialogBackdrop />
       <AlertDialogContent className="p-4">
         <AlertDialogHeader>
-          <Heading>Logout</Heading>
           <AlertDialogCloseButton>
             <Icon as={XIcon} />
           </AlertDialogCloseButton>
         </AlertDialogHeader>
         <AlertDialogBody className="" contentContainerClassName="">
-          <Text className="mb-6">Are you sure, you want to sign out?</Text>
+          <Text className="mb-6">{t('auth.confirmation.sign_out')}</Text>
         </AlertDialogBody>
         <AlertDialogFooter>
           <Button
             variant="outline"
             action="secondary"
-            onPress={onCloseSignOutAlertDialog}>
-            <ButtonText>Cancel</ButtonText>
+            onPress={() => {
+              setShowAlertDialog(false);
+            }}>
+            <ButtonText>{t('common.cancel')}</ButtonText>
           </Button>
           <Button action="negative" onPress={handleSignOut}>
-            <ButtonText className="text-white">Sign Out</ButtonText>
+            <ButtonText className="text-white">
+              {t('auth.actions.sign_out')}
+            </ButtonText>
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );
-};
-
-export default SignOutAlertDialog;
+}

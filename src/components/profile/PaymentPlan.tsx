@@ -1,35 +1,34 @@
-import { BadgeCheck } from "lucide-react-native";
-import { VStack, HStack, ButtonText, Text, Button, Box } from "../ui";
-import {Icon} from "@/components/ui/icon";
+import { BadgeCheck } from 'lucide-react-native';
+import { VStack, HStack, ButtonText, Text, Button, Box } from '../ui';
+import { useTranslation } from '@/hooks/useTranslation';
 
-interface ProfilePlanProps {
-  onPress: () => void;
+interface PaymentPlanProps {
   isPro: boolean;
+  onUpgrade: () => void;
 }
 
-const CurrentPlan = () => (
-  <HStack className="gap-2">
-    <Icon as={BadgeCheck} />
-    <Text>Current Plan</Text>
-  </HStack>
-)
+export default function PaymentPlan({ isPro, onUpgrade }: PaymentPlanProps) {
+  const { t } = useTranslation();
 
+  return (
+    <VStack className="gap-4">
+      <HStack className="justify-between">
+        <HStack className="gap-2">
+          <BadgeCheck size={24} />
+          <Box className="flex items-center justify-center rounded-md border border-gray-600 p-1">
+            <Text>
+              {isPro ? t('payment.plans.full') : t('payment.plans.basic')}
+            </Text>
+          </Box>
+        </HStack>
+      </HStack>
 
-export const PaymentPlan: React.FC<ProfilePlanProps> = ({ onPress, isPro }) => (
-  <VStack className="gap-4">
-    <HStack className="justify-between">
-      <CurrentPlan />
-      <Box className="flex items-center justify-center border border-gray-600 rounded-md p-1">
-        <Text>{isPro ? 'Full Access' : 'Basic Access'}</Text>
-      </Box>
-    </HStack>
-    {!isPro && (
       <VStack className="gap-2">
-        <Text>Unlock exclusive features and ehance your experience</Text>
-        <Button onPress={onPress}>
-          <ButtonText>Upgrade Now</ButtonText>
+        <Text>{t('profile.payment_body_text')}</Text>
+        <Button onPress={onUpgrade}>
+          <ButtonText>{t('profile.payment_button_label')}</ButtonText>
         </Button>
       </VStack>
-    )}
-  </VStack>
-)
+    </VStack>
+  );
+}

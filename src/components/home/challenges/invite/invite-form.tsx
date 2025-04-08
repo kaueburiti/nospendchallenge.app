@@ -8,19 +8,13 @@ import {
   VStack,
 } from '@/components/ui';
 import FormInput from '@/components/ui/form/input';
+import { useSimpleToast } from '@/hooks/useSimpleToast';
+import { useInviteToChallengeByEmail } from '@/hooks/invitations';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useInviteToChallengeByEmail } from '@/hooks/invitations';
-import { useSimpleToast } from '@/hooks/useSimpleToast';
 import { Analytics } from '@/lib/analytics';
 import { useTranslation } from '@/hooks/useTranslation';
-
-const inviteSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email address' }),
-});
-
-type InviteFormData = z.infer<typeof inviteSchema>;
 
 interface InviteFormProps {
   challengeId: number;
@@ -33,12 +27,19 @@ export default function InviteForm({
 }: InviteFormProps) {
   const { t } = useTranslation();
   const { showToast } = useSimpleToast();
+
+  const inviteSchema = z.object({
+    email: z.string().email({ message: t('validation.email.invalid') }),
+  });
+
+  type InviteSchemaType = z.infer<typeof inviteSchema>;
+
   const {
     control,
     handleSubmit,
     reset,
-    formState: { errors, isSubmitting },
-  } = useForm<InviteFormData>({
+    formState: { errors },
+  } = useForm<InviteSchemaType>({
     resolver: zodResolver(inviteSchema),
     defaultValues: {
       email: '',
@@ -48,46 +49,44 @@ export default function InviteForm({
   const { mutate: inviteByEmail, isPending } =
     useInviteToChallengeByEmail(challengeId);
 
-  const onSubmit = (data: InviteFormData) => {
+  const onSubmit = (data: InviteSchemaType) => {
     inviteByEmail(data.email, {
       onSuccess: () => {
         Analytics.challenge.invited(String(challengeId), data.email);
-        showToast('success', 'Invitation sent successfully');
+        showToast('success', t('invitations.success.sent'));
         reset();
         onSuccess?.();
       },
-      onError: error => {
+      onError: (error: Error) => {
         Analytics.error.occurred(error, 'challenge_invitation');
-        showToast('error', 'Ops, something went wrong', error.message);
+        showToast('error', t('invitations.errors.send'), error.message);
       },
     });
   };
 
   return (
-    <Box>
-      <VStack space="md">
-        <Heading size="md">{t('participants.invite.title')}</Heading>
-        <Text className="text-gray-500">
-          {t('participants.invite.description')}
-        </Text>
+    <VStack space="md">
+      <Heading size="md">{t('participants.invite.title')}</Heading>
+      <Text className="text-gray-500">
+        {t('participants.invite.description')}
+      </Text>
 
+      <Box>
         <FormInput
           name="email"
           control={control}
           placeholder={t('participants.invite.form.email.placeholder')}
           errorMessage={errors.email?.message}
         />
+      </Box>
 
-        <Button
-          onPress={handleSubmit(onSubmit)}
-          disabled={isSubmitting || isPending}>
-          <ButtonText>
-            {isPending
-              ? t('participants.invite.form.saving_button')
-              : t('participants.invite.form.save_button')}
-          </ButtonText>
-        </Button>
-      </VStack>
-    </Box>
+      <Button onPress={handleSubmit(onSubmit)} disabled={isPending}>
+        <ButtonText>
+          {isPending
+            ? t('participants.invite.form.saving_button')
+            : t('participants.invite.form.save_button')}
+        </ButtonText>
+      </Button>
+    </VStack>
   );
 }
