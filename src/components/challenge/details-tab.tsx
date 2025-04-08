@@ -5,7 +5,7 @@ import DaysGrid from '@/components/home/challenges/days-grid';
 import ChallengeScores from '@/components/home/challenges/scores';
 import ChallengeProgressBar from '@/components/home/challenges/progress';
 import { type Tables } from '@/lib/db/database.types';
-
+import { useTranslation } from '@/hooks/useTranslation';
 interface ChallengeDetailsTabProps {
   challenge: Tables<'challenges'>;
   challengeId: string;
@@ -17,6 +17,8 @@ const ChallengeDetailsTab = ({
   challenge,
   onCheckIn,
 }: ChallengeDetailsTabProps) => {
+  const { t } = useTranslation();
+
   return (
     <ScrollView>
       <VStack space="lg" className="p-4 pt-0">
@@ -37,7 +39,7 @@ const ChallengeDetailsTab = ({
 
         <Box>
           <Heading size="xl" className="mb-4">
-            My Checks
+            {t('checks.my_checks')}
           </Heading>
           <DaysGrid />
         </Box>

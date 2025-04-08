@@ -8,7 +8,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { FormInputLabel } from '@/components/ui/form/label';
 import { Text } from '@/components/ui/text';
 import { Analytics } from '@/lib/analytics';
-
+import { useTranslation } from '@/hooks/useTranslation';
 type CheckInFormProps = {
   challengeId: string;
   onSubmit: () => void;
@@ -20,6 +20,7 @@ export const CheckInForm = ({
   onSubmit: closeModal,
   onClose,
 }: CheckInFormProps) => {
+  const { t } = useTranslation();
   const { control, handleSubmit } = useForm({
     defaultValues: {
       message: '',
@@ -69,7 +70,7 @@ export const CheckInForm = ({
           </Box>
         )}
         <Box className="flex-col">
-          <FormInputLabel label="Check In Date:" />
+          <FormInputLabel label={t('checks.form.date.label')} />
           <Box className="-ml-4">
             <DateTimePicker
               testID="dateTimePicker"
@@ -87,17 +88,26 @@ export const CheckInForm = ({
         <FormInput
           control={control}
           name="message"
-          placeholder="How was it?"
-          label="Tell us how are you feeling today"
+          placeholder={t('checks.form.message.placeholder')}
+          label={t('checks.form.message.label')}
         />
       </VStack>
-      <Box className="mt-4 flex-row justify-between">
-        <Button variant="outline" action="secondary" onPress={onClose}>
-          <ButtonText>Cancel</ButtonText>
+      <Box className="mt-4 flex-row justify-between gap-6">
+        <Button
+          variant="outline"
+          action="secondary"
+          onPress={onClose}
+          className="flex-1">
+          <ButtonText>{t('checks.form.cancel_button')}</ButtonText>
         </Button>
-        <Button onPress={handleSubmit(onSubmit)} disabled={isPending}>
+        <Button
+          onPress={handleSubmit(onSubmit)}
+          disabled={isPending}
+          className="flex-1">
           <ButtonText>
-            {isPending ? 'Creating...' : 'Create Check In'}
+            {isPending
+              ? t('checks.form.saving_button')
+              : t('checks.form.save_button')}
           </ButtonText>
         </Button>
       </Box>

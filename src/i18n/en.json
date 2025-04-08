@@ -142,6 +142,29 @@
       "saving_button": "Saving..."
     }
   },
+  "checks": {
+    "checks": "Checks",
+    "days_left": "Days Left",
+    "days_skipped": "Days Skipped",
+    "my_checks": "My Checks",
+    "checking_button": "Create Checking",
+    "form": {
+      "title": "Create Checking",
+      "description": "Create a new checking for your challenge.",
+      "date": {
+        "label": "Checking Date",
+        "error": "Checking date is required"
+      },
+      "message": {
+        "label": "Message",
+        "placeholder": "How was it?",
+        "error": "Message is required"
+      },
+      "cancel_button": "Cancel",
+      "save_button": "Save",
+      "saving_button": "Saving..."
+    }
+  },
   "password": {
     "title": "Password",
     "description": "Update your password.",
