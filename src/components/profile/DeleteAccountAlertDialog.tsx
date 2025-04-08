@@ -14,8 +14,8 @@ import {
 } from '../ui';
 import { XIcon } from 'lucide-react-native';
 import { useDeleteAccount } from '@/hooks/auth/useDeleteAccount';
-import {Icon} from "@/components/ui/icon";
-
+import { Icon } from '@/components/ui/icon';
+import { useTranslation } from '@/hooks/useTranslation';
 const DeleteAccountAlertDialog = ({
   openDeleteAccountDialog,
   onCloseDeleteAccountDialog,
@@ -23,6 +23,7 @@ const DeleteAccountAlertDialog = ({
   openDeleteAccountDialog: boolean;
   onCloseDeleteAccountDialog: () => void;
 }) => {
+  const { t } = useTranslation();
   const { deleteAccount } = useDeleteAccount();
 
   const handleDeleteAccount = async () => {
@@ -36,15 +37,14 @@ const DeleteAccountAlertDialog = ({
       <AlertDialogBackdrop />
       <AlertDialogContent className="p-4">
         <AlertDialogHeader>
-          <Heading>Delete Account</Heading>
+          <Heading>{t('profile.delete_account.title')}</Heading>
           <AlertDialogCloseButton>
             <Icon as={XIcon} />
           </AlertDialogCloseButton>
         </AlertDialogHeader>
         <AlertDialogBody className="" contentContainerClassName="">
           <Text className="mb-6">
-            Are you sure you want to delete your account? This action cannot be
-            undone.
+            {t('profile.delete_account.description')}
           </Text>
         </AlertDialogBody>
         <AlertDialogFooter>
@@ -52,10 +52,12 @@ const DeleteAccountAlertDialog = ({
             variant="outline"
             action="secondary"
             onPress={onCloseDeleteAccountDialog}>
-            <ButtonText>Cancel</ButtonText>
+            <ButtonText>{t('profile.delete_account.cancel_button')}</ButtonText>
           </Button>
           <Button action="negative" onPress={handleDeleteAccount}>
-            <ButtonText className="text-white">Delete Account</ButtonText>
+            <ButtonText className="text-white">
+              {t('profile.delete_account.delete_button')}
+            </ButtonText>
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

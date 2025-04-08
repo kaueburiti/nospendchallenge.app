@@ -85,7 +85,6 @@
     "payment_body_text": "Unlock exclusive features and enhance your experience",
     "payment_button_label": "Upgrade Now",
     "dark_mode": "Dark Mode",
-    "delete_account": "Delete Account!!!",
     "terms_of_service": "Terms of Service",
     "contact": "Contact",
     "sign_out": "Sign Out",
@@ -110,6 +109,12 @@
     "edit_profile": {
       "title": "Edit Profile",
       "description": "Update your profile details."
+    },
+    "delete_account": {
+      "title": "Delete Account",
+      "description": "Are you sure you want to delete your account? This action cannot be undone.",
+      "delete_button": "Delete Account",
+      "cancel_button": "Cancel"
     },
     "form": {
       "first_name": {

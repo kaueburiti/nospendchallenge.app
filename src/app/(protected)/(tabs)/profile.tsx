@@ -36,7 +36,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
       <MenuItem
         icon={OctagonX}
         onPress={onOpenDeleteAccountDialog}
-        text={t('profile.delete_account')}
+        text={t('profile.delete_account.title')}
       />
     </VStack>
   );
