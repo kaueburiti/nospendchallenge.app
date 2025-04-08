@@ -6,13 +6,14 @@
   },
   "home": {
     "tab_label": "Home",
+    "greeting": "Hello",
     "top_section_title": "Your Challenges",
     "bottom_section_title": "Recent Activities",
-    "banner_text": "You want to get featured?",
-    "banner_link_text": "Contact me",
     "create_challenge": "Create Challenge",
     "no_activities": "No recent activities",
-    "no_activities_description": "Your recent activities will appear here"
+    "no_activities_description": "Your recent activities will appear here",
+    "no_challenges": "No challenges yet",
+    "no_challenges_description": "Create your first challenge to get started!"
   },
   "profile": {
     "tab_label": "Profile",

@@ -8,7 +8,6 @@ import RecentActivitiesLoadingState from './loading';
 import ActivityItem from './item';
 import RecentActivitiesEmptyState from './empty';
 import { useGetChallenges } from '@/hooks/challenges';
-import { useChallengeMessages } from '@/hooks/useMessages';
 
 const RecentActivities = () => {
   const { data: challenges } = useGetChallenges();

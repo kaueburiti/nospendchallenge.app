@@ -60,11 +60,6 @@ const ProfileSupport: React.FC = () => {
         icon={LifeBuoyIcon}
         text={t('profile.get_help')}
       />
-      <MenuItem
-        onPress={() => router.push('/update-password')}
-        icon={MessageSquareText}
-        text={t('profile.contact')}
-      />
     </VStack>
   );
 };

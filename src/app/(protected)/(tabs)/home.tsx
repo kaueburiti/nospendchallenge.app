@@ -14,9 +14,6 @@ import { useTranslation } from '@/hooks/useTranslation';
 
 const Explorepage = () => {
   const { t } = useTranslation();
-  const { session } = useSession();
-  const userName =
-    (session?.user?.user_metadata?.full_name as string | undefined) ?? '';
 
   return (
     <SafeAreaView>
@@ -46,7 +43,9 @@ const Explorepage = () => {
 export default Explorepage;
 
 function Greeting() {
+  const { t } = useTranslation();
   const { session } = useSession();
+  const greeting = t('home.greeting');
   const fullName = session?.user?.user_metadata?.full_name as
     | string
     | undefined;
@@ -54,7 +53,7 @@ function Greeting() {
   if (!fullName) {
     return (
       <Box className="mt-8">
-        <Heading size="3xl">Hello 👋</Heading>
+        <Heading size="3xl">{greeting} 👋</Heading>
       </Box>
     );
   }
@@ -63,7 +62,7 @@ function Greeting() {
 
   return (
     <Box className="mt-8">
-      <Heading size="xl">Hello,</Heading>
+      <Heading size="xl">{greeting},</Heading>
       <Heading size="3xl">{firstName} 👋</Heading>
     </Box>
   );
