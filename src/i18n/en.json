@@ -34,6 +34,16 @@
       "title": "Create Challenge",
       "description": "Start a new challenge now!"
     },
+    "edit": {
+      "title": "Edit Challenge",
+      "description": "Update your challenge details."
+    },
+    "delete": {
+      "title": "Delete Challenge",
+      "description": "Are you sure you want to delete this challenge? This action cannot be undone.",
+      "delete_button": "Delete Challenge",
+      "cancel_button": "Cancel"
+    },
     "form": {
       "title": {
         "label": "Title",
@@ -61,6 +71,7 @@
       "days_label": "Days",
       "cancel_button": "Cancel",
       "create_button": "Create Challenge",
+      "update_button": "Update Challenge",
       "delete_button": "Delete Challenge",
       "saving_button": "Saving..."
     }

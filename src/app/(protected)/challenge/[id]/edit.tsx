@@ -7,8 +7,10 @@ import { Alert } from 'react-native';
 import { ChallengeForm } from '@/components/home/challenges/form/challenge-form';
 import { updateChallenge } from '@/lib/db/repository/challenge';
 import { type ChallengeSchemaType } from '@/lib/schema/challenge';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export default function EditChallenge() {
+  const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: challenge, isLoading } = useChallenge(id);
   const { mutate: deleteChallenge } = useDeleteChallenge();
@@ -25,15 +27,15 @@ export default function EditChallenge() {
 
   const handleDelete = () => {
     Alert.alert(
-      'Delete Challenge',
-      'Are you sure you want to delete this challenge? This action cannot be undone.',
+      t('challenge.delete.title'),
+      t('challenge.delete.description'),
       [
         {
-          text: 'Cancel',
+          text: t('challenge.delete.cancel_button'),
           style: 'cancel',
         },
         {
-          text: 'Delete',
+          text: t('challenge.delete.delete_button'),
           style: 'destructive',
           onPress: () => {
             deleteChallenge(Number(id), {
@@ -67,10 +69,10 @@ export default function EditChallenge() {
   return (
     <SafeAreaView>
       <ChallengeForm
-        title="Edit Challenge"
-        subtitle="Update your challenge details."
+        title={t('challenge.edit.title')}
+        subtitle={t('challenge.edit.description')}
         isStartDateDisabled={true}
-        submitButtonText="Update Challenge"
+        submitButtonText={t('challenge.form.update_button')}
         showDeleteButton={true}
         onDelete={handleDelete}
         onSubmit={handleSubmit}
