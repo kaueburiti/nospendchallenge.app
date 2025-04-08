@@ -5,9 +5,10 @@ import { useRouter } from 'expo-router';
 import { type ChallengeSchemaType } from '@/lib/schema/challenge';
 import { createChallenge } from '@/lib/db/repository/challenge';
 import { useSession } from '@/hooks/useSession';
-
+import { useTranslation } from '@/hooks/useTranslation';
 export default function CreateChallenge() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { session } = useSession();
   const ownerId = session?.user?.id!;
 
@@ -31,8 +32,9 @@ export default function CreateChallenge() {
   return (
     <SafeAreaView>
       <ChallengeForm
-        title="Create Challenge"
-        subtitle="Create a new challenge"
+        title={t('challenge.create.title')}
+        subtitle={t('challenge.create.description')}
+        submitButtonText={t('challenge.form.create_button')}
         onSubmit={handleSubmit}
         onError={errors => {
           console.log(errors);

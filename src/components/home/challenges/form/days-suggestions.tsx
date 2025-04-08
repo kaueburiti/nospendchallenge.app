@@ -5,7 +5,7 @@ import { Pressable } from 'react-native';
 import { Badge } from '@/components/ui/badge';
 import classNames from 'classnames';
 import { type ChallengeSchemaType } from '@/lib/schema/challenge';
-
+import { useTranslation } from '@/hooks/useTranslation';
 interface DaysSuggestionsProps {
   watch: UseFormWatch<ChallengeSchemaType>;
   setValue: UseFormSetValue<ChallengeSchemaType>;
@@ -13,10 +13,12 @@ interface DaysSuggestionsProps {
 
 export function DaysSuggestions({ watch, setValue }: DaysSuggestionsProps) {
   const [selectedPeriod, setSelectedPeriod] = React.useState<number>(0);
-
+  const { t } = useTranslation();
   return (
     <Box>
-      <Text className="mb-2 text-sm">Some suggestions:</Text>
+      <Text className="mb-2 text-sm">
+        {t('challenge.form.days_suggestion_label')}
+      </Text>
       <Box className="flex-row gap-4">
         {[30, 60, 90, 120].map(period => (
           <Pressable
@@ -42,7 +44,7 @@ export function DaysSuggestions({ watch, setValue }: DaysSuggestionsProps) {
                   'text-sm',
                   selectedPeriod === period && 'text-white',
                 )}>
-                {period} Days
+                {period} {t('challenge.form.days_label')}
               </Text>
             </Badge>
           </Pressable>

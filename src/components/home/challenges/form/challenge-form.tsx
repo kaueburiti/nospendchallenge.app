@@ -11,7 +11,6 @@ import FormInput from '@/components/ui/form/input';
 import type { FieldErrors } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 import { router } from 'expo-router';
-import { i18n } from '@/i18n';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { StartAndEndDates } from '@/components/home/challenges/form/start-and-end-date';
 import PhotoUpload from '@/components/ui/photo-upload';
@@ -23,7 +22,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import useUploadImage from '@/hooks/storage';
 import { useSession } from '@/hooks/useSession';
-
+import { useTranslation } from '@/hooks/useTranslation';
 interface ImageData {
   uri: string;
   base64: string;
@@ -33,9 +32,9 @@ interface ImageData {
 interface ChallengeFormProps {
   title: string;
   subtitle: string;
+  submitButtonText: string;
   defaultValues?: ChallengeSchemaType;
   isStartDateDisabled?: boolean;
-  submitButtonText?: string;
   showDeleteButton?: boolean;
   onSubmit: (data: ChallengeSchemaType) => void;
   onDelete?: () => void;
@@ -47,8 +46,8 @@ export function ChallengeForm({
   subtitle,
   defaultValues,
   isStartDateDisabled = false,
-  submitButtonText = i18n.t('challenge.create_button'),
   showDeleteButton = false,
+  submitButtonText,
   onError,
   onDelete,
   onSubmit,
@@ -68,6 +67,7 @@ export function ChallengeForm({
       endDate: new Date(),
     },
   });
+  const { t } = useTranslation();
   const { upload } = useUploadImage();
   const { session } = useSession();
   const ownerId = session?.user?.id;
@@ -111,18 +111,18 @@ export function ChallengeForm({
 
         <VStack space="2xl">
           <FormInput
-            label="Title"
+            label={t('challenge.form.title.label')}
             name="title"
             control={control}
-            placeholder="#MyChallenge"
+            placeholder={t('challenge.form.title.placeholder')}
             errorMessage={errors?.title?.message}
           />
 
           <FormInput
-            label="Description"
+            label={t('challenge.form.description.label')}
             name="description"
             control={control}
-            placeholder="Describe your challenge"
+            placeholder={t('challenge.form.description.placeholder')}
             errorMessage={errors?.description?.message}
           />
 
@@ -151,7 +151,7 @@ export function ChallengeForm({
             onPress={() => router.back()}
             className="flex-1"
             variant="outline">
-            <ButtonText>Cancel</ButtonText>
+            <ButtonText>{t('challenge.form.cancel_button')}</ButtonText>
           </Button>
 
           <Button
@@ -159,7 +159,9 @@ export function ChallengeForm({
             className="flex-1"
             disabled={isSubmitting}>
             <ButtonText>
-              {isSubmitting ? 'Sending...' : submitButtonText}
+              {isSubmitting
+                ? t('challenge.form.saving_button')
+                : submitButtonText}
             </ButtonText>
           </Button>
         </Box>
@@ -167,7 +169,7 @@ export function ChallengeForm({
         {showDeleteButton && onDelete && (
           <Box className="mt-4">
             <Button onPress={onDelete} action="negative" variant="outline">
-              <ButtonText>Delete Challenge</ButtonText>
+              <ButtonText>{t('challenge.form.delete_button')}</ButtonText>
             </Button>
           </Box>
         )}

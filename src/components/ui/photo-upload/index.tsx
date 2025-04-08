@@ -8,7 +8,7 @@ import {
 } from '@/components/ui';
 import * as ImagePicker from 'expo-image-picker';
 import { Pressable, Alert } from 'react-native';
-
+import { useTranslation } from '@/hooks/useTranslation';
 interface ImageData {
   uri: string;
   base64: string;
@@ -26,6 +26,7 @@ export default function PhotoUpload({
   uri,
   fallbackText,
 }: PhotoUploadProps) {
+  const { t } = useTranslation();
   const [imageUri, setImageUri] = useState<string | undefined>(uri);
 
   useEffect(() => {
@@ -72,7 +73,7 @@ export default function PhotoUpload({
       </Avatar>
 
       <Button variant="outline" onPress={handleImageSelection}>
-        <ButtonText>Change Photo</ButtonText>
+        <ButtonText>{t('challenge.form.cover.label')}</ButtonText>
       </Button>
     </Pressable>
   );

@@ -29,7 +29,41 @@
     "length_placeholder": "Challenge Length (in days)",
     "create_button": "Create Challenge",
     "edit_title": "Edit Challenge",
-    "update_button": "Update Challenge"
+    "update_button": "Update Challenge",
+    "create": {
+      "title": "Create Challenge",
+      "description": "Start a new challenge now!"
+    },
+    "form": {
+      "title": {
+        "label": "Title",
+        "placeholder": "Enter your challenge title",
+        "error": "Title must be at least 4 characters"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Describe your challenge",
+        "error": "Description must be at least 10 characters"
+      },
+      "start_date": {
+        "label": "Start Date",
+        "error": "Start date is required"
+      },
+      "end_date": {
+        "label": "End Date",
+        "error": "End date is required"
+      },
+      "cover": {
+        "label": "Change Cover",
+        "error": "Cover is required"
+      },
+      "days_suggestion_label": "Some suggestions",
+      "days_label": "Days",
+      "cancel_button": "Cancel",
+      "create_button": "Create Challenge",
+      "delete_button": "Delete Challenge",
+      "saving_button": "Saving..."
+    }
   },
   "profile": {
     "tab_label": "Profile",
