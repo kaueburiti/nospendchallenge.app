@@ -106,7 +106,36 @@
     "confirm_password": "Confirm New Password",
     "current_password_incorrect": "Current password is incorrect",
     "password_update_failed": "Failed to update password",
-    "password_updated": "Password updated successfully"
+    "password_updated": "Password updated successfully",
+    "edit_profile": {
+      "title": "Edit Profile",
+      "description": "Update your profile details."
+    },
+    "form": {
+      "first_name": {
+        "label": "First Name",
+        "placeholder": "Enter your first name",
+        "error": "First name must be at least 2 characters"
+      },
+      "last_name": {
+        "label": "Last Name",
+        "placeholder": "Enter your last name",
+        "error": "Last name must be at least 2 characters"
+      },
+      "email": {
+        "label": "Email",
+        "placeholder": "Enter your email",
+        "error": "Email is required"
+      },
+      "avatar": {
+        "label": "Avatar",
+        "error": "Avatar is required",
+        "change": "Change Avatar"
+      },
+      "cancel_button": "Cancel",
+      "save_button": "Save",
+      "saving_button": "Saving..."
+    }
   },
   "validation": {
     "password_min_length": "Password must be at least 6 characters",

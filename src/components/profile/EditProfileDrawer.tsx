@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Button, ButtonText } from '../ui/button';
 import { VStack } from '../ui/vstack';
 import { HStack } from '../ui/hstack';
-import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { type User as SupabaseUser } from '@supabase/supabase-js';
@@ -16,25 +15,8 @@ import {
 import FormInput from '../ui/form/input';
 import { Box } from '../ui/box';
 import { useSimpleToast } from '@/hooks/useSimpleToast';
-
-const profileSchema = z.object({
-  first_name: z
-    .string()
-    .min(2, 'Name must be at least 2 characters long')
-    .optional(),
-  last_name: z
-    .string()
-    .min(2, 'Last Name must be at least 2 characters long')
-    .optional(),
-  display_name: z
-    .string()
-    .min(2, 'Display Name must be at least 2 characters long')
-    .optional(),
-  email: z.string().email('Invalid email').readonly(),
-  avatar_url: z.string().url('Invalid avatar URL').optional(),
-});
-
-type ProfileFormData = z.infer<typeof profileSchema>;
+import { useTranslation } from '@/hooks/useTranslation';
+import { profileSchema, type ProfileSchemaType } from '@/lib/schema/profile';
 
 interface ImageData {
   uri: string;
@@ -51,6 +33,7 @@ export const EditProfileDrawer = ({
   onClose: () => void;
   user: Partial<SupabaseUser> | null;
 }) => {
+  const { t } = useTranslation();
   const { data: profile, isLoading: isProfileLoading } = useProfile(user?.id);
   const { mutate: updateProfile, isPending: isUpdating } = useUpdateProfile();
   const { mutate: uploadAvatar, isPending: isUploading } = useUploadAvatar();
@@ -64,7 +47,7 @@ export const EditProfileDrawer = ({
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<ProfileFormData>({
+  } = useForm<ProfileSchemaType>({
     resolver: zodResolver(profileSchema),
     defaultValues: {
       first_name: '',
@@ -85,7 +68,7 @@ export const EditProfileDrawer = ({
 
   const isLoading = isProfileLoading || isUpdating || isUploading;
 
-  const onSubmit = async (data: ProfileFormData) => {
+  const onSubmit = async (data: ProfileSchemaType) => {
     try {
       const profileData = {
         first_name: data.first_name ?? '',
@@ -121,7 +104,10 @@ export const EditProfileDrawer = ({
   const avatar = newImageData?.uri ?? profile?.avatar_url ?? '';
 
   return (
-    <BottomDrawer isOpen={isOpen} onClose={onClose} title="Edit Profile">
+    <BottomDrawer
+      isOpen={isOpen}
+      onClose={onClose}
+      title={t('profile.edit_profile.title')}>
       <VStack space="4xl" className="mb-20 w-full flex-1 p-4">
         <PhotoUpload
           onImageUpload={imageData => setNewImageData(imageData)}
@@ -134,8 +120,8 @@ export const EditProfileDrawer = ({
             <Box className="flex-1">
               <FormInput
                 name="first_name"
-                placeholder="Enter your first name"
-                label="First Name"
+                placeholder={t('profile.form.first_name.placeholder')}
+                label={t('profile.form.first_name.label')}
                 control={control}
                 errorMessage={errors.first_name?.message}
               />
@@ -143,8 +129,8 @@ export const EditProfileDrawer = ({
             <Box className="flex-1">
               <FormInput
                 name="last_name"
-                placeholder="Enter your last name"
-                label="Last Name"
+                placeholder={t('profile.form.last_name.placeholder')}
+                label={t('profile.form.last_name.label')}
                 control={control}
                 errorMessage={errors.last_name?.message}
               />
@@ -153,8 +139,8 @@ export const EditProfileDrawer = ({
 
           <FormInput
             name="email"
-            placeholder="Enter your email"
-            label="Email"
+            placeholder={t('profile.form.email.placeholder')}
+            label={t('profile.form.email.label')}
             control={control}
             disabled={true}
             errorMessage={errors.email?.message}
@@ -164,10 +150,14 @@ export const EditProfileDrawer = ({
 
       <HStack space="md" className="mt-auto justify-end">
         <Button variant="outline" onPress={onClose}>
-          <ButtonText>Cancel</ButtonText>
+          <ButtonText>{t('profile.form.cancel_button')}</ButtonText>
         </Button>
         <Button onPress={handleSubmit(onSubmit)} isDisabled={isLoading}>
-          <ButtonText>{isLoading ? 'Saving...' : 'Save'}</ButtonText>
+          <ButtonText>
+            {isLoading
+              ? t('profile.form.saving_button')
+              : t('profile.form.save_button')}
+          </ButtonText>
         </Button>
       </HStack>
     </BottomDrawer>
