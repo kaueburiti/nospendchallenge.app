@@ -12,9 +12,9 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useInviteToChallengeByEmail } from '@/hooks/invitations';
-import { Alert } from 'react-native';
 import { useSimpleToast } from '@/hooks/useSimpleToast';
 import { Analytics } from '@/lib/analytics';
+import { useTranslation } from '@/hooks/useTranslation';
 
 const inviteSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email address' }),
@@ -31,6 +31,7 @@ export default function InviteForm({
   challengeId,
   onSuccess,
 }: InviteFormProps) {
+  const { t } = useTranslation();
   const { showToast } = useSimpleToast();
   const {
     control,
@@ -65,15 +66,15 @@ export default function InviteForm({
   return (
     <Box>
       <VStack space="md">
-        <Heading size="md">Invite a Friend</Heading>
+        <Heading size="md">{t('participants.invite.title')}</Heading>
         <Text className="text-gray-500">
-          Enter your friend's email to invite them to join this challenge
+          {t('participants.invite.description')}
         </Text>
 
         <FormInput
           name="email"
           control={control}
-          placeholder="friend@example.com"
+          placeholder={t('participants.invite.form.email.placeholder')}
           errorMessage={errors.email?.message}
         />
 
@@ -81,7 +82,9 @@ export default function InviteForm({
           onPress={handleSubmit(onSubmit)}
           disabled={isSubmitting || isPending}>
           <ButtonText>
-            {isPending ? 'Sending...' : 'Send Invitation'}
+            {isPending
+              ? t('participants.invite.form.saving_button')
+              : t('participants.invite.form.save_button')}
           </ButtonText>
         </Button>
       </VStack>

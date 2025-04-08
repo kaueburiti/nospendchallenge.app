@@ -204,6 +204,34 @@
     "no_activities_description": "Activities will appear here as participants join and complete challenge days.",
     "loading": "Loading activities..."
   },
+  "participants": {
+    "title": "Participants",
+    "loading": "Loading participants...",
+    "participant_owner": "Owner",
+    "no_participants": "No participants yet",
+    "no_participants_description": "Participants will appear here as they join the challenge.",
+    "pending_invites": "Pending Invites",
+    "status": {
+      "pending": "Pending",
+      "accepted": "Accepted",
+      "rejected": "Rejected"
+    },
+    "invite": {
+      "title": "Invite Participants",
+      "description": "Invite participants to your challenge.",
+      "no_invites": "No invites yet",
+      "form": {
+        "email": {
+          "label": "Email",
+          "placeholder": "Enter email address",
+          "error": "Email is required"
+        },
+        "cancel_button": "Cancel",
+        "save_button": "Send Invite",
+        "saving_button": "Sending..."
+      }
+    }
+  },
   "chat": {
     "edit_message": "Edit Message",
     "update_message_prompt": "Update your message:",

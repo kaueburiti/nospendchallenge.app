@@ -1,22 +1,12 @@
 import React from 'react';
-import {
-  Box,
-  Heading,
-  Text,
-  VStack,
-  HStack,
-  Avatar,
-  AvatarFallbackText,
-  AvatarImage,
-  Divider,
-} from '@/components/ui';
+import { Box, Heading, Text, VStack, HStack } from '@/components/ui';
 import { useChallengeParticipants } from '@/hooks/participants';
 import { type Tables } from '@/lib/db/database.types';
 import { useChallenge, useIsChallengeOwner } from '@/hooks/challenges';
 import { Badge } from '@/components/ui/badge';
 import InviteForm from '../home/challenges/invite/invite-form';
 import InvitationList from '../home/challenges/invite/invitation-list';
-
+import { useTranslation } from '@/hooks/useTranslation';
 interface ChallengeParticipantsTabProps {
   challengeId: number;
 }
@@ -24,6 +14,7 @@ interface ChallengeParticipantsTabProps {
 export default function ChallengeParticipantsTab({
   challengeId,
 }: ChallengeParticipantsTabProps) {
+  const { t } = useTranslation();
   const { data: participants, isLoading } =
     useChallengeParticipants(challengeId);
   const isOwner = useIsChallengeOwner(String(challengeId));
@@ -45,7 +36,7 @@ export default function ChallengeParticipantsTab({
       <VStack space="4xl">
         <Box>
           <Heading size="md" className="mb-4">
-            Participants
+            {t('participants.title')}
           </Heading>
 
           {participants.map(participant => (

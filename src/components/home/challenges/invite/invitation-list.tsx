@@ -3,22 +3,24 @@ import { Box, Heading, Text, VStack, HStack } from '@/components/ui';
 import { useInvitationsByChallenge } from '@/hooks/invitations';
 import { format } from 'date-fns';
 import { Badge, BadgeText } from '@/components/ui/badge';
+import { useTranslation } from '@/hooks/useTranslation';
 interface InvitationListProps {
   challengeId: number;
 }
 
 export default function InvitationList({ challengeId }: InvitationListProps) {
+  const { t } = useTranslation();
   const { data: invitations, isLoading } =
     useInvitationsByChallenge(challengeId);
 
   if (isLoading) {
-    return <Text>Loading pending invitations...</Text>;
+    return <Text>{t('participants.loading')}</Text>;
   }
 
   if (!invitations || invitations.length === 0) {
     return (
       <Box className="p-4">
-        <Text className="text-gray-500">No invitations sent yet</Text>
+        <Text className="text-gray-500">{t('participants.no_invites')}</Text>
       </Box>
     );
   }
@@ -26,7 +28,7 @@ export default function InvitationList({ challengeId }: InvitationListProps) {
   return (
     <Box>
       <Heading size="md" className="mb-4">
-        Pending Invitations
+        {t('participants.pending_invites')}
       </Heading>
       <VStack space="md">
         {invitations.map(invitation => (
