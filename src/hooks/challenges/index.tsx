@@ -8,7 +8,6 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useShowNotification } from '../notifications';
 import { router } from 'expo-router';
-import { useSimpleToast } from '../useSimpleToast';
 import { useSession } from '../useSession';
 import { Analytics } from '@/lib/analytics';
 

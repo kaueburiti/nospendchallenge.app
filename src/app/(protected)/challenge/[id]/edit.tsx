@@ -1,48 +1,17 @@
 import React from 'react';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { Box, Text } from '@/components/ui';
-import { useForm } from 'react-hook-form';
 import { router, useLocalSearchParams } from 'expo-router';
-import {
-  useChallenge,
-  useUpdateChallenge,
-  useDeleteChallenge,
-} from '@/hooks/challenges';
+import { useChallenge, useDeleteChallenge } from '@/hooks/challenges';
 import { Alert } from 'react-native';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { ChallengeForm } from '@/components/home/challenges/form/challenge-form';
-import useUploadImage from '@/hooks/storage';
+import { updateChallenge } from '@/lib/db/repository/challenge';
 import { type ChallengeSchemaType } from '@/lib/schema/challenge';
-import { challengeSchema } from '@/lib/schema/challenge';
 
 export default function EditChallenge() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: challenge, isLoading } = useChallenge(id);
   const { mutate: deleteChallenge } = useDeleteChallenge();
-
-  const { reset } = useForm<ChallengeSchemaType>({
-    resolver: zodResolver(challengeSchema),
-    defaultValues: {
-      title: '',
-      description: '',
-      startDate: new Date(),
-      endDate: new Date(),
-    },
-  });
-
-  // Reset form when challenge data is loaded
-  React.useEffect(() => {
-    if (challenge) {
-      reset({
-        title: challenge.title,
-        description: challenge.description ?? '',
-        startDate: challenge.start_date
-          ? new Date(challenge.start_date)
-          : new Date(),
-        endDate: challenge.end_date ? new Date(challenge.end_date) : new Date(),
-      });
-    }
-  }, [challenge, reset]);
 
   if (isLoading || !challenge) {
     return (
@@ -78,6 +47,23 @@ export default function EditChallenge() {
     );
   };
 
+  const handleSubmit = async (data: ChallengeSchemaType) => {
+    await updateChallenge({
+      id: challenge.id,
+      title: data.title,
+      description: data.description,
+      start_date: data.startDate.toISOString(),
+      end_date: data.endDate.toISOString(),
+      cover: data.cover ?? null,
+    })
+      .then(() => {
+        router.replace('/(protected)/(tabs)/home');
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
   return (
     <SafeAreaView>
       <ChallengeForm
@@ -87,11 +73,17 @@ export default function EditChallenge() {
         submitButtonText="Update Challenge"
         showDeleteButton={true}
         onDelete={handleDelete}
-        onSuccess={() => {
-          router.replace('/(protected)/(tabs)/home');
-        }}
-        onError={errors => {
-          console.log(errors);
+        onSubmit={handleSubmit}
+        defaultValues={{
+          title: challenge.title,
+          description: challenge.description ?? '',
+          startDate: challenge.start_date
+            ? new Date(challenge.start_date)
+            : new Date(),
+          endDate: challenge.end_date
+            ? new Date(challenge.end_date)
+            : new Date(),
+          cover: challenge.cover ?? undefined,
         }}
       />
     </SafeAreaView>

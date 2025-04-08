@@ -23,7 +23,6 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import useUploadImage from '@/hooks/storage';
 import { useSession } from '@/hooks/useSession';
-import { useCreateChallenge } from '@/hooks/challenges';
 
 interface ImageData {
   uri: string;
@@ -34,23 +33,25 @@ interface ImageData {
 interface ChallengeFormProps {
   title: string;
   subtitle: string;
+  defaultValues?: ChallengeSchemaType;
   isStartDateDisabled?: boolean;
   submitButtonText?: string;
   showDeleteButton?: boolean;
+  onSubmit: (data: ChallengeSchemaType) => void;
   onDelete?: () => void;
-  onSuccess: () => void;
-  onError: (errors: FieldErrors<ChallengeSchemaType>) => void;
+  onError?: (errors: FieldErrors<ChallengeSchemaType>) => void;
 }
 
 export function ChallengeForm({
   title,
   subtitle,
-  onError,
+  defaultValues,
   isStartDateDisabled = false,
   submitButtonText = i18n.t('challenge.create_button'),
   showDeleteButton = false,
+  onError,
   onDelete,
-  onSuccess,
+  onSubmit,
 }: ChallengeFormProps) {
   const {
     control,
@@ -58,10 +59,9 @@ export function ChallengeForm({
     watch,
     setValue,
     formState: { errors, isSubmitting },
-    reset,
   } = useForm<ChallengeSchemaType>({
     resolver: zodResolver(challengeSchema),
-    defaultValues: {
+    defaultValues: defaultValues ?? {
       title: '',
       description: '',
       startDate: new Date(),
@@ -72,8 +72,6 @@ export function ChallengeForm({
   const { session } = useSession();
   const ownerId = session?.user?.id;
   const [imageData, setImageData] = useState<ImageData | null>(null);
-
-  const { mutate: createChallenge, isPending } = useCreateChallenge();
 
   const handleSubmitTwo = async (data: ChallengeSchemaType) => {
     let cover = data.cover;
@@ -88,25 +86,13 @@ export function ChallengeForm({
         })) ?? undefined;
     }
 
-    try {
-      // CREATE OR UPDATE CHALLENGE
-      createChallenge(
-        {
-          title: data?.title,
-          description: data?.description,
-          start_date: data?.startDate.toISOString(),
-          end_date: data?.endDate.toISOString(),
-          owner_id: ownerId ?? '',
-          cover: cover ?? null,
-        },
-        {
-          onSuccess: onSuccess,
-        },
-      );
-    } catch (error) {
-      onError(error as FieldErrors<ChallengeSchemaType>);
-      console.error('Error creating challenge:', error);
-    }
+    onSubmit({
+      title: data?.title,
+      description: data?.description,
+      startDate: data?.startDate,
+      endDate: data?.endDate,
+      cover: cover ?? undefined,
+    });
   };
 
   return (
