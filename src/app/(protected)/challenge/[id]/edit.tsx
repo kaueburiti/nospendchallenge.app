@@ -15,28 +15,12 @@ import useUploadImage from '@/hooks/storage';
 import { type ChallengeSchemaType } from '@/lib/schema/challenge';
 import { challengeSchema } from '@/lib/schema/challenge';
 
-interface ImageData {
-  uri: string;
-  base64: string;
-  fileExtension: string;
-}
-
 export default function EditChallenge() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const { upload } = useUploadImage();
   const { data: challenge, isLoading } = useChallenge(id);
-  const { mutate: updateChallenge } = useUpdateChallenge();
   const { mutate: deleteChallenge } = useDeleteChallenge();
-  const [imageData, setImageData] = React.useState<ImageData | null>(null);
 
-  const {
-    control,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors, isSubmitting },
-    reset,
-  } = useForm<ChallengeSchemaType>({
+  const { reset } = useForm<ChallengeSchemaType>({
     resolver: zodResolver(challengeSchema),
     defaultValues: {
       title: '',
@@ -70,27 +54,6 @@ export default function EditChallenge() {
     );
   }
 
-  const onSubmit = async (data: ChallengeSchemaType) => {
-    let coverUrl = challenge.cover;
-    if (imageData) {
-      coverUrl = await upload({
-        bucket: 'challenges',
-        name: `${data.title}-cover-${challenge.id}.${imageData.fileExtension}`,
-        path: String(challenge.owner_id),
-        image: imageData,
-      });
-    }
-
-    updateChallenge({
-      id: Number(id),
-      title: data.title,
-      description: data.description,
-      cover: coverUrl,
-      end_date: data.endDate.toISOString(),
-      start_date: data.startDate.toISOString(),
-    });
-  };
-
   const handleDelete = () => {
     Alert.alert(
       'Delete Challenge',
@@ -120,20 +83,16 @@ export default function EditChallenge() {
       <ChallengeForm
         title="Edit Challenge"
         subtitle="Update your challenge details."
-        control={control}
-        watch={watch}
-        setValue={setValue}
-        handleSubmit={handleSubmit}
-        errors={errors}
-        onSubmit={onSubmit}
-        imageData={imageData}
-        setImageData={setImageData}
-        existingImageUrl={challenge.cover ?? undefined}
         isStartDateDisabled={true}
         submitButtonText="Update Challenge"
         showDeleteButton={true}
         onDelete={handleDelete}
-        isSubmitting={isSubmitting}
+        onSuccess={() => {
+          router.replace('/(protected)/(tabs)/home');
+        }}
+        onError={errors => {
+          console.log(errors);
+        }}
       />
     </SafeAreaView>
   );

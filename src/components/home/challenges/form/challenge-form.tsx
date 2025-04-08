@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Button,
@@ -8,21 +8,22 @@ import {
   VStack,
 } from '@/components/ui';
 import FormInput from '@/components/ui/form/input';
-import type {
-  Control,
-  FieldErrors,
-  UseFormWatch,
-  UseFormSetValue,
-  UseFormHandleSubmit,
-} from 'react-hook-form';
+import type { FieldErrors } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { router } from 'expo-router';
 import { i18n } from '@/i18n';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { StartAndEndDates } from '@/components/home/challenges/form/start-and-end-date';
 import PhotoUpload from '@/components/ui/photo-upload';
-import { z } from 'zod';
 import { DaysSuggestions } from './days-suggestions';
-import { ChallengeSchemaType } from '@/lib/schema/challenge';
+import {
+  challengeSchema,
+  type ChallengeSchemaType,
+} from '@/lib/schema/challenge';
+import { zodResolver } from '@hookform/resolvers/zod';
+import useUploadImage from '@/hooks/storage';
+import { useSession } from '@/hooks/useSession';
+import { useCreateChallenge } from '@/hooks/challenges';
 
 interface ImageData {
   uri: string;
@@ -33,42 +34,81 @@ interface ImageData {
 interface ChallengeFormProps {
   title: string;
   subtitle: string;
-  control: Control<ChallengeSchemaType>;
-  watch: UseFormWatch<ChallengeSchemaType>;
-  setValue: UseFormSetValue<ChallengeSchemaType>;
-  handleSubmit: UseFormHandleSubmit<ChallengeSchemaType>;
-  errors: FieldErrors<ChallengeSchemaType>;
-  onSubmit: (data: ChallengeSchemaType) => Promise<void>;
-  onError?: (errors: FieldErrors<ChallengeSchemaType>) => void;
-  imageData: ImageData | null;
-  setImageData: (data: ImageData | null) => void;
-  existingImageUrl?: string;
   isStartDateDisabled?: boolean;
   submitButtonText?: string;
   showDeleteButton?: boolean;
-  isSubmitting?: boolean;
   onDelete?: () => void;
+  onSuccess: () => void;
+  onError: (errors: FieldErrors<ChallengeSchemaType>) => void;
 }
 
 export function ChallengeForm({
   title,
   subtitle,
-  control,
-  watch,
-  setValue,
-  handleSubmit,
-  errors,
-  onSubmit,
   onError,
-  imageData,
-  setImageData,
-  existingImageUrl,
   isStartDateDisabled = false,
   submitButtonText = i18n.t('challenge.create_button'),
   showDeleteButton = false,
   onDelete,
-  isSubmitting = false,
+  onSuccess,
 }: ChallengeFormProps) {
+  const {
+    control,
+    handleSubmit,
+    watch,
+    setValue,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<ChallengeSchemaType>({
+    resolver: zodResolver(challengeSchema),
+    defaultValues: {
+      title: '',
+      description: '',
+      startDate: new Date(),
+      endDate: new Date(),
+    },
+  });
+  const { upload } = useUploadImage();
+  const { session } = useSession();
+  const ownerId = session?.user?.id;
+  const [imageData, setImageData] = useState<ImageData | null>(null);
+
+  const { mutate: createChallenge, isPending } = useCreateChallenge();
+
+  const handleSubmitTwo = async (data: ChallengeSchemaType) => {
+    let cover = data.cover;
+
+    if (imageData) {
+      cover =
+        (await upload({
+          bucket: 'challenges',
+          name: `${data.title}-cover-${ownerId}.${imageData.fileExtension}`,
+          path: String(ownerId),
+          image: imageData,
+        })) ?? undefined;
+    }
+
+    try {
+      // CREATE OR UPDATE CHALLENGE
+      createChallenge(
+        {
+          title: data?.title,
+          description: data?.description,
+          start_date: data?.startDate.toISOString(),
+          end_date: data?.endDate.toISOString(),
+          owner_id: ownerId ?? '',
+          cover: cover ?? null,
+        },
+        {
+          onSuccess: onSuccess,
+        },
+      );
+    } catch (error) {
+      onError(error as FieldErrors<ChallengeSchemaType>);
+      console.error('Error creating challenge:', error);
+    }
+  };
+
   return (
     <ScrollView className="h-[1px] flex-1">
       <Box className="px-4 py-12">
@@ -80,19 +120,16 @@ export function ChallengeForm({
         </Box>
 
         <Box className="mb-6">
-          <PhotoUpload
-            onImageUpload={imageData => setImageData(imageData)}
-            uri={imageData?.uri ?? existingImageUrl}
-          />
+          <PhotoUpload onImageUpload={setImageData} uri={imageData?.uri} />
         </Box>
 
         <VStack space="2xl">
           <FormInput
-            label="Name"
-            name="name"
+            label="Title"
+            name="title"
             control={control}
             placeholder="#MyChallenge"
-            errorMessage={errors?.name?.message}
+            errorMessage={errors?.title?.message}
           />
 
           <FormInput
@@ -132,7 +169,7 @@ export function ChallengeForm({
           </Button>
 
           <Button
-            onPress={handleSubmit(onSubmit, onError)}
+            onPress={handleSubmit(handleSubmitTwo, onError)}
             className="flex-1"
             disabled={isSubmitting}>
             <ButtonText>
