@@ -15,6 +15,16 @@
     "no_challenges": "No challenges yet",
     "no_challenges_description": "Create your first challenge to get started!"
   },
+  "challenge": {
+    "title": "Challenges",
+    "tab_label": "Challenges",
+    "create_title": "Create New Challenge",
+    "name_placeholder": "Challenge Name",
+    "length_placeholder": "Challenge Length (in days)",
+    "create_button": "Create Challenge",
+    "edit_title": "Edit Challenge",
+    "update_button": "Update Challenge"
+  },
   "profile": {
     "tab_label": "Profile",
     "settings_title": "Account Settings",
@@ -25,7 +35,7 @@
     "payment_button_label": "Upgrade Now",
     "dark_mode": "Dark Mode",
     "delete_account": "Delete Account!!!",
-    "get_help": "Terms of Service",
+    "terms_of_service": "Terms of Service",
     "contact": "Contact",
     "sign_out": "Sign Out",
     "drawer_title": "Edit Profile",
@@ -56,16 +66,7 @@
     "communication": "Communication",
     "others": "Others"
   },
-  "challenge": {
-    "title": "Challenges",
-    "tab_label": "Challenges",
-    "create_title": "Create New Challenge",
-    "name_placeholder": "Challenge Name",
-    "length_placeholder": "Challenge Length (in days)",
-    "create_button": "Create Challenge",
-    "edit_title": "Edit Challenge",
-    "update_button": "Update Challenge"
-  },
+
   "validation": {
     "password_min_length": "Password must be at least 6 characters",
     "passwords_must_match": "Passwords must match"

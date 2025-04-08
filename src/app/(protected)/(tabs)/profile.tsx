@@ -3,14 +3,8 @@ import { VStack } from '@/components/ui';
 import { Heading } from '@/components/ui';
 import { Divider } from '@/components/ui';
 import { Button, ButtonText } from '@/components/ui';
-import { useDisclose } from '@gluestack-ui/hooks';
 import { MenuItem } from '@/components/MenuItem';
-import {
-  LifeBuoyIcon,
-  MessageSquareText,
-  OctagonX,
-  Lock,
-} from 'lucide-react-native';
+import { LifeBuoyIcon, OctagonX, Lock } from 'lucide-react-native';
 import { ProfileCard } from '@/components/profile/ProfileCard';
 import SignOutAlertDialog from '../../../components/profile/SignOutAlertDialog';
 import DeleteAccountAlertDialog from '../../../components/profile/DeleteAccountAlertDialog';
@@ -18,13 +12,11 @@ import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { useSession } from '@/hooks/useSession';
 import { RevenueCatContext } from '@/provider/RevenueCatProvider';
 import Paywall from '../../../components/payment/paywall';
-import config from '../../../../config';
 import {
   ScrollView,
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
 import { PaymentPlan } from '@/components/profile/PaymentPlan';
-import * as WebBrowser from 'expo-web-browser';
 import { useTheme } from '@/hooks/useTheme';
 import { useTranslation } from '@/hooks/useTranslation';
 import ChangePasswordDrawer from '@/components/profile/ChangePasswordDrawer';
@@ -58,7 +50,7 @@ const ProfileSupport: React.FC = () => {
       <MenuItem
         onPress={() => router.push('/privacy-policy')}
         icon={LifeBuoyIcon}
-        text={t('profile.get_help')}
+        text={t('profile.terms_of_service')}
       />
     </VStack>
   );
