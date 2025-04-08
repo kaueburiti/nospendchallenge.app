@@ -7,9 +7,11 @@ import { Button, ButtonText, Text } from '@/components/ui';
 import GuestLayout from '../../components/GuestLayout';
 import { Span } from '@expo/html-elements';
 import MeditatingWoman from '@/components/ui/illustrations/meditating-woman';
+import { useTranslation } from '@/hooks/useTranslation';
 
-// FEATURE: Add a splash screen
 const Welcome = () => {
+  const { t } = useTranslation();
+
   return (
     <GuestLayout>
       <VStack className="relative flex-1 items-center px-4 py-12">
@@ -22,13 +24,11 @@ const Welcome = () => {
         <VStack space="md" className="mt-24 w-full max-w-sm">
           <Box className="mb-12 flex flex-col gap-2 text-center">
             <Heading className="mb-1 text-center text-4xl">
-              Welcome to #<Span className="text-[#ff7979]">NoSpend</Span>
+              {t('welcome.greeting')} #
+              <Span className="text-[#ff7979]">NoSpend</Span>
               Challenge
             </Heading>
-            <Text className="text-center">
-              Create challenges to help you on your journey to financial
-              control!
-            </Text>
+            <Text className="text-center">{t('welcome.description')}</Text>
           </Box>
 
           <Box className="flex flex-col items-center gap-4">
@@ -38,7 +38,7 @@ const Welcome = () => {
                 router.push('/sign-up');
               }}
               className="w-full flex-1">
-              <ButtonText>Create Account</ButtonText>
+              <ButtonText>{t('welcome.create_account')}</ButtonText>
             </Button>
 
             <Button
@@ -49,7 +49,7 @@ const Welcome = () => {
               variant="link"
               className="w-full flex-1">
               <ButtonText className="underline">
-                I already have an account
+                {t('welcome.already_have_account')}
               </ButtonText>
             </Button>
           </Box>

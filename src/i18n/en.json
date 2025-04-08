@@ -4,6 +4,12 @@
     "save": "Save",
     "error_occurred": "An error occurred. Please try again."
   },
+  "welcome": {
+    "greeting": "Welcome to",
+    "description": "Create challenges to help you on your journey to financial control!",
+    "create_account": "Create Account",
+    "already_have_account": "I already have an account"
+  },
   "home": {
     "tab_label": "Home",
     "greeting": "Hello",

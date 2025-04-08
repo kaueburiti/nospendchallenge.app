@@ -44,16 +44,3 @@ export default function ChallengeProgressBar({
     </VStack>
   );
 }
-
-/*
-
-📆 Date calculations
-FIX: The calculation for skipped days is not working correctly.
-
-⭐ Feature requests
-FEATURE: Create challenges suggestions
-FEATURE: Add the rules field to the challenge
-FEATURE: Create a chat inside the challenge
-
-BUG: Update profile input glitch, you have to make the profile bucket public in order to see the profile picture
-*/
