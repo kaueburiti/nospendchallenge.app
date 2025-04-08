@@ -142,6 +142,34 @@
       "saving_button": "Saving..."
     }
   },
+  "password": {
+    "title": "Password",
+    "description": "Update your password.",
+    "current_password": "Current Password",
+    "new_password": "New Password",
+    "confirm_password": "Confirm New Password",
+    "edit": {
+      "title": "Change Password",
+      "description": "Enter your current password and a new password to update your credentials."
+    },
+    "form": {
+      "current_password": {
+        "label": "Current Password",
+        "error": "Current password is required"
+      },
+      "new_password": {
+        "label": "New Password",
+        "error": "New password is required"
+      },
+      "confirm_new_password": {
+        "label": "Confirm New Password",
+        "error": "Confirm new password is required"
+      },
+      "cancel_button": "Cancel",
+      "save_button": "Save",
+      "saving_button": "Saving..."
+    }
+  },
   "validation": {
     "password_min_length": "Password must be at least 6 characters",
     "passwords_must_match": "Passwords must match"

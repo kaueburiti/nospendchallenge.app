@@ -108,9 +108,9 @@ const ChangePasswordDrawer: React.FC<ChangePasswordDrawerProps> = ({
     <BottomDrawer
       isOpen={isOpen}
       onClose={handleClose}
-      title={t('profile.change_password')}>
+      title={t('password.edit.title')}>
       <VStack space="3xl">
-        <Text>{t('profile.change_password_description')}</Text>
+        <Text>{t('password.edit.description')}</Text>
 
         <VStack space="md">
           <Controller
@@ -120,7 +120,7 @@ const ChangePasswordDrawer: React.FC<ChangePasswordDrawerProps> = ({
               <FormControl isInvalid={!!errors.currentPassword}>
                 <FormControlLabel>
                   <FormControlLabelText>
-                    {t('profile.current_password')}
+                    {t('password.form.current_password.label')}
                   </FormControlLabelText>
                 </FormControlLabel>
                 <Input>
@@ -156,7 +156,7 @@ const ChangePasswordDrawer: React.FC<ChangePasswordDrawerProps> = ({
               <FormControl isInvalid={!!errors.newPassword}>
                 <FormControlLabel>
                   <FormControlLabelText>
-                    {t('profile.new_password')}
+                    {t('password.form.new_password.label')}
                   </FormControlLabelText>
                 </FormControlLabel>
                 <Input>
@@ -190,7 +190,7 @@ const ChangePasswordDrawer: React.FC<ChangePasswordDrawerProps> = ({
               <FormControl isInvalid={!!errors.confirmPassword}>
                 <FormControlLabel>
                   <FormControlLabelText>
-                    {t('profile.confirm_password')}
+                    {t('password.form.confirm_new_password.label')}
                   </FormControlLabelText>
                 </FormControlLabel>
                 <Input>
@@ -225,10 +225,10 @@ const ChangePasswordDrawer: React.FC<ChangePasswordDrawerProps> = ({
             action="secondary"
             onPress={handleClose}
             className="mr-2">
-            <ButtonText>{t('common.cancel')}</ButtonText>
+            <ButtonText>{t('password.form.cancel_button')}</ButtonText>
           </Button>
           <Button onPress={handleSubmit(onSubmit)} isDisabled={isLoading}>
-            <ButtonText>{t('common.save')}</ButtonText>
+            <ButtonText>{t('password.form.save_button')}</ButtonText>
           </Button>
         </HStack>
       </VStack>
