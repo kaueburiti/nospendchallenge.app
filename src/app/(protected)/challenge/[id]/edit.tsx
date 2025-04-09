@@ -2,12 +2,12 @@ import React from 'react';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { Box, Text } from '@/components/ui';
 import { router, useLocalSearchParams } from 'expo-router';
-import { useChallenge, useDeleteChallenge } from '@/hooks/challenges';
 import { Alert } from 'react-native';
 import { ChallengeForm } from '@/components/home/challenges/form/challenge-form';
 import { updateChallenge } from '@/lib/db/repository/challenge';
 import { type ChallengeSchemaType } from '@/lib/schema/challenge';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useChallenge, useDeleteChallenge } from '@/hooks/challenges';
 
 export default function EditChallenge() {
   const { t } = useTranslation();

@@ -5,11 +5,18 @@ import {
   updateChallenge,
   deleteChallenge,
 } from '@/lib/db/repository/challenge';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  type UseQueryResult,
+} from '@tanstack/react-query';
 import { useShowNotification } from '../notifications';
 import { router } from 'expo-router';
 import { useSession } from '../useSession';
 import { Analytics } from '@/lib/analytics';
+import { supabase } from '@/lib/supabase';
+import { type Tables } from '@/lib/db/database.types';
 
 export const useCreateChallenge = () => {
   const queryClient = useQueryClient();
@@ -50,7 +57,9 @@ export const useGetChallenges = (limit = 10) => {
   });
 };
 
-export const useChallenge = (id: string) => {
+export const useChallenge = (
+  id: string,
+): UseQueryResult<Tables<'challenges'> | null> => {
   return useQuery({
     queryKey: ['challenge', id],
     queryFn: () => getChallenge(id),
@@ -124,4 +133,40 @@ export const useIsChallengeOwner = (challengeId: string) => {
   const { session } = useSession();
 
   return challenge?.owner_id === session?.user?.id;
+};
+
+export const useLeaveChallenge = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (challengeId: number) => {
+      const { data: session } = await supabase.auth.getSession();
+      if (!session?.session?.user?.id) throw new Error('Not authenticated');
+
+      const { error } = await supabase
+        .from('challenge_participants')
+        .delete()
+        .eq('challenge_id', challengeId)
+        .eq('user_id', session.session.user.id);
+
+      if (error) {
+        if (error.message.includes('prevent_owner_leaving')) {
+          throw new Error('Challenge owners cannot leave their own challenge');
+        }
+        if (error.message.includes('at least one participant must remain')) {
+          throw new Error(
+            'Cannot leave: at least one participant must remain in the challenge',
+          );
+        }
+        throw new Error('Failed to leave challenge');
+      }
+    },
+    onSuccess: async (_, challengeId) => {
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ['challenge', challengeId] }),
+        queryClient.invalidateQueries({ queryKey: ['challenges'] }),
+      ]);
+      router.replace('/(protected)/(tabs)/home');
+    },
+  });
 };

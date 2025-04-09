@@ -38,7 +38,9 @@ export const getUserChallenges = async (limit = 10) => {
   return data;
 };
 
-export const getChallenge = async (id: string) => {
+export const getChallenge = async (
+  id: string,
+): Promise<Tables<'challenges'> | null> => {
   const { data, error } = await supabase
     .from('challenges')
     .select()

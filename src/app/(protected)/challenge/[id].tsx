@@ -10,17 +10,16 @@ import {
   Pressable,
 } from '@/components/ui';
 import { useLocalSearchParams, router } from 'expo-router';
-import { useChallenge, useIsChallengeOwner } from '@/hooks/challenges';
-import { ScrollView } from 'react-native';
+import { Alert } from 'react-native';
 import {
   BellRing,
   CheckCheck,
-  CheckCircle2,
-  Grid2x2Check,
+  LogOut,
   MessageCircle,
   Settings,
   Users,
 } from 'lucide-react-native';
+import { supabase } from '@/lib/supabase';
 import CheckModal from '@/components/home/challenges/check/modal';
 import ChallengeCover from '@/components/home/challenges/cover';
 import BackButton from '@/components/navigation/back-button';
@@ -28,6 +27,8 @@ import ChallengeDetailsTab from '@/components/challenge/details-tab';
 import ChallengeActivitiesTab from '@/components/challenge/activities-tab';
 import ChallengeParticipantsTab from '@/components/challenge/participants-tab';
 import ChallengeChatTab from '@/components/challenge/chat-tab';
+import { useIsChallengeOwner } from '@/hooks/challenges/index';
+import { useChallenge } from '@/hooks/challenges';
 
 export default function ChallengeDetails() {
   const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
@@ -38,6 +39,49 @@ export default function ChallengeDetails() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: challenge, isLoading } = useChallenge(id);
   const isOwner = useIsChallengeOwner(id);
+
+  const handleLeaveChallenge = async () => {
+    try {
+      const { data: session } = await supabase.auth.getSession();
+      if (!session?.session?.user?.id) {
+        throw new Error('Not authenticated');
+      }
+
+      const { error } = await supabase
+        .from('challenge_participants')
+        .delete()
+        .eq('challenge_id', Number(id))
+        .eq('user_id', session.session.user.id);
+
+      if (error) {
+        throw new Error(error.message);
+      }
+
+      router.replace('/(protected)/(tabs)/home');
+    } catch (error) {
+      if (error instanceof Error) {
+        Alert.alert('Error', error.message);
+      }
+    }
+  };
+
+  const confirmLeaveChallenge = () => {
+    Alert.alert(
+      'Leave Challenge',
+      'Are you sure you want to leave this challenge? This action cannot be undone. Your checks and chat messages will be deleted.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Leave',
+          style: 'destructive',
+          onPress: handleLeaveChallenge,
+        },
+      ],
+    );
+  };
 
   if (isLoading) {
     return (
@@ -72,12 +116,19 @@ export default function ChallengeDetails() {
                 <Box className="flex flex-row items-center justify-between">
                   <Heading size="2xl">{challenge.title}</Heading>
 
-                  {isOwner && (
+                  {isOwner ? (
                     <Button
                       onPress={() => router.push(`/challenge/${id}/edit`)}
                       variant="link"
                       action="secondary">
                       <Settings size={24} color="rgb(82,82,82)" />
+                    </Button>
+                  ) : (
+                    <Button
+                      onPress={confirmLeaveChallenge}
+                      variant="link"
+                      action="secondary">
+                      <LogOut size={24} color="rgb(82,82,82)" />
                     </Button>
                   )}
                 </Box>
