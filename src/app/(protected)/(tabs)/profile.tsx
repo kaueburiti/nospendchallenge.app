@@ -6,7 +6,6 @@ import { Button, ButtonText } from '@/components/ui';
 import { MenuItem } from '@/components/MenuItem';
 import { LifeBuoyIcon, OctagonX, Lock } from 'lucide-react-native';
 import { ProfileCard } from '@/components/profile/ProfileCard';
-import SignOutAlertDialog from '../../../components/profile/SignOutAlertDialog';
 import DeleteAccountAlertDialog from '../../../components/profile/DeleteAccountAlertDialog';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { useSession } from '@/hooks/useSession';
@@ -17,10 +16,10 @@ import {
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
 import { PaymentPlan } from '@/components/profile/PaymentPlan';
-import { useTheme } from '@/hooks/useTheme';
 import { useTranslation } from '@/hooks/useTranslation';
 import ChangePasswordDrawer from '@/components/profile/ChangePasswordDrawer';
 import { router } from 'expo-router';
+import { useSignOut } from '@/hooks/auth/useSignOut';
 
 interface ProfileSettingsProps {
   onOpenDeleteAccountDialog: () => void;
@@ -57,18 +56,13 @@ const ProfileSupport: React.FC = () => {
 };
 
 interface SignOutButtonProps {
-  onOpenSignOutAlertDialog: () => void;
+  onClick: () => void;
 }
 
-const SignOutButton: React.FC<SignOutButtonProps> = ({
-  onOpenSignOutAlertDialog,
-}) => {
+const SignOutButton: React.FC<SignOutButtonProps> = ({ onClick }) => {
   const { t } = useTranslation();
   return (
-    <Button
-      variant="outline"
-      className="mt-auto"
-      onPress={onOpenSignOutAlertDialog}>
+    <Button variant="outline" className="mt-auto" onPress={onClick}>
       <ButtonText>{t('profile.sign_out')}</ButtonText>
     </Button>
   );
@@ -97,14 +91,13 @@ const ProfilePage = () => {
   const { t } = useTranslation();
   const [showPaywall, setShowPaywall] = useState(false);
   const { session } = useSession();
-  const { isDark, toggleColorMode } = useTheme();
+  const { signOut } = useSignOut();
+
   const [showDeleteAccountDialog, setShowDeleteAccountDialog] = useState(false);
-  const [showSignOutAlertDialog, setShowSignOutAlertDialog] = useState(false);
   const [showChangePasswordDrawer, setShowChangePasswordDrawer] =
     useState(false);
 
   const onOpenDeleteAccountDialog = () => setShowDeleteAccountDialog(true);
-  const onOpenSignOutAlertDialog = () => setShowSignOutAlertDialog(true);
   const onOpenChangePasswordDrawer = () => setShowChangePasswordDrawer(true);
 
   const { customerInfo } = useContext(RevenueCatContext);
@@ -145,16 +138,8 @@ const ProfilePage = () => {
                 <Divider className="my-2" />
                 <ProfileSupport />
                 <Divider className="my-2" />
-                <SignOutButton
-                  onOpenSignOutAlertDialog={onOpenSignOutAlertDialog}
-                />
+                <SignOutButton onClick={() => signOut({})} />
               </VStack>
-              <SignOutAlertDialog
-                onCloseSignOutAlertDialog={() =>
-                  setShowSignOutAlertDialog(false)
-                }
-                openSignOutAlertDialog={showSignOutAlertDialog}
-              />
               <DeleteAccountAlertDialog
                 openDeleteAccountDialog={showDeleteAccountDialog}
                 onCloseDeleteAccountDialog={() =>
