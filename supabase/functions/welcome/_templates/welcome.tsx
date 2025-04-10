@@ -38,15 +38,15 @@ export const WelcomeEmail = ({ verificationUrl }: WelcomeEmailProps) => (
           financial goals.
         </Text>
 
-        <Section style={buttonSection}>
+        {/* <Section style={buttonSection}>
           <Button href={verificationUrl} style={button}>
             Verify Your Email
           </Button>
-        </Section>
+        </Section> */}
 
         <Text style={text}>Here's what you can do next:</Text>
 
-        <Text style={listItem}>• Set up your first NoSpend challenge</Text>
+        <Text style={listItem}>• Set up your first #NoSpendChallenge</Text>
         <Text style={listItem}>• Connect with like-minded savers</Text>
         <Text style={listItem}>
           • Track your progress and celebrate milestones
@@ -54,13 +54,13 @@ export const WelcomeEmail = ({ verificationUrl }: WelcomeEmailProps) => (
 
         <Text style={text}>
           If you have any questions or need help getting started, don't hesitate
-          to reach out to our support team.
+          to reach out to me at debora@nospendchallenge.app!
         </Text>
 
         <Text style={footer}>
           Happy Saving!
           <br />
-          The #NoSpendChallenge Team
+          Débora Buriti from #NoSpendChallenge
         </Text>
       </Container>
     </Body>
