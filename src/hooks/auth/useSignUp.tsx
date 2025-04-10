@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { useSimpleToast } from '../useSimpleToast';
 import { type AuthError } from '@supabase/auth-js';
+import { useSession } from '@/provider/SessionProvider';
 
 type SignUpParams = {
   email: string;
@@ -13,6 +14,7 @@ type SignUpParams = {
 export const useSignUp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { showToast } = useSimpleToast();
+  const { session } = useSession();
 
   const signUp = async ({
     email,
@@ -31,6 +33,13 @@ export const useSignUp = () => {
     } else {
       showToast('success', 'Account successfully created!');
       onSuccess?.();
+
+      await supabase.functions.invoke('welcome', {
+        headers: {
+          Authorization: `Bearer ${session?.access_token}`,
+        },
+        body: { email, verificationUrl: 'verify.nospendchallenge.app' },
+      });
     }
 
     setIsLoading(false);
