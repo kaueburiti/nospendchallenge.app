@@ -5,7 +5,7 @@ module.exports = {
     owner: config.general.owner,
     name: config.general.appName,
     slug: config.general.slug,
-    version: '1.0.0',
+    version: '1.0.1',
     orientation: 'portrait',
     icon: config.general.icon,
     scheme: config.general.scheme,
