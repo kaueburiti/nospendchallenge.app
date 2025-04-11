@@ -25,6 +25,7 @@ module.exports = {
           },
         ],
       },
+      associatedDomains: ['applinks:nospendchallenge.app'],
     },
     android: {
       adaptiveIcon: {
@@ -33,6 +34,19 @@ module.exports = {
       },
       package: config.general.androidPackageName,
       permissions: [],
+      intentFilters: [
+        {
+          action: 'VIEW',
+          data: [
+            {
+              scheme: 'https',
+              host: 'nospendchallenge.app',
+              pathPrefix: '/challenge',
+            },
+          ],
+          category: ['BROWSABLE', 'DEFAULT'],
+        },
+      ],
     },
     plugins: [
       'expo-font',

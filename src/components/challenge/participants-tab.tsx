@@ -8,6 +8,7 @@ import InviteForm from '../home/challenges/invite/invite-form';
 import InvitationList from '../home/challenges/invite/invitation-list';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useInvitationsByChallenge } from '@/hooks/invitations';
+import { ShareChallengeButton } from './ShareChallengeButton';
 interface ChallengeParticipantsTabProps {
   challengeId: number;
 }
@@ -15,6 +16,7 @@ interface ChallengeParticipantsTabProps {
 export default function ChallengeParticipantsTab({
   challengeId,
 }: ChallengeParticipantsTabProps) {
+  const { data: challenge } = useChallenge(String(challengeId));
   const { t } = useTranslation();
   const { data: participants, isLoading } =
     useChallengeParticipants(challengeId);
@@ -65,6 +67,8 @@ export default function ChallengeParticipantsTab({
             />
           </>
         )}
+
+        {challenge && <ShareChallengeButton challenge={challenge} />}
       </VStack>
     </Box>
   );

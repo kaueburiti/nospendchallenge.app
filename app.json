@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "scheme": "nospendchallenge",
+    "ios": {
+      "associatedDomains": ["applinks:nospendchallenge.app"]
+    },
+    "android": {
+      "intentFilters": [
+        {
+          "action": "VIEW",
+          "data": [
+            {
+              "scheme": "https",
+              "host": "nospendchallenge.app",
+              "pathPrefix": "/challenge"
+            }
+          ],
+          "category": ["BROWSABLE", "DEFAULT"]
+        }
+      ]
+    }
+  }
+}

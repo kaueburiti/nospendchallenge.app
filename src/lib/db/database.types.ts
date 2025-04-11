@@ -230,6 +230,7 @@ export type Database = {
           owner_id: string
           start_date: string
           title: string
+          token: string | null
         }
         Insert: {
           cover?: string | null
@@ -240,6 +241,7 @@ export type Database = {
           owner_id: string
           start_date: string
           title: string
+          token?: string | null
         }
         Update: {
           cover?: string | null
@@ -250,6 +252,7 @@ export type Database = {
           owner_id?: string
           start_date?: string
           title?: string
+          token?: string | null
         }
         Relationships: []
       }
@@ -393,11 +396,38 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      generate_challenge_token: {
+        Args: Record<PropertyKey, never>
+        Returns: string
+      }
+      get_challenge_by_token: {
+        Args: {
+          token_param: string
+        }
+        Returns: {
+          cover: string | null
+          created_at: string
+          description: string | null
+          end_date: string
+          id: number
+          owner_id: string
+          start_date: string
+          title: string
+          token: string | null
+        }[]
+      }
       get_challenge_total_days: {
         Args: {
           challenge_row: unknown
         }
         Returns: number
+      }
+      join_challenge_by_token: {
+        Args: {
+          token_param: string
+          user_id: string
+        }
+        Returns: undefined
       }
     }
     Enums: {
