@@ -1,0 +1,6 @@
+appId: com.company.nospendchallengeapp
+---
+- runScript: translations.js
+- launchApp
+- assertVisible: ${output.translations.welcome.create_account}
+- assertVisible: ${output.translations.welcome.already_have_account}
