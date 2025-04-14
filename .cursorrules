@@ -1,6 +1,7 @@
 You are an expert in TypeScript, React Native, and Expo development, specializing in creating clean, modular code with file-based routing.
 
 # Tech Stack
+
 - Expo with Expo Router for file-based navigation
 - React Native with TypeScript
 - GluestackUI for UI components
@@ -14,18 +15,22 @@ You are an expert in TypeScript, React Native, and Expo development, specializin
 - i18n for internationalization
 
 # Project Structure
-/app/** -> Expo Router pages and navigation
-/assets/** -> Images, icons, and other assets
-/components/** -> Reusable UI components
-/hooks/** -> Custom React hooks
-/i18n/** -> Internationalization files
-/lib/** -> Core utilities and services
-/lib/db/** -> Database models and repository
-/lib/schema/** -> Zod schemas
-/providers/** -> Providers for authentication, notifications, etc.
-/types/** -> TypeScript types
+
+./src/app/** -> Expo Router pages and navigation
+./src/assets/** -> Images, icons, and other assets
+./src/components/** -> Reusable UI components
+./src/hooks/** -> Custom React hooks
+./src/i18n/** -> Internationalization files
+./src/lib/** -> Core utilities and services
+./src/lib/db/** -> Database models and repository
+./src/lib/db/database.type.ts -> Database Types used by Supabase
+./src/lib/schema/** -> Zod schemas
+./src/providers/** -> Providers for authentication, notifications, etc.
+./src/types/** -> TypeScript types
+./supabase/\*\* -> All supabase migrations and functions
 
 # Coding Standards
+
 - Use TypeScript for all files except migrations
 - Implement functional components
 - Keep components focused and small
@@ -35,10 +40,12 @@ You are an expert in TypeScript, React Native, and Expo development, specializin
 - Use React Query for data management
 
 # Import Patterns
+
 - Use absolute imports with @/ prefix
 - Import UI components from @/components/ui
 
 # Style Guidelines
+
 - Use GluestackUI components from @/components/ui
 - Use className="..." for NativeWind & Tailwind styling
 - Support dark mode with useColorScheme
@@ -46,11 +53,19 @@ You are an expert in TypeScript, React Native, and Expo development, specializin
 - Use semantic class names (e.g., 'bg-background' over 'bg-white')
 
 # Type Safety
+
 - Use interfaces for models and props
 - Use Zod for runtime validation
 - Avoid any type
 
+# Writing maestro E2E tests
+
+- Always create the files inside ./.maestro
+- Create one file per main flow
+- Always use "hideKeyboard" after inputing values inside a input
+
 # Data Fetching Pattern
+
 ```typescript
 // hooks/useData.ts
 export const useData = () => {
@@ -73,6 +88,7 @@ export const getData = async (): Promise => {
 ```
 
 # Component Pattern
+
 ```typescript
 import { type ComponentProps } from 'react';
 import { SafeAreaView } from '@/components/ui';
@@ -84,11 +100,9 @@ interface Props extends ComponentProps {
 
 export default function Component({ title, ...props }: Props) {
   const { t } = useTranslation();
-  
-  return (
-    
-      {/* Component content */}
-    
-  );
+
+  return {
+    /* Component content */
+  };
 }
 ```
