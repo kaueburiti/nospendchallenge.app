@@ -1,6 +1,6 @@
 import '../global.css';
 import { useFonts } from 'expo-font';
-import { Slot, useRouter } from 'expo-router';
+import { Slot } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import React, { useEffect, useState } from 'react';
 import 'react-native-reanimated';
@@ -15,7 +15,7 @@ import '../i18n';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { Spinner } from '@/components/ui/spinner';
 import { Box } from '@/components/ui';
-import Aptabase from '@aptabase/react-native';
+import { OneSignal, LogLevel } from 'react-native-onesignal';
 
 export { ErrorBoundary } from 'expo-router';
 
@@ -42,6 +42,17 @@ export default function RootLayout() {
       return () => clearTimeout(timer);
     }
   }, [loaded]);
+
+  // Initialize OneSignal in useEffect to ensure it runs only once
+  useEffect(() => {
+    // Enable verbose logging for debugging (remove in production)
+    OneSignal.Debug.setLogLevel(LogLevel.Verbose);
+    // Initialize with your OneSignal App ID
+    OneSignal.initialize(process.env.EXPO_PUBLIC_ONE_SIGNAL_APP_ID!);
+    // Use this method to prompt for push notifications.
+    // We recommend removing this method after testing and instead use In-App Messages to prompt for notification permission.
+    OneSignal.Notifications.requestPermission(false);
+  }, []); // Ensure this only runs once on app mount
 
   if (!loaded || !isReady) {
     return (

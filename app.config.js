@@ -19,6 +19,7 @@ module.exports = {
       bundleIdentifier:
         config.general.iosBundleIdentifier + (IS_DEV ? '.dev' : ''),
       infoPlist: {
+        UIBackgroundModes: ['remote-notification'],
         CFBundleURLTypes: [
           {
             CFBundleURLSchemes: [
@@ -29,6 +30,12 @@ module.exports = {
         ],
       },
       associatedDomains: ['applinks:nospendchallenge.app'],
+      entitlements: {
+        'aps-environment': 'development',
+        'com.apple.security.application-groups': [
+          `group.${config.general.iosBundleIdentifier}.onesignal`,
+        ],
+      },
     },
     android: {
       adaptiveIcon: {
