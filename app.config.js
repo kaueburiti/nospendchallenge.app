@@ -1,9 +1,11 @@
 const config = require('./config.js');
 
+const IS_DEV = process.env.APP_VARIANT === 'development';
+
 module.exports = {
   expo: {
     owner: config.general.owner,
-    name: config.general.appName,
+    name: config.general.appName + (IS_DEV ? ' (Dev)' : ''),
     slug: config.general.slug,
     version: '1.0.1',
     orientation: 'portrait',
@@ -14,7 +16,8 @@ module.exports = {
     ios: {
       supportsTablet: false,
       usesAppleSignIn: true,
-      bundleIdentifier: config.general.iosBundleIdentifier,
+      bundleIdentifier:
+        config.general.iosBundleIdentifier + (IS_DEV ? '.dev' : ''),
       infoPlist: {
         CFBundleURLTypes: [
           {
