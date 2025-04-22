@@ -132,7 +132,7 @@ export default function PrivacyPolicy() {
                 </Heading>
                 <Text>
                   If you have any questions or concerns about this Privacy
-                  Policy, you can contact us at contact@nospendchallenge.app.
+                  Policy, you can contact us at debora@nospendchallenge.app.
                 </Text>
               </Box>
             </VStack>
