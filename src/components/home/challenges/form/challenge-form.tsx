@@ -23,6 +23,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import useUploadImage from '@/hooks/storage';
 import { useSession } from '@/hooks/useSession';
 import { useTranslation } from '@/hooks/useTranslation';
+import { KeyboardAvoidingView } from '@/components/ui/keyboard-avoiding-view';
 interface ImageData {
   uri: string;
   base64: string;
@@ -96,84 +97,86 @@ export function ChallengeForm({
   };
 
   return (
-    <ScrollView className="h-[1px] flex-1">
-      <Box className="px-4 py-12">
-        <Box className="mb-8 items-center">
-          <Heading size="2xl" className="mb-1">
-            {title}
-          </Heading>
-          <Text className="text-md text-gray-500">{subtitle}</Text>
-        </Box>
-
-        <Box className="mb-6">
-          <PhotoUpload onImageUpload={setImageData} uri={imageData?.uri} />
-        </Box>
-
-        <VStack space="2xl">
-          <FormInput
-            label={t('challenge.form.title.label')}
-            name="title"
-            control={control}
-            placeholder={t('challenge.form.title.placeholder')}
-            errorMessage={errors?.title?.message}
-          />
-
-          <FormInput
-            label={t('challenge.form.description.label')}
-            name="description"
-            control={control}
-            placeholder={t('challenge.form.description.placeholder')}
-            errorMessage={errors?.description?.message}
-          />
-
-          <Box className="flex-col gap-2">
-            <StartAndEndDates
-              start={{
-                date: watch('startDate'),
-                onChange: !isStartDateDisabled
-                  ? date => setValue('startDate', date)
-                  : undefined,
-                disabled: isStartDateDisabled,
-              }}
-              end={{
-                date: watch('endDate'),
-                onChange: date => setValue('endDate', date),
-              }}
-            />
-            {!isStartDateDisabled && (
-              <DaysSuggestions watch={watch} setValue={setValue} />
-            )}
+    <KeyboardAvoidingView behavior="padding" className="flex-1">
+      <ScrollView className="h-[1px] flex-1">
+        <Box className="px-4 py-12">
+          <Box className="mb-8 items-center">
+            <Heading size="2xl" className="mb-1">
+              {title}
+            </Heading>
+            <Text className="text-md text-gray-500">{subtitle}</Text>
           </Box>
-        </VStack>
 
-        <Box className="mt-12 flex-row justify-between gap-4">
-          <Button
-            onPress={() => router.back()}
-            className="flex-1"
-            variant="outline">
-            <ButtonText>{t('challenge.form.cancel_button')}</ButtonText>
-          </Button>
+          <Box className="mb-6">
+            <PhotoUpload onImageUpload={setImageData} uri={imageData?.uri} />
+          </Box>
 
-          <Button
-            onPress={handleSubmit(handleSubmitTwo, onError)}
-            className="flex-1"
-            disabled={isSubmitting}>
-            <ButtonText>
-              {isSubmitting
-                ? t('challenge.form.saving_button')
-                : submitButtonText}
-            </ButtonText>
-          </Button>
-        </Box>
+          <VStack space="2xl">
+            <FormInput
+              label={t('challenge.form.title.label')}
+              name="title"
+              control={control}
+              placeholder={t('challenge.form.title.placeholder')}
+              errorMessage={errors?.title?.message}
+            />
 
-        {showDeleteButton && onDelete && (
-          <Box className="mt-4">
-            <Button onPress={onDelete} action="negative" variant="outline">
-              <ButtonText>{t('challenge.form.delete_button')}</ButtonText>
+            <FormInput
+              label={t('challenge.form.description.label')}
+              name="description"
+              control={control}
+              placeholder={t('challenge.form.description.placeholder')}
+              errorMessage={errors?.description?.message}
+            />
+
+            <Box className="flex-col gap-2">
+              <StartAndEndDates
+                start={{
+                  date: watch('startDate'),
+                  onChange: !isStartDateDisabled
+                    ? date => setValue('startDate', date)
+                    : undefined,
+                  disabled: isStartDateDisabled,
+                }}
+                end={{
+                  date: watch('endDate'),
+                  onChange: date => setValue('endDate', date),
+                }}
+              />
+              {!isStartDateDisabled && (
+                <DaysSuggestions watch={watch} setValue={setValue} />
+              )}
+            </Box>
+          </VStack>
+
+          <Box className="mt-12 flex-row justify-between gap-4">
+            <Button
+              onPress={() => router.back()}
+              className="flex-1"
+              variant="outline">
+              <ButtonText>{t('challenge.form.cancel_button')}</ButtonText>
+            </Button>
+
+            <Button
+              onPress={handleSubmit(handleSubmitTwo, onError)}
+              className="flex-1"
+              disabled={isSubmitting}>
+              <ButtonText>
+                {isSubmitting
+                  ? t('challenge.form.saving_button')
+                  : submitButtonText}
+              </ButtonText>
             </Button>
           </Box>
-        )}
-      </Box>
-    </ScrollView>
+
+          {showDeleteButton && onDelete && (
+            <Box className="mt-4">
+              <Button onPress={onDelete} action="negative" variant="outline">
+                <ButtonText>{t('challenge.form.delete_button')}</ButtonText>
+              </Button>
+            </Box>
+          )}
+        </Box>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }

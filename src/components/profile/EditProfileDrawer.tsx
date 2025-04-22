@@ -17,6 +17,7 @@ import { Box } from '../ui/box';
 import { useSimpleToast } from '@/hooks/useSimpleToast';
 import { useTranslation } from '@/hooks/useTranslation';
 import { profileSchema, type ProfileSchemaType } from '@/lib/schema/profile';
+import { KeyboardAvoidingView } from '../ui/keyboard-avoiding-view';
 
 interface ImageData {
   uri: string;
@@ -104,62 +105,64 @@ export const EditProfileDrawer = ({
   const avatar = newImageData?.uri ?? profile?.avatar_url ?? '';
 
   return (
-    <BottomDrawer
-      isOpen={isOpen}
-      onClose={onClose}
-      title={t('profile.edit_profile.title')}>
-      <VStack space="4xl" className="mb-20 w-full flex-1 p-4">
-        <PhotoUpload
-          onImageUpload={imageData => setNewImageData(imageData)}
-          fallbackText={`${profile?.first_name} ${profile?.last_name}`}
-          uri={avatar}
-        />
-
-        <VStack space="md">
-          <HStack space="md">
-            <Box className="flex-1">
-              <FormInput
-                name="first_name"
-                placeholder={t('profile.form.first_name.placeholder')}
-                label={t('profile.form.first_name.label')}
-                control={control}
-                errorMessage={errors.first_name?.message}
-              />
-            </Box>
-            <Box className="flex-1">
-              <FormInput
-                name="last_name"
-                placeholder={t('profile.form.last_name.placeholder')}
-                label={t('profile.form.last_name.label')}
-                control={control}
-                errorMessage={errors.last_name?.message}
-              />
-            </Box>
-          </HStack>
-
-          <FormInput
-            name="email"
-            placeholder={t('profile.form.email.placeholder')}
-            label={t('profile.form.email.label')}
-            control={control}
-            disabled={true}
-            errorMessage={errors.email?.message}
+    <KeyboardAvoidingView behavior="padding" className="flex-1">
+      <BottomDrawer
+        isOpen={isOpen}
+        onClose={onClose}
+        title={t('profile.edit_profile.title')}>
+        <VStack space="4xl" className="mb-20 w-full flex-1 p-4">
+          <PhotoUpload
+            onImageUpload={imageData => setNewImageData(imageData)}
+            fallbackText={`${profile?.first_name} ${profile?.last_name}`}
+            uri={avatar}
           />
-        </VStack>
-      </VStack>
 
-      <HStack space="md" className="mt-auto justify-end">
-        <Button variant="outline" onPress={onClose}>
-          <ButtonText>{t('profile.form.cancel_button')}</ButtonText>
-        </Button>
-        <Button onPress={handleSubmit(onSubmit)} isDisabled={isLoading}>
-          <ButtonText>
-            {isLoading
-              ? t('profile.form.saving_button')
-              : t('profile.form.save_button')}
-          </ButtonText>
-        </Button>
-      </HStack>
-    </BottomDrawer>
+          <VStack space="md">
+            <HStack space="md">
+              <Box className="flex-1">
+                <FormInput
+                  name="first_name"
+                  placeholder={t('profile.form.first_name.placeholder')}
+                  label={t('profile.form.first_name.label')}
+                  control={control}
+                  errorMessage={errors.first_name?.message}
+                />
+              </Box>
+              <Box className="flex-1">
+                <FormInput
+                  name="last_name"
+                  placeholder={t('profile.form.last_name.placeholder')}
+                  label={t('profile.form.last_name.label')}
+                  control={control}
+                  errorMessage={errors.last_name?.message}
+                />
+              </Box>
+            </HStack>
+
+            <FormInput
+              name="email"
+              placeholder={t('profile.form.email.placeholder')}
+              label={t('profile.form.email.label')}
+              control={control}
+              disabled={true}
+              errorMessage={errors.email?.message}
+            />
+          </VStack>
+        </VStack>
+
+        <HStack space="md" className="mt-auto justify-end">
+          <Button variant="outline" onPress={onClose}>
+            <ButtonText>{t('profile.form.cancel_button')}</ButtonText>
+          </Button>
+          <Button onPress={handleSubmit(onSubmit)} isDisabled={isLoading}>
+            <ButtonText>
+              {isLoading
+                ? t('profile.form.saving_button')
+                : t('profile.form.save_button')}
+            </ButtonText>
+          </Button>
+        </HStack>
+      </BottomDrawer>
+    </KeyboardAvoidingView>
   );
 };
