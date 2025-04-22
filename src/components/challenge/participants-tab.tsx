@@ -57,17 +57,6 @@ export default function ChallengeParticipantsTab({
           ))}
         </Box>
 
-        {isOwner && (
-          <>
-            <InviteForm challengeId={Number(challengeId)} />
-
-            <InvitationList
-              invitations={challengeInvitations ?? []}
-              isLoading={isLoading}
-            />
-          </>
-        )}
-
         {challenge && <ShareChallengeButton challenge={challenge} />}
       </VStack>
     </Box>
