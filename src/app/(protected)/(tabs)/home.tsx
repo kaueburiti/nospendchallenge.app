@@ -46,7 +46,7 @@ function Greeting() {
   const { t } = useTranslation();
   const { session } = useSession();
   const greeting = t('home.greeting');
-  const fullName = session?.user?.user_metadata?.full_name as
+  const fullName = session?.user?.user_metadata?.first_name as
     | string
     | undefined;
 

@@ -5,6 +5,8 @@ import { type AuthError } from '@supabase/auth-js';
 import { useSession } from '@/provider/SessionProvider';
 
 type SignUpParams = {
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   onSuccess?: () => void;
@@ -17,6 +19,8 @@ export const useSignUp = () => {
   const { session } = useSession();
 
   const signUp = async ({
+    firstName,
+    lastName,
     email,
     password,
     onSuccess,
@@ -24,7 +28,16 @@ export const useSignUp = () => {
   }: SignUpParams) => {
     setIsLoading(true);
 
-    const { error } = await supabase.auth.signUp({ email, password });
+    const { error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          first_name: firstName,
+          last_name: lastName,
+        },
+      },
+    });
 
     if (error) {
       console.error('Sign up error:', error);
@@ -38,7 +51,12 @@ export const useSignUp = () => {
         headers: {
           Authorization: `Bearer ${session?.access_token}`,
         },
-        body: { email, verificationUrl: 'verify.nospendchallenge.app' },
+        body: {
+          email,
+          firstName,
+          lastName,
+          verificationUrl: 'verify.nospendchallenge.app',
+        },
       });
     }
 

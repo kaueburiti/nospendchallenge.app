@@ -3,10 +3,12 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Keyboard } from 'react-native';
 import { VStack } from '../ui/vstack';
+import { HStack } from '../ui/hstack';
 import { Button, ButtonText } from '../ui/button';
 import { useSignUp } from '@/hooks/auth/useSignUp';
 import FormInput from '@/components/ui/form/input';
 import { signUpSchema, type SignUpSchemaType } from '@/lib/schema/signUp';
+import { Box } from '../ui/box';
 
 const SignUpForm = () => {
   const {
@@ -22,6 +24,8 @@ const SignUpForm = () => {
 
   const onSubmit = async (data: SignUpSchemaType) => {
     await signUp({
+      firstName: data.firstName,
+      lastName: data.lastName,
       email: data.email,
       password: data.password,
       onSuccess: () => reset(),
@@ -36,6 +40,24 @@ const SignUpForm = () => {
   return (
     <>
       <VStack className="justify-between gap-4">
+        <HStack className="gap-4">
+          <Box className="flex-1">
+            <FormInput
+              name="firstName"
+              control={control}
+              placeholder="First Name"
+              errorMessage={errors.firstName?.message}
+            />
+          </Box>
+          <Box className="flex-1">
+            <FormInput
+              name="lastName"
+              control={control}
+              placeholder="Last Name"
+              errorMessage={errors.lastName?.message}
+            />
+          </Box>
+        </HStack>
         <FormInput
           name="email"
           control={control}
