@@ -50,12 +50,20 @@ export default function EditChallenge() {
   };
 
   const handleSubmit = async (data: ChallengeSchemaType) => {
+    // Set start date to first hour of the day (00:00:00)
+    const startDate = new Date(data.startDate);
+    startDate.setHours(0, 0, 0, 0);
+
+    // Set end date to last hour of the day (23:59:59)
+    const endDate = new Date(data.endDate);
+    endDate.setHours(23, 59, 59, 999);
+
     await updateChallenge({
       id: challenge.id,
       title: data.title,
       description: data.description,
-      start_date: data.startDate.toISOString(),
-      end_date: data.endDate.toISOString(),
+      start_date: startDate.toISOString(),
+      end_date: endDate.toISOString(),
       cover: data.cover ?? null,
     })
       .then(() => {
