@@ -65,7 +65,7 @@ export function ChallengeForm({
       title: '',
       description: '',
       startDate: new Date(),
-      endDate: new Date(),
+      endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
     },
   });
   const { t } = useTranslation();
