@@ -16,13 +16,31 @@ import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { Spinner } from '@/components/ui/spinner';
 import { Box } from '@/components/ui';
 import { OneSignal, LogLevel } from 'react-native-onesignal';
+import * as Sentry from '@sentry/react-native';
 
 export { ErrorBoundary } from 'expo-router';
+
+Sentry.init({
+  dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
+  // Adds more context data to events (IP address, cookies, user, etc.)
+  // For more information, visit: https://docs.sentry.io/platforms/react-native/data-management/data-collected/
+  sendDefaultPii: true,
+  // Set tracesSampleRate to 1.0 to capture 100% of transactions for tracing.
+  // We recommend adjusting this value in production.
+  // Learn more at
+  // https://docs.sentry.io/platforms/react-native/configuration/options/#traces-sample-rate
+  tracesSampleRate: 1.0,
+  // profilesSampleRate is relative to tracesSampleRate.
+  // Here, we'll capture profiles for 100% of transactions.
+  profilesSampleRate: 1.0,
+  // uncomment the line below to enable Spotlight (https://spotlightjs.com)
+  spotlight: __DEV__,
+});
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 void SplashScreen.preventAutoHideAsync();
 
-export default function RootLayout() {
+function RootLayout() {
   useDeepLink();
   const [queryClient] = useState(() => new QueryClient());
   const [isReady, setIsReady] = useState(false);
@@ -78,3 +96,5 @@ export default function RootLayout() {
     </SessionProvider>
   );
 }
+
+export default Sentry.wrap(RootLayout);
