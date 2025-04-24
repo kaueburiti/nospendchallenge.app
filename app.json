@@ -28,6 +28,7 @@
           "organization": "nospendchallenge"
         }
       ]
-    ]
+    ],
+    "_comment": "Icon is dynamically set in app.config.js based on build type (development/preview/production)"
   }
 }

@@ -1,6 +1,8 @@
 const config = require('./config.js');
 
 const IS_DEV = process.env.APP_VARIANT === 'development';
+const IS_PREVIEW = process.env.APP_VARIANT === 'preview';
+const IS_DEV_OR_PREVIEW = IS_DEV || IS_PREVIEW;
 
 module.exports = {
   expo: {
@@ -9,7 +11,9 @@ module.exports = {
     slug: config.general.slug,
     version: '1.0.1',
     orientation: 'portrait',
-    icon: config.general.icon,
+    icon: IS_DEV_OR_PREVIEW
+      ? './src/assets/images/icon-pb.png'
+      : config.general.icon,
     scheme: config.general.scheme,
     userInterfaceStyle: 'automatic',
     newArchEnabled: true,
@@ -39,7 +43,9 @@ module.exports = {
     },
     android: {
       adaptiveIcon: {
-        foregroundImage: config.general.icon,
+        foregroundImage: IS_DEV_OR_PREVIEW
+          ? './src/assets/images/icon-pb.png'
+          : config.general.icon,
         backgroundColor: '#ffffff',
       },
       package: config.general.androidPackageName,
