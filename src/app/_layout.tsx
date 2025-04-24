@@ -17,6 +17,7 @@ import { Spinner } from '@/components/ui/spinner';
 import { Box } from '@/components/ui';
 import { OneSignal, LogLevel } from 'react-native-onesignal';
 import * as Sentry from '@sentry/react-native';
+import { PostHogProvider } from 'posthog-react-native';
 
 export { ErrorBoundary } from 'expo-router';
 
@@ -83,17 +84,23 @@ function RootLayout() {
   console.log(process.env.EXPO_PUBLIC_SUPABASE_URL);
 
   return (
-    <SessionProvider>
-      <QueryClientProvider client={queryClient}>
-        <KeyboardProvider>
-          <RevenueCatProvider>
-            <ThemeProvider>
-              <Slot />
-            </ThemeProvider>
-          </RevenueCatProvider>
-        </KeyboardProvider>
-      </QueryClientProvider>
-    </SessionProvider>
+    <PostHogProvider
+      apiKey="phc_yBphmnO1JM65d1Jf7tkaUwBKphmZ2RmDZfunrj2gtoy"
+      options={{
+        host: 'https://us.i.posthog.com',
+      }}>
+      <SessionProvider>
+        <QueryClientProvider client={queryClient}>
+          <KeyboardProvider>
+            <RevenueCatProvider>
+              <ThemeProvider>
+                <Slot />
+              </ThemeProvider>
+            </RevenueCatProvider>
+          </KeyboardProvider>
+        </QueryClientProvider>
+      </SessionProvider>
+    </PostHogProvider>
   );
 }
 

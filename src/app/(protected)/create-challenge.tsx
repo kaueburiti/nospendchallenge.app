@@ -6,11 +6,13 @@ import { type ChallengeSchemaType } from '@/lib/schema/challenge';
 import { createChallenge } from '@/lib/db/repository/challenge';
 import { useSession } from '@/hooks/useSession';
 import { useTranslation } from '@/hooks/useTranslation';
+import { usePostHog } from 'posthog-react-native';
 export default function CreateChallenge() {
   const router = useRouter();
   const { t } = useTranslation();
   const { session } = useSession();
   const ownerId = session?.user?.id ?? '';
+  const posthog = usePostHog();
 
   const handleSubmit = async (data: ChallengeSchemaType) => {
     // Set start date to first hour of the day (00:00:00)
@@ -32,6 +34,13 @@ export default function CreateChallenge() {
     })
       .then(() => {
         router.replace('/(protected)/(tabs)/home');
+        posthog.capture('Challenge Created', {
+          title: data.title,
+          description: data.description,
+          owner_id: ownerId,
+          start_date: startDate.toISOString(),
+          end_date: endDate.toISOString(),
+        });
       })
       .catch(error => {
         console.error(error);
