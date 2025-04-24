@@ -36,6 +36,7 @@ Sentry.init({
   profilesSampleRate: 1.0,
   // uncomment the line below to enable Spotlight (https://spotlightjs.com)
   spotlight: __DEV__,
+  debug: __DEV__,
 });
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
