@@ -33,20 +33,27 @@ export default function ChallengeScores() {
   // Calculate total checks
   const totalChecks = checks?.length ?? 0;
 
-  // Generate all days from start to today (or end date if today is past end date)
-  const allDays = eachDayOfInterval({
+  // Get all days from start date until yesterday
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  yesterday.setHours(0, 0, 0, 0);
+
+  const daysToCheck = eachDayOfInterval({
     start: startDate,
-    end: today < endDate ? today : endDate,
-  }).map(date => date);
+    end: isBefore(yesterday, endDate) ? yesterday : endDate,
+  });
 
-  // Calculate skipped days (days that have passed but have no check)
-  const daysSkipped = allDays.filter(day => {
-    const sameDay = isSameDay(day, today);
+  const daysSkipped = daysToCheck.reduce((skipped, date) => {
+    const hasCheck = checks?.some(check => {
+      const checkDate = new Date(check.date);
+      checkDate.setHours(0, 0, 0, 0);
+      checkDate.setDate(checkDate.getDate() + 1); // Add one day to fix timezone issue
 
-    return (
-      !sameDay && !checks?.some(check => isSameDay(new Date(check.date), day))
-    );
-  }).length;
+      return isSameDay(checkDate, date);
+    });
+
+    return hasCheck ? skipped : skipped + 1;
+  }, 0);
 
   const challengeNotStarted = isBefore(today, startDate);
 

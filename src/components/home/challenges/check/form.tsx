@@ -53,10 +53,12 @@ export const CheckInForm = ({
   );
 
   const onSubmit = async (data: { message: string }) => {
-    const formattedDate = format(date, 'yyyy-MM-dd');
+    const formattedDate = new Date(date);
+    formattedDate.setHours(0, 0, 0, 0);
+
     createCheck({
       challenge_id: Number(challengeId),
-      date: formattedDate,
+      date: formattedDate.toString(),
       message: data.message,
     });
 
