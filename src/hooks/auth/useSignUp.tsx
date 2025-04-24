@@ -35,6 +35,7 @@ export const useSignUp = () => {
         data: {
           first_name: firstName,
           last_name: lastName,
+          avatar_url: process.env.EXPO_PUBLIC_USER_PROFILE_URL,
         },
       },
     });
