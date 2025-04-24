@@ -18,6 +18,16 @@
           "category": ["BROWSABLE", "DEFAULT"]
         }
       ]
-    }
+    },
+    "plugins": [
+      [
+        "@sentry/react-native/expo",
+        {
+          "url": "https://sentry.io/",
+          "project": "no-spend-challenge",
+          "organization": "nospendchallenge"
+        }
+      ]
+    ]
   }
 }
