@@ -66,6 +66,7 @@ export function ChallengeForm({
       description: '',
       startDate: new Date(),
       endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
+      cover: process.env.EXPO_PUBLIC_CHALLENGE_COVER_URL!,
     },
   });
   const { t } = useTranslation();
@@ -108,7 +109,12 @@ export function ChallengeForm({
           </Box>
 
           <Box className="mb-6">
-            <PhotoUpload onImageUpload={setImageData} uri={imageData?.uri} />
+            <PhotoUpload
+              onImageUpload={setImageData}
+              uri={
+                imageData?.uri ?? process.env.EXPO_PUBLIC_CHALLENGE_COVER_URL!
+              }
+            />
           </Box>
 
           <VStack space="2xl">

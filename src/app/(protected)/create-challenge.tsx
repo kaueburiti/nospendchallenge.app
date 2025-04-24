@@ -29,7 +29,7 @@ export default function CreateChallenge() {
       owner_id: ownerId,
       start_date: startDate.toISOString(),
       end_date: endDate.toISOString(),
-      cover: data.cover ?? null,
+      cover: data.cover ?? process.env.EXPO_PUBLIC_CHALLENGE_COVER_URL!,
       token: null, // Add token property as required by the type
     })
       .then(() => {
