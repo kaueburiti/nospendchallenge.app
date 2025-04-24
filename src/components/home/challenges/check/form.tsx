@@ -7,8 +7,10 @@ import { useForm } from 'react-hook-form';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { FormInputLabel } from '@/components/ui/form/label';
 import { Text } from '@/components/ui/text';
-import { Analytics } from '@/lib/analytics';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
+import { useSession } from '@/hooks/useSession';
+
 type CheckInFormProps = {
   challengeId: string;
   onSubmit: () => void;
@@ -28,6 +30,8 @@ export const CheckInForm = ({
   });
   const [errorMessage, setErrorMessage] = useState('');
   const [date, setDate] = useState(new Date());
+  const { captureEvent } = useCaptureEvent();
+
   const { mutate: createCheck, isPending } = useCreateCheck(
     Number(challengeId),
     {
@@ -56,7 +60,11 @@ export const CheckInForm = ({
       message: data.message,
     });
 
-    Analytics.challenge.checkIn(challengeId, formattedDate, data.message);
+    captureEvent('CHECK_IN_CREATED', {
+      challengeId,
+      date: formattedDate,
+      message: data.message,
+    });
   };
 
   return (

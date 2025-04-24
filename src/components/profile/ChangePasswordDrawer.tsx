@@ -22,6 +22,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Eye, EyeOff } from 'lucide-react-native';
 import { Pressable } from 'react-native';
+import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
 
 interface ChangePasswordDrawerProps {
   isOpen: boolean;
@@ -44,6 +45,7 @@ const ChangePasswordDrawer: React.FC<ChangePasswordDrawerProps> = ({
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const toast = useSimpleToast();
+  const { captureEvent } = useCaptureEvent();
 
   const schema = z
     .object({
@@ -89,6 +91,10 @@ const ChangePasswordDrawer: React.FC<ChangePasswordDrawerProps> = ({
         toast.showToast('error', t('profile.password_update_failed'));
       } else {
         toast.showToast('success', t('profile.password_updated'));
+
+        // Track password change event
+        captureEvent('PASSWORD_CHANGED');
+
         reset();
         onClose();
       }

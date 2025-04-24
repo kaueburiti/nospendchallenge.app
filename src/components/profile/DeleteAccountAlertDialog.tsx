@@ -16,6 +16,8 @@ import { XIcon } from 'lucide-react-native';
 import { useDeleteAccount } from '@/hooks/auth/useDeleteAccount';
 import { Icon } from '@/components/ui/icon';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
+
 const DeleteAccountAlertDialog = ({
   openDeleteAccountDialog,
   onCloseDeleteAccountDialog,
@@ -25,8 +27,10 @@ const DeleteAccountAlertDialog = ({
 }) => {
   const { t } = useTranslation();
   const { deleteAccount } = useDeleteAccount();
+  const { captureEvent } = useCaptureEvent();
 
   const handleDeleteAccount = async () => {
+    captureEvent('ACCOUNT_DELETED');
     await deleteAccount({});
   };
 

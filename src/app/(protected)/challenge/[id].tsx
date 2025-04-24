@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import {
   Box,
@@ -29,6 +29,8 @@ import ChallengeParticipantsTab from '@/components/challenge/participants-tab';
 import ChallengeChatTab from '@/components/challenge/chat-tab';
 import { useIsChallengeOwner } from '@/hooks/challenges/index';
 import { useChallenge } from '@/hooks/challenges';
+import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
+import { useSession } from '@/hooks/useSession';
 
 export default function ChallengeDetails() {
   const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
@@ -39,6 +41,18 @@ export default function ChallengeDetails() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: challenge, isLoading } = useChallenge(id);
   const isOwner = useIsChallengeOwner(id);
+  const { captureEvent } = useCaptureEvent();
+
+  // Track challenge opened event
+  useEffect(() => {
+    if (challenge) {
+      captureEvent('CHALLENGE_OPENED', {
+        challengeId: id,
+        title: challenge.title,
+        isOwner,
+      });
+    }
+  }, [challenge, id, isOwner, captureEvent]);
 
   const handleLeaveChallenge = async () => {
     try {

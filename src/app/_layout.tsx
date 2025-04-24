@@ -18,6 +18,7 @@ import { Box } from '@/components/ui';
 import { OneSignal, LogLevel } from 'react-native-onesignal';
 import * as Sentry from '@sentry/react-native';
 import { PostHogProvider } from 'posthog-react-native';
+import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
 
 export { ErrorBoundary } from 'expo-router';
 
@@ -46,6 +47,7 @@ function RootLayout() {
   useDeepLink();
   const [queryClient] = useState(() => new QueryClient());
   const [isReady, setIsReady] = useState(false);
+  const { captureEvent } = useCaptureEvent();
 
   const [loaded] = useFonts({
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment,@typescript-eslint/no-require-imports
@@ -63,6 +65,13 @@ function RootLayout() {
     }
   }, [loaded]);
 
+  // Track app open event
+  useEffect(() => {
+    if (isReady) {
+      captureEvent('APP_OPENED');
+    }
+  }, [isReady, captureEvent]);
+
   // Initialize OneSignal in useEffect to ensure it runs only once
   useEffect(() => {
     // Enable verbose logging for debugging (remove in production)
@@ -71,7 +80,7 @@ function RootLayout() {
     OneSignal.initialize(process.env.EXPO_PUBLIC_ONE_SIGNAL_APP_ID!);
     // Use this method to prompt for push notifications.
     // We recommend removing this method after testing and instead use In-App Messages to prompt for notification permission.
-    OneSignal.Notifications.requestPermission(false);
+    void OneSignal.Notifications.requestPermission(false);
   }, []); // Ensure this only runs once on app mount
 
   if (!loaded || !isReady) {
@@ -86,9 +95,9 @@ function RootLayout() {
 
   return (
     <PostHogProvider
-      apiKey="phc_yBphmnO1JM65d1Jf7tkaUwBKphmZ2RmDZfunrj2gtoy"
+      apiKey={process.env.EXPO_PUBLIC_POSTHOG_API_KEY}
       options={{
-        host: 'https://us.i.posthog.com',
+        host: process.env.EXPO_PUBLIC_POSTHOG_HOST,
       }}>
       <SessionProvider>
         <QueryClientProvider client={queryClient}>
