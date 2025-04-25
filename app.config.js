@@ -2,26 +2,34 @@ const config = require('./config.js');
 
 const IS_DEV = process.env.APP_VARIANT === 'development';
 const IS_PREVIEW = process.env.APP_VARIANT === 'preview';
+const IS_PROD = process.env.APP_VARIANT === 'production';
 const IS_DEV_OR_PREVIEW = IS_DEV || IS_PREVIEW;
+
+const appName = IS_PROD
+  ? config.general.appName
+  : `${config.general.appName} (${process.env.APP_VARIANT})`;
+const bundleIdentifier = IS_PROD
+  ? config.general.iosBundleIdentifier
+  : `${config.general.iosBundleIdentifier}.${process.env.APP_VARIANT}`;
+const icon = IS_DEV_OR_PREVIEW
+  ? './src/assets/images/icon-pb.png'
+  : config.general.icon;
 
 module.exports = {
   expo: {
     owner: config.general.owner,
-    name: config.general.appName + (IS_DEV ? ' (Dev)' : ''),
+    name: appName,
     slug: config.general.slug,
     version: '1.0.1',
     orientation: 'portrait',
-    icon: IS_DEV_OR_PREVIEW
-      ? './src/assets/images/icon-pb.png'
-      : config.general.icon,
+    icon,
     scheme: config.general.scheme,
     userInterfaceStyle: 'automatic',
     newArchEnabled: true,
     ios: {
       supportsTablet: false,
       usesAppleSignIn: true,
-      bundleIdentifier:
-        config.general.iosBundleIdentifier + (IS_DEV ? '.dev' : ''),
+      bundleIdentifier,
       infoPlist: {
         UIBackgroundModes: ['remote-notification'],
         CFBundleURLTypes: [

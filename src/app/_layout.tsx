@@ -19,6 +19,7 @@ import { OneSignal, LogLevel } from 'react-native-onesignal';
 import * as Sentry from '@sentry/react-native';
 import { PostHogProvider } from 'posthog-react-native';
 import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
+import { EnvIndicator } from '@/components/env-indicator';
 
 export { ErrorBoundary } from 'expo-router';
 
@@ -91,8 +92,6 @@ function RootLayout() {
     );
   }
 
-  console.log(process.env.EXPO_PUBLIC_SUPABASE_URL);
-
   return (
     <PostHogProvider
       apiKey={process.env.EXPO_PUBLIC_POSTHOG_API_KEY}
@@ -105,6 +104,7 @@ function RootLayout() {
             <RevenueCatProvider>
               <ThemeProvider>
                 <Slot />
+                <EnvIndicator />
               </ThemeProvider>
             </RevenueCatProvider>
           </KeyboardProvider>

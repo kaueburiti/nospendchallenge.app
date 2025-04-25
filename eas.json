@@ -8,7 +8,8 @@
       "distribution": "internal",
       "env": {
         "APP_VARIANT": "development"
-      }
+      },
+      "envFile": ".env.local"
     },
     "development-simulator": {
       "developmentClient": true,
@@ -18,13 +19,15 @@
       },
       "env": {
         "APP_VARIANT": "development"
-      }
+      },
+      "envFile": ".env.local"
     },
     "preview": {
       "distribution": "internal",
       "env": {
         "APP_VARIANT": "preview"
-      }
+      },
+      "envFile": ".env.preview"
     },
     "preview-simulator": {
       "distribution": "internal",
@@ -33,9 +36,12 @@
       },
       "env": {
         "APP_VARIANT": "preview"
-      }
+      },
+      "envFile": ".env.preview"
     },
-    "production": {}
+    "production": {
+      "envFile": ".env.production"
+    }
   },
   "submit": {
     "production": {}
