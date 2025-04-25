@@ -8,12 +8,18 @@ import { updateChallenge } from '@/lib/db/repository/challenge';
 import { type ChallengeSchemaType } from '@/lib/schema/challenge';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useChallenge, useDeleteChallenge } from '@/hooks/challenges';
+import { useQueryClient } from '@tanstack/react-query';
+import { useShowNotification } from '@/hooks/notifications';
+import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
 
 export default function EditChallenge() {
   const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: challenge, isLoading } = useChallenge(id);
   const { mutate: deleteChallenge } = useDeleteChallenge();
+  const queryClient = useQueryClient();
+  const { triggerToast } = useShowNotification();
+  const { captureEvent } = useCaptureEvent();
 
   if (isLoading || !challenge) {
     return (
@@ -67,9 +73,30 @@ export default function EditChallenge() {
       cover: data.cover ?? null,
     })
       .then(() => {
-        router.replace('/(protected)/(tabs)/home');
+        triggerToast({
+          title: 'Success',
+          description: 'Challenge updated successfully',
+          action: 'success',
+        });
+
+        void queryClient
+          .invalidateQueries({ queryKey: ['challenges'] })
+          .then(() => {
+            router.replace('/(protected)/(tabs)/home');
+            captureEvent('CHALLENGE_UPDATED', {
+              title: data.title,
+              description: data.description,
+              start_date: startDate.toISOString(),
+              end_date: endDate.toISOString(),
+            });
+          });
       })
       .catch(error => {
+        triggerToast({
+          title: 'Error',
+          description: 'Failed to update challenge, please try again',
+          action: 'error',
+        });
         console.error(error);
       });
   };

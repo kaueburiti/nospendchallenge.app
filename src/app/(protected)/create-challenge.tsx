@@ -37,19 +37,22 @@ export default function CreateChallenge() {
       token: null, // Add token property as required by the type
     })
       .then(() => {
-        void queryClient.invalidateQueries({ queryKey: ['challenges'] });
         triggerToast({
           title: 'Success',
           description: 'Challenge created successfully',
           action: 'success',
         });
-        router.replace('/(protected)/(tabs)/home');
-        captureEvent('CHALLENGE_CREATED', {
-          title: data.title,
-          description: data.description,
-          start_date: startDate.toISOString(),
-          end_date: endDate.toISOString(),
-        });
+        void queryClient
+          .invalidateQueries({ queryKey: ['challenges'] })
+          .then(() => {
+            router.replace('/(protected)/(tabs)/home');
+            captureEvent('CHALLENGE_CREATED', {
+              title: data.title,
+              description: data.description,
+              start_date: startDate.toISOString(),
+              end_date: endDate.toISOString(),
+            });
+          });
       })
       .catch(error => {
         triggerToast({
