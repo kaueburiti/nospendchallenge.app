@@ -255,6 +255,11 @@
     "message_placeholder": "Type a message...",
     "message_options": "Message Options"
   },
+  "ai_assistant": {
+    "tab_label": "AI Assistant",
+    "title": "AI Assistant",
+    "message_placeholder": "Type a message..."
+  },
   "auth": {
     "errors": {
       "update_profile": "Failed to update the user profile",

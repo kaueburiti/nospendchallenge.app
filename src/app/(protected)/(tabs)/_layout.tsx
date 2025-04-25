@@ -2,7 +2,7 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { HomeIcon, TrophyIcon, User } from 'lucide-react-native';
+import { HomeIcon, TrophyIcon, User, Bot } from 'lucide-react-native';
 import { useTheme } from '@/hooks/useTheme';
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -33,6 +33,13 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => (
             <TabBarIcon icon={TrophyIcon} color={color} />
           ),
+        }}
+      />
+      <Tabs.Screen
+        name="ai-assistant"
+        options={{
+          title: t('ai_assistant.tab_label'),
+          tabBarIcon: ({ color }) => <TabBarIcon icon={Bot} color={color} />,
         }}
       />
       <Tabs.Screen
