@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   KeyboardAvoidingView,
   Platform,
   FlatList,
   SafeAreaView,
+  View,
 } from 'react-native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useTheme } from '@/hooks/useTheme';
@@ -29,12 +30,58 @@ interface ApiResponse {
   output: string;
 }
 
+const TypingIndicator = () => {
+  const [dotCount, setDotCount] = useState(1);
+  const { isDark } = useTheme();
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDotCount(prev => (prev % 3) + 1);
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <Box className="my-1 max-w-[80%] flex-row items-center self-start rounded-lg bg-gray-200 p-3 dark:bg-gray-700">
+      <Bot
+        size={16}
+        color={isDark ? 'white' : 'black'}
+        style={{ marginRight: 6 }}
+      />
+      <HStack className="gap-1">
+        <Box
+          className={`h-2 w-2 rounded-full ${isDark ? 'bg-gray-400' : 'bg-gray-500'} ${dotCount >= 1 ? 'opacity-100' : 'opacity-30'}`}
+        />
+        <Box
+          className={`h-2 w-2 rounded-full ${isDark ? 'bg-gray-400' : 'bg-gray-500'} ${dotCount >= 2 ? 'opacity-100' : 'opacity-30'}`}
+        />
+        <Box
+          className={`h-2 w-2 rounded-full ${isDark ? 'bg-gray-400' : 'bg-gray-500'} ${dotCount >= 3 ? 'opacity-100' : 'opacity-30'}`}
+        />
+      </HStack>
+    </Box>
+  );
+};
+
 export default function AIAssistantScreen() {
   const { t } = useTranslation();
   const { isDark } = useTheme();
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const flatListRef = useRef<FlatList>(null);
+
+  const scrollToBottom = () => {
+    if (flatListRef.current && messages.length > 0) {
+      flatListRef.current.scrollToEnd({ animated: true });
+    }
+  };
+
+  // Scroll to bottom when messages change
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
 
   const sendMessage = async () => {
     if (!inputMessage.trim()) return;
@@ -123,11 +170,15 @@ export default function AIAssistantScreen() {
           </Box>
 
           <FlatList
+            ref={flatListRef}
             data={messages}
             renderItem={renderMessage}
             keyExtractor={item => item.id}
             contentContainerStyle={{ padding: 16 }}
             inverted={false}
+            ListFooterComponent={isLoading ? <TypingIndicator /> : null}
+            onContentSizeChange={scrollToBottom}
+            onLayout={scrollToBottom}
             style={{
               flex: 1,
               backgroundColor: isDark ? '#1F2937' : '#F3F4F6',
@@ -145,6 +196,7 @@ export default function AIAssistantScreen() {
                 value={inputMessage}
                 onChangeText={setInputMessage}
                 placeholder={t('ai_assistant.message_placeholder')}
+                onSubmitEditing={sendMessage}
               />
             </Input>
             <Button
