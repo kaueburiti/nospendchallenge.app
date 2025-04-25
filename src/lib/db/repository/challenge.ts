@@ -31,6 +31,7 @@ export const getUserChallenges = async (limit = 10) => {
     .from('challenges')
     .select()
     .or(`owner_id.eq.${userId},id.in.(${challengeIds})`)
+    .order('created_at', { ascending: false })
     .limit(limit);
 
   if (error) throw error;
