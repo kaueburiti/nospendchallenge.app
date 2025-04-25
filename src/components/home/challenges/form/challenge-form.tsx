@@ -58,7 +58,7 @@ export function ChallengeForm({
     handleSubmit,
     watch,
     setValue,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<ChallengeSchemaType>({
     resolver: zodResolver(challengeSchema),
     defaultValues: defaultValues ?? {
@@ -96,6 +96,8 @@ export function ChallengeForm({
       cover: cover ?? undefined,
     });
   };
+
+  const disableSubmitButton = isSubmitting || isSubmitSuccessful;
 
   return (
     <KeyboardAvoidingView behavior="padding" className="flex-1">
@@ -158,16 +160,17 @@ export function ChallengeForm({
             <Button
               onPress={() => router.back()}
               className="flex-1"
-              variant="outline">
+              variant="outline"
+              disabled={disableSubmitButton}>
               <ButtonText>{t('challenge.form.cancel_button')}</ButtonText>
             </Button>
 
             <Button
               onPress={handleSubmit(handleSubmitTwo, onError)}
               className="flex-1"
-              disabled={isSubmitting}>
+              isDisabled={disableSubmitButton}>
               <ButtonText>
-                {isSubmitting
+                {disableSubmitButton
                   ? t('challenge.form.saving_button')
                   : submitButtonText}
               </ButtonText>

@@ -7,13 +7,16 @@ import { createChallenge } from '@/lib/db/repository/challenge';
 import { useSession } from '@/hooks/useSession';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
-
+import { useQueryClient } from '@tanstack/react-query';
+import { useShowNotification } from '@/hooks/notifications';
 export default function CreateChallenge() {
   const router = useRouter();
   const { t } = useTranslation();
   const { session } = useSession();
   const ownerId = session?.user?.id ?? '';
   const { captureEvent } = useCaptureEvent();
+  const queryClient = useQueryClient();
+  const { triggerToast } = useShowNotification();
 
   const handleSubmit = async (data: ChallengeSchemaType) => {
     // Set start date to first hour of the day (00:00:00)
@@ -34,6 +37,12 @@ export default function CreateChallenge() {
       token: null, // Add token property as required by the type
     })
       .then(() => {
+        void queryClient.invalidateQueries({ queryKey: ['challenges'] });
+        triggerToast({
+          title: 'Success',
+          description: 'Challenge created successfully',
+          action: 'success',
+        });
         router.replace('/(protected)/(tabs)/home');
         captureEvent('CHALLENGE_CREATED', {
           title: data.title,
@@ -43,6 +52,11 @@ export default function CreateChallenge() {
         });
       })
       .catch(error => {
+        triggerToast({
+          title: 'Error',
+          description: 'Failed to create challenge, please try again',
+          action: 'error',
+        });
         console.error(error);
       });
   };
