@@ -11,6 +11,26 @@ import {
 } from 'date-fns';
 import { useTranslation } from '@/hooks/useTranslation';
 
+function getDaysToCheck(startDate: Date, endDate: Date) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const challengeStartToday = isSameDay(startDate, today);
+
+  if (challengeStartToday) {
+    return [];
+  }
+
+  const yesterday = new Date();
+  yesterday.setDate(yesterday.getDate() - 1);
+  yesterday.setHours(0, 0, 0, 0);
+
+  const daysToCheck = eachDayOfInterval({
+    start: startDate,
+    end: isBefore(yesterday, endDate) ? yesterday : endDate,
+  });
+  return daysToCheck;
+}
+
 export default function ChallengeScores() {
   const { t } = useTranslation();
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -33,27 +53,20 @@ export default function ChallengeScores() {
   // Calculate total checks
   const totalChecks = checks?.length ?? 0;
 
-  // Get all days from start date until yesterday
-  const yesterday = new Date();
-  yesterday.setDate(yesterday.getDate() - 1);
-  yesterday.setHours(0, 0, 0, 0);
+  const daysSkipped = getDaysToCheck(startDate, endDate).reduce(
+    (skipped, date) => {
+      const hasCheck = checks?.some(check => {
+        const checkDate = new Date(check.date);
+        checkDate.setHours(0, 0, 0, 0);
+        checkDate.setDate(checkDate.getDate() + 1); // Add one day to fix timezone issue
 
-  const daysToCheck = eachDayOfInterval({
-    start: startDate,
-    end: isBefore(yesterday, endDate) ? yesterday : endDate,
-  });
+        return isSameDay(checkDate, date);
+      });
 
-  const daysSkipped = daysToCheck.reduce((skipped, date) => {
-    const hasCheck = checks?.some(check => {
-      const checkDate = new Date(check.date);
-      checkDate.setHours(0, 0, 0, 0);
-      checkDate.setDate(checkDate.getDate() + 1); // Add one day to fix timezone issue
-
-      return isSameDay(checkDate, date);
-    });
-
-    return hasCheck ? skipped : skipped + 1;
-  }, 0);
+      return hasCheck ? skipped : skipped + 1;
+    },
+    0,
+  );
 
   const challengeNotStarted = isBefore(today, startDate);
 
