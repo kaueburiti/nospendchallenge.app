@@ -394,6 +394,74 @@ export type Database = {
         }
         Relationships: []
       }
+      wishlist_items: {
+        Row: {
+          cost: number
+          created_at: string
+          description: string | null
+          id: number
+          name: string
+          photo: string | null
+          updated_at: string
+          wishlist_id: number
+        }
+        Insert: {
+          cost: number
+          created_at?: string
+          description?: string | null
+          id?: number
+          name: string
+          photo?: string | null
+          updated_at?: string
+          wishlist_id: number
+        }
+        Update: {
+          cost?: number
+          created_at?: string
+          description?: string | null
+          id?: number
+          name?: string
+          photo?: string | null
+          updated_at?: string
+          wishlist_id?: number
+        }
+        Relationships: [
+          {
+            foreignKeyName: "wishlist_items_wishlist_id_fkey"
+            columns: ["wishlist_id"]
+            isOneToOne: false
+            referencedRelation: "wishlists"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      wishlists: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: number
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: number
+          title: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: number
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

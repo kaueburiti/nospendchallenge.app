@@ -2,7 +2,7 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { HomeIcon, TrophyIcon, User, Bot } from 'lucide-react-native';
+import { HomeIcon, TrophyIcon, User, Bot, Gift } from 'lucide-react-native';
 import { useTheme } from '@/hooks/useTheme';
 import { useTranslation } from '@/hooks/useTranslation';
 
@@ -26,13 +26,12 @@ export default function TabLayout() {
           ),
         }}
       />
+
       <Tabs.Screen
-        name="challenges"
+        name="wishlists"
         options={{
-          title: t('challenge.tab_label'),
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon icon={TrophyIcon} color={color} />
-          ),
+          title: t('wishlists.tab_label'),
+          tabBarIcon: ({ color }) => <TabBarIcon icon={Gift} color={color} />,
         }}
       />
       <Tabs.Screen

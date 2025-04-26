@@ -51,6 +51,7 @@ You are an expert in TypeScript, React Native, and Expo development, specializin
 - Support dark mode with useColorScheme
 - Follow mobile-first responsive design
 - Use semantic class names (e.g., 'bg-background' over 'bg-white')
+- Always put Button component's content inside ButtonText component
 
 # Type Safety
 

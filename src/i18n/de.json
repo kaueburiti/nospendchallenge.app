@@ -37,5 +37,60 @@
     "design": "Design",
     "communication": "Kommunikation",
     "others": "Andere"
+  },
+  "wishlists": {
+    "tab_label": "Wunschlisten",
+    "title": "Meine Wunschlisten",
+    "no_wishlists": "Noch keine Wunschlisten",
+    "no_wishlists_description": "Erstelle deine erste Wunschliste, um für deine Wünsche zu sparen!",
+    "create_wishlist": "Wunschliste erstellen",
+    "edit_wishlist": "Wunschliste bearbeiten",
+    "delete_wishlist": "Wunschliste löschen",
+    "delete_confirm": "Möchtest du diese Wunschliste wirklich löschen?",
+    "items": "Artikel",
+    "no_items": "Keine Artikel in dieser Wunschliste",
+    "no_items_description": "Füge deinen ersten Artikel hinzu, um deine Einkäufe zu planen!",
+    "add_item": "Artikel hinzufügen",
+    "edit_item": "Artikel bearbeiten",
+    "delete_item": "Artikel löschen",
+    "delete_item_confirm": "Möchtest du diesen Artikel wirklich löschen?",
+    "total_cost": "Gesamtkosten",
+    "form": {
+      "title": {
+        "label": "Titel",
+        "placeholder": "Wunschlistentitel eingeben",
+        "error": "Titel ist erforderlich"
+      },
+      "description": {
+        "label": "Beschreibung",
+        "placeholder": "Wunschlistenbeschreibung eingeben",
+        "error": "Beschreibung ist erforderlich"
+      },
+      "item_name": {
+        "label": "Name",
+        "placeholder": "Artikelname eingeben",
+        "error": "Name ist erforderlich"
+      },
+      "item_description": {
+        "label": "Beschreibung",
+        "placeholder": "Artikelbeschreibung eingeben",
+        "error": "Beschreibung ist erforderlich"
+      },
+      "item_cost": {
+        "label": "Kosten",
+        "placeholder": "€0,00",
+        "error": "Kosten sind erforderlich und müssen eine positive Zahl sein"
+      },
+      "item_photo": {
+        "label": "Foto-URL",
+        "placeholder": "Foto-URL eingeben",
+        "error": "Foto-URL ist erforderlich"
+      },
+      "cancel_button": "Abbrechen",
+      "save_button": "Speichern",
+      "update_button": "Aktualisieren",
+      "delete_button": "Löschen",
+      "saving_button": "Speichern..."
+    }
   }
 }

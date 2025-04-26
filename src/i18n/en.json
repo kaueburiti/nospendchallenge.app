@@ -323,5 +323,60 @@
     "errors": {
       "generic": "Oops. Something went wrong!"
     }
+  },
+  "wishlists": {
+    "tab_label": "Wishlists",
+    "title": "My Wishlists",
+    "no_wishlists": "No wishlists yet",
+    "no_wishlists_description": "Create your first wishlist to start saving for your desires!",
+    "create_wishlist": "Create Wishlist",
+    "edit_wishlist": "Edit Wishlist",
+    "delete_wishlist": "Delete Wishlist",
+    "delete_confirm": "Are you sure you want to delete this wishlist?",
+    "items": "Items",
+    "no_items": "No items in this wishlist",
+    "no_items_description": "Add your first item to start planning your purchases!",
+    "add_item": "Add Item",
+    "edit_item": "Edit Item",
+    "delete_item": "Delete Item",
+    "delete_item_confirm": "Are you sure you want to delete this item?",
+    "total_cost": "Total Cost",
+    "form": {
+      "title": {
+        "label": "Title",
+        "placeholder": "Enter wishlist title",
+        "error": "Title is required"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Enter wishlist description",
+        "error": "Description is required"
+      },
+      "item_name": {
+        "label": "Name",
+        "placeholder": "Enter item name",
+        "error": "Name is required"
+      },
+      "item_description": {
+        "label": "Description",
+        "placeholder": "Enter item description",
+        "error": "Description is required"
+      },
+      "item_cost": {
+        "label": "Cost",
+        "placeholder": "$0.00",
+        "error": "Cost is required and must be a positive number"
+      },
+      "item_photo": {
+        "label": "Photo URL",
+        "placeholder": "Enter photo URL",
+        "error": "Photo URL is required"
+      },
+      "cancel_button": "Cancel",
+      "save_button": "Save",
+      "update_button": "Update",
+      "delete_button": "Delete",
+      "saving_button": "Saving..."
+    }
   }
 }

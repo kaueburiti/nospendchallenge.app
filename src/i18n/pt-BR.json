@@ -309,5 +309,60 @@
       "history": "Histórico de Economia",
       "empty": "Nenhuma economia registrada ainda"
     }
+  },
+  "wishlists": {
+    "tab_label": "Lista de Desejos",
+    "title": "Minhas Listas de Desejos",
+    "no_wishlists": "Nenhuma lista de desejos ainda",
+    "no_wishlists_description": "Crie sua primeira lista de desejos para começar a economizar para seus objetivos!",
+    "create_wishlist": "Criar Lista de Desejos",
+    "edit_wishlist": "Editar Lista de Desejos",
+    "delete_wishlist": "Excluir Lista de Desejos",
+    "delete_confirm": "Tem certeza que deseja excluir esta lista de desejos?",
+    "items": "Itens",
+    "no_items": "Nenhum item nesta lista de desejos",
+    "no_items_description": "Adicione seu primeiro item para começar a planejar suas compras!",
+    "add_item": "Adicionar Item",
+    "edit_item": "Editar Item",
+    "delete_item": "Excluir Item",
+    "delete_item_confirm": "Tem certeza que deseja excluir este item?",
+    "total_cost": "Custo Total",
+    "form": {
+      "title": {
+        "label": "Título",
+        "placeholder": "Digite o título da lista de desejos",
+        "error": "O título é obrigatório"
+      },
+      "description": {
+        "label": "Descrição",
+        "placeholder": "Digite a descrição da lista de desejos",
+        "error": "A descrição é obrigatória"
+      },
+      "item_name": {
+        "label": "Nome",
+        "placeholder": "Digite o nome do item",
+        "error": "O nome é obrigatório"
+      },
+      "item_description": {
+        "label": "Descrição",
+        "placeholder": "Digite a descrição do item",
+        "error": "A descrição é obrigatória"
+      },
+      "item_cost": {
+        "label": "Custo",
+        "placeholder": "R$0,00",
+        "error": "O custo é obrigatório e deve ser um número positivo"
+      },
+      "item_photo": {
+        "label": "URL da Foto",
+        "placeholder": "Digite a URL da foto",
+        "error": "A URL da foto é obrigatória"
+      },
+      "cancel_button": "Cancelar",
+      "save_button": "Salvar",
+      "update_button": "Atualizar",
+      "delete_button": "Excluir",
+      "saving_button": "Salvando..."
+    }
   }
 }
