@@ -11,6 +11,7 @@ import RecentActivities from '@/components/home/recent-activities';
 import ChallengeList from '@/components/home/challenges';
 import PendingInvitations from '@/components/home/challenges/invite/pending-invitations';
 import { useTranslation } from '@/hooks/useTranslation';
+import TotalSavingsSummary from '@/components/home/savings-summary';
 
 const Explorepage = () => {
   const { t } = useTranslation();
@@ -21,6 +22,7 @@ const Explorepage = () => {
         <Section>
           <VStack space="4xl">
             <Greeting />
+            <TotalSavingsSummary />
             <Box className="flex flex-1 flex-col overflow-auto">
               <Box className="mb-4 flex flex-row items-center justify-between">
                 <Heading size="xl">{t('home.top_section_title')}</Heading>

@@ -14,7 +14,8 @@
     "banner_link_text": "Entre em contato",
     "create_challenge": "Criar Desafio",
     "no_activities": "Nenhuma atividade recente",
-    "no_activities_description": "Suas atividades recentes aparecerão aqui"
+    "no_activities_description": "Suas atividades recentes aparecerão aqui",
+    "total_savings": "Economia Total"
   },
   "profile": {
     "tab_label": "Perfil",

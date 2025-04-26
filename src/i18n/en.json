@@ -24,7 +24,8 @@
     "no_activities": "No recent activities",
     "no_activities_description": "Your recent activities will appear here",
     "no_challenges": "No challenges yet",
-    "no_challenges_description": "Create your first challenge to get started!"
+    "no_challenges_description": "Create your first challenge to get started!",
+    "total_savings": "Total Savings"
   },
   "challenge": {
     "title": "Challenges",
