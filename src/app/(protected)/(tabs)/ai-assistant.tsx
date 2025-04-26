@@ -4,7 +4,6 @@ import {
   Platform,
   FlatList,
   SafeAreaView,
-  View,
 } from 'react-native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useTheme } from '@/hooks/useTheme';

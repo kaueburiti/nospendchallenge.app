@@ -13,12 +13,14 @@ import {
   Bubble,
   MessageText,
   InputToolbar,
-  Send,
-  IMessage,
-  BubbleProps,
-  MessageTextProps,
-  InputToolbarProps,
-  SendProps,
+  Composer,
+  Send as GiftedChatSend,
+  type IMessage,
+  type BubbleProps,
+  type MessageTextProps,
+  type InputToolbarProps,
+  type ComposerProps,
+  type SendProps,
 } from 'react-native-gifted-chat';
 import { Feather } from '@expo/vector-icons';
 import { useChallengeChatMessages } from '@/hooks/useChallengeChatMessages';
@@ -33,7 +35,7 @@ import {
   ModalHeader,
   ModalBody,
 } from '@/components/ui/modal';
-import { Edit, Trash, X } from 'lucide-react-native';
+import { Edit, Trash, X, Send as SendIcon } from 'lucide-react-native';
 
 interface ChallengeChatTabProps {
   challengeId: string;
@@ -109,8 +111,11 @@ const ChallengeChatTab = ({ challengeId }: ChallengeChatTabProps) => {
         <InputToolbar
           {...props}
           containerStyle={{
-            backgroundColor: colorScheme === 'dark' ? '#1f2937' : '#ffffff',
+            backgroundColor: colorScheme === 'dark' ? '#000' : '#fff',
+            borderTopWidth: 1,
             borderTopColor: colorScheme === 'dark' ? '#374151' : '#e5e7eb',
+            padding: 8,
+            paddingBottom: 0,
           }}
         />
       );
@@ -118,26 +123,48 @@ const ChallengeChatTab = ({ challengeId }: ChallengeChatTabProps) => {
     [colorScheme],
   );
 
+  const renderComposer = useCallback(
+    (props: ComposerProps) => {
+      return (
+        <Composer
+          {...props}
+          textInputStyle={{
+            backgroundColor: colorScheme === 'dark' ? '#1f2937' : '#f3f4f6',
+            borderRadius: 8,
+            paddingHorizontal: 12,
+            paddingVertical: 8,
+            color: colorScheme === 'dark' ? '#fff' : '#000',
+            marginRight: 8,
+          }}
+          placeholderTextColor={colorScheme === 'dark' ? '#9ca3af' : '#6b7280'}
+          placeholder={t('chat.message_placeholder')}
+        />
+      );
+    },
+    [colorScheme, t],
+  );
+
   const renderSend = useCallback(
     (props: SendProps<IMessage>) => {
       return (
-        <Send
+        <GiftedChatSend
           {...props}
+          disabled={!props.text || isLoading}
           containerStyle={{
             justifyContent: 'center',
             alignItems: 'center',
             alignSelf: 'center',
-            marginRight: 10,
           }}>
-          <Feather
-            name="send"
-            size={24}
-            color={colorScheme === 'dark' ? '#6366f1' : '#6366f1'}
-          />
-        </Send>
+          <Box
+            className={`flex items-center justify-center rounded-md bg-indigo-600 p-2 ${
+              !props.text || isLoading ? 'opacity-50' : ''
+            }`}>
+            <SendIcon size={20} color="white" />
+          </Box>
+        </GiftedChatSend>
       );
     },
-    [colorScheme],
+    [isLoading],
   );
 
   const onLongPress = useCallback(
@@ -257,11 +284,11 @@ const ChallengeChatTab = ({ challengeId }: ChallengeChatTabProps) => {
   }
 
   return (
-    <Box className="flex-1 p-6">
+    <Box className="flex-1 pb-10">
       <KeyboardAvoidingView
         style={{ flex: 1 }}
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-        keyboardVerticalOffset={80}>
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}>
         <GiftedChat
           messages={messages}
           onSend={messages => onSend(messages)}
@@ -274,9 +301,10 @@ const ChallengeChatTab = ({ challengeId }: ChallengeChatTabProps) => {
           renderBubble={renderBubble}
           renderMessageText={renderMessageText}
           renderInputToolbar={renderInputToolbar}
+          renderComposer={renderComposer}
           renderSend={renderSend}
           onLongPress={onLongPress}
-          placeholder={t('chat.message_placeholder')}
+          bottomOffset={Platform.OS === 'ios' ? 10 : 0}
           alwaysShowSend
           scrollToBottomComponent={() => (
             <Feather name="chevron-down" size={24} color="#6366f1" />
