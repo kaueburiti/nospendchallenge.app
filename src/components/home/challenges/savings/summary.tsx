@@ -25,16 +25,14 @@ export function SavingsSummary({ challengeId }: SavingsSummaryProps) {
   return (
     <Box className="bg-background rounded-lg p-4">
       <VStack space="md">
-        <Heading size="lg" className="mb-1">
-          {t('checks.savings.total')}
-        </Heading>
+        <Heading size="lg">{t('checks.savings.total')}</Heading>
 
         {isLoading ? (
           <Box className="flex items-center justify-center">
             <ActivityIndicator />
           </Box>
         ) : (
-          <Text className="text-2xl font-bold text-green-600">
+          <Text className="text-4xl font-bold text-success-500">
             {formatCurrency(totalSavings ?? 0)}
           </Text>
         )}
