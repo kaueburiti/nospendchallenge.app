@@ -11,6 +11,7 @@ import {
   type OtpVerificationSchemaType,
 } from '@/lib/schema/otp';
 import { useSignInWithOtp } from '@/hooks/auth/useSignInWithOtp';
+import { Span } from '@expo/html-elements';
 
 type OtpVerificationFormProps = {
   email: string;
@@ -53,8 +54,9 @@ const OtpVerificationForm = ({
 
   return (
     <VStack className="justify-between gap-4">
-      <Text className="text-center text-gray-600">
-        We sent a verification code to {email}
+      <Text className="text-center text-sm text-gray-600">
+        We sent a verification code to{' '}
+        <Span className="font-bold">{email}</Span>
       </Text>
 
       <FormInput
@@ -63,13 +65,12 @@ const OtpVerificationForm = ({
         placeholder="Enter verification code"
         errorMessage={errors.token?.message}
         onSubmitEditing={handleKeyPress}
-        keyboardType="number-pad"
       />
 
       <Button
         variant="solid"
         size="lg"
-        className="mt-5 h-12 bg-[#ff7979]"
+        className="mt-2 h-12 bg-[#ff7979]"
         onPress={handleSubmit(onSubmit)}
         disabled={isVerifying || isSubmitting}>
         <ButtonText className="text-sm">

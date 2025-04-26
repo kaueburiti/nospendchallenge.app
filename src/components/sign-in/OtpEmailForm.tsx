@@ -36,7 +36,7 @@ const OtpEmailForm = ({ onEmailSubmit }: OtpEmailFormProps) => {
   };
 
   return (
-    <VStack className="justify-between gap-4">
+    <VStack className="justify-between gap-6">
       <FormInput
         name="email"
         control={control}
@@ -47,7 +47,7 @@ const OtpEmailForm = ({ onEmailSubmit }: OtpEmailFormProps) => {
       <Button
         variant="solid"
         size="lg"
-        className="mt-5 h-12 bg-[#ff7979]"
+        className="h-12 bg-[#ff7979]"
         onPress={handleSubmit(onSubmit)}
         disabled={isLoading || isSubmitting}>
         <ButtonText className="text-sm">

@@ -10,7 +10,10 @@
     "greeting": "Welcome to",
     "description": "Create challenges to help you on your journey to financial control!",
     "create_account": "Create Account",
-    "already_have_account": "I already have an account"
+    "already_have_account": "I already have an account",
+    "sign_in": "Sign in or Sign up",
+    "verify_email": "Verify your email",
+    "back": "Back to welcome"
   },
   "home": {
     "tab_label": "Home",
