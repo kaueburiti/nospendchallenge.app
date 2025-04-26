@@ -38,7 +38,7 @@ export default function ChallengeProgressBar({
           size="2xl"
           orientation="horizontal"
           className="w-full rounded-md">
-          <ProgressFilledTrack />
+          <ProgressFilledTrack className="rounded-md" />
         </Progress>
       </Box>
     </VStack>

@@ -6,6 +6,7 @@ import ChallengeScores from '@/components/home/challenges/scores';
 import ChallengeProgressBar from '@/components/home/challenges/progress';
 import { type Tables } from '@/lib/db/database.types';
 import { useTranslation } from '@/hooks/useTranslation';
+import { SavingsSummary } from '../home/challenges/savings/summary';
 interface ChallengeDetailsTabProps {
   challenge: Tables<'challenges'>;
   challengeId: string;
@@ -22,11 +23,16 @@ const ChallengeDetailsTab = ({
   return (
     <ScrollView>
       <VStack space="lg" className="p-4 pt-0">
-        <Box>
-          <Heading size="lg" className="mb-1">
-            {t('challenge.challenge_progress')}
-          </Heading>
-          <ChallengeProgressBar challenge={challenge} showDates />
+        <Box className="flex flex-row items-center justify-between gap-4">
+          <Box className="grow">
+            <Heading size="lg" className="mb-1">
+              {t('challenge.challenge_progress')}
+            </Heading>
+            <ChallengeProgressBar challenge={challenge} showDates />
+          </Box>
+          <Box>
+            <SavingsSummary challengeId={challenge.id} />
+          </Box>
         </Box>
 
         <ChallengeScores />

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, VStack } from '@/components/ui';
+import { Box, Heading, VStack } from '@/components/ui';
 import { Text } from '@/components/ui/text';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useGetChallengeTotalSavings } from '@/hooks/checks';
@@ -23,18 +23,18 @@ export function SavingsSummary({ challengeId }: SavingsSummaryProps) {
   };
 
   return (
-    <Box className="bg-background rounded-lg p-4 shadow-sm">
+    <Box className="bg-background rounded-lg p-4">
       <VStack space="md">
-        <Text className="text-md text-foreground font-semibold">
+        <Heading size="lg" className="mb-1">
           {t('checks.savings.total')}
-        </Text>
+        </Heading>
 
         {isLoading ? (
           <Box className="flex items-center justify-center">
             <ActivityIndicator />
           </Box>
         ) : (
-          <Text className="text-3xl font-bold text-green-600">
+          <Text className="text-2xl font-bold text-green-600">
             {formatCurrency(totalSavings ?? 0)}
           </Text>
         )}
