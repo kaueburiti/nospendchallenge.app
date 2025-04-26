@@ -263,6 +263,7 @@ export type Database = {
           date: string
           id: number
           message: string | null
+          saved_amount: number | null
           user_id: string
         }
         Insert: {
@@ -271,6 +272,7 @@ export type Database = {
           date: string
           id?: number
           message?: string | null
+          saved_amount?: number | null
           user_id: string
         }
         Update: {
@@ -279,6 +281,7 @@ export type Database = {
           date?: string
           id?: number
           message?: string | null
+          saved_amount?: number | null
           user_id?: string
         }
         Relationships: [
@@ -419,6 +422,12 @@ export type Database = {
       get_challenge_total_days: {
         Args: {
           challenge_row: unknown
+        }
+        Returns: number
+      }
+      get_challenge_total_savings: {
+        Args: {
+          challenge_id_param: number
         }
         Returns: number
       }

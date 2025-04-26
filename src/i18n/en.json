@@ -155,17 +155,25 @@
       "title": "Create Checking",
       "description": "Create a new checking for your challenge.",
       "date": {
-        "label": "Checking Date",
-        "error": "Checking date is required"
+        "label": "Date",
+        "placeholder": "Select a date"
       },
       "message": {
-        "label": "Message",
-        "placeholder": "How was it?",
-        "error": "Message is required"
+        "label": "How was it?",
+        "placeholder": "Add your thoughts about today..."
       },
-      "cancel_button": "Cancel",
+      "saved_amount": {
+        "label": "Saved Amount",
+        "placeholder": "$0.00"
+      },
       "save_button": "Save",
-      "saving_button": "Saving..."
+      "saving_button": "Saving...",
+      "cancel_button": "Cancel"
+    },
+    "savings": {
+      "total": "Total Savings",
+      "history": "Savings History",
+      "empty": "No savings recorded yet"
     }
   },
   "password": {

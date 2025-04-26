@@ -31,6 +31,7 @@ import { useIsChallengeOwner } from '@/hooks/challenges/index';
 import { useChallenge } from '@/hooks/challenges';
 import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
 import { useSession } from '@/hooks/useSession';
+import { SavingsSummary } from '@/components/home/challenges/savings/summary';
 
 export default function ChallengeDetails() {
   const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
@@ -202,6 +203,11 @@ export default function ChallengeDetails() {
           ) : (
             <ChallengeParticipantsTab challengeId={Number(id)} />
           )}
+        </Box>
+
+        {/* Savings Summary */}
+        <Box className="px-4 pb-4">
+          <SavingsSummary challengeId={Number(id)} />
         </Box>
       </Box>
 

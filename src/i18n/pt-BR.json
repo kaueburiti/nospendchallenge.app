@@ -284,5 +284,29 @@
         "saving_button": "Enviando..."
       }
     }
+  },
+  "checks": {
+    "form": {
+      "date": {
+        "label": "Data",
+        "placeholder": "Selecione uma data"
+      },
+      "message": {
+        "label": "Como foi?",
+        "placeholder": "Adicione seus pensamentos sobre hoje..."
+      },
+      "saved_amount": {
+        "label": "Valor Economizado",
+        "placeholder": "R$0,00"
+      },
+      "save_button": "Salvar",
+      "saving_button": "Salvando...",
+      "cancel_button": "Cancelar"
+    },
+    "savings": {
+      "total": "Economia Total",
+      "history": "Histórico de Economia",
+      "empty": "Nenhuma economia registrada ainda"
+    }
   }
 }

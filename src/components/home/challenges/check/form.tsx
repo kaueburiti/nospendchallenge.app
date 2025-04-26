@@ -10,6 +10,7 @@ import { Text } from '@/components/ui/text';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
 import { useSession } from '@/hooks/useSession';
+import { CurrencyInput } from '@/components/ui/form/currency-input';
 
 type CheckInFormProps = {
   challengeId: string;
@@ -26,6 +27,7 @@ export const CheckInForm = ({
   const { control, handleSubmit } = useForm({
     defaultValues: {
       message: '',
+      saved_amount: '',
     },
   });
   const [errorMessage, setErrorMessage] = useState('');
@@ -52,20 +54,27 @@ export const CheckInForm = ({
     },
   );
 
-  const onSubmit = async (data: { message: string }) => {
+  const onSubmit = async (data: { message: string; saved_amount: string }) => {
     const formattedDate = new Date(date);
     formattedDate.setHours(0, 0, 0, 0);
+
+    // Convert saved_amount from string to number
+    const savedAmount = data.saved_amount
+      ? parseFloat(data.saved_amount.replace(/[^0-9.]/g, ''))
+      : 0;
 
     createCheck({
       challenge_id: Number(challengeId),
       date: formattedDate.toString(),
       message: data.message,
+      saved_amount: savedAmount,
     });
 
     captureEvent('CHECK_IN_CREATED', {
       challengeId,
       date: formattedDate,
       message: data.message,
+      saved_amount: savedAmount,
     });
   };
 
@@ -93,6 +102,15 @@ export const CheckInForm = ({
               }}
             />
           </Box>
+        </Box>
+
+        <Box className="flex-col">
+          <FormInputLabel label={t('checks.form.saved_amount.label')} />
+          <CurrencyInput
+            control={control}
+            name="saved_amount"
+            placeholder={t('checks.form.saved_amount.placeholder')}
+          />
         </Box>
 
         <FormInput

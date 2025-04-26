@@ -64,6 +64,8 @@ You are an expert in TypeScript, React Native, and Expo development, specializin
 - Create one file per main flow
 - Always use "hideKeyboard" after inputing values inside a input
 
+- Never change the database.types.ts file, it's auto generated.
+
 # Data Fetching Pattern
 
 ```typescript

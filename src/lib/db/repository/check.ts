@@ -37,7 +37,15 @@ export const getUserChecksByChallenge = async (challengeId: number) => {
 };
 
 type CheckWithProfile = Tables<'checks'> & {
-  profiles: Tables<'profiles'> | null;
+  profiles: {
+    id: string;
+    display_name: string | null;
+    first_name: string | null;
+    last_name: string | null;
+    avatar_url: string | null;
+    created_at: string;
+    updated_at: string;
+  } | null;
 };
 
 export const getAllChecksByChallenge = async (
@@ -53,7 +61,9 @@ export const getAllChecksByChallenge = async (
         display_name,
         first_name,
         last_name,
-        avatar_url
+        avatar_url,
+        created_at,
+        updated_at
       )
     `,
     )
@@ -75,4 +85,34 @@ export const deleteCheck = async (checkId: number) => {
   if (error) throw error;
 
   return true;
+};
+
+// Get the total savings for a challenge
+export const getChallengeTotalSavings = async (challengeId: number) => {
+  const { data, error } = await supabase.rpc('get_challenge_total_savings', {
+    challenge_id_param: challengeId,
+  });
+
+  if (error) {
+    console.error('Error getting total savings:', error);
+    throw error;
+  }
+
+  return data;
+};
+
+// Get savings history by challenge (for chart visualization)
+export const getChallengeSavingsHistory = async (challengeId: number) => {
+  const { data, error } = await supabase
+    .from('checks')
+    .select('date, saved_amount')
+    .eq('challenge_id', challengeId)
+    .order('date', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching savings history:', error);
+    throw error;
+  }
+
+  return data;
 };

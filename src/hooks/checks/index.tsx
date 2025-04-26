@@ -3,6 +3,8 @@ import {
   createCheck,
   getAllChecksByChallenge,
   getUserChecksByChallenge,
+  getChallengeTotalSavings,
+  getChallengeSavingsHistory,
 } from '@/lib/db/repository/check';
 
 export const useCreateCheck = (
@@ -44,5 +46,19 @@ export const useGetAllChallengeChecks = (challengeId: number) => {
   return useQuery({
     queryKey: ['checks', challengeId, 'all'],
     queryFn: () => getAllChecksByChallenge(challengeId),
+  });
+};
+
+export const useGetChallengeTotalSavings = (challengeId: number) => {
+  return useQuery({
+    queryKey: ['checks', challengeId, 'savings', 'total'],
+    queryFn: () => getChallengeTotalSavings(challengeId),
+  });
+};
+
+export const useGetChallengeSavingsHistory = (challengeId: number) => {
+  return useQuery({
+    queryKey: ['checks', challengeId, 'savings', 'history'],
+    queryFn: () => getChallengeSavingsHistory(challengeId),
   });
 };
