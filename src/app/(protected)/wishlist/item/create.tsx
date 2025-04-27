@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Box,
   Button,
@@ -15,61 +15,52 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { Section } from '@/components/Section';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { type WishlistFormValues, wishlistSchema } from '@/lib/schema/wishlist';
-import { useGetWishlist, useUpdateWishlist } from '@/hooks/wishlists';
+import { z } from 'zod';
+import { useCreateWishlistItem } from '@/hooks/wishlists';
 import BackButton from '@/components/navigation/back-button';
-import { useLocalSearchParams } from 'expo-router';
+import { supabase } from '@/lib/supabase';
 import { FormInputLabel } from '@/components/ui/form/label';
 import { FormControlError, FormControlErrorText } from '@/components/ui';
-import { ActivityIndicator } from 'react-native';
 
-export default function EditWishlistPage() {
+// Form schema for wishlist item
+const wishlistItemSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  description: z.string().optional(),
+  cost: z.string().refine(val => !isNaN(Number(val)), {
+    message: 'Cost must be a valid number',
+  }),
+});
+
+type WishlistItemFormValues = z.infer<typeof wishlistItemSchema>;
+
+export default function CreateWishlistItemPage() {
   const { t } = useTranslation();
-  const { id } = useLocalSearchParams<{ id: string }>();
-  const { data: wishlist, isLoading } = useGetWishlist(id);
-  const { mutate: updateWishlist, isPending } = useUpdateWishlist();
+  const { mutate: createItem, isPending } = useCreateWishlistItem();
 
   const {
     control,
     handleSubmit,
-    reset,
     formState: { errors },
-  } = useForm<WishlistFormValues>({
-    resolver: zodResolver(wishlistSchema),
+  } = useForm<WishlistItemFormValues>({
+    resolver: zodResolver(wishlistItemSchema),
     defaultValues: {
-      title: '',
+      name: '',
       description: '',
+      cost: '',
     },
   });
 
-  useEffect(() => {
-    if (wishlist) {
-      reset({
-        title: wishlist.title,
-        description: wishlist.description || '',
-      });
-    }
-  }, [wishlist, reset]);
+  const onSubmit = async (data: WishlistItemFormValues) => {
+    const { data: userData } = await supabase.auth.getUser();
+    if (!userData.user) return;
 
-  const onSubmit = (data: WishlistFormValues) => {
-    if (!wishlist) return;
-
-    updateWishlist({
-      id: wishlist.id,
-      title: data.title,
+    createItem({
+      name: data.name,
       description: data.description || null,
+      cost: Number(data.cost),
+      user_id: userData.user.id,
     });
   };
-
-  if (isLoading) {
-    return (
-      <SafeAreaView>
-        <Box className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" />
-        </Box>
-      </SafeAreaView>
-    );
-  }
 
   return (
     <SafeAreaView>
@@ -78,28 +69,28 @@ export default function EditWishlistPage() {
           <BackButton />
           <Section>
             <VStack space="xl" className="mt-4">
-              <Heading size="2xl">{t('wishlists.edit_wishlist')}</Heading>
+              <Heading size="2xl">{t('wishlists.add_item')}</Heading>
 
               <VStack space="md">
-                <FormControl isInvalid={!!errors.title}>
-                  <FormInputLabel label={t('wishlists.form.title.label')} />
+                <FormControl isInvalid={!!errors.name}>
+                  <FormInputLabel label={t('wishlists.form.name.label')} />
                   <Controller
                     control={control}
-                    name="title"
+                    name="name"
                     render={({ field: { onChange, value } }) => (
                       <Input>
                         <InputField
                           value={value}
                           onChangeText={onChange}
-                          placeholder={t('wishlists.form.title.placeholder')}
+                          placeholder={t('wishlists.form.name.placeholder')}
                         />
                       </Input>
                     )}
                   />
-                  {errors.title && (
+                  {errors.name && (
                     <FormControlError>
                       <FormControlErrorText>
-                        {t('wishlists.form.title.error')}
+                        {t('wishlists.form.name.error')}
                       </FormControlErrorText>
                     </FormControlError>
                   )}
@@ -125,6 +116,31 @@ export default function EditWishlistPage() {
                     )}
                   />
                 </FormControl>
+
+                <FormControl isInvalid={!!errors.cost}>
+                  <FormInputLabel label={t('wishlists.form.cost.label')} />
+                  <Controller
+                    control={control}
+                    name="cost"
+                    render={({ field: { onChange, value } }) => (
+                      <Input>
+                        <InputField
+                          value={value}
+                          onChangeText={onChange}
+                          keyboardType="numeric"
+                          placeholder={t('wishlists.form.cost.placeholder')}
+                        />
+                      </Input>
+                    )}
+                  />
+                  {errors.cost && (
+                    <FormControlError>
+                      <FormControlErrorText>
+                        {t('wishlists.form.cost.error')}
+                      </FormControlErrorText>
+                    </FormControlError>
+                  )}
+                </FormControl>
               </VStack>
 
               <Button
@@ -134,7 +150,7 @@ export default function EditWishlistPage() {
                 <ButtonText>
                   {isPending
                     ? t('wishlists.form.saving_button')
-                    : t('wishlists.form.update_button')}
+                    : t('wishlists.form.save_button')}
                 </ButtonText>
               </Button>
             </VStack>

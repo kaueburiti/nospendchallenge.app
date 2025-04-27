@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Box,
   Button,
@@ -15,39 +15,77 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { Section } from '@/components/Section';
 import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { type WishlistFormValues, wishlistSchema } from '@/lib/schema/wishlist';
-import { useCreateWishlist } from '@/hooks/wishlists';
+import { z } from 'zod';
+import { useGetWishlistItem, useUpdateWishlistItem } from '@/hooks/wishlists';
 import BackButton from '@/components/navigation/back-button';
-import { supabase } from '@/lib/supabase';
 import { FormInputLabel } from '@/components/ui/form/label';
 import { FormControlError, FormControlErrorText } from '@/components/ui';
+import { useLocalSearchParams } from 'expo-router';
+import { ActivityIndicator } from 'react-native';
 
-export default function CreateWishlistPage() {
+// Form schema for wishlist item
+const wishlistItemSchema = z.object({
+  name: z.string().min(1, 'Name is required'),
+  description: z.string().optional(),
+  cost: z.string().refine(val => !isNaN(Number(val)), {
+    message: 'Cost must be a valid number',
+  }),
+});
+
+type WishlistItemFormValues = z.infer<typeof wishlistItemSchema>;
+
+export default function EditWishlistItemPage() {
   const { t } = useTranslation();
-  const { mutate: createWishlist, isPending } = useCreateWishlist();
+  const { id } = useLocalSearchParams<{ id: string }>();
+  const { data: item, isLoading } = useGetWishlistItem(Number(id));
+  const { mutate: updateItem, isPending } = useUpdateWishlistItem();
 
   const {
     control,
     handleSubmit,
+    reset,
     formState: { errors },
-  } = useForm<WishlistFormValues>({
-    resolver: zodResolver(wishlistSchema),
+  } = useForm<WishlistItemFormValues>({
+    resolver: zodResolver(wishlistItemSchema),
     defaultValues: {
-      title: '',
+      name: '',
       description: '',
+      cost: '',
     },
   });
 
-  const onSubmit = async (data: WishlistFormValues) => {
-    const { data: userData } = await supabase.auth.getUser();
-    if (!userData.user) return;
+  useEffect(() => {
+    if (item) {
+      reset({
+        name: item.name,
+        description: item.description || '',
+        cost: item.cost.toString(),
+      });
+    }
+  }, [item, reset]);
 
-    createWishlist({
-      title: data.title,
-      description: data.description || null,
-      user_id: userData.user.id,
+  const onSubmit = async (data: WishlistItemFormValues) => {
+    if (!item) return;
+
+    updateItem({
+      id: item.id,
+      item: {
+        name: data.name,
+        description: data.description || null,
+        cost: Number(data.cost),
+      },
     });
   };
+
+  if (isLoading) {
+    return (
+      <SafeAreaView>
+        <Box className="flex h-full items-center justify-center">
+          <ActivityIndicator size="large" />
+        </Box>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView>
@@ -56,28 +94,28 @@ export default function CreateWishlistPage() {
           <BackButton />
           <Section>
             <VStack space="xl" className="mt-4">
-              <Heading size="2xl">{t('wishlists.create_wishlist')}</Heading>
+              <Heading size="2xl">{t('wishlists.edit_item')}</Heading>
 
               <VStack space="md">
-                <FormControl isInvalid={!!errors.title}>
-                  <FormInputLabel label={t('wishlists.form.title.label')} />
+                <FormControl isInvalid={!!errors.name}>
+                  <FormInputLabel label={t('wishlists.form.name.label')} />
                   <Controller
                     control={control}
-                    name="title"
+                    name="name"
                     render={({ field: { onChange, value } }) => (
                       <Input>
                         <InputField
                           value={value}
                           onChangeText={onChange}
-                          placeholder={t('wishlists.form.title.placeholder')}
+                          placeholder={t('wishlists.form.name.placeholder')}
                         />
                       </Input>
                     )}
                   />
-                  {errors.title && (
+                  {errors.name && (
                     <FormControlError>
                       <FormControlErrorText>
-                        {t('wishlists.form.title.error')}
+                        {t('wishlists.form.name.error')}
                       </FormControlErrorText>
                     </FormControlError>
                   )}
@@ -102,6 +140,31 @@ export default function CreateWishlistPage() {
                       </Textarea>
                     )}
                   />
+                </FormControl>
+
+                <FormControl isInvalid={!!errors.cost}>
+                  <FormInputLabel label={t('wishlists.form.cost.label')} />
+                  <Controller
+                    control={control}
+                    name="cost"
+                    render={({ field: { onChange, value } }) => (
+                      <Input>
+                        <InputField
+                          value={value}
+                          onChangeText={onChange}
+                          keyboardType="numeric"
+                          placeholder={t('wishlists.form.cost.placeholder')}
+                        />
+                      </Input>
+                    )}
+                  />
+                  {errors.cost && (
+                    <FormControlError>
+                      <FormControlErrorText>
+                        {t('wishlists.form.cost.error')}
+                      </FormControlErrorText>
+                    </FormControlError>
+                  )}
                 </FormControl>
               </VStack>
 

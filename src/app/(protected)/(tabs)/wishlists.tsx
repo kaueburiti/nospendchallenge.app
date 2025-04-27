@@ -13,14 +13,14 @@ import { Section } from '@/components/Section';
 import { router } from 'expo-router';
 import { Plus } from 'lucide-react-native';
 import { useTranslation } from '@/hooks/useTranslation';
-import { useGetWishlists } from '@/hooks/wishlists';
+import { useGetWishlistItems } from '@/hooks/wishlists';
 import { ActivityIndicator } from 'react-native';
-import WishlistCard from '@/components/wishlists/wishlist-card';
+import WishlistItemCard from '@/components/wishlists/item-card';
 import EmptyWishlists from '@/components/wishlists/empty-state';
 
 export default function WishlistsPage() {
   const { t } = useTranslation();
-  const { data: wishlists, isLoading } = useGetWishlists();
+  const { data: items, isLoading } = useGetWishlistItems();
 
   return (
     <SafeAreaView>
@@ -30,11 +30,11 @@ export default function WishlistsPage() {
             <Box className="mt-8 flex flex-row items-center justify-between">
               <Heading size="3xl">{t('wishlists.title')}</Heading>
               <Button
-                onPress={() => router.push('/(protected)/wishlist/create')}
+                onPress={() => router.push('/(protected)/wishlist/item/create')}
                 size="sm">
                 <Plus size={20} color="white" />
                 <ButtonText className="ml-1">
-                  {t('wishlists.create_wishlist')}
+                  {t('wishlists.add_item')}
                 </ButtonText>
               </Button>
             </Box>
@@ -43,10 +43,14 @@ export default function WishlistsPage() {
               <Box className="flex h-32 items-center justify-center">
                 <ActivityIndicator size="large" />
               </Box>
-            ) : wishlists && wishlists.length > 0 ? (
+            ) : items && items.length > 0 ? (
               <VStack space="md" className="mt-4">
-                {wishlists.map(wishlist => (
-                  <WishlistCard key={wishlist.id} wishlist={wishlist} />
+                {items.map(item => (
+                  <WishlistItemCard
+                    key={item.id}
+                    item={item}
+                    wishlistId={null}
+                  />
                 ))}
               </VStack>
             ) : (

@@ -13,6 +13,8 @@ import {
 } from '@/lib/db/repository/wishlist';
 import { useShowNotification } from '../notifications';
 import { router } from 'expo-router';
+import { Tables } from '@/lib/db/database.types';
+import { supabase } from '@/lib/supabase';
 
 // Wishlist hooks
 export const useCreateWishlist = () => {
@@ -114,105 +116,108 @@ export const useGetWishlist = (id: string) => {
 };
 
 // Wishlist Item hooks
-export const useCreateWishlistItem = (wishlistId: number) => {
+export const useCreateWishlistItem = () => {
   const queryClient = useQueryClient();
-  const { triggerToast } = useShowNotification();
 
   return useMutation({
-    mutationFn: createWishlistItem,
+    mutationFn: async (
+      item: Omit<Tables<'wishlist_items'>, 'id' | 'created_at' | 'updated_at'>,
+    ) => {
+      const { data, error } = await supabase
+        .from('wishlist_items')
+        .insert(item)
+        .select()
+        .single();
+
+      if (error) throw new Error(error.message);
+      return data;
+    },
     onSuccess: () => {
-      triggerToast({
-        title: 'Success!',
-        description: 'Item has been added to your wishlist',
-        action: 'success',
-      });
-
-      void queryClient.invalidateQueries({
-        queryKey: ['wishlist-items', wishlistId],
-      });
-    },
-    onError: error => {
-      triggerToast({
-        title: 'Oops!',
-        description: 'Something went wrong, try again later',
-        action: 'error',
-      });
-      console.error('Wishlist item creation failed', error);
+      queryClient.invalidateQueries({ queryKey: ['wishlistItems'] });
+      router.back();
     },
   });
 };
 
-export const useUpdateWishlistItem = (wishlistId: number) => {
+export const useUpdateWishlistItem = () => {
   const queryClient = useQueryClient();
-  const { triggerToast } = useShowNotification();
 
   return useMutation({
-    mutationFn: updateWishlistItem,
-    onSuccess: item => {
-      triggerToast({
-        title: 'Success!',
-        description: 'Item has been updated successfully',
-        action: 'success',
-      });
+    mutationFn: async ({
+      id,
+      item,
+    }: {
+      id: number;
+      item: Partial<Tables<'wishlist_items'>>;
+    }) => {
+      const { data, error } = await supabase
+        .from('wishlist_items')
+        .update(item)
+        .eq('id', id)
+        .select()
+        .single();
 
-      void queryClient.invalidateQueries({
-        queryKey: ['wishlist-items', wishlistId],
-      });
-      void queryClient.invalidateQueries({
-        queryKey: ['wishlist-item', item.id],
-      });
+      if (error) throw new Error(error.message);
+      return data;
     },
-    onError: error => {
-      triggerToast({
-        title: 'Oops!',
-        description: 'Something went wrong, try again later',
-        action: 'error',
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({ queryKey: ['wishlistItems'] });
+      queryClient.invalidateQueries({
+        queryKey: ['wishlistItem', variables.id],
       });
-      console.error('Wishlist item update failed', error);
+      router.back();
     },
   });
 };
 
-export const useDeleteWishlistItem = (wishlistId: number) => {
+export const useDeleteWishlistItem = () => {
   const queryClient = useQueryClient();
-  const { triggerToast } = useShowNotification();
 
   return useMutation({
-    mutationFn: deleteWishlistItem,
+    mutationFn: async (id: number) => {
+      const { error } = await supabase
+        .from('wishlist_items')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw new Error(error.message);
+      return true;
+    },
     onSuccess: () => {
-      triggerToast({
-        title: 'Success!',
-        description: 'Item has been removed from your wishlist',
-        action: 'success',
-      });
-
-      void queryClient.invalidateQueries({
-        queryKey: ['wishlist-items', wishlistId],
-      });
-    },
-    onError: error => {
-      triggerToast({
-        title: 'Oops!',
-        description: 'Something went wrong, try again later',
-        action: 'error',
-      });
-      console.error('Wishlist item deletion failed', error);
+      queryClient.invalidateQueries({ queryKey: ['wishlistItems'] });
+      router.back();
     },
   });
 };
 
-export const useGetWishlistItems = (wishlistId: number) => {
+export const useGetWishlistItems = () => {
   return useQuery({
-    queryKey: ['wishlist-items', wishlistId],
-    queryFn: () => getWishlistItems(wishlistId),
-    enabled: !!wishlistId,
+    queryKey: ['wishlistItems'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('wishlist_items')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw new Error(error.message);
+      return data as Tables<'wishlist_items'>[];
+    },
   });
 };
 
 export const useGetWishlistItem = (id: number) => {
   return useQuery({
-    queryKey: ['wishlist-item', id],
-    queryFn: () => getWishlistItem(id),
+    queryKey: ['wishlistItem', id],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('wishlist_items')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) throw new Error(error.message);
+      return data as Tables<'wishlist_items'>;
+    },
     enabled: !!id,
   });
 };

@@ -18,7 +18,7 @@ import { useDeleteWishlistItem } from '@/hooks/wishlists';
 
 interface WishlistItemCardProps {
   item: Tables<'wishlist_items'>;
-  wishlistId: number;
+  wishlistId?: number | null;
 }
 
 export default function WishlistItemCard({
@@ -26,7 +26,7 @@ export default function WishlistItemCard({
   wishlistId,
 }: WishlistItemCardProps) {
   const { t } = useTranslation();
-  const { mutate: deleteItem } = useDeleteWishlistItem(wishlistId);
+  const { mutate: deleteItem } = useDeleteWishlistItem();
 
   // Format currency
   const formatCurrency = (amount: number) => {
@@ -56,7 +56,7 @@ export default function WishlistItemCard({
 
   return (
     <Pressable
-      onPress={() => router.push(`/wishlist/${wishlistId}/item/${item.id}`)}
+      onPress={() => router.push(`/(protected)/wishlist/item/${item.id}`)}
       className="bg-background rounded-lg border border-gray-100 p-4">
       <HStack space="md" className="mb-2">
         {item.photo && (
@@ -86,7 +86,7 @@ export default function WishlistItemCard({
           variant="outline"
           size="xs"
           onPress={() =>
-            router.push(`/wishlist/${wishlistId}/item/${item.id}/edit`)
+            router.push(`/(protected)/wishlist/item/${item.id}/edit`)
           }>
           <ButtonText>
             <Edit size={16} />
