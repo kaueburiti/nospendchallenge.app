@@ -70,3 +70,5 @@ export const useGetChallengeSavingsHistory = (challengeId: number) => {
     queryFn: () => getChallengeSavingsHistory(challengeId),
   });
 };
+
+export { useCheckItems } from './useCheckItems';

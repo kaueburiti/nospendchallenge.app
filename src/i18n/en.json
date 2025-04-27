@@ -155,6 +155,11 @@
     "days_skipped": "Days Skipped",
     "my_checks": "My Checks",
     "checking_button": "Create Checking",
+    "items": {
+      "title": "Items Purchased",
+      "total": "Total",
+      "empty": "No items recorded"
+    },
     "form": {
       "title": "Create Checking",
       "description": "Create a new checking for your challenge.",
@@ -175,6 +180,22 @@
       "spent_amount": {
         "label": "Spent Amount",
         "placeholder": "How much did you spend?"
+      },
+      "items": {
+        "label": "Items Purchased",
+        "added": "Added Items",
+        "total": "Total"
+      },
+      "item": {
+        "title": "Item Name",
+        "title_placeholder": "What did you buy?",
+        "price": "Price",
+        "price_placeholder": "Price",
+        "add": "Add",
+        "error": {
+          "title_required": "Item name is required",
+          "price_required": "Price must be greater than 0"
+        }
       },
       "message": {
         "label": "Thoughts",

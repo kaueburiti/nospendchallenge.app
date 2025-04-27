@@ -42,18 +42,18 @@
     "tab_label": "Wunschlisten",
     "title": "Meine Wunschlisten",
     "no_wishlists": "Noch keine Wunschlisten",
-    "no_wishlists_description": "Erstelle deine erste Wunschliste, um für deine Wünsche zu sparen!",
+    "no_wishlists_description": "Erstellen Sie Ihre erste Wunschliste, um für Ihre Wünsche zu sparen!",
     "create_wishlist": "Wunschliste erstellen",
     "edit_wishlist": "Wunschliste bearbeiten",
     "delete_wishlist": "Wunschliste löschen",
-    "delete_confirm": "Möchtest du diese Wunschliste wirklich löschen?",
+    "delete_confirm": "Sind Sie sicher, dass Sie diese Wunschliste löschen möchten?",
     "items": "Artikel",
     "no_items": "Keine Artikel in dieser Wunschliste",
-    "no_items_description": "Füge deinen ersten Artikel hinzu, um deine Einkäufe zu planen!",
+    "no_items_description": "Fügen Sie Ihren ersten Artikel hinzu, um Ihre Einkäufe zu planen!",
     "add_item": "Artikel hinzufügen",
     "edit_item": "Artikel bearbeiten",
     "delete_item": "Artikel löschen",
-    "delete_item_confirm": "Möchtest du diesen Artikel wirklich löschen?",
+    "delete_item_confirm": "Sind Sie sicher, dass Sie diesen Artikel löschen möchten?",
     "total_cost": "Gesamtkosten",
     "form": {
       "title": {
@@ -91,6 +91,74 @@
       "update_button": "Aktualisieren",
       "delete_button": "Löschen",
       "saving_button": "Speichern..."
+    }
+  },
+  "checks": {
+    "checks": "Checks",
+    "days_left": "Verbleibende Tage",
+    "days_skipped": "Übersprungene Tage",
+    "my_checks": "Meine Checks",
+    "checking_button": "Check erstellen",
+    "items": {
+      "title": "Gekaufte Artikel",
+      "total": "Gesamt",
+      "empty": "Keine Artikel erfasst"
+    },
+    "form": {
+      "title": "Check erstellen",
+      "description": "Erstellen Sie einen neuen Check für Ihre Herausforderung.",
+      "date": {
+        "label": "Datum",
+        "placeholder": "Wählen Sie ein Datum"
+      },
+      "status": {
+        "label": "Wie war dein Tag?",
+        "placeholder": "Wählen Sie Ihren Status",
+        "success": "Impulskontrolle gehalten",
+        "failure": "Dem Impuls nachgegeben"
+      },
+      "saved_amount": {
+        "label": "Gesparter Betrag",
+        "placeholder": "Wie viel haben Sie gespart?"
+      },
+      "spent_amount": {
+        "label": "Ausgegebener Betrag",
+        "placeholder": "Wie viel haben Sie ausgegeben?"
+      },
+      "items": {
+        "label": "Gekaufte Artikel",
+        "added": "Hinzugefügte Artikel",
+        "total": "Gesamt"
+      },
+      "item": {
+        "title": "Artikelname",
+        "title_placeholder": "Was haben Sie gekauft?",
+        "price": "Preis",
+        "price_placeholder": "Preis",
+        "add": "Hinzufügen",
+        "error": {
+          "title_required": "Artikelname ist erforderlich",
+          "price_required": "Preis muss größer als 0 sein"
+        }
+      },
+      "message": {
+        "label": "Gedanken",
+        "placeholder": "Teilen Sie Ihre Gedanken über heute..."
+      },
+      "save_button": "Speichern",
+      "saving_button": "Speichern...",
+      "cancel_button": "Abbrechen",
+      "error": {
+        "duplicate": "Sie haben an diesem Tag bereits eingecheckt",
+        "generic": "Fehler beim Erstellen des Checks, bitte versuchen Sie es später erneut",
+        "status_required": "Bitte wählen Sie einen Status"
+      }
+    },
+    "savings": {
+      "total": "Gesamte Einsparungen",
+      "spent": "Gesamtausgaben",
+      "history": "Spargeschichte",
+      "empty": "Noch keine Einsparungen erfasst"
     }
   }
 }

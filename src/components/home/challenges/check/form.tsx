@@ -12,6 +12,7 @@ import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
 import { useSession } from '@/hooks/useSession';
 import { CurrencyInput } from '@/components/ui/form/currency-input';
 import { CheckStatus } from '@/lib/db/repository/check';
+import { CheckItemForm, CheckItem } from './item-form';
 
 type CheckInFormProps = {
   challengeId: string;
@@ -34,12 +35,25 @@ export const CheckInForm = ({
   });
   const [errorMessage, setErrorMessage] = useState('');
   const [date, setDate] = useState(new Date());
+  const [checkItems, setCheckItems] = useState<CheckItem[]>([]);
   const { captureEvent } = useCaptureEvent();
 
   const status = watch('status') as CheckStatus | '';
 
   const handleStatusChange = (newStatus: CheckStatus) => {
     setValue('status', newStatus);
+    // Clear items when switching away from failure status
+    if (newStatus !== 'failure') {
+      setCheckItems([]);
+    }
+  };
+
+  const handleAddItem = (item: CheckItem) => {
+    setCheckItems([...checkItems, item]);
+  };
+
+  const handleRemoveItem = (index: number) => {
+    setCheckItems(checkItems.filter((_, i) => i !== index));
   };
 
   const { mutate: createCheck, isPending } = useCreateCheck(
@@ -83,10 +97,26 @@ export const CheckInForm = ({
     const formattedDate = new Date(date);
     formattedDate.setHours(0, 0, 0, 0);
 
-    // Convert amount from string to number
-    const amountValue = data.amount
-      ? parseFloat(data.amount.replace(/[^0-9.]/g, ''))
-      : 0;
+    // Determine amount based on status
+    let spentAmount = 0;
+    let savedAmount = 0;
+
+    if (data.status === 'success') {
+      // Convert amount from string to number for success case
+      savedAmount = data.amount
+        ? parseFloat(data.amount.replace(/[^0-9.]/g, ''))
+        : 0;
+    } else if (data.status === 'failure') {
+      // For failure, use either the sum of items or the entered amount
+      if (checkItems.length > 0) {
+        spentAmount = checkItems.reduce((sum, item) => sum + item.price, 0);
+      } else {
+        // Fallback to the amount field if no items entered
+        spentAmount = data.amount
+          ? parseFloat(data.amount.replace(/[^0-9.]/g, ''))
+          : 0;
+      }
+    }
 
     // Set saved_amount or spent_amount based on status
     const checkData = {
@@ -94,8 +124,9 @@ export const CheckInForm = ({
       date: formattedDate.toString(),
       message: data.message,
       status: data.status as CheckStatus,
-      saved_amount: data.status === 'success' ? amountValue : 0,
-      spent_amount: data.status === 'failure' ? amountValue : 0,
+      saved_amount: savedAmount,
+      spent_amount: spentAmount,
+      items: checkItems,
     };
 
     createCheck(checkData);
@@ -105,8 +136,9 @@ export const CheckInForm = ({
       date: formattedDate,
       message: data.message,
       status: data.status,
-      saved_amount: data.status === 'success' ? amountValue : 0,
-      spent_amount: data.status === 'failure' ? amountValue : 0,
+      saved_amount: savedAmount,
+      spent_amount: spentAmount,
+      items_count: checkItems.length,
     });
   };
 
@@ -162,26 +194,31 @@ export const CheckInForm = ({
 
         {status && (
           <>
-            <Box className="flex-col">
-              <FormInputLabel
-                label={
-                  status === 'success'
-                    ? t('checks.form.saved_amount.label') || 'Saved Amount'
-                    : t('checks.form.spent_amount.label') || 'Spent Amount'
-                }
-              />
-              <CurrencyInput
-                control={control}
-                name="amount"
-                placeholder={
-                  status === 'success'
-                    ? t('checks.form.saved_amount.placeholder') ||
-                      'How much did you save?'
-                    : t('checks.form.spent_amount.placeholder') ||
-                      'How much did you spend?'
-                }
-              />
-            </Box>
+            {status === 'success' && (
+              <Box className="flex-col">
+                <FormInputLabel
+                  label={t('checks.form.saved_amount.label') || 'Saved Amount'}
+                />
+                <CurrencyInput
+                  control={control}
+                  name="amount"
+                  placeholder={
+                    t('checks.form.saved_amount.placeholder') ||
+                    'How much did you save?'
+                  }
+                />
+              </Box>
+            )}
+
+            {status === 'failure' && (
+              <>
+                <CheckItemForm
+                  items={checkItems}
+                  onAddItem={handleAddItem}
+                  onRemoveItem={handleRemoveItem}
+                />
+              </>
+            )}
 
             <FormInput
               control={control}

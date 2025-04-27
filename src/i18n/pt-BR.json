@@ -287,25 +287,69 @@
     }
   },
   "checks": {
+    "checks": "Check-ins",
+    "days_left": "Dias Restantes",
+    "days_skipped": "Dias Pulados",
+    "my_checks": "Meus Check-ins",
+    "checking_button": "Criar Check-in",
+    "items": {
+      "title": "Itens Comprados",
+      "total": "Total",
+      "empty": "Nenhum item registrado"
+    },
     "form": {
+      "title": "Criar Check-in",
+      "description": "Crie um novo check-in para seu desafio.",
       "date": {
         "label": "Data",
         "placeholder": "Selecione uma data"
       },
-      "message": {
-        "label": "Como foi?",
-        "placeholder": "Adicione seus pensamentos sobre hoje..."
+      "status": {
+        "label": "Como você se saiu hoje?",
+        "placeholder": "Selecione seu status",
+        "success": "Mantive o Controle do Impulso",
+        "failure": "Cedi ao Impulso"
       },
       "saved_amount": {
         "label": "Valor Economizado",
-        "placeholder": "R$0,00"
+        "placeholder": "Quanto você economizou?"
+      },
+      "spent_amount": {
+        "label": "Valor Gasto",
+        "placeholder": "Quanto você gastou?"
+      },
+      "items": {
+        "label": "Itens Comprados",
+        "added": "Itens Adicionados",
+        "total": "Total"
+      },
+      "item": {
+        "title": "Nome do Item",
+        "title_placeholder": "O que você comprou?",
+        "price": "Preço",
+        "price_placeholder": "Preço",
+        "add": "Adicionar",
+        "error": {
+          "title_required": "Nome do item é obrigatório",
+          "price_required": "Preço deve ser maior que 0"
+        }
+      },
+      "message": {
+        "label": "Pensamentos",
+        "placeholder": "Compartilhe seus pensamentos sobre hoje..."
       },
       "save_button": "Salvar",
       "saving_button": "Salvando...",
-      "cancel_button": "Cancelar"
+      "cancel_button": "Cancelar",
+      "error": {
+        "duplicate": "Você já fez check-in neste dia",
+        "generic": "Falha ao criar check-in, tente novamente mais tarde",
+        "status_required": "Por favor, selecione um status"
+      }
     },
     "savings": {
       "total": "Economia Total",
+      "spent": "Total Gasto",
       "history": "Histórico de Economia",
       "empty": "Nenhuma economia registrada ainda"
     }
