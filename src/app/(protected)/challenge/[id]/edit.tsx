@@ -71,6 +71,8 @@ export default function EditChallenge() {
       start_date: startDate.toISOString(),
       end_date: endDate.toISOString(),
       cover: data.cover ?? null,
+      savings_goal:
+        typeof data.savingsGoal === 'number' ? data.savingsGoal : null,
     })
       .then(() => {
         triggerToast({
@@ -121,6 +123,7 @@ export default function EditChallenge() {
             ? new Date(challenge.end_date)
             : new Date(),
           cover: challenge.cover ?? undefined,
+          savingsGoal: challenge.savings_goal ?? undefined,
         }}
       />
     </SafeAreaView>

@@ -58,14 +58,13 @@ You are an expert in TypeScript, React Native, and Expo development, specializin
 - Use interfaces for models and props
 - Use Zod for runtime validation
 - Avoid any type
+- Never change the database.types.ts file, if you need to update it run `yarn supabase:local-db-types`
 
 # Writing maestro E2E tests
 
 - Always create the files inside ./.maestro
 - Create one file per main flow
 - Always use "hideKeyboard" after inputing values inside a input
-
-- Never change the database.types.ts file, it's auto generated.
 
 # Data Fetching Pattern
 

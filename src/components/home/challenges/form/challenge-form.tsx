@@ -25,6 +25,8 @@ import useUploadImage from '@/hooks/storage';
 import { useSession } from '@/hooks/useSession';
 import { useTranslation } from '@/hooks/useTranslation';
 import { KeyboardAvoidingView } from '@/components/ui/keyboard-avoiding-view';
+import { CurrencyInput } from '@/components/ui/form/currency-input';
+import FormInputLabel from '@/components/ui/form/label';
 interface ImageData {
   uri: string;
   base64: string;
@@ -35,6 +37,10 @@ interface ChallengeFormProps {
   title: string;
   subtitle: string;
   submitButtonText: string;
+  /**
+   * Note: For CurrencyInput, savingsGoal should be a string (formatted with currency sign)
+   * but the schema will transform it to a number during validation
+   */
   defaultValues?: ChallengeSchemaType;
   isStartDateDisabled?: boolean;
   showDeleteButton?: boolean;
@@ -68,8 +74,11 @@ export function ChallengeForm({
       startDate: new Date(),
       endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       cover: process.env.EXPO_PUBLIC_CHALLENGE_COVER_URL!,
+      savingsGoal: null,
     },
   });
+
+  console.log(defaultValues?.savingsGoal);
   const { t } = useTranslation();
   const { upload } = useUploadImage();
   const { session } = useSession();
@@ -95,6 +104,7 @@ export function ChallengeForm({
       startDate: data?.startDate,
       endDate: data?.endDate,
       cover: cover ?? undefined,
+      savingsGoal: data?.savingsGoal,
     });
   };
 
@@ -137,6 +147,15 @@ export function ChallengeForm({
                 placeholder={t('challenge.form.description.placeholder')}
                 errorMessage={errors?.description?.message}
               />
+
+              <FormInputLabel label={t('challenge.form.savings_goal.label')} />
+
+              <CurrencyInput
+                name="savingsGoal"
+                control={control}
+                defaultValue={defaultValues?.savingsGoal}
+                placeholder={t('challenge.form.savings_goal.placeholder')}
+              />
             </VStack>
           </HStack>
 
@@ -158,6 +177,8 @@ export function ChallengeForm({
               <DaysSuggestions watch={watch} setValue={setValue} />
             )}
           </Box>
+
+          <Box className="mt-6"></Box>
 
           <Box className="mt-12 flex-row justify-between gap-4">
             <Button

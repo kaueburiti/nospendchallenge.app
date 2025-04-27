@@ -35,6 +35,7 @@ export default function CreateChallenge() {
       end_date: endDate.toISOString(),
       cover: data.cover ?? process.env.EXPO_PUBLIC_CHALLENGE_COVER_URL!,
       token: null, // Add token property as required by the type
+      savings_goal: data.savingsGoal ?? null,
     })
       .then(() => {
         triggerToast({

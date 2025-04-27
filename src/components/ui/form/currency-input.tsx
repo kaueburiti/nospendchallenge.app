@@ -6,12 +6,14 @@ interface CurrencyInputProps {
   control: Control<any>;
   name: string;
   placeholder?: string;
+  defaultValue?: string;
 }
 
 export const CurrencyInput: React.FC<CurrencyInputProps> = ({
   control,
   name,
   placeholder,
+  defaultValue,
 }) => {
   const formatCurrency = (value: string): string => {
     // Remove non-numeric characters except decimal point
@@ -35,6 +37,7 @@ export const CurrencyInput: React.FC<CurrencyInputProps> = ({
     <Controller
       control={control}
       name={name}
+      defaultValue={defaultValue}
       render={({ field: { onChange, onBlur, value } }) => (
         <Input>
           <InputField

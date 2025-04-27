@@ -74,6 +74,11 @@
         "label": "Edit Cover",
         "error": "Cover is required"
       },
+      "savings_goal": {
+        "label": "Savings Goal",
+        "placeholder": "Enter your savings goal",
+        "error": "Savings goal must be a positive number"
+      },
       "days_suggestion_label": "Some suggestions",
       "days_label": "Days",
       "cancel_button": "Cancel",
