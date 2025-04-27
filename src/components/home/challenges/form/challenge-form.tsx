@@ -25,8 +25,6 @@ import useUploadImage from '@/hooks/storage';
 import { useSession } from '@/hooks/useSession';
 import { useTranslation } from '@/hooks/useTranslation';
 import { KeyboardAvoidingView } from '@/components/ui/keyboard-avoiding-view';
-import { CurrencyInput } from '@/components/ui/form/currency-input';
-import FormInputLabel from '@/components/ui/form/label';
 interface ImageData {
   uri: string;
   base64: string;
@@ -78,7 +76,6 @@ export function ChallengeForm({
     },
   });
 
-  console.log(defaultValues?.savingsGoal);
   const { t } = useTranslation();
   const { upload } = useUploadImage();
   const { session } = useSession();
@@ -148,13 +145,12 @@ export function ChallengeForm({
                 errorMessage={errors?.description?.message}
               />
 
-              <FormInputLabel label={t('challenge.form.savings_goal.label')} />
-
-              <CurrencyInput
+              <FormInput
+                label={t('challenge.form.savings_goal.label')}
                 name="savingsGoal"
                 control={control}
-                defaultValue={defaultValues?.savingsGoal}
                 placeholder={t('challenge.form.savings_goal.placeholder')}
+                errorMessage={errors?.savingsGoal?.message}
               />
             </VStack>
           </HStack>

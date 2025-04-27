@@ -46,26 +46,28 @@ const FormInput: React.FC<FormInputProps> = ({
         control={control}
         defaultValue=""
         disabled={disabled}
-        render={({ field: { onChange, onBlur, value } }) => (
-          <Input size={'xl'} isDisabled={disabled}>
-            <InputField
-              className="text-sm"
-              placeholder={placeholder}
-              value={value as string | undefined}
-              onChangeText={onChange}
-              onBlur={onBlur}
-              onSubmitEditing={onSubmitEditing}
-              returnKeyType={onSubmitEditing ? 'done' : 'next'}
-              type={isVisible ? 'text' : 'password'}
-              autoCapitalize={autoCapitalize}
-            />
-            {isPassword && (
-              <InputSlot onPress={handleToggleVisibility} className="pr-3">
-                <InputIcon as={isVisible ? EyeIcon : EyeOffIcon} />
-              </InputSlot>
-            )}
-          </Input>
-        )}
+        render={({ field: { onChange, onBlur, value } }) => {
+          return (
+            <Input size={'xl'} isDisabled={disabled}>
+              <InputField
+                className="text-sm"
+                placeholder={placeholder}
+                value={String(value) as string | undefined}
+                onChangeText={onChange}
+                onBlur={onBlur}
+                onSubmitEditing={onSubmitEditing}
+                returnKeyType={onSubmitEditing ? 'done' : 'next'}
+                type={isVisible ? 'text' : 'password'}
+                autoCapitalize={autoCapitalize}
+              />
+              {isPassword && (
+                <InputSlot onPress={handleToggleVisibility} className="pr-3">
+                  <InputIcon as={isVisible ? EyeIcon : EyeOffIcon} />
+                </InputSlot>
+              )}
+            </Input>
+          );
+        }}
       />
       {errorMessage && (
         <FormControlError>

@@ -4,12 +4,13 @@ import { z } from 'zod';
 // Helper to convert currency string to number
 const currencyStringToNumber = (
   value: string | null | undefined,
-): number | null => {
-  if (!value) return null;
+): number | boolean => {
+  if (!value) return false;
   // Remove currency symbols and non-numeric characters except decimal point
   const numStr = value.replace(/[^0-9.]/g, '');
   const num = parseFloat(numStr);
-  return isNaN(num) ? null : num;
+
+  return isNaN(num) ? false : num;
 };
 
 export const challengeSchema = z.object({
@@ -33,8 +34,3 @@ export const challengeSchema = z.object({
 });
 
 export type ChallengeSchemaType = z.infer<typeof challengeSchema>;
-
-// This is to help TypeScript with the savingsGoal field in form data
-export interface ChallengeFormData extends ChallengeSchemaType {
-  savingsGoal?: string | number | null;
-}
