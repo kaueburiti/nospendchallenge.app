@@ -1,8 +1,16 @@
 import { supabase } from '@/lib/supabase';
 import type { Tables } from '../database.types';
 
+export type CheckStatus = 'success' | 'failure';
+
 export const createCheck = async (
-  check: Omit<Tables<'checks'>, 'id' | 'created_at' | 'updated_at' | 'user_id'>,
+  check: Omit<
+    Tables<'checks'>,
+    'id' | 'created_at' | 'updated_at' | 'user_id'
+  > & {
+    status: CheckStatus;
+    spent_amount?: number;
+  },
 ) => {
   const { data: user } = await supabase.auth.getUser();
   const formattedDate = new Date(check.date).toISOString().split('T')[0];
@@ -101,11 +109,25 @@ export const getChallengeTotalSavings = async (challengeId: number) => {
   return data;
 };
 
+// Get the total spent amount for a challenge
+export const getChallengeTotalSpent = async (challengeId: number) => {
+  const { data, error } = await supabase.rpc('get_challenge_total_spent', {
+    challenge_id_param: challengeId,
+  });
+
+  if (error) {
+    console.error('Error getting total spent amount:', error);
+    throw error;
+  }
+
+  return typeof data === 'number' ? data : 0;
+};
+
 // Get savings history by challenge (for chart visualization)
 export const getChallengeSavingsHistory = async (challengeId: number) => {
   const { data, error } = await supabase
     .from('checks')
-    .select('date, saved_amount')
+    .select('date, saved_amount, spent_amount, status')
     .eq('challenge_id', challengeId)
     .order('date', { ascending: true });
 

@@ -162,20 +162,36 @@
         "label": "Date",
         "placeholder": "Select a date"
       },
-      "message": {
-        "label": "How was it?",
-        "placeholder": "Add your thoughts about today..."
+      "status": {
+        "label": "How did you do today?",
+        "placeholder": "Select your status",
+        "success": "Held Impulse Control",
+        "failure": "Gave in to Impulse"
       },
       "saved_amount": {
         "label": "Saved Amount",
-        "placeholder": "$0.00"
+        "placeholder": "How much did you save?"
+      },
+      "spent_amount": {
+        "label": "Spent Amount",
+        "placeholder": "How much did you spend?"
+      },
+      "message": {
+        "label": "Thoughts",
+        "placeholder": "Share your thoughts about today..."
       },
       "save_button": "Save",
       "saving_button": "Saving...",
-      "cancel_button": "Cancel"
+      "cancel_button": "Cancel",
+      "error": {
+        "duplicate": "You already checked in this day",
+        "generic": "Failed to create check in, please try again later",
+        "status_required": "Please select a status"
+      }
     },
     "savings": {
       "total": "Total Savings",
+      "spent": "Total Spent",
       "history": "Savings History",
       "empty": "No savings recorded yet"
     }
