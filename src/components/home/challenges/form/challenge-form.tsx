@@ -6,6 +6,7 @@ import {
   Heading,
   ButtonText,
   VStack,
+  HStack,
 } from '@/components/ui';
 import FormInput from '@/components/ui/form/input';
 import type { FieldErrors } from 'react-hook-form';
@@ -110,51 +111,53 @@ export function ChallengeForm({
             <Text className="text-md text-gray-500">{subtitle}</Text>
           </Box>
 
-          <Box className="mb-6">
-            <PhotoUpload
-              onImageUpload={setImageData}
-              uri={
-                imageData?.uri ?? process.env.EXPO_PUBLIC_CHALLENGE_COVER_URL!
-              }
-            />
-          </Box>
-
-          <VStack space="2xl">
-            <FormInput
-              label={t('challenge.form.title.label')}
-              name="title"
-              control={control}
-              placeholder={t('challenge.form.title.placeholder')}
-              errorMessage={errors?.title?.message}
-            />
-
-            <FormInput
-              label={t('challenge.form.description.label')}
-              name="description"
-              control={control}
-              placeholder={t('challenge.form.description.placeholder')}
-              errorMessage={errors?.description?.message}
-            />
-
-            <Box className="flex-col gap-2">
-              <StartAndEndDates
-                start={{
-                  date: watch('startDate'),
-                  onChange: !isStartDateDisabled
-                    ? date => setValue('startDate', date)
-                    : undefined,
-                  disabled: isStartDateDisabled,
-                }}
-                end={{
-                  date: watch('endDate'),
-                  onChange: date => setValue('endDate', date),
-                }}
+          <HStack space="lg">
+            <Box className="">
+              <PhotoUpload
+                onImageUpload={setImageData}
+                uri={
+                  imageData?.uri ?? process.env.EXPO_PUBLIC_CHALLENGE_COVER_URL!
+                }
               />
-              {!isStartDateDisabled && (
-                <DaysSuggestions watch={watch} setValue={setValue} />
-              )}
             </Box>
-          </VStack>
+
+            <VStack space="2xl" className="flex-1">
+              <FormInput
+                label={t('challenge.form.title.label')}
+                name="title"
+                control={control}
+                placeholder={t('challenge.form.title.placeholder')}
+                errorMessage={errors?.title?.message}
+              />
+
+              <FormInput
+                label={t('challenge.form.description.label')}
+                name="description"
+                control={control}
+                placeholder={t('challenge.form.description.placeholder')}
+                errorMessage={errors?.description?.message}
+              />
+            </VStack>
+          </HStack>
+
+          <Box className="mt-8 flex-col gap-2">
+            <StartAndEndDates
+              start={{
+                date: watch('startDate'),
+                onChange: !isStartDateDisabled
+                  ? date => setValue('startDate', date)
+                  : undefined,
+                disabled: isStartDateDisabled,
+              }}
+              end={{
+                date: watch('endDate'),
+                onChange: date => setValue('endDate', date),
+              }}
+            />
+            {!isStartDateDisabled && (
+              <DaysSuggestions watch={watch} setValue={setValue} />
+            )}
+          </Box>
 
           <Box className="mt-12 flex-row justify-between gap-4">
             <Button

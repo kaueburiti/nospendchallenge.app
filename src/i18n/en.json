@@ -71,7 +71,7 @@
         "error": "End date is required"
       },
       "cover": {
-        "label": "Change Cover",
+        "label": "Edit Cover",
         "error": "Cover is required"
       },
       "days_suggestion_label": "Some suggestions",

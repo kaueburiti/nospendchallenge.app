@@ -66,13 +66,13 @@ export default function PhotoUpload({
     <Pressable
       onPress={handleImageSelection}
       className="flex flex-col items-center gap-4">
-      <Avatar size="5xl" className="border-2 border-white">
+      <Avatar size="xl" className="rounded-md border-2 border-white">
         <AvatarFallbackText className="mt-4">{fallbackText}</AvatarFallbackText>
         {/* BUG: AvatarImage doesn't show the image right after changing the image */}
-        {source && <AvatarImage source={source} />}
+        {source && <AvatarImage source={source} className="rounded-md" />}
       </Avatar>
 
-      <Button variant="outline" onPress={handleImageSelection}>
+      <Button variant="outline" onPress={handleImageSelection} size="sm">
         <ButtonText>{t('challenge.form.cover.label')}</ButtonText>
       </Button>
     </Pressable>
