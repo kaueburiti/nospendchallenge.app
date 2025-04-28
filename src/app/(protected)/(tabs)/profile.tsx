@@ -17,7 +17,6 @@ import {
 } from 'react-native-gesture-handler';
 import { PaymentPlan } from '@/components/profile/PaymentPlan';
 import { useTranslation } from '@/hooks/useTranslation';
-import ChangePasswordDrawer from '@/components/profile/ChangePasswordDrawer';
 import { router } from 'expo-router';
 import { useSignOut } from '@/hooks/auth/useSignOut';
 
@@ -94,11 +93,8 @@ const ProfilePage = () => {
   const { signOut } = useSignOut();
 
   const [showDeleteAccountDialog, setShowDeleteAccountDialog] = useState(false);
-  const [showChangePasswordDrawer, setShowChangePasswordDrawer] =
-    useState(false);
 
   const onOpenDeleteAccountDialog = () => setShowDeleteAccountDialog(true);
-  const onOpenChangePasswordDrawer = () => setShowChangePasswordDrawer(true);
 
   const { customerInfo } = useContext(RevenueCatContext);
   const activeEntitlements = customerInfo?.activeSubscriptions;
@@ -123,9 +119,6 @@ const ProfilePage = () => {
                 <ProfileSettings
                   onOpenDeleteAccountDialog={onOpenDeleteAccountDialog}
                 />
-                <ProfileSecurity
-                  onOpenChangePasswordDrawer={onOpenChangePasswordDrawer}
-                />
                 {process.env.EXPO_PUBLIC_REVENUE_CAT_API_KEY_APPLE && (
                   <>
                     <Divider className="my-2" />
@@ -135,7 +128,6 @@ const ProfilePage = () => {
                     />
                   </>
                 )}
-                <Divider className="my-2" />
                 <ProfileSupport />
                 <Divider className="my-2" />
                 <SignOutButton onClick={() => signOut({})} />
@@ -145,10 +137,6 @@ const ProfilePage = () => {
                 onCloseDeleteAccountDialog={() =>
                   setShowDeleteAccountDialog(false)
                 }
-              />
-              <ChangePasswordDrawer
-                isOpen={showChangePasswordDrawer}
-                onClose={() => setShowChangePasswordDrawer(false)}
               />
             </ScrollView>
           </GestureHandlerRootView>
