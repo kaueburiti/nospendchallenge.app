@@ -5,12 +5,15 @@ import { LineChart } from 'react-native-chart-kit';
 import { HomeWidgetWrapper } from './wrapper';
 import { Skeleton } from '@/components/ui/skeleton';
 import { BadgeX, Frown } from 'lucide-react-native';
+import { useTranslation } from '@/hooks/useTranslation';
 
 export const HomeWidgetSavingsHistory = () => {
+  const { t } = useTranslation();
+
   return (
     <HomeWidgetWrapper>
       <VStack space="md">
-        <Heading size="lg">Savings History</Heading>
+        <Heading size="lg">{t('widgets.savings_history.title')}</Heading>
         <HomeWidgetSavingsHistoryChart />
       </VStack>
     </HomeWidgetWrapper>
@@ -19,6 +22,7 @@ export const HomeWidgetSavingsHistory = () => {
 
 const HomeWidgetSavingsHistoryChart = () => {
   const { data, isLoading, error } = useGetAllChallengesSavingsHistory();
+  const { t } = useTranslation();
 
   if (isLoading) {
     return <Skeleton className="h-24 w-full rounded-lg" />;
@@ -40,7 +44,7 @@ const HomeWidgetSavingsHistoryChart = () => {
       <Box className="mx-auto flex max-w-48 items-center justify-center gap-2">
         <Frown className="h-10 w-10" color="#ff7979" />
         <Text className="text-center text-primary-500">
-          No data available, please try again later.
+          {t('widgets.savings_history.empty')}
         </Text>
       </Box>
     );

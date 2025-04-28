@@ -55,8 +55,8 @@ export function TotalSavingsWidget() {
         </Box>
 
         <VStack space="xs">
-          <Heading size="sm" className="mb-0 font-normal">
-            {t('home.total_savings')}
+          <Heading size="xs" className="mb-0 font-normal">
+            {t('widgets.total_savings.title')}
           </Heading>
 
           {isLoading ? (

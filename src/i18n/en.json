@@ -420,5 +420,19 @@
       "delete_button": "Delete",
       "saving_button": "Saving..."
     }
+  },
+  "widgets": {
+    "current_strike": {
+      "title": "Current Strike",
+      "days": "Days"
+    },
+    "total_savings": {
+      "title": "Total Savings",
+      "amount": "Amount"
+    },
+    "savings_history": {
+      "title": "Savings History",
+      "empty": "No savings recorded yet"
+    }
   }
 }

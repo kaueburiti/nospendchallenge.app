@@ -13,23 +13,14 @@ import PendingInvitations from '@/components/home/challenges/invite/pending-invi
 import { useTranslation } from '@/hooks/useTranslation';
 import { HomeWidgetSavingsHistory } from '@/components/home/widgets/savings-history';
 import { TotalSavingsWidget } from '@/components/home/widgets/total-savings';
+import { CurrentStrikeWidget } from '@/components/home/widgets/current-strike';
 
 const ExploreTopSection = () => {
   return (
     <VStack space="md">
       <HomeWidgetSavingsHistory />
       <HStack space="md">
-        <Box className="flex-1 rounded-lg border border-gray-200 bg-white p-4">
-          <Box className="flex flex-row items-center gap-4">
-            <Box className="rounded-full bg-primary-100 p-2">
-              <Trophy size={24} color="white" />
-            </Box>
-            <Box>
-              <Text className="text-sm">Current Strike</Text>
-              <Text className="text-2xl font-bold">5 Days</Text>
-            </Box>
-          </Box>
-        </Box>
+        <CurrentStrikeWidget />
         <TotalSavingsWidget />
       </HStack>
     </VStack>

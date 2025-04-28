@@ -408,5 +408,19 @@
       "delete_button": "Excluir",
       "saving_button": "Salvando..."
     }
+  },
+  "widgets": {
+    "current_strike": {
+      "title": "Sequência Atual",
+      "days": "Dias"
+    },
+    "total_savings": {
+      "title": "Economia Total",
+      "amount": "Valor"
+    },
+    "savings_history": {
+      "title": "Histórico de Economia",
+      "empty": "Nenhuma economia registrada ainda"
+    }
   }
 }
