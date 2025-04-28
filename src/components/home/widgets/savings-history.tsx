@@ -50,18 +50,29 @@ const HomeWidgetSavingsHistoryChart = () => {
     );
   }
 
-  const dataset: number[] = data
-    .slice(-7)
-    .map(item => Number(item.saved_amount ?? 0));
+  // Sort data by date to ensure chronological order
+  const sortedData = [...data].sort(
+    (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+  );
+
+  // Calculate cumulative savings
+  let runningTotal = 0;
+  const cumulativeSavings = sortedData.map(item => {
+    runningTotal += Number(item.saved_amount ?? 0);
+    return runningTotal;
+  });
+
+  // Get the last 7 days of data
+  const last7Days = cumulativeSavings.slice(-7);
 
   return (
     <Box className="bg-red-100">
       <LineChart
         data={{
-          labels: dataset.map((_, index) => `D${index + 1}`),
+          labels: last7Days.map((_, index) => `D${index + 1}`),
           datasets: [
             {
-              data: dataset,
+              data: last7Days,
             },
           ],
         }}
@@ -77,7 +88,7 @@ const HomeWidgetSavingsHistoryChart = () => {
             borderRadius: 0,
           },
           propsForLabels: {
-            fontSize: 11, // Decreased font size for labels
+            fontSize: 11,
           },
           propsForBackgroundLines: {
             strokeWidth: 0,
@@ -89,7 +100,7 @@ const HomeWidgetSavingsHistoryChart = () => {
           borderRadius: 0,
           padding: 0,
           margin: 0,
-          marginLeft: -30, // Negative margin to reduce left padding
+          marginLeft: -30,
         }}
       />
     </Box>
