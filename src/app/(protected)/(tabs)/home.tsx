@@ -4,82 +4,20 @@ import { Box, Heading, HStack, VStack, Text } from '@/components/ui';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { useSession } from '@/hooks/useSession';
 import { Section } from '@/components/Section';
-import { Badge, PlusCircle, Trophy } from 'lucide-react-native';
+import { PlusCircle, Trophy } from 'lucide-react-native';
 import { router } from 'expo-router';
 import { Button } from '@/components/ui';
 import RecentActivities from '@/components/home/recent-activities';
 import ChallengeList from '@/components/home/challenges';
 import PendingInvitations from '@/components/home/challenges/invite/pending-invitations';
 import { useTranslation } from '@/hooks/useTranslation';
-import TotalSavingsSummary from '@/components/home/savings-summary';
-import { useGetAllChallengesSavingsHistory } from '@/hooks/checks';
-import {
-  LineChart,
-  BarChart,
-  PieChart,
-  ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
-} from 'react-native-chart-kit';
+import { HomeWidgetSavingsHistory } from '@/components/home/widgets/savings-history';
+import { TotalSavingsWidget } from '@/components/home/widgets/total-savings';
 
-const GraphTopSection = ({ title }: { title: string }) => {
-  const { data, isLoading, error } = useGetAllChallengesSavingsHistory();
-
-  return (
-    <Box className="bg-background overflow-hidden rounded-lg border border-gray-200 bg-white p-4">
-      <VStack space="md">
-        <Heading size="lg">{title}</Heading>
-        {error ? (
-          <Text>Error loading chart data</Text>
-        ) : data && data.length > 0 ? (
-          <Box className="bg-red-100">
-            <LineChart
-              data={{
-                datasets: [
-                  {
-                    data: data.slice(-7).map(item => item.saved_amount || 0),
-                  },
-                ],
-              }}
-              width={400}
-              height={100}
-              chartConfig={{
-                backgroundColor: '#fff',
-                backgroundGradientFrom: '#fff',
-                backgroundGradientTo: '#fff',
-                decimalPlaces: 0,
-                color: (opacity = 1) => `rgba(255, 121, 121, ${opacity})`,
-                style: {
-                  borderRadius: 0,
-                },
-                propsForLabels: {
-                  fontSize: 11, // Decreased font size for labels
-                },
-                propsForBackgroundLines: {
-                  strokeWidth: 0,
-                },
-                formatYLabel: value => `$ ${value}`,
-              }}
-              bezier
-              style={{
-                borderRadius: 0,
-                padding: 0,
-                margin: 0,
-                marginLeft: -30, // Negative margin to reduce left padding
-              }}
-            />
-          </Box>
-        ) : (
-          <Text>No data available</Text>
-        )}
-      </VStack>
-    </Box>
-  );
-};
 const ExploreTopSection = () => {
   return (
     <VStack space="md">
-      <GraphTopSection title="Savings History" />
+      <HomeWidgetSavingsHistory />
       <HStack space="md">
         <Box className="flex-1 rounded-lg border border-gray-200 bg-white p-4">
           <Box className="flex flex-row items-center gap-4">
@@ -92,17 +30,7 @@ const ExploreTopSection = () => {
             </Box>
           </Box>
         </Box>
-        <Box className="flex-1 rounded-lg border border-gray-200 bg-white p-4">
-          <Box className="flex flex-row items-center gap-4">
-            <Box className="rounded-full bg-primary-100 p-2">
-              <Trophy size={24} color="white" />
-            </Box>
-            <Box>
-              <Text className="text-sm">Total Savings</Text>
-              <Text className="text-2xl font-bold">$100</Text>
-            </Box>
-          </Box>
-        </Box>
+        <TotalSavingsWidget />
       </HStack>
     </VStack>
   );
