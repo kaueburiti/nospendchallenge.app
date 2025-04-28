@@ -171,6 +171,25 @@ export const getChallengeSavingsHistory = async (challengeId: number) => {
   return data;
 };
 
+// Get savings history for all challenges
+export const getAllChallengesSavingsHistory = async () => {
+  const { data: user } = await supabase.auth.getUser();
+  const userId = String(user.user?.id);
+
+  const { data, error } = await supabase
+    .from('checks')
+    .select('date, saved_amount, spent_amount, status, challenge_id')
+    .eq('user_id', userId)
+    .order('date', { ascending: true });
+
+  if (error) {
+    console.error('Error fetching all challenges savings history:', error);
+    throw error;
+  }
+
+  return data;
+};
+
 // Get all items for a specific check
 export const getCheckItems = async (checkId: number) => {
   const { data, error } = await supabase

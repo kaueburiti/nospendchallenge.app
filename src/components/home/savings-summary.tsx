@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Box, Heading, VStack } from '@/components/ui';
 import { Text } from '@/components/ui/text';
 import { useTranslation } from '@/hooks/useTranslation';
