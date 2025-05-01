@@ -17,13 +17,11 @@ import { useDeleteWishlistItem } from '@/hooks/wishlists';
 
 interface WishlistItemCardProps {
   item: Tables<'wishlist_items'>;
-  wishlistId?: number | null;
   onEdit?: () => void;
 }
 
 export default function WishlistItemCard({
   item,
-  wishlistId,
   onEdit,
 }: WishlistItemCardProps) {
   const { t } = useTranslation();
@@ -56,7 +54,7 @@ export default function WishlistItemCard({
   };
 
   return (
-    <HStack className="bg-background rounded-lg border border-gray-200 p-4">
+    <HStack className="bg-background items-center rounded-lg border border-gray-200 p-4">
       <HStack space="md" className="mb-2 flex-1">
         {item.photo && (
           <Box className="h-20 w-20 overflow-hidden rounded-md">
@@ -68,26 +66,25 @@ export default function WishlistItemCard({
           </Box>
         )}
         <VStack space="xs" className="flex-1">
-          <Heading size="sm">{item.name}</Heading>
+          <Heading size="md">
+            {item.name} ({formatCurrency(Number(item.cost))})
+          </Heading>
           {item.description && (
             <Text className="text-gray-600" numberOfLines={2}>
               {item.description}
             </Text>
           )}
-          <Text className="font-medium text-primary-600">
-            {formatCurrency(Number(item.cost))}
-          </Text>
         </VStack>
       </HStack>
-      <HStack className="justify-end" space="sm">
-        <Button variant="link" size="xs" onPress={onEdit}>
+      <HStack className="justify-end" space="lg">
+        <Button variant="link" size="lg" onPress={onEdit}>
           <ButtonText>
-            <Edit size={16} />
+            <Edit size={24} color="#171717" />
           </ButtonText>
         </Button>
-        <Button variant="link" size="xs" onPress={handleDelete}>
+        <Button variant="link" size="lg" onPress={handleDelete}>
           <ButtonText>
-            <Trash size={16} color="#E53935" />
+            <Trash size={24} color="#E53935" />
           </ButtonText>
         </Button>
       </HStack>

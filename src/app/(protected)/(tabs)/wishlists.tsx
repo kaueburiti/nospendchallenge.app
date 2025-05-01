@@ -7,6 +7,7 @@ import {
   VStack,
   Text,
   ButtonText,
+  HStack,
 } from '@/components/ui';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { Section } from '@/components/Section';
@@ -39,15 +40,17 @@ export default function WishlistsPage() {
       <ScrollView className="h-[1px] flex-1">
         <Section>
           <VStack space="4xl">
-            <Box className="mt-8 flex flex-row items-center justify-between">
-              <Heading size="3xl">{t('wishlists.title')}</Heading>
+            <HStack className="mt-8 flex flex-row items-start justify-between gap-2">
+              <VStack space="sm" className="flex-1">
+                <Heading size="3xl">{t('wishlists.title')}</Heading>
+                <Text className="text-gray-500">
+                  {t('wishlists.description')}
+                </Text>
+              </VStack>
               <Button onPress={handleAddItem} size="sm">
                 <Plus size={20} color="white" />
-                <ButtonText className="ml-1">
-                  {t('wishlists.add_item')}
-                </ButtonText>
               </Button>
-            </Box>
+            </HStack>
 
             {isLoading ? (
               <Box className="flex h-32 items-center justify-center">

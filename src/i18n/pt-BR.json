@@ -357,6 +357,7 @@
   "wishlists": {
     "tab_label": "Lista de Desejos",
     "title": "Minhas Listas de Desejos",
+    "description": "Ter uma lista de desejos é uma ótima maneira de planejar suas compras e economizar para seus desejos!",
     "no_wishlists": "Nenhuma lista de desejos ainda",
     "no_wishlists_description": "Crie sua primeira lista de desejos para começar a economizar para seus objetivos!",
     "create_wishlist": "Criar Lista de Desejos",

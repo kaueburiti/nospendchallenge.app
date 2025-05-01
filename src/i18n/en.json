@@ -369,6 +369,7 @@
   "wishlists": {
     "tab_label": "Wishlists",
     "title": "My Wishlists",
+    "description": "Having a wishlist is a great way to plan your purchases and save for your desires!",
     "no_wishlists": "No wishlists yet",
     "no_wishlists_description": "Create your first wishlist to start saving for your desires!",
     "create_wishlist": "Create Wishlist",
