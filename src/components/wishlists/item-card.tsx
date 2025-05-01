@@ -13,17 +13,18 @@ import { Image, Alert } from 'react-native';
 import { Tables } from '@/lib/db/database.types';
 import { Edit, Trash } from 'lucide-react-native';
 import { useTranslation } from '@/hooks/useTranslation';
-import { router } from 'expo-router';
 import { useDeleteWishlistItem } from '@/hooks/wishlists';
 
 interface WishlistItemCardProps {
   item: Tables<'wishlist_items'>;
   wishlistId?: number | null;
+  onEdit?: () => void;
 }
 
 export default function WishlistItemCard({
   item,
   wishlistId,
+  onEdit,
 }: WishlistItemCardProps) {
   const { t } = useTranslation();
   const { mutate: deleteItem } = useDeleteWishlistItem();
@@ -55,10 +56,8 @@ export default function WishlistItemCard({
   };
 
   return (
-    <Pressable
-      onPress={() => router.push(`/(protected)/wishlist/item/${item.id}`)}
-      className="bg-background rounded-lg border border-gray-100 p-4">
-      <HStack space="md" className="mb-2">
+    <HStack className="bg-background rounded-lg border border-gray-200 p-4">
+      <HStack space="md" className="mb-2 flex-1">
         {item.photo && (
           <Box className="h-20 w-20 overflow-hidden rounded-md">
             <Image
@@ -80,28 +79,18 @@ export default function WishlistItemCard({
           </Text>
         </VStack>
       </HStack>
-
       <HStack className="justify-end" space="sm">
-        <Button
-          variant="outline"
-          size="xs"
-          onPress={() =>
-            router.push(`/(protected)/wishlist/item/${item.id}/edit`)
-          }>
+        <Button variant="link" size="xs" onPress={onEdit}>
           <ButtonText>
             <Edit size={16} />
           </ButtonText>
         </Button>
-        <Button
-          variant="outline"
-          size="xs"
-          className="border-error-500 bg-error-50"
-          onPress={handleDelete}>
+        <Button variant="link" size="xs" onPress={handleDelete}>
           <ButtonText>
             <Trash size={16} color="#E53935" />
           </ButtonText>
         </Button>
       </HStack>
-    </Pressable>
+    </HStack>
   );
 }

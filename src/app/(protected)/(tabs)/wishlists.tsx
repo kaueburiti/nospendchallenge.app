@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ScrollView } from '@/components/ui/scroll-view';
 import {
   Box,
@@ -10,17 +10,29 @@ import {
 } from '@/components/ui';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { Section } from '@/components/Section';
-import { router } from 'expo-router';
 import { Plus } from 'lucide-react-native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useGetWishlistItems } from '@/hooks/wishlists';
 import { ActivityIndicator } from 'react-native';
 import WishlistItemCard from '@/components/wishlists/item-card';
 import EmptyWishlists from '@/components/wishlists/empty-state';
+import { EditWishlistItemDrawer } from '@/components/wishlist/EditWishlistItemDrawer';
 
 export default function WishlistsPage() {
   const { t } = useTranslation();
   const { data: items, isLoading } = useGetWishlistItems();
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [selectedItemId, setSelectedItemId] = useState<number | undefined>();
+
+  const handleAddItem = () => {
+    setSelectedItemId(undefined);
+    setIsDrawerOpen(true);
+  };
+
+  const handleEditItem = (itemId: number) => {
+    setSelectedItemId(itemId);
+    setIsDrawerOpen(true);
+  };
 
   return (
     <SafeAreaView>
@@ -29,9 +41,7 @@ export default function WishlistsPage() {
           <VStack space="4xl">
             <Box className="mt-8 flex flex-row items-center justify-between">
               <Heading size="3xl">{t('wishlists.title')}</Heading>
-              <Button
-                onPress={() => router.push('/(protected)/wishlist/item/create')}
-                size="sm">
+              <Button onPress={handleAddItem} size="sm">
                 <Plus size={20} color="white" />
                 <ButtonText className="ml-1">
                   {t('wishlists.add_item')}
@@ -50,6 +60,7 @@ export default function WishlistsPage() {
                     key={item.id}
                     item={item}
                     wishlistId={null}
+                    onEdit={() => handleEditItem(item.id)}
                   />
                 ))}
               </VStack>
@@ -59,6 +70,12 @@ export default function WishlistsPage() {
           </VStack>
         </Section>
       </ScrollView>
+
+      <EditWishlistItemDrawer
+        isOpen={isDrawerOpen}
+        onClose={() => setIsDrawerOpen(false)}
+        itemId={selectedItemId}
+      />
     </SafeAreaView>
   );
 }
