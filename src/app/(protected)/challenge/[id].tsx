@@ -12,8 +12,8 @@ import {
 import { useLocalSearchParams, router } from 'expo-router';
 import { Alert } from 'react-native';
 import {
-  BellRing,
   CheckCheck,
+  DollarSign,
   LogOut,
   MessageCircle,
   Settings,
@@ -24,21 +24,18 @@ import CheckModal from '@/components/home/challenges/check/modal';
 import ChallengeCover from '@/components/home/challenges/cover';
 import BackButton from '@/components/navigation/back-button';
 import ChallengeDetailsTab from '@/components/challenge/details-tab';
-import ChallengeActivitiesTab from '@/components/challenge/activities-tab';
 import ChallengeParticipantsTab from '@/components/challenge/participants-tab';
 import ChallengeChatTab from '@/components/challenge/chat-tab';
 import { useIsChallengeOwner } from '@/hooks/challenges/index';
 import { useChallenge } from '@/hooks/challenges';
 import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
-import { useSession } from '@/hooks/useSession';
-import { SavingsSummary } from '@/components/home/challenges/savings/summary';
-import ChallengeActivities from '@/components/challenge/activities-tab';
+import MoneyTrackerTab from '@/components/challenge/money-tracket-tab';
 
 export default function ChallengeDetails() {
   const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
     useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<
-    'details' | 'activities' | 'participants' | 'chat'
+    'details' | 'money-tracker' | 'participants' | 'chat'
   >('details');
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: challenge, isLoading } = useChallenge(id);
@@ -172,11 +169,11 @@ export default function ChallengeDetails() {
               <MessageCircle size={24} color="rgb(82,82,82)" />
             </Pressable>
             <Pressable
-              onPress={() => setActiveTab('activities')}
+              onPress={() => setActiveTab('money-tracker')}
               className={`w-1/4 items-center px-4 pb-2 ${
-                activeTab === 'activities' ? 'border-primary border-b-2' : ''
+                activeTab === 'money-tracker' ? 'border-primary border-b-2' : ''
               }`}>
-              <BellRing size={24} color="rgb(82,82,82)" />
+              <DollarSign size={24} color="rgb(82,82,82)" />
             </Pressable>
             <Pressable
               onPress={() => setActiveTab('participants')}
@@ -197,8 +194,8 @@ export default function ChallengeDetails() {
               isOwner={isOwner}
               onCheckIn={() => setIsCheckInDrawerOpen(true)}
             />
-          ) : activeTab === 'activities' ? (
-            <ChallengeActivities challengeId={id} />
+          ) : activeTab === 'money-tracker' ? (
+            <MoneyTrackerTab challengeId={id} />
           ) : activeTab === 'chat' ? (
             <ChallengeChatTab challengeId={id} />
           ) : (

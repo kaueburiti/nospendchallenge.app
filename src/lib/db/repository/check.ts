@@ -192,6 +192,7 @@ export const getAllChallengesSavingsHistory = async () => {
 
 // Get all items for a specific check
 export const getCheckItems = async (checkId: number) => {
+  console.log('getCheckItems', checkId);
   const { data, error } = await supabase
     .from('check_items')
     .select('*')

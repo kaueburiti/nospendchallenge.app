@@ -9,6 +9,7 @@ interface ItemDisplayProps {
 }
 
 export const CheckItemDisplay = ({ checkId }: ItemDisplayProps) => {
+  console.log('checkId', checkId);
   const { t } = useTranslation();
   const { data: items, isLoading } = useCheckItems(checkId);
 
@@ -20,6 +21,7 @@ export const CheckItemDisplay = ({ checkId }: ItemDisplayProps) => {
     return null;
   }
 
+  console.log(items);
   const totalSpent = items.reduce((sum, item) => sum + (item.price || 0), 0);
 
   return (
