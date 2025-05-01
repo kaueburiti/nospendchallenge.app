@@ -259,7 +259,7 @@
     "passwords_must_match": "Passwords must match"
   },
   "activities": {
-    "title": "Activities",
+    "title": "Participant Activities",
     "no_activities": "No activities yet",
     "no_activities_description": "Activities will appear here as participants join and complete challenge days.",
     "loading": "Loading activities..."

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Heading, Text, VStack } from '@/components/ui';
+import { Box, Heading, Text } from '@/components/ui';
 import { useChallengesActivities } from '@/hooks/activities';
 import ActivityItem from '@/components/home/recent-activities/item';
 import { FlatList } from 'react-native';
@@ -8,9 +8,7 @@ interface ChallengeActivitiesTabProps {
   challengeId: string;
 }
 
-const ChallengeActivitiesTab = ({
-  challengeId,
-}: ChallengeActivitiesTabProps) => {
+const ChallengeActivities = ({ challengeId }: ChallengeActivitiesTabProps) => {
   const { t } = useTranslation();
   const { data: activities, isLoading } = useChallengesActivities(
     [challengeId],
@@ -39,19 +37,19 @@ const ChallengeActivitiesTab = ({
   }
 
   return (
-    <Box className="p-4 pt-0">
+    <Box className="pt-0">
       <Heading size="lg" className="mb-4">
         {t('activities.title')}
       </Heading>
       <FlatList
+        className="mb-12"
         data={activities}
         keyExtractor={item => item.id.toString()}
         renderItem={({ item }) => <ActivityItem activity={item} />}
         ItemSeparatorComponent={() => <Box className="h-2" />}
-        contentContainerStyle={{ padding: 16 }}
       />
     </Box>
   );
 };
 
-export default ChallengeActivitiesTab;
+export default ChallengeActivities;

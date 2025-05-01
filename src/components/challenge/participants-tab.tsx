@@ -9,6 +9,7 @@ import InvitationList from '../home/challenges/invite/invitation-list';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useInvitationsByChallenge } from '@/hooks/invitations';
 import { ShareChallengeButton } from './ShareChallengeButton';
+import ChallengeActivities from './activities-tab';
 interface ChallengeParticipantsTabProps {
   challengeId: number;
 }
@@ -43,21 +44,24 @@ export default function ChallengeParticipantsTab({
   return (
     <Box className="p-4 pt-0">
       <VStack space="4xl">
-        <Box>
-          <Heading size="md" className="mb-4">
-            {t('participants.title')}
-          </Heading>
+        <VStack space="md">
+          <VStack>
+            <Heading size="md" className="mb-4">
+              {t('participants.title')}
+            </Heading>
 
-          {participants.map(participant => (
-            <ChallengeParticipant
-              key={participant.id}
-              participant={participant}
-              challengeId={challengeId}
-            />
-          ))}
-        </Box>
+            {participants.map(participant => (
+              <ChallengeParticipant
+                key={participant.id}
+                participant={participant}
+                challengeId={challengeId}
+              />
+            ))}
+          </VStack>
+          {challenge && <ShareChallengeButton challenge={challenge} />}
+        </VStack>
 
-        {challenge && <ShareChallengeButton challenge={challenge} />}
+        <ChallengeActivities challengeId={String(challengeId)} />
       </VStack>
     </Box>
   );

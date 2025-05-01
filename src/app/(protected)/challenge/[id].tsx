@@ -32,6 +32,7 @@ import { useChallenge } from '@/hooks/challenges';
 import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
 import { useSession } from '@/hooks/useSession';
 import { SavingsSummary } from '@/components/home/challenges/savings/summary';
+import ChallengeActivities from '@/components/challenge/activities-tab';
 
 export default function ChallengeDetails() {
   const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
@@ -197,7 +198,7 @@ export default function ChallengeDetails() {
               onCheckIn={() => setIsCheckInDrawerOpen(true)}
             />
           ) : activeTab === 'activities' ? (
-            <ChallengeActivitiesTab challengeId={id} />
+            <ChallengeActivities challengeId={id} />
           ) : activeTab === 'chat' ? (
             <ChallengeChatTab challengeId={id} />
           ) : (
