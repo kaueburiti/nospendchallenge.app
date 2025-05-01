@@ -34,30 +34,31 @@ export default function DaysGrid() {
 
   return (
     <Box className="mx-auto flex w-[336px] flex-row flex-wrap justify-start gap-2">
-      {days.map((day, index) => (
-        <Day
-          key={day}
-          dayPosition={index}
-          isChecked={checks?.some(check => check.date === day) ?? false}
-        />
-      ))}
+      {days.map((day, index) => {
+        const status = checks?.find(check => check.date === day)?.status;
+        return (
+          <Day key={day} dayPosition={index} status={status ?? 'pending'} />
+        );
+      })}
     </Box>
   );
 }
 
 const Day = ({
-  isChecked,
+  status,
   dayPosition,
 }: {
   dayPosition: number;
-  isChecked: boolean;
+  status: string;
 }) => {
   return (
     <Box
       className={classNames(
         'h-12 w-12 items-center justify-center rounded-md bg-gray-300',
         {
-          'bg-success-500': isChecked,
+          'bg-success-500': status === 'success',
+          'bg-error-400': status === 'failure',
+          'bg-gray-300': status === 'pending',
         },
       )}>
       <Text className="text-md font-bold text-white">{dayPosition + 1}</Text>
