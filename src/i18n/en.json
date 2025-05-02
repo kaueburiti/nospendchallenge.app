@@ -175,7 +175,7 @@
       "status": {
         "label": "How did you do today?",
         "placeholder": "Select your status",
-        "success": "Held Impulse Control",
+        "success": "Held Impulse",
         "failure": "Gave in to Impulse"
       },
       "saved_amount": {
@@ -203,8 +203,8 @@
         }
       },
       "message": {
-        "label": "Thoughts",
-        "placeholder": "Share your thoughts about today..."
+        "label": "Notes",
+        "placeholder": "Share your notes about today..."
       },
       "save_button": "Save",
       "saving_button": "Saving...",
