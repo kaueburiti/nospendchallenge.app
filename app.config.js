@@ -8,9 +8,7 @@ const IS_DEV_OR_PREVIEW = IS_DEV || IS_PREVIEW;
 const appName = IS_PROD
   ? config.general.appName
   : `${config.general.appName} (${process.env.APP_VARIANT})`;
-const bundleIdentifier = IS_PROD
-  ? config.general.iosBundleIdentifier
-  : `${config.general.iosBundleIdentifier}.${process.env.APP_VARIANT}`;
+const bundleIdentifier = config.general.iosBundleIdentifier;
 const icon = IS_DEV_OR_PREVIEW
   ? './src/assets/images/icon-pb.png'
   : config.general.icon;
