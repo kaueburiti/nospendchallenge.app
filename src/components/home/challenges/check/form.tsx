@@ -30,7 +30,7 @@ export const CheckInForm = ({
     defaultValues: {
       message: '',
       amount: '',
-      status: 'success' as string,
+      status: '' as string,
     },
   });
   const [errorMessage, setErrorMessage] = useState('');
@@ -170,29 +170,29 @@ export const CheckInForm = ({
 
         <Box className="flex-col">
           <FormInputLabel label={t('checks.form.status.label') || 'Status'} />
-          <HStack space="md" className="items-center">
+          <HStack space="md">
             <Button
               variant={status === 'success' ? 'solid' : 'outline'}
               className={
-                status === 'success' ? 'flex-1 bg-success-500' : 'flex-1'
+                status === 'success' ? 'flex-1 bg-green-600' : 'flex-1'
               }
               onPress={() => handleStatusChange('success')}>
-              <ButtonText className="text-center">
-                {t('checks.form.status.success')}
+              <ButtonText>
+                {t('checks.form.status.success') || 'Held Impulse Control'}
               </ButtonText>
             </Button>
             <Button
               variant={status === 'failure' ? 'solid' : 'outline'}
-              className={
-                status === 'failure' ? 'flex-1 bg-error-400' : 'flex-1'
-              }
+              className={status === 'failure' ? 'flex-1 bg-red-600' : 'flex-1'}
               onPress={() => handleStatusChange('failure')}>
-              <ButtonText>{t('checks.form.status.failure')}</ButtonText>
+              <ButtonText>
+                {t('checks.form.status.failure') || 'Gave in to Impulse'}
+              </ButtonText>
             </Button>
           </HStack>
         </Box>
 
-        {/* {status && (
+        {status && (
           <>
             {status === 'success' && (
               <Box className="flex-col">
@@ -219,18 +219,18 @@ export const CheckInForm = ({
                 />
               </>
             )}
-          </>
-        )} */}
 
-        <FormInput
-          control={control}
-          name="message"
-          placeholder={
-            t('checks.form.message.placeholder') ||
-            'Share your thoughts about today...'
-          }
-          label={t('checks.form.message.label') || 'Thoughts'}
-        />
+            <FormInput
+              control={control}
+              name="message"
+              placeholder={
+                t('checks.form.message.placeholder') ||
+                'Share your thoughts about today...'
+              }
+              label={t('checks.form.message.label') || 'Thoughts'}
+            />
+          </>
+        )}
       </VStack>
       <Box className="mt-4 flex-row justify-between gap-6">
         <Button
