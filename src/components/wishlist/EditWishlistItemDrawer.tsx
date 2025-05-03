@@ -156,7 +156,7 @@ export const EditWishlistItemDrawer = ({ isOpen, onClose, itemId }: Props) => {
         isOpen={isOpen}
         onClose={onClose}
         title={itemId ? t('wishlists.edit_item') : t('wishlists.add_item')}>
-        <VStack space="4xl" className="mb-20 w-full flex-1 p-4">
+        <VStack space="xs" className="mb-2 w-full p-4">
           <VStack space="md">
             <FormControl isInvalid={!!errors.name}>
               <FormInputLabel label={t('wishlists.form.item_name.label')} />
@@ -230,7 +230,7 @@ export const EditWishlistItemDrawer = ({ isOpen, onClose, itemId }: Props) => {
           </VStack>
         </VStack>
 
-        <HStack space="md" className="mt-auto justify-end">
+        <HStack space="md" className="justify-end">
           <Button variant="outline" onPress={onClose}>
             <ButtonText>{t('wishlists.form.cancel_button')}</ButtonText>
           </Button>

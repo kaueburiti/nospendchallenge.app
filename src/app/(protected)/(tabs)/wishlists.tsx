@@ -14,7 +14,11 @@ import { Section } from '@/components/Section';
 import { Plus } from 'lucide-react-native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useGetWishlistItems } from '@/hooks/wishlists';
-import { ActivityIndicator } from 'react-native';
+import {
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import WishlistItemCard from '@/components/wishlists/item-card';
 import EmptyWishlists from '@/components/wishlists/empty-state';
 import { EditWishlistItemDrawer } from '@/components/wishlist/EditWishlistItemDrawer';
