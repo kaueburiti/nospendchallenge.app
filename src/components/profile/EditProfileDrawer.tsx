@@ -105,12 +105,12 @@ export const EditProfileDrawer = ({
   const avatar = newImageData?.uri ?? profile?.avatar_url ?? '';
 
   return (
-    <KeyboardAvoidingView behavior="padding" className="flex-1">
-      <BottomDrawer
-        isOpen={isOpen}
-        onClose={onClose}
-        title={t('profile.edit_profile.title')}>
-        <VStack space="4xl" className="mb-20 w-full flex-1 p-4">
+    <BottomDrawer
+      isOpen={isOpen}
+      onClose={onClose}
+      title={t('profile.edit_profile.title')}>
+      <KeyboardAvoidingView behavior="padding" className="flex-1">
+        <VStack space="4xl" className="mb-2 w-full p-4">
           <PhotoUpload
             onImageUpload={imageData => setNewImageData(imageData)}
             fallbackText={`${profile?.first_name} ${profile?.last_name}`}
@@ -150,7 +150,7 @@ export const EditProfileDrawer = ({
           </VStack>
         </VStack>
 
-        <HStack space="md" className="mt-auto justify-end">
+        <HStack space="md" className="justify-end">
           <Button variant="outline" onPress={onClose}>
             <ButtonText>{t('profile.form.cancel_button')}</ButtonText>
           </Button>
@@ -162,7 +162,7 @@ export const EditProfileDrawer = ({
             </ButtonText>
           </Button>
         </HStack>
-      </BottomDrawer>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </BottomDrawer>
   );
 };

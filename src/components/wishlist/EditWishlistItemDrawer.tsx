@@ -5,7 +5,6 @@ import { HStack } from '../ui/hstack';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { BottomDrawer } from '../BottomDrawer';
-import { Box } from '../ui/box';
 import { useSimpleToast } from '@/hooks/useSimpleToast';
 import { useTranslation } from '@/hooks/useTranslation';
 import { KeyboardAvoidingView } from '../ui/keyboard-avoiding-view';
