@@ -37,6 +37,7 @@ const Explorepage = () => {
           <VStack space="4xl">
             <Greeting />
 
+            <ExploreTopSection />
             <Box className="flex flex-1 flex-col overflow-auto">
               <Box className="mb-4 flex flex-row items-center justify-between">
                 <Heading size="xl">{t('home.top_section_title')}</Heading>
