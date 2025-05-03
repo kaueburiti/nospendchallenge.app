@@ -19,18 +19,15 @@ export const challengeSchema = z.object({
   startDate: z.date(),
   endDate: z.date(),
   cover: z.string().optional(),
-  savingsGoal: z
-    .string()
-    .nullable()
-    .optional()
-    .transform(currencyStringToNumber)
-    .pipe(
-      z
-        .number()
-        .positive(i18n.t('challenge.form.savings_goal.error'))
-        .nullable()
-        .optional(),
-    ),
+  savingsGoal: z.string().nullable().optional(),
+  // .transform(currencyStringToNumber)
+  // .pipe(
+  //   z
+  //     .number()
+  //     .positive(i18n.t('challenge.form.savings_goal.error'))
+  //     .nullable()
+  //     .optional(),
+  // ),
 });
 
 export type ChallengeSchemaType = z.infer<typeof challengeSchema>;

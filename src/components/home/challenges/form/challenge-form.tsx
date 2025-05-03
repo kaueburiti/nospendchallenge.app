@@ -72,7 +72,7 @@ export function ChallengeForm({
       startDate: new Date(),
       endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       cover: process.env.EXPO_PUBLIC_CHALLENGE_COVER_URL!,
-      savingsGoal: null,
+      savingsGoal: undefined,
     },
   });
 
@@ -107,6 +107,7 @@ export function ChallengeForm({
 
   const disableSubmitButton = isSubmitting || isSubmitSuccessful;
 
+  console.log(errors);
   return (
     <KeyboardAvoidingView behavior="padding" className="flex-1">
       <ScrollView className="h-[1px] flex-1">
@@ -145,13 +146,13 @@ export function ChallengeForm({
                 errorMessage={errors?.description?.message}
               />
 
-              <FormInput
+              {/* <FormInput
                 label={t('challenge.form.savings_goal.label')}
                 name="savingsGoal"
                 control={control}
                 placeholder={t('challenge.form.savings_goal.placeholder')}
                 errorMessage={errors?.savingsGoal?.message}
-              />
+              /> */}
             </VStack>
           </HStack>
 
