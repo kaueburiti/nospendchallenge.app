@@ -155,7 +155,7 @@ export default function ChallengeDetails() {
           <Box className="flex flex-row border-b border-gray-200">
             <Pressable
               onPress={() => setActiveTab('details')}
-              className={`w-1/3 items-center px-4 pb-2 ${
+              className={`w-1/4 items-center px-4 pb-2 ${
                 activeTab === 'details' ? 'border-primary border-b-2' : ''
               }`}>
               <CheckCheck size={24} color="rgb(82,82,82)" />
@@ -163,14 +163,21 @@ export default function ChallengeDetails() {
 
             <Pressable
               onPress={() => setActiveTab('chat')}
-              className={`w-1/3 items-center px-4 pb-2 ${
+              className={`w-1/4 items-center px-4 pb-2 ${
                 activeTab === 'chat' ? 'border-primary border-b-2' : ''
               }`}>
               <MessageCircle size={24} color="rgb(82,82,82)" />
             </Pressable>
             <Pressable
+              onPress={() => setActiveTab('money-tracker')}
+              className={`w-1/4 items-center px-4 pb-2 ${
+                activeTab === 'money-tracker' ? 'border-primary border-b-2' : ''
+              }`}>
+              <DollarSign size={24} color="rgb(82,82,82)" />
+            </Pressable>
+            <Pressable
               onPress={() => setActiveTab('participants')}
-              className={`w-1/3 items-center px-4 pb-2 ${
+              className={`w-1/4 items-center px-4 pb-2 ${
                 activeTab === 'participants' ? 'border-primary border-b-2' : ''
               }`}>
               <Users size={24} color="rgb(82,82,82)" />
@@ -187,6 +194,8 @@ export default function ChallengeDetails() {
               isOwner={isOwner}
               onCheckIn={() => setIsCheckInDrawerOpen(true)}
             />
+          ) : activeTab === 'money-tracker' ? (
+            <MoneyTrackerTab challengeId={id} />
           ) : activeTab === 'chat' ? (
             <ChallengeChatTab challengeId={id} />
           ) : (
