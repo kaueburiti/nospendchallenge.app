@@ -18,7 +18,7 @@ module.exports = {
     owner: config.general.owner,
     name: appName,
     slug: config.general.slug,
-    version: '1.0.1',
+    version: '1.2.0',
     orientation: 'portrait',
     icon,
     scheme: config.general.scheme,
