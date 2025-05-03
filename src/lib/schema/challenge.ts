@@ -4,8 +4,8 @@ import { z } from 'zod';
 // Helper to convert currency string to number
 const currencyStringToNumber = (
   value: string | null | undefined,
-): number | boolean => {
-  if (!value) return false;
+): number | boolean | null => {
+  if (!value) return null;
   // Remove currency symbols and non-numeric characters except decimal point
   const numStr = value.replace(/[^0-9.]/g, '');
   const num = parseFloat(numStr);

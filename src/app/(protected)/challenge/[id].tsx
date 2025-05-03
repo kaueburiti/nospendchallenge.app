@@ -30,6 +30,11 @@ import { useIsChallengeOwner } from '@/hooks/challenges/index';
 import { useChallenge } from '@/hooks/challenges';
 import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
 import MoneyTrackerTab from '@/components/challenge/money-tracket-tab';
+import {
+  PaidFeaturesGatekeeper,
+  usePaidFeaturesGatekeeper,
+} from '@/gatekeepers/paid-features';
+import classNames from 'classnames';
 
 export default function ChallengeDetails() {
   const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
@@ -41,6 +46,7 @@ export default function ChallengeDetails() {
   const { data: challenge, isLoading } = useChallenge(id);
   const isOwner = useIsChallengeOwner(id);
   const { captureEvent } = useCaptureEvent();
+  const showPaidFeatures = usePaidFeaturesGatekeeper();
 
   // Track challenge opened event
   useEffect(() => {
@@ -155,31 +161,37 @@ export default function ChallengeDetails() {
           <Box className="flex flex-row border-b border-gray-200">
             <Pressable
               onPress={() => setActiveTab('details')}
-              className={`w-1/4 items-center px-4 pb-2 ${
-                activeTab === 'details' ? 'border-primary border-b-2' : ''
-              }`}>
+              className={classNames('w-1/4 items-center px-4 pb-2', {
+                'border-primary border-b-2': activeTab === 'details',
+                'w-1/3': !showPaidFeatures,
+              })}>
               <CheckCheck size={24} color="rgb(82,82,82)" />
             </Pressable>
 
             <Pressable
               onPress={() => setActiveTab('chat')}
-              className={`w-1/4 items-center px-4 pb-2 ${
-                activeTab === 'chat' ? 'border-primary border-b-2' : ''
-              }`}>
+              className={classNames('w-1/4 items-center px-4 pb-2', {
+                'border-primary border-b-2': activeTab === 'chat',
+                'w-1/3': !showPaidFeatures,
+              })}>
               <MessageCircle size={24} color="rgb(82,82,82)" />
             </Pressable>
-            <Pressable
-              onPress={() => setActiveTab('money-tracker')}
-              className={`w-1/4 items-center px-4 pb-2 ${
-                activeTab === 'money-tracker' ? 'border-primary border-b-2' : ''
-              }`}>
-              <DollarSign size={24} color="rgb(82,82,82)" />
-            </Pressable>
+            <PaidFeaturesGatekeeper>
+              <Pressable
+                onPress={() => setActiveTab('money-tracker')}
+                className={classNames('w-1/4 items-center px-4 pb-2', {
+                  'border-primary border-b-2': activeTab === 'money-tracker',
+                  'w-1/3': !showPaidFeatures,
+                })}>
+                <DollarSign size={24} color="rgb(82,82,82)" />
+              </Pressable>
+            </PaidFeaturesGatekeeper>
             <Pressable
               onPress={() => setActiveTab('participants')}
-              className={`w-1/4 items-center px-4 pb-2 ${
-                activeTab === 'participants' ? 'border-primary border-b-2' : ''
-              }`}>
+              className={classNames('w-1/4 items-center px-4 pb-2', {
+                'border-primary border-b-2': activeTab === 'participants',
+                'w-1/3': !showPaidFeatures,
+              })}>
               <Users size={24} color="rgb(82,82,82)" />
             </Pressable>
           </Box>

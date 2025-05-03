@@ -25,6 +25,10 @@ import useUploadImage from '@/hooks/storage';
 import { useSession } from '@/hooks/useSession';
 import { useTranslation } from '@/hooks/useTranslation';
 import { KeyboardAvoidingView } from '@/components/ui/keyboard-avoiding-view';
+import {
+  PaidFeaturesGatekeeper,
+  usePaidFeaturesGatekeeper,
+} from '@/gatekeepers/paid-features';
 interface ImageData {
   uri: string;
   base64: string;
@@ -58,6 +62,7 @@ export function ChallengeForm({
   onDelete,
   onSubmit,
 }: ChallengeFormProps) {
+  const showPaidFeatures = usePaidFeaturesGatekeeper();
   const {
     control,
     handleSubmit,
@@ -72,7 +77,6 @@ export function ChallengeForm({
       startDate: new Date(),
       endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
       cover: process.env.EXPO_PUBLIC_CHALLENGE_COVER_URL!,
-      savingsGoal: null,
     },
   });
 
@@ -101,7 +105,7 @@ export function ChallengeForm({
       startDate: data?.startDate,
       endDate: data?.endDate,
       cover: cover ?? undefined,
-      savingsGoal: data?.savingsGoal,
+      savingsGoal: showPaidFeatures ? data?.savingsGoal : undefined,
     });
   };
 
@@ -145,13 +149,15 @@ export function ChallengeForm({
                 errorMessage={errors?.description?.message}
               />
 
-              <FormInput
-                label={t('challenge.form.savings_goal.label')}
-                name="savingsGoal"
-                control={control}
-                placeholder={t('challenge.form.savings_goal.placeholder')}
-                errorMessage={errors?.savingsGoal?.message}
-              />
+              <PaidFeaturesGatekeeper>
+                <FormInput
+                  label={t('challenge.form.savings_goal.label')}
+                  name="savingsGoal"
+                  control={control}
+                  placeholder={t('challenge.form.savings_goal.placeholder')}
+                  errorMessage={errors?.savingsGoal?.message}
+                />
+              </PaidFeaturesGatekeeper>
             </VStack>
           </HStack>
 

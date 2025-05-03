@@ -8,6 +8,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { ProgressChart } from 'react-native-chart-kit';
 import { useChallengeStatistics } from '@/hooks/challenges/useChallengeStatistics';
 import { intervalToDuration } from 'date-fns';
+import { PaidFeaturesGatekeeper } from '@/gatekeepers/paid-features';
 
 interface ChallengeDetailsTabProps {
   challenge: Tables<'challenges'>;
@@ -37,61 +38,63 @@ const ChallengeDetailsTab = ({
   return (
     <ScrollView>
       <VStack space="lg" className="p-4 pt-0">
-        <Box className="flex flex-row items-center gap-2">
-          <Box>
-            <ProgressChart
-              data={{
-                data: [successRate, savingsProgress, daysProgress],
-              }}
-              width={200}
-              height={200}
-              strokeWidth={16}
-              radius={32}
-              chartConfig={{
-                backgroundColor: '#fbfbfb',
-                backgroundGradientFrom: '#fbfbfb',
-                backgroundGradientTo: '#fbfbfb',
-                decimalPlaces: 2,
-                color: (opacity = 1, index) => {
-                  if (index === 0) {
-                    return `rgba(116, 180, 253, ${opacity})`;
-                  } else if (index === 1) {
-                    return `rgba(129, 226, 161, ${opacity})`;
-                  } else if (index === 2) {
+        <PaidFeaturesGatekeeper>
+          <Box className="flex flex-row items-center gap-2">
+            <Box>
+              <ProgressChart
+                data={{
+                  data: [successRate, savingsProgress, daysProgress],
+                }}
+                width={200}
+                height={200}
+                strokeWidth={16}
+                radius={32}
+                chartConfig={{
+                  backgroundColor: '#fbfbfb',
+                  backgroundGradientFrom: '#fbfbfb',
+                  backgroundGradientTo: '#fbfbfb',
+                  decimalPlaces: 2,
+                  color: (opacity = 1, index) => {
+                    if (index === 0) {
+                      return `rgba(116, 180, 253, ${opacity})`;
+                    } else if (index === 1) {
+                      return `rgba(129, 226, 161, ${opacity})`;
+                    } else if (index === 2) {
+                      return `rgba(255, 121, 121, ${opacity})`;
+                    }
                     return `rgba(255, 121, 121, ${opacity})`;
-                  }
-                  return `rgba(255, 121, 121, ${opacity})`;
-                },
-                style: {
-                  borderRadius: 16,
-                  padding: 0,
-                },
-              }}
-              hideLegend={true}
-            />
+                  },
+                  style: {
+                    borderRadius: 16,
+                    padding: 0,
+                  },
+                }}
+                hideLegend={true}
+              />
+            </Box>
+            <VStack space="xl">
+              <Box>
+                <Heading size="xs">Challenge Progress</Heading>
+                <Text className="text-primary text-4xl font-bold text-primary-500">
+                  {daysPassed}/{totalDays} Days
+                </Text>
+              </Box>
+              <Box>
+                <Heading size="xs">Savings Progress</Heading>
+                <Text className="text-primary text-4xl font-bold text-success-500">
+                  ${savingsProgress * (challenge.savings_goal ?? 0)}
+                  /${challenge.savings_goal ?? 0}
+                </Text>
+              </Box>
+              <Box>
+                <Heading size="xs">Positive Checks</Heading>
+                <Text className="text-primary text-4xl font-bold text-info-500">
+                  {Math.round(successRate * 100)}%
+                </Text>
+              </Box>
+            </VStack>
           </Box>
-          <VStack space="xl">
-            <Box>
-              <Heading size="xs">Challenge Progress</Heading>
-              <Text className="text-primary text-4xl font-bold text-primary-500">
-                {daysPassed}/{totalDays} Days
-              </Text>
-            </Box>
-            <Box>
-              <Heading size="xs">Savings Progress</Heading>
-              <Text className="text-primary text-4xl font-bold text-success-500">
-                ${savingsProgress * (challenge.savings_goal ?? 0)}
-                /${challenge.savings_goal ?? 0}
-              </Text>
-            </Box>
-            <Box>
-              <Heading size="xs">Positive Checks</Heading>
-              <Text className="text-primary text-4xl font-bold text-info-500">
-                {Math.round(successRate * 100)}%
-              </Text>
-            </Box>
-          </VStack>
-        </Box>
+        </PaidFeaturesGatekeeper>
 
         <ChallengeScores />
 

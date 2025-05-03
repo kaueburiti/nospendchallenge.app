@@ -2,13 +2,15 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { HomeIcon, TrophyIcon, User, Bot, Gift } from 'lucide-react-native';
+import { HomeIcon, User, Bot, Gift } from 'lucide-react-native';
 import { useTheme } from '@/hooks/useTheme';
 import { useTranslation } from '@/hooks/useTranslation';
+import { usePaidFeaturesGatekeeper } from '@/gatekeepers/paid-features';
 
 export default function TabLayout() {
   const { isDark } = useTheme();
   const { t } = useTranslation();
+  const showPaidFeatures = usePaidFeaturesGatekeeper();
 
   return (
     <Tabs
@@ -37,6 +39,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="ai-assistant"
         options={{
+          href: showPaidFeatures ? '/ai-assistant' : null,
           title: t('ai_assistant.tab_label'),
           tabBarIcon: ({ color }) => <TabBarIcon icon={Bot} color={color} />,
         }}
