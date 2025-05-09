@@ -39,7 +39,6 @@ export default function TabLayout() {
       <Tabs.Screen
         name="ai-assistant"
         options={{
-          href: showPaidFeatures ? '/ai-assistant' : null,
           title: t('ai_assistant.tab_label'),
           tabBarIcon: ({ color }) => <TabBarIcon icon={Bot} color={color} />,
         }}

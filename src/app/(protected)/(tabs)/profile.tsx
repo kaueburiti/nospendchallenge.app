@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { VStack } from '@/components/ui';
 import { Heading } from '@/components/ui';
 import { Divider } from '@/components/ui';
@@ -9,13 +9,10 @@ import { ProfileCard } from '@/components/profile/ProfileCard';
 import DeleteAccountAlertDialog from '../../../components/profile/DeleteAccountAlertDialog';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { useSession } from '@/hooks/useSession';
-import { RevenueCatContext } from '@/provider/RevenueCatProvider';
-import Paywall from '../../../components/payment/paywall';
 import {
   ScrollView,
   GestureHandlerRootView,
 } from 'react-native-gesture-handler';
-import { PaymentPlan } from '@/components/profile/PaymentPlan';
 import { useTranslation } from '@/hooks/useTranslation';
 import { router } from 'expo-router';
 import { useSignOut } from '@/hooks/auth/useSignOut';
@@ -88,7 +85,6 @@ const ProfileSecurity: React.FC<ProfileSecurityProps> = ({
 
 const ProfilePage = () => {
   const { t } = useTranslation();
-  const [showPaywall, setShowPaywall] = useState(false);
   const { session } = useSession();
   const { signOut } = useSignOut();
 
@@ -96,53 +92,27 @@ const ProfilePage = () => {
 
   const onOpenDeleteAccountDialog = () => setShowDeleteAccountDialog(true);
 
-  const { customerInfo } = useContext(RevenueCatContext);
-  const activeEntitlements = customerInfo?.activeSubscriptions;
-
   return (
-    <>
-      {showPaywall ? (
-        <Paywall
-          onClose={() => setShowPaywall(false)}
-          onRestoreCompleted={() => setShowPaywall(false)}
-          onPurchaseError={() => setShowPaywall(false)}
-          onPurchaseCompleted={() => setShowPaywall(false)}
-          onPurchaseCancelled={() => setShowPaywall(false)}
-        />
-      ) : (
-        <SafeAreaView className="bg-background flex-1">
-          <GestureHandlerRootView>
-            <ScrollView className="flex flex-1">
-              <VStack className="flex-1 px-5 py-4" space="lg">
-                <ProfileCard user={session?.user ?? null} />
-                <Divider className="my-2" />
-                <ProfileSettings
-                  onOpenDeleteAccountDialog={onOpenDeleteAccountDialog}
-                />
-                {process.env.EXPO_PUBLIC_REVENUE_CAT_API_KEY_APPLE && (
-                  <>
-                    <Divider className="my-2" />
-                    <PaymentPlan
-                      onPress={() => setShowPaywall(true)}
-                      isPro={!!activeEntitlements?.length}
-                    />
-                  </>
-                )}
-                <ProfileSupport />
-                <Divider className="my-2" />
-                <SignOutButton onClick={() => signOut({})} />
-              </VStack>
-              <DeleteAccountAlertDialog
-                openDeleteAccountDialog={showDeleteAccountDialog}
-                onCloseDeleteAccountDialog={() =>
-                  setShowDeleteAccountDialog(false)
-                }
-              />
-            </ScrollView>
-          </GestureHandlerRootView>
-        </SafeAreaView>
-      )}
-    </>
+    <SafeAreaView className="bg-background flex-1">
+      <GestureHandlerRootView>
+        <ScrollView className="flex flex-1">
+          <VStack className="flex-1 px-5 py-4" space="lg">
+            <ProfileCard user={session?.user ?? null} />
+            <Divider className="my-2" />
+            <ProfileSettings
+              onOpenDeleteAccountDialog={onOpenDeleteAccountDialog}
+            />
+            <ProfileSupport />
+            <Divider className="my-2" />
+            <SignOutButton onClick={() => signOut({})} />
+          </VStack>
+          <DeleteAccountAlertDialog
+            openDeleteAccountDialog={showDeleteAccountDialog}
+            onCloseDeleteAccountDialog={() => setShowDeleteAccountDialog(false)}
+          />
+        </ScrollView>
+      </GestureHandlerRootView>
+    </SafeAreaView>
   );
 };
 

@@ -1,20 +1,38 @@
-import RevenueCatUI, { type FullScreenPaywallViewOptions } from "react-native-purchases-ui";
-import { VStack } from "../ui";
-import { type CustomerInfo, type PurchasesError, type PurchasesPackage, type PurchasesStoreTransaction } from "react-native-purchases";
-import { useSimpleToast } from "@/hooks/useSimpleToast";
+import RevenueCatUI, {
+  type FullScreenPaywallViewOptions,
+} from 'react-native-purchases-ui';
+import { VStack } from '../ui';
+import {
+  type CustomerInfo,
+  type PurchasesError,
+  type PurchasesPackage,
+  type PurchasesStoreTransaction,
+} from 'react-native-purchases';
+import { useSimpleToast } from '@/hooks/useSimpleToast';
 
 interface PaywallProps {
   onClose: () => void;
   options?: FullScreenPaywallViewOptions;
-  onPurchaseStarted?: ({ packageBeingPurchased }: { packageBeingPurchased: PurchasesPackage }) => void;
+  onPurchaseStarted?: ({
+    packageBeingPurchased,
+  }: {
+    packageBeingPurchased: PurchasesPackage;
+  }) => void;
   onPurchaseCompleted?: ({
     customerInfo,
-    storeTransaction
-  }: { customerInfo: CustomerInfo, storeTransaction: PurchasesStoreTransaction }) => void;
+    storeTransaction,
+  }: {
+    customerInfo: CustomerInfo;
+    storeTransaction: PurchasesStoreTransaction;
+  }) => void;
   onPurchaseError?: ({ error }: { error: PurchasesError }) => void;
   onPurchaseCancelled?: () => void;
   onRestoreStarted?: () => void;
-  onRestoreCompleted?: ({ customerInfo }: { customerInfo: CustomerInfo }) => void;
+  onRestoreCompleted?: ({
+    customerInfo,
+  }: {
+    customerInfo: CustomerInfo;
+  }) => void;
   onRestoreError?: ({ error }: { error: PurchasesError }) => void;
 }
 
@@ -22,11 +40,11 @@ const Paywall = ({ onClose, ...paywallProps }: PaywallProps) => {
   const { showToast } = useSimpleToast();
 
   const handlePurchaseError = () => {
-    showToast('error', 'Oops. Something went wrong!')
-  }
+    showToast('error', 'Oops. Something went wrong!');
+  };
 
   return (
-    <VStack className='flex-1'>
+    <VStack className="flex-1">
       <RevenueCatUI.Paywall
         onDismiss={onClose}
         onPurchaseCancelled={onClose}
@@ -40,7 +58,7 @@ const Paywall = ({ onClose, ...paywallProps }: PaywallProps) => {
         {...paywallProps}
       />
     </VStack>
-  )
-}
+  );
+};
 
 export default Paywall;
