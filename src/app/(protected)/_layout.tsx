@@ -7,7 +7,6 @@ export default function ProtectedLayout() {
         headerShown: false,
       }}>
       <Stack.Screen name="(tabs)" />
-      <Stack.Screen name="update-password" />
     </Stack>
   );
 }
