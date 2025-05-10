@@ -21,6 +21,7 @@ interface RevenueCatContextProps {
   identifyUser: (userId: string) => Promise<CustomerInfo>;
   logout: () => Promise<void>;
   initialized: boolean;
+  isProUser: boolean;
 }
 
 export const RevenueCatContext = createContext<Partial<RevenueCatContextProps>>(
@@ -109,6 +110,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
         identifyUser,
         logout,
         initialized,
+        isProUser: (customerInfo?.activeSubscriptions?.length ?? 0) > 0,
       }}>
       {children}
     </RevenueCatContext.Provider>

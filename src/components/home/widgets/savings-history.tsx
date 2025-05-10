@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Box, Heading, VStack, Text } from '@/components/ui';
 import { useGetAllChallengesSavingsHistory } from '@/hooks/checks';
 import { LineChart } from 'react-native-chart-kit';
@@ -6,12 +6,13 @@ import { HomeWidgetWrapper } from './wrapper';
 import { Skeleton } from '@/components/ui/skeleton';
 import { BadgeX, Frown } from 'lucide-react-native';
 import { useTranslation } from '@/hooks/useTranslation';
+import { RevenueCatContext } from '@/provider/RevenueCatProvider';
 
 export const HomeWidgetSavingsHistory = () => {
   const { t } = useTranslation();
 
   return (
-    <HomeWidgetWrapper>
+    <HomeWidgetWrapper isPro={true}>
       <VStack space="md">
         <Heading size="lg">{t('widgets.savings_history.title')}</Heading>
         <HomeWidgetSavingsHistoryChart />
@@ -23,6 +24,17 @@ export const HomeWidgetSavingsHistory = () => {
 const HomeWidgetSavingsHistoryChart = () => {
   const { data, isLoading, error } = useGetAllChallengesSavingsHistory();
   const { t } = useTranslation();
+  const { isProUser } = useContext(RevenueCatContext);
+
+  if (!isProUser) {
+    return (
+      <Box className="mx-auto flex max-w-48 items-center justify-center gap-2">
+        <Text className="text-center text-primary-500">
+          This feature is available in the Pro plan.
+        </Text>
+      </Box>
+    );
+  }
 
   if (isLoading) {
     return <Skeleton className="h-24 w-full rounded-lg" />;
