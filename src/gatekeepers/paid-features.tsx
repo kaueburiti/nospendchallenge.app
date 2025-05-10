@@ -2,6 +2,7 @@ import { useFeatureFlag } from 'posthog-react-native';
 import { type PropsWithChildren } from 'react';
 
 export const usePaidFeaturesGatekeeper = () => {
+  return true;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const showFlaggedFeature: boolean = useFeatureFlag('show-new-paid-features');
 
@@ -9,12 +10,11 @@ export const usePaidFeaturesGatekeeper = () => {
 };
 
 export const PaidFeaturesGatekeeper = ({ children }: PropsWithChildren) => {
+  return children;
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   const showFlaggedFeature = usePaidFeaturesGatekeeper();
 
   if (!showFlaggedFeature) {
     return null;
   }
-
-  return children;
 };

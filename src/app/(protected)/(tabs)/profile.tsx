@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { VStack } from '@/components/ui';
 import { Heading } from '@/components/ui';
 import { Divider } from '@/components/ui';
 import { Button, ButtonText } from '@/components/ui';
 import { MenuItem } from '@/components/MenuItem';
-import { LifeBuoyIcon, OctagonX, Lock } from 'lucide-react-native';
+import { LifeBuoyIcon, OctagonX } from 'lucide-react-native';
 import { ProfileCard } from '@/components/profile/ProfileCard';
 import DeleteAccountAlertDialog from '../../../components/profile/DeleteAccountAlertDialog';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
@@ -16,6 +16,8 @@ import {
 import { useTranslation } from '@/hooks/useTranslation';
 import { router } from 'expo-router';
 import { useSignOut } from '@/hooks/auth/useSignOut';
+import PaymentPlan from '@/components/profile/PaymentPlan';
+import { RevenueCatContext } from '@/provider/RevenueCatProvider';
 
 interface ProfileSettingsProps {
   onOpenDeleteAccountDialog: () => void;
@@ -64,30 +66,12 @@ const SignOutButton: React.FC<SignOutButtonProps> = ({ onClick }) => {
   );
 };
 
-interface ProfileSecurityProps {
-  onOpenChangePasswordDrawer: () => void;
-}
-
-const ProfileSecurity: React.FC<ProfileSecurityProps> = ({
-  onOpenChangePasswordDrawer,
-}) => {
-  const { t } = useTranslation();
-  return (
-    <VStack space="lg">
-      <MenuItem
-        icon={Lock}
-        onPress={onOpenChangePasswordDrawer}
-        text={t('profile.change_password')}
-      />
-    </VStack>
-  );
-};
-
 const ProfilePage = () => {
   const { t } = useTranslation();
   const { session } = useSession();
   const { signOut } = useSignOut();
-
+  const { customerInfo } = useContext(RevenueCatContext);
+  const isPro = !!customerInfo?.activeSubscriptions?.length;
   const [showDeleteAccountDialog, setShowDeleteAccountDialog] = useState(false);
 
   const onOpenDeleteAccountDialog = () => setShowDeleteAccountDialog(true);
@@ -98,7 +82,7 @@ const ProfilePage = () => {
         <ScrollView className="flex flex-1">
           <VStack className="flex-1 px-5 py-4" space="lg">
             <ProfileCard user={session?.user ?? null} />
-            <Divider className="my-2" />
+            {!isPro && <PaymentPlan onUpgrade={() => {}} isPro={isPro} />}
             <ProfileSettings
               onOpenDeleteAccountDialog={onOpenDeleteAccountDialog}
             />
