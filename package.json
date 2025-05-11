@@ -111,6 +111,7 @@
     "expo-web-browser": "~14.0.1",
     "i": "^0.3.7",
     "i18n-js": "^4.5.0",
+    "lottie-react-native": "^7.2.2",
     "lucide-react-native": "^0.460.0",
     "nativewind": "^4.1.23",
     "onesignal-expo-plugin": "^2.0.3",

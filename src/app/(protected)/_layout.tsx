@@ -6,6 +6,7 @@ export default function ProtectedLayout() {
       screenOptions={{
         headerShown: false,
       }}>
+      <Stack.Screen name="onboard" />
       <Stack.Screen name="(tabs)" />
     </Stack>
   );
