@@ -18,7 +18,7 @@ export const EnvIndicator = () => {
   }
 
   return (
-    <View className="absolute right-[20px] top-[50px] z-50 items-center justify-center rounded-full p-1">
+    <View className="absolute right-[20px] top-[20px] z-50 items-center justify-center rounded-full p-1">
       <Text className="text-2xl font-bold text-white">
         {content[variant as keyof typeof content]}
       </Text>

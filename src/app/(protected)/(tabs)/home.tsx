@@ -14,6 +14,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { HomeWidgetSavingsHistory } from '@/components/home/widgets/savings-history';
 import { TotalSavingsWidget } from '@/components/home/widgets/total-savings';
 import { CurrentStrikeWidget } from '@/components/home/widgets/current-strike';
+import { ProfileCard } from '@/components/profile/card';
 
 const ExploreTopSection = () => {
   return (
@@ -29,13 +30,17 @@ const ExploreTopSection = () => {
 
 const Explorepage = () => {
   const { t } = useTranslation();
+  const { session } = useSession();
 
   return (
     <SafeAreaView>
       <ScrollView className="h-[1px] flex-1">
-        <Section>
+        <Section className="pt-4">
           <VStack space="4xl">
-            <Greeting />
+            <HStack className="flex items-center justify-between">
+              <Greeting />
+              <ProfileCard user={session?.user ?? null} />
+            </HStack>
 
             <ExploreTopSection />
             <Box className="flex flex-1 flex-col overflow-auto">
@@ -49,7 +54,6 @@ const Explorepage = () => {
               <PendingInvitations />
               <ChallengeList limit={5} />
             </Box>
-            <RecentActivities />
           </VStack>
         </Section>
       </ScrollView>
@@ -69,7 +73,7 @@ function Greeting() {
 
   if (!fullName) {
     return (
-      <Box className="mt-8">
+      <Box>
         <Heading size="3xl">{greeting} 👋</Heading>
       </Box>
     );
@@ -78,7 +82,7 @@ function Greeting() {
   const firstName = fullName.split(' ')[0];
 
   return (
-    <Box className="mt-8">
+    <Box>
       <Heading size="xl">{greeting},</Heading>
       <Heading size="3xl">{firstName} 👋</Heading>
     </Box>
