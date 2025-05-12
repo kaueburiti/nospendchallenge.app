@@ -13,7 +13,10 @@ interface ProfileCardProps {
 
 export const ProfileCard: React.FC<ProfileCardProps> = () => {
   const { data: profile } = useProfile();
-  const hasToUpdateProfile = !!(profile?.display_name ?? profile?.avatar_url);
+
+  const hasToUpdateProfile = Boolean(
+    !profile?.display_name || !profile?.avatar_url,
+  );
 
   return (
     <HStack>
