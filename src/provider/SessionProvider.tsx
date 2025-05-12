@@ -1,11 +1,6 @@
 import { AppState } from 'react-native';
 import { type Session, type User } from '@supabase/supabase-js';
-import {
-  SplashScreen,
-  useRootNavigationState,
-  useRouter,
-  useSegments,
-} from 'expo-router';
+import { SplashScreen, useRouter, useSegments } from 'expo-router';
 import React, {
   createContext,
   type PropsWithChildren,
@@ -41,7 +36,6 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLayoutMounted, setIsLayoutMounted] = useState(false);
-  const rootNavigationState = useRootNavigationState();
 
   // Set layout mounted after initial render
   useEffect(() => {
@@ -63,6 +57,24 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
 
     return () => subscription.unsubscribe();
   }, []);
+
+  useEffect(() => {
+    if (!isLoading && isLayoutMounted) {
+      const inProtectedGroup = segments[0] === '(protected)';
+      const inPublicGroup = segments[0] === '(public)';
+      const isPrivacyPolicy = segments[0] === 'privacy-policy';
+
+      if (session && !inProtectedGroup && !isPrivacyPolicy) {
+        setTimeout(() => {
+          router.replace('/(protected)/(tabs)/home');
+        }, 1800);
+      } else if (!session && !inPublicGroup && !isPrivacyPolicy) {
+        setTimeout(() => {
+          router.replace('/(public)/welcome');
+        }, 1000);
+      }
+    }
+  }, [isLoading, session, segments, isLayoutMounted]);
 
   useEffect(() => {
     void supabase.auth.startAutoRefresh();
