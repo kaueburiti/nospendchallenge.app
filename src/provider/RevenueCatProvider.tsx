@@ -41,6 +41,7 @@ export const RevenueCatProvider = ({ children }: PropsWithChildren) => {
       }
       try {
         Purchases.configure({ apiKey: APIKeys.apple });
+        void Purchases.setLogLevel(Purchases.LOG_LEVEL.DEBUG);
         Purchases.addCustomerInfoUpdateListener(setCustomerInfo);
         await loadCurrentOffering();
       } catch (e) {

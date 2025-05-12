@@ -9,6 +9,8 @@ import {
   type PurchasesStoreTransaction,
 } from 'react-native-purchases';
 import { useSimpleToast } from '@/hooks/useSimpleToast';
+import { useContext } from 'react';
+import { RevenueCatContext } from '@/provider/RevenueCatProvider';
 
 interface PaywallProps {
   onClose: () => void;
@@ -38,10 +40,15 @@ interface PaywallProps {
 
 const Paywall = ({ onClose, ...paywallProps }: PaywallProps) => {
   const { showToast } = useSimpleToast();
+  const { initialized } = useContext(RevenueCatContext);
 
   const handlePurchaseError = () => {
     showToast('error', 'Oops. Something went wrong!');
   };
+
+  if (!initialized) {
+    return null;
+  }
 
   return (
     <VStack className="flex-1">

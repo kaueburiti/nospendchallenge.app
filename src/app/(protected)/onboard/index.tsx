@@ -40,7 +40,7 @@ export default function Onboard() {
         animated: true,
       });
     } else {
-      router.replace('/(protected)/home');
+      router.replace('/(protected)/paywall');
     }
   };
 

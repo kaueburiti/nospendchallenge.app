@@ -7,6 +7,7 @@ export default function ProtectedLayout() {
         headerShown: false,
       }}>
       <Stack.Screen name="onboard" />
+      <Stack.Screen name="paywall" />
       <Stack.Screen name="(tabs)" />
     </Stack>
   );

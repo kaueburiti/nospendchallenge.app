@@ -17,7 +17,6 @@ import {
   HStack,
 } from '@/components/ui';
 import { Bot, Send } from 'lucide-react-native';
-import Paywall from '@/components/payment/paywall';
 
 interface Message {
   id: string;
@@ -71,7 +70,6 @@ export default function AIAssistantScreen() {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const flatListRef = useRef<FlatList>(null);
-  const [showPaywall, setShowPaywall] = useState(true);
 
   const scrollToBottom = () => {
     if (flatListRef.current && messages.length > 0) {
@@ -157,72 +155,58 @@ export default function AIAssistantScreen() {
     </Box>
   );
 
-  if (showPaywall) {
-    return (
-      <Box className="h-full flex-1 bg-red-100">
-        <Paywall
-          onClose={() => setShowPaywall(false)}
-          onRestoreCompleted={() => setShowPaywall(false)}
-          onPurchaseError={() => setShowPaywall(false)}
-          onPurchaseCompleted={() => setShowPaywall(false)}
-          onPurchaseCancelled={() => setShowPaywall(false)}
-        />
-      </Box>
-    );
+  return (
+    <SafeAreaView className="flex-1">
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={{ flex: 1 }}>
+        <VStack style={{ flex: 1 }}>
+          <Box className="flex-row items-center bg-white p-4 dark:bg-black">
+            <Bot size={24} color={isDark ? 'white' : 'black'} />
+            <Text className="ml-2 text-xl font-bold text-black dark:text-white">
+              {t('ai_assistant.title')}
+            </Text>
+          </Box>
 
-    return (
-      <SafeAreaView className="flex-1">
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{ flex: 1 }}>
-          <VStack style={{ flex: 1 }}>
-            <Box className="flex-row items-center bg-white p-4 dark:bg-black">
-              <Bot size={24} color={isDark ? 'white' : 'black'} />
-              <Text className="ml-2 text-xl font-bold text-black dark:text-white">
-                {t('ai_assistant.title')}
-              </Text>
-            </Box>
+          <FlatList
+            ref={flatListRef}
+            data={messages}
+            renderItem={renderMessage}
+            keyExtractor={item => item.id}
+            contentContainerStyle={{ padding: 16 }}
+            inverted={false}
+            ListFooterComponent={isLoading ? <TypingIndicator /> : null}
+            onContentSizeChange={scrollToBottom}
+            onLayout={scrollToBottom}
+            style={{
+              flex: 1,
+              backgroundColor: isDark ? '#1F2937' : '#F3F4F6',
+            }}
+          />
 
-            <FlatList
-              ref={flatListRef}
-              data={messages}
-              renderItem={renderMessage}
-              keyExtractor={item => item.id}
-              contentContainerStyle={{ padding: 16 }}
-              inverted={false}
-              ListFooterComponent={isLoading ? <TypingIndicator /> : null}
-              onContentSizeChange={scrollToBottom}
-              onLayout={scrollToBottom}
-              style={{
-                flex: 1,
-                backgroundColor: isDark ? '#1F2937' : '#F3F4F6',
-              }}
-            />
-
-            <HStack className="border-t border-gray-200 bg-white p-2 dark:border-gray-700 dark:bg-black">
-              <Input
-                className="mr-2 flex-1"
-                variant="outline"
-                size="md"
-                isDisabled={isLoading}>
-                <InputField
-                  className="bg-gray-100 text-black dark:bg-gray-800 dark:text-white"
-                  value={inputMessage}
-                  onChangeText={setInputMessage}
-                  placeholder={t('ai_assistant.message_placeholder')}
-                  onSubmitEditing={sendMessage}
-                />
-              </Input>
-              <Button
-                onPress={sendMessage}
-                isDisabled={isLoading || !inputMessage.trim()}
-                className={isLoading ? 'opacity-50' : ''}>
-                <Send size={20} color="white" />
-              </Button>
-            </HStack>
-          </VStack>
-        </KeyboardAvoidingView>
-      </SafeAreaView>
-    );
-  }
+          <HStack className="border-t border-gray-200 bg-white p-2 dark:border-gray-700 dark:bg-black">
+            <Input
+              className="mr-2 flex-1"
+              variant="outline"
+              size="md"
+              isDisabled={isLoading}>
+              <InputField
+                className="bg-gray-100 text-black dark:bg-gray-800 dark:text-white"
+                value={inputMessage}
+                onChangeText={setInputMessage}
+                placeholder={t('ai_assistant.message_placeholder')}
+                onSubmitEditing={sendMessage}
+              />
+            </Input>
+            <Button
+              onPress={sendMessage}
+              isDisabled={isLoading || !inputMessage.trim()}
+              className={isLoading ? 'opacity-50' : ''}>
+              <Send size={20} color="white" />
+            </Button>
+          </HStack>
+        </VStack>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
+  );
 }
