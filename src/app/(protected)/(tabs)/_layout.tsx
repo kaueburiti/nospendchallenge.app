@@ -5,12 +5,10 @@ import { TabBarIcon } from '@/components/navigation/TabBarIcon';
 import { HomeIcon, User, Bot, Gift } from 'lucide-react-native';
 import { useTheme } from '@/hooks/useTheme';
 import { useTranslation } from '@/hooks/useTranslation';
-import { usePaidFeaturesGatekeeper } from '@/gatekeepers/paid-features';
 
 export default function TabLayout() {
   const { isDark } = useTheme();
   const { t } = useTranslation();
-  const showPaidFeatures = usePaidFeaturesGatekeeper();
 
   return (
     <Tabs

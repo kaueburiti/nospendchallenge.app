@@ -25,10 +25,6 @@ import useUploadImage from '@/hooks/storage';
 import { useSession } from '@/hooks/useSession';
 import { useTranslation } from '@/hooks/useTranslation';
 import { KeyboardAvoidingView } from '@/components/ui/keyboard-avoiding-view';
-import {
-  PaidFeaturesGatekeeper,
-  usePaidFeaturesGatekeeper,
-} from '@/gatekeepers/paid-features';
 interface ImageData {
   uri: string;
   base64: string;
@@ -62,7 +58,6 @@ export function ChallengeForm({
   onDelete,
   onSubmit,
 }: ChallengeFormProps) {
-  const showPaidFeatures = usePaidFeaturesGatekeeper();
   const {
     control,
     handleSubmit,
@@ -105,7 +100,7 @@ export function ChallengeForm({
       startDate: data?.startDate,
       endDate: data?.endDate,
       cover: cover ?? undefined,
-      savingsGoal: showPaidFeatures ? data?.savingsGoal : undefined,
+      savingsGoal: data?.savingsGoal,
     });
   };
 
@@ -149,15 +144,13 @@ export function ChallengeForm({
                 errorMessage={errors?.description?.message}
               />
 
-              <PaidFeaturesGatekeeper>
-                <FormInput
-                  label={t('challenge.form.savings_goal.label')}
-                  name="savingsGoal"
-                  control={control}
-                  placeholder={t('challenge.form.savings_goal.placeholder')}
-                  errorMessage={errors?.savingsGoal?.message}
-                />
-              </PaidFeaturesGatekeeper>
+              <FormInput
+                label={t('challenge.form.savings_goal.label')}
+                name="savingsGoal"
+                control={control}
+                placeholder={t('challenge.form.savings_goal.placeholder')}
+                errorMessage={errors?.savingsGoal?.message}
+              />
             </VStack>
           </HStack>
 

@@ -14,19 +14,16 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { HomeWidgetSavingsHistory } from '@/components/home/widgets/savings-history';
 import { TotalSavingsWidget } from '@/components/home/widgets/total-savings';
 import { CurrentStrikeWidget } from '@/components/home/widgets/current-strike';
-import { PaidFeaturesGatekeeper } from '@/gatekeepers/paid-features';
 
 const ExploreTopSection = () => {
   return (
-    <PaidFeaturesGatekeeper>
-      <VStack space="md">
-        <HomeWidgetSavingsHistory />
-        <HStack space="md">
-          <CurrentStrikeWidget />
-          <TotalSavingsWidget />
-        </HStack>
-      </VStack>
-    </PaidFeaturesGatekeeper>
+    <VStack space="md">
+      <HomeWidgetSavingsHistory />
+      <HStack space="md">
+        <CurrentStrikeWidget />
+        <TotalSavingsWidget />
+      </HStack>
+    </VStack>
   );
 };
 
