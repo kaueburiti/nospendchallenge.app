@@ -1,19 +1,19 @@
 import React from 'react';
 import { Box } from '@/components/ui';
-import { useTranslation } from '@/hooks/useTranslation';
 import Paywall from '@/components/payment/paywall';
+import { useRouter } from 'expo-router';
 
 const PaywallPage = () => {
-  const { t } = useTranslation();
+  const router = useRouter();
 
   return (
     <Box className="h-full flex-1 bg-red-100">
       <Paywall
         onClose={() => {}}
         onRestoreCompleted={() => {}}
-        onPurchaseError={() => {}}
-        onPurchaseCompleted={() => {}}
-        onPurchaseCancelled={() => {}}
+        onPurchaseCompleted={() => {
+          router.replace('/(protected)/(tabs)/home');
+        }}
       />
     </Box>
   );
