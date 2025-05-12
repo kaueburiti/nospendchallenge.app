@@ -47,7 +47,7 @@ const Explorepage = () => {
               <Box className="mb-4 flex flex-row items-center justify-between">
                 <Heading size="xl">{t('home.top_section_title')}</Heading>
                 <Button
-                  onPress={() => router.push('/(protected)/create-challenge')}>
+                  onPress={() => router.push('/(protected)/challenges/create')}>
                   <PlusCircle size={24} color="white" />
                 </Button>
               </Box>

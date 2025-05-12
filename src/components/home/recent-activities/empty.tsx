@@ -10,7 +10,7 @@ const RecentActivitiesEmptyState = () => {
       title={t('home.no_activities')}
       description={t('home.no_activities_description')}
       ctaText={t('home.create_challenge')}
-      onCtaClick={() => router.push('/(protected)/create-challenge')}
+      onCtaClick={() => router.push('/(protected)/challenges/create')}
     />
   );
 };

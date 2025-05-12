@@ -57,7 +57,7 @@ const HorizontalSlider = ({ items: data }: HorizontalScrollerProps) => {
 
           <Pressable
             className="flex flex-1 flex-col gap-4"
-            onPress={() => router.push('/(protected)/create-challenge')}>
+            onPress={() => router.push('/(protected)/challenges/create')}>
             <Box className="relative">
               <Box className="h-40 w-64 rounded-md bg-slate-300" />
               <Box className="absolute left-1/2 top-1/2 flex h-24 w-24 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-slate-400/80">

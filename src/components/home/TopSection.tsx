@@ -15,7 +15,7 @@ const TopSection = ({
     <Box className="flex flex-1 flex-col overflow-auto">
       <Box className="mb-6 flex flex-row items-center justify-between">
         <Heading size="xl">{sectionTitle}</Heading>
-        <Button onPress={() => router.push('/(protected)/create-challenge')}>
+        <Button onPress={() => router.push('/(protected)/challenges/create')}>
           <PlusCircle size={24} color="white" />
         </Button>
       </Box>

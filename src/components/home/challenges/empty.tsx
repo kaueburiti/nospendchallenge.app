@@ -10,7 +10,7 @@ const ChallengesEmptyState = () => {
       title={t('home.no_challenges')}
       description={t('home.no_challenges_description')}
       ctaText={t('home.create_challenge')}
-      onCtaClick={() => router.push('/(protected)/create-challenge')}
+      onCtaClick={() => router.push('/(protected)/challenges/create')}
     />
   );
 };
