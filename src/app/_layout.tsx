@@ -15,9 +15,8 @@ import '../i18n';
 import { KeyboardProvider } from 'react-native-keyboard-controller';
 import { Spinner } from '@/components/ui/spinner';
 import { Box } from '@/components/ui';
-import { OneSignal, LogLevel } from 'react-native-onesignal';
+import { OneSignal } from 'react-native-onesignal';
 import * as Sentry from '@sentry/react-native';
-import { PostHogProvider } from 'posthog-react-native';
 import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
 import { EnvIndicator } from '@/components/env-indicator';
 
@@ -88,24 +87,18 @@ function RootLayout() {
   }
 
   return (
-    <PostHogProvider
-      apiKey={process.env.EXPO_PUBLIC_POSTHOG_API_KEY}
-      options={{
-        host: process.env.EXPO_PUBLIC_POSTHOG_HOST,
-      }}>
-      <SessionProvider>
-        <QueryClientProvider client={queryClient}>
-          <KeyboardProvider>
-            <RevenueCatProvider>
-              <ThemeProvider>
-                <Slot />
-                <EnvIndicator />
-              </ThemeProvider>
-            </RevenueCatProvider>
-          </KeyboardProvider>
-        </QueryClientProvider>
-      </SessionProvider>
-    </PostHogProvider>
+    <SessionProvider>
+      <QueryClientProvider client={queryClient}>
+        <KeyboardProvider>
+          <RevenueCatProvider>
+            <ThemeProvider>
+              <Slot />
+              <EnvIndicator />
+            </ThemeProvider>
+          </RevenueCatProvider>
+        </KeyboardProvider>
+      </QueryClientProvider>
+    </SessionProvider>
   );
 }
 
