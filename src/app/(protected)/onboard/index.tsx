@@ -55,10 +55,6 @@ export default function Onboard() {
     }
   };
 
-  if (isProUser) {
-    router.replace('/(protected)/(tabs)/home');
-  }
-
   return (
     <SafeAreaView className="flex-1 bg-primary-500">
       <VStack className="flex-1 justify-center">

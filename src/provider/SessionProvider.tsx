@@ -1,6 +1,11 @@
 import { AppState } from 'react-native';
-import { type Session, type User } from '@supabase/supabase-js';
-import { SplashScreen, useRouter, useSegments } from 'expo-router';
+import { type Session } from '@supabase/supabase-js';
+import {
+  SplashScreen,
+  useRootNavigationState,
+  useRouter,
+  useSegments,
+} from 'expo-router';
 import React, {
   createContext,
   type PropsWithChildren,
@@ -35,12 +40,8 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
   const segments = useSegments();
   const [session, setSession] = useState<Session | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isLayoutMounted, setIsLayoutMounted] = useState(false);
-
-  // Set layout mounted after initial render
-  useEffect(() => {
-    setIsLayoutMounted(true);
-  }, []);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+  const rootNavigationState = useRootNavigationState() as { key: string };
 
   useEffect(() => {
     void supabase.auth.getSession().then(({ data: { session } }) => {
@@ -59,22 +60,18 @@ export const SessionProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   useEffect(() => {
-    if (!isLoading && isLayoutMounted) {
+    if (!isLoading && rootNavigationState.key) {
       const inProtectedGroup = segments[0] === '(protected)';
       const inPublicGroup = segments[0] === '(public)';
       const isPrivacyPolicy = segments[0] === 'privacy-policy';
 
       if (session && !inProtectedGroup && !isPrivacyPolicy) {
-        setTimeout(() => {
-          router.replace('/(protected)/(tabs)/home');
-        }, 1800);
+        router.replace('/(protected)/(tabs)/home');
       } else if (!session && !inPublicGroup && !isPrivacyPolicy) {
-        setTimeout(() => {
-          router.replace('/(public)/welcome');
-        }, 1000);
+        router.replace('/(public)/welcome');
       }
     }
-  }, [isLoading, session, segments, isLayoutMounted]);
+  }, [isLoading, session, segments, rootNavigationState.key]);
 
   useEffect(() => {
     void supabase.auth.startAutoRefresh();
