@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { ScrollView } from '@/components/ui/scroll-view';
-import { Box, Heading, HStack, VStack, Text } from '@/components/ui';
+import { Box, Heading, HStack, VStack } from '@/components/ui';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { useSession } from '@/hooks/useSession';
 import { Section } from '@/components/Section';
-import { PlusCircle, Trophy } from 'lucide-react-native';
-import { router } from 'expo-router';
+import { PlusCircle } from 'lucide-react-native';
+import { Redirect, router } from 'expo-router';
 import { Button } from '@/components/ui';
-import RecentActivities from '@/components/home/recent-activities';
 import ChallengeList from '@/components/home/challenges';
 import PendingInvitations from '@/components/home/challenges/invite/pending-invitations';
 import { useTranslation } from '@/hooks/useTranslation';
@@ -15,6 +14,7 @@ import { HomeWidgetSavingsHistory } from '@/components/home/widgets/savings-hist
 import { TotalSavingsWidget } from '@/components/home/widgets/total-savings';
 import { CurrentStrikeWidget } from '@/components/home/widgets/current-strike';
 import { ProfileCard } from '@/components/profile/card';
+import { RevenueCatContext } from '@/provider/RevenueCatProvider';
 
 const ExploreTopSection = () => {
   return (
@@ -31,6 +31,11 @@ const ExploreTopSection = () => {
 const Explorepage = () => {
   const { t } = useTranslation();
   const { session } = useSession();
+  const { isProUser } = useContext(RevenueCatContext);
+
+  if (!isProUser) {
+    return <Redirect href="/(protected)/onboard" />;
+  }
 
   return (
     <SafeAreaView>
