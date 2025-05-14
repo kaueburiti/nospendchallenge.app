@@ -9,6 +9,8 @@ import {
 } from '@/components/ui';
 import { Input, InputField, InputIcon, InputSlot } from '@/components/ui/input';
 import FormInputLabel from './label';
+import CurrencyInput from 'react-native-currency-input';
+import { TextInputProps } from 'react-native';
 
 interface FormInputProps {
   name: string;
@@ -18,6 +20,7 @@ interface FormInputProps {
   placeholder: string;
   errorMessage?: string;
   isPassword?: boolean;
+  isCurrency?: boolean;
   disabled?: boolean;
   onSubmitEditing?: () => void;
   autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters';
@@ -31,6 +34,7 @@ const FormInput: React.FC<FormInputProps> = ({
   errorMessage,
   disabled = false,
   isPassword = false,
+  isCurrency = false,
   autoCapitalize = 'none',
   onSubmitEditing,
 }) => {
@@ -47,6 +51,30 @@ const FormInput: React.FC<FormInputProps> = ({
         defaultValue=""
         disabled={disabled}
         render={({ field: { onChange, onBlur, value } }) => {
+          if (isCurrency) {
+            return (
+              <Input size={'xl'} isDisabled={disabled}>
+                <CurrencyInput
+                  value={value}
+                  onChangeValue={onChange}
+                  onBlur={onBlur}
+                  renderTextInput={(textInputProps: TextInputProps) => (
+                    <InputField
+                      className="text-sm"
+                      placeholder={placeholder}
+                      autoCapitalize={autoCapitalize}
+                      {...textInputProps}
+                    />
+                  )}
+                  prefix="$"
+                  delimiter=","
+                  separator="."
+                  precision={2}
+                />
+              </Input>
+            );
+          }
+
           return (
             <Input size={'xl'} isDisabled={disabled}>
               <InputField

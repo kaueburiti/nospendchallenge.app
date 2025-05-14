@@ -5,7 +5,6 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useForm } from 'react-hook-form';
 import FormInput from '@/components/ui/form/input';
 import { FormInputLabel } from '@/components/ui/form/label';
-import { CurrencyInput } from '@/components/ui/form/currency-input';
 import { Trash } from 'lucide-react-native';
 
 export interface CheckItem {
@@ -21,7 +20,7 @@ interface ItemFormProps {
 
 interface ItemFormValues {
   title: string;
-  price: string; // Price as string for the form
+  price: number; // Price as string for the form
 }
 
 export const CheckItemForm = ({
@@ -33,7 +32,7 @@ export const CheckItemForm = ({
   const { control, handleSubmit, reset } = useForm<ItemFormValues>({
     defaultValues: {
       title: '',
-      price: '',
+      price: 0,
     },
   });
   const [error, setError] = useState('');
@@ -48,9 +47,7 @@ export const CheckItemForm = ({
     }
 
     // Convert price from string to number
-    const priceValue = data.price
-      ? parseFloat(data.price.replace(/[^0-9.]/g, ''))
-      : 0;
+    const priceValue = data.price;
 
     if (priceValue <= 0) {
       setError(
@@ -89,11 +86,12 @@ export const CheckItemForm = ({
         </Box>
 
         <Box className="w-1/3">
-          <FormInputLabel label={t('checks.form.item.price') || 'Price'} />
-          <CurrencyInput
-            control={control}
+          <FormInput
+            isCurrency
+            label={t('checks.form.item.price')}
             name="price"
-            placeholder={t('checks.form.item.price_placeholder') || 'Price'}
+            control={control}
+            placeholder={t('checks.form.item.price_placeholder')}
           />
         </Box>
 

@@ -148,6 +148,7 @@ export function ChallengeForm({
               />
 
               <FormInput
+                isCurrency
                 label={t('challenge.form.savings_goal.label')}
                 name="savingsGoal"
                 control={control}

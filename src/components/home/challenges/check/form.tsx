@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Box, Button, ButtonText, VStack, HStack } from '@/components/ui';
-import { format } from 'date-fns';
 import { useCreateCheck } from '@/hooks/checks';
 import FormInput from '@/components/ui/form/input';
 import { useForm } from 'react-hook-form';
@@ -9,10 +8,8 @@ import { FormInputLabel } from '@/components/ui/form/label';
 import { Text } from '@/components/ui/text';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
-import { useSession } from '@/hooks/useSession';
-import { CurrencyInput } from '@/components/ui/form/currency-input';
-import { CheckStatus } from '@/lib/db/repository/check';
-import { CheckItemForm, CheckItem } from './item-form';
+import { type CheckStatus } from '@/lib/db/repository/check';
+import { CheckItemForm, type CheckItem } from './item-form';
 
 type CheckInFormProps = {
   challengeId: string;
@@ -196,16 +193,12 @@ export const CheckInForm = ({
           <>
             {status === 'success' && (
               <Box className="flex-col">
-                <FormInputLabel
-                  label={t('checks.form.saved_amount.label') || 'Saved Amount'}
-                />
-                <CurrencyInput
-                  control={control}
+                <FormInput
+                  isCurrency
+                  label={t('checks.form.saved_amount.label')}
                   name="amount"
-                  placeholder={
-                    t('checks.form.saved_amount.placeholder') ||
-                    'How much did you save?'
-                  }
+                  control={control}
+                  placeholder={t('checks.form.saved_amount.placeholder')}
                 />
               </Box>
             )}
