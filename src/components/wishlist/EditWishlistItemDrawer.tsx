@@ -7,7 +7,6 @@ import { useForm } from 'react-hook-form';
 import { BottomDrawer } from '../BottomDrawer';
 import { useSimpleToast } from '@/hooks/useSimpleToast';
 import { useTranslation } from '@/hooks/useTranslation';
-import { KeyboardAvoidingView } from '../ui/keyboard-avoiding-view';
 import { Input, InputField } from '@/components/ui/input';
 import { Textarea, TextareaInput } from '@/components/ui/textarea';
 import {
@@ -184,105 +183,101 @@ export const EditWishlistItemDrawer = ({ isOpen, onClose, itemId }: Props) => {
   };
 
   return (
-    <KeyboardAvoidingView behavior="padding" className="flex-1">
-      <BottomDrawer
-        isOpen={isOpen}
-        onClose={onClose}
-        title={itemId ? t('wishlists.edit_item') : t('wishlists.add_item')}>
-        <VStack space="xs" className="mb-2 w-full p-4">
-          <VStack space="md">
-            <PhotoUpload
-              onImageUpload={setImageData}
-              uri={
-                imageData?.uri ?? process.env.EXPO_PUBLIC_CHALLENGE_COVER_URL!
-              }
+    <BottomDrawer
+      isOpen={isOpen}
+      onClose={onClose}
+      title={itemId ? t('wishlists.edit_item') : t('wishlists.add_item')}>
+      <VStack space="xs" className="mb-2 w-full p-4">
+        <VStack space="md">
+          <PhotoUpload
+            onImageUpload={setImageData}
+            uri={imageData?.uri ?? process.env.EXPO_PUBLIC_CHALLENGE_COVER_URL!}
+          />
+
+          <FormControl isInvalid={!!errors.name}>
+            <FormInputLabel label={t('wishlists.form.item_name.label')} />
+            <Controller
+              control={control}
+              name="name"
+              render={({ field: { onChange, value } }) => (
+                <Input>
+                  <InputField
+                    value={value}
+                    onChangeText={onChange}
+                    placeholder={t('wishlists.form.item_name.placeholder')}
+                  />
+                </Input>
+              )}
             />
+            {errors.name && (
+              <FormControlError>
+                <FormControlErrorText>
+                  {t('wishlists.form.item_name.error')}
+                </FormControlErrorText>
+              </FormControlError>
+            )}
+          </FormControl>
 
-            <FormControl isInvalid={!!errors.name}>
-              <FormInputLabel label={t('wishlists.form.item_name.label')} />
-              <Controller
-                control={control}
-                name="name"
-                render={({ field: { onChange, value } }) => (
-                  <Input>
-                    <InputField
-                      value={value}
-                      onChangeText={onChange}
-                      placeholder={t('wishlists.form.item_name.placeholder')}
-                    />
-                  </Input>
-                )}
-              />
-              {errors.name && (
-                <FormControlError>
-                  <FormControlErrorText>
-                    {t('wishlists.form.item_name.error')}
-                  </FormControlErrorText>
-                </FormControlError>
+          <FormControl>
+            <FormInputLabel
+              label={t('wishlists.form.item_description.label')}
+            />
+            <Controller
+              control={control}
+              name="description"
+              render={({ field: { onChange, value } }) => (
+                <Textarea>
+                  <TextareaInput
+                    value={value}
+                    onChangeText={onChange}
+                    placeholder={t(
+                      'wishlists.form.item_description.placeholder',
+                    )}
+                  />
+                </Textarea>
               )}
-            </FormControl>
+            />
+          </FormControl>
 
-            <FormControl>
-              <FormInputLabel
-                label={t('wishlists.form.item_description.label')}
-              />
-              <Controller
-                control={control}
-                name="description"
-                render={({ field: { onChange, value } }) => (
-                  <Textarea>
-                    <TextareaInput
-                      value={value}
-                      onChangeText={onChange}
-                      placeholder={t(
-                        'wishlists.form.item_description.placeholder',
-                      )}
-                    />
-                  </Textarea>
-                )}
-              />
-            </FormControl>
-
-            <FormControl isInvalid={!!errors.cost}>
-              <FormInputLabel label={t('wishlists.form.item_cost.label')} />
-              <Controller
-                control={control}
-                name="cost"
-                render={({ field: { onChange, value } }) => (
-                  <Input>
-                    <InputField
-                      value={value}
-                      onChangeText={onChange}
-                      keyboardType="numeric"
-                      placeholder={t('wishlists.form.item_cost.placeholder')}
-                    />
-                  </Input>
-                )}
-              />
-              {errors.cost && (
-                <FormControlError>
-                  <FormControlErrorText>
-                    {t('wishlists.form.item_cost.error')}
-                  </FormControlErrorText>
-                </FormControlError>
+          <FormControl isInvalid={!!errors.cost}>
+            <FormInputLabel label={t('wishlists.form.item_cost.label')} />
+            <Controller
+              control={control}
+              name="cost"
+              render={({ field: { onChange, value } }) => (
+                <Input>
+                  <InputField
+                    value={value}
+                    onChangeText={onChange}
+                    keyboardType="numeric"
+                    placeholder={t('wishlists.form.item_cost.placeholder')}
+                  />
+                </Input>
               )}
-            </FormControl>
-          </VStack>
+            />
+            {errors.cost && (
+              <FormControlError>
+                <FormControlErrorText>
+                  {t('wishlists.form.item_cost.error')}
+                </FormControlErrorText>
+              </FormControlError>
+            )}
+          </FormControl>
         </VStack>
+      </VStack>
 
-        <HStack space="md" className="justify-end">
-          <Button variant="outline" onPress={onClose}>
-            <ButtonText>{t('wishlists.form.cancel_button')}</ButtonText>
-          </Button>
-          <Button onPress={handleSubmit(onSubmit)} isDisabled={isLoading}>
-            <ButtonText>
-              {isLoading
-                ? t('wishlists.form.saving_button')
-                : t('wishlists.form.save_button')}
-            </ButtonText>
-          </Button>
-        </HStack>
-      </BottomDrawer>
-    </KeyboardAvoidingView>
+      <HStack space="md" className="mb-4 mt-4 justify-end">
+        <Button variant="outline" onPress={onClose}>
+          <ButtonText>{t('wishlists.form.cancel_button')}</ButtonText>
+        </Button>
+        <Button onPress={handleSubmit(onSubmit)} isDisabled={isLoading}>
+          <ButtonText>
+            {isLoading
+              ? t('wishlists.form.saving_button')
+              : t('wishlists.form.save_button')}
+          </ButtonText>
+        </Button>
+      </HStack>
+    </BottomDrawer>
   );
 };
