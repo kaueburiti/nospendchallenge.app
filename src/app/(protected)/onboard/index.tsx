@@ -1,4 +1,4 @@
-import { useContext, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { SafeAreaView } from 'react-native';
 import { router } from 'expo-router';
 import { Box, Button, ButtonText, HStack, VStack } from '@/components/ui';
@@ -7,7 +7,6 @@ import OnboardScreen from '@/components/onboard/screen';
 import buying from '@/assets/animations/buying.json';
 import progress from '@/assets/animations/progress.json';
 import highFive from '@/assets/animations/high-five.json';
-import { RevenueCatContext } from '@/provider/RevenueCatProvider';
 
 const screens = [
   {
@@ -30,10 +29,8 @@ const screens = [
 ];
 
 export default function Onboard() {
-  const { t } = useTranslation();
   const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = useRef(null);
-  const { isProUser } = useContext(RevenueCatContext);
 
   const handleNext = () => {
     if (currentIndex < screens.length - 1) {
