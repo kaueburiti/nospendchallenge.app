@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, ButtonText } from '../ui/button';
 import { VStack } from '../ui/vstack';
 import { HStack } from '../ui/hstack';
@@ -24,6 +24,8 @@ import {
   useUpdateWishlistItem,
 } from '@/hooks/wishlists';
 import { supabase } from '@/lib/supabase';
+import PhotoUpload from '../ui/photo-upload';
+import useUploadImage from '@/hooks/storage';
 
 // Form schema for wishlist item
 const wishlistItemSchema = z.object({
@@ -32,7 +34,14 @@ const wishlistItemSchema = z.object({
   cost: z.string().refine(val => !isNaN(Number(val)), {
     message: 'Cost must be a valid number',
   }),
+  photo: z.string().optional(),
 });
+
+interface ImageData {
+  uri: string;
+  base64: string;
+  fileExtension: string;
+}
 
 type WishlistItemFormValues = z.infer<typeof wishlistItemSchema>;
 
@@ -44,6 +53,7 @@ interface Props {
 
 export const EditWishlistItemDrawer = ({ isOpen, onClose, itemId }: Props) => {
   const { t } = useTranslation();
+  const [imageData, setImageData] = useState<ImageData | null>(null);
   const { data: item, isLoading: isItemLoading } = useGetWishlistItem(
     itemId ?? 0,
     {
@@ -53,6 +63,7 @@ export const EditWishlistItemDrawer = ({ isOpen, onClose, itemId }: Props) => {
   const { mutate: createItem, isPending: isCreating } = useCreateWishlistItem();
   const { mutate: updateItem, isPending: isUpdating } = useUpdateWishlistItem();
   const { showToast } = useSimpleToast();
+  const { upload } = useUploadImage();
 
   const {
     control,
@@ -74,7 +85,16 @@ export const EditWishlistItemDrawer = ({ isOpen, onClose, itemId }: Props) => {
         name: item.name,
         description: item.description ?? '',
         cost: item.cost.toString(),
+        photo: item.photo ?? '',
       });
+
+      if (item.photo) {
+        setImageData({
+          uri: item.photo,
+          base64: '',
+          fileExtension: 'png',
+        });
+      }
     } else {
       reset({
         name: '',
@@ -88,6 +108,19 @@ export const EditWishlistItemDrawer = ({ isOpen, onClose, itemId }: Props) => {
 
   const onSubmit = async (data: WishlistItemFormValues) => {
     try {
+      let photo = data.photo;
+
+      if (imageData) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        photo =
+          (await upload({
+            bucket: 'wishlists',
+            name: `${data.name}-photo-${itemId}.${imageData.fileExtension}`,
+            path: String(itemId),
+            image: imageData,
+          })) ?? undefined;
+      }
+
       if (itemId) {
         // Update existing item
         updateItem(
@@ -97,6 +130,7 @@ export const EditWishlistItemDrawer = ({ isOpen, onClose, itemId }: Props) => {
               name: data.name,
               description: data.description ?? null,
               cost: Number(data.cost),
+              photo: photo,
             },
           },
           {
@@ -125,7 +159,7 @@ export const EditWishlistItemDrawer = ({ isOpen, onClose, itemId }: Props) => {
             description: data.description ?? null,
             cost: Number(data.cost),
             user_id: userData.user.id,
-            photo: null,
+            photo: photo ?? null,
           },
           {
             onSuccess: () => {
@@ -157,6 +191,13 @@ export const EditWishlistItemDrawer = ({ isOpen, onClose, itemId }: Props) => {
         title={itemId ? t('wishlists.edit_item') : t('wishlists.add_item')}>
         <VStack space="xs" className="mb-2 w-full p-4">
           <VStack space="md">
+            <PhotoUpload
+              onImageUpload={setImageData}
+              uri={
+                imageData?.uri ?? process.env.EXPO_PUBLIC_CHALLENGE_COVER_URL!
+              }
+            />
+
             <FormControl isInvalid={!!errors.name}>
               <FormInputLabel label={t('wishlists.form.item_name.label')} />
               <Controller

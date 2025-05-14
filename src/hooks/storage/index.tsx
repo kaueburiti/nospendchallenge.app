@@ -7,7 +7,7 @@ interface ImageData {
   fileExtension: string;
 }
 
-export type UploadImageBuckets = 'challenges' | 'profiles';
+export type UploadImageBuckets = 'challenges' | 'profiles' | 'wishlists';
 type uploadProps = {
   bucket: UploadImageBuckets;
   name: string;
