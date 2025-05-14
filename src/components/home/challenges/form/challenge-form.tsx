@@ -71,7 +71,6 @@ export function ChallengeForm({
       description: '',
       startDate: new Date(),
       endDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-      cover: process.env.EXPO_PUBLIC_CHALLENGE_COVER_URL!,
     },
   });
 
@@ -79,7 +78,11 @@ export function ChallengeForm({
   const { upload } = useUploadImage();
   const { session } = useSession();
   const ownerId = session?.user?.id;
-  const [imageData, setImageData] = useState<ImageData | null>(null);
+  const [imageData, setImageData] = useState<ImageData | null>({
+    uri: defaultValues?.cover ?? process.env.EXPO_PUBLIC_CHALLENGE_COVER_URL!,
+    base64: '',
+    fileExtension: 'png',
+  });
 
   const handleSubmitTwo = async (data: ChallengeSchemaType) => {
     let cover = data.cover;
