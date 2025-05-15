@@ -15,7 +15,11 @@ interface EmptyListProps {
   title: string;
   description: string;
   buttonText: string;
-  animationSource: AnimationObject;
+  animation: {
+    source: AnimationObject;
+    height?: number;
+    width?: number;
+  };
 }
 
 export default function EmptyList({
@@ -23,14 +27,16 @@ export default function EmptyList({
   title,
   description,
   buttonText,
-  animationSource,
+  animation,
 }: EmptyListProps) {
   return (
-    <Box className="flex-1 items-center justify-center py-12">
+    <Box className="flex-1 items-center justify-center py-8">
       <VStack space="sm" className="items-center">
-        <LottieViewWrapper height={192} width={192}>
+        <LottieViewWrapper
+          height={animation.height ?? 192}
+          width={animation.width ?? 192}>
           <LottieView
-            source={animationSource}
+            source={animation.source}
             autoPlay
             style={{ width: 250, height: 250 }}
           />

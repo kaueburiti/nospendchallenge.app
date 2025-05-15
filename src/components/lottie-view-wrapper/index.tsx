@@ -12,7 +12,6 @@ export default function LottieViewWrapper({
   height,
   width,
 }: LottieViewWrapperProps) {
-  console.log(height, width);
   return (
     <Box
       className={`relative flex h-[${height}px] w-[${width}px] items-center justify-between`}>

@@ -16,7 +16,9 @@ export default function EmptyWishlists({ onClick }: EmptyWishlistsProps) {
       title={t('wishlists.no_items')}
       description={t('wishlists.no_items_description')}
       buttonText={t('wishlists.add_item')}
-      animationSource={wishlistAnimation}
+      animation={{
+        source: wishlistAnimation,
+      }}
     />
   );
 }
