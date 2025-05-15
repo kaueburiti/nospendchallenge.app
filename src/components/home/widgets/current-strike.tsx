@@ -12,7 +12,7 @@ export const CurrentStrikeWidget = () => {
   return (
     <HomeWidgetWrapper>
       <HStack space="md" className="items-center">
-        <Box className="rounded-full bg-primary-100 p-2">
+        <Box className="rounded-full bg-primary-500 p-2">
           <Trophy size={24} color="white" />
         </Box>
         <VStack space="xs">

@@ -4,22 +4,18 @@ import { Box, Heading, HStack, VStack } from '@/components/ui';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { useSession } from '@/hooks/useSession';
 import { Section } from '@/components/Section';
-import { PlusCircle } from 'lucide-react-native';
 import { Redirect, router } from 'expo-router';
-import { Button } from '@/components/ui';
 import ChallengeList from '@/components/home/challenges';
-import PendingInvitations from '@/components/home/challenges/invite/pending-invitations';
 import { useTranslation } from '@/hooks/useTranslation';
-import { HomeWidgetSavingsHistory } from '@/components/home/widgets/savings-history';
 import { TotalSavingsWidget } from '@/components/home/widgets/total-savings';
 import { CurrentStrikeWidget } from '@/components/home/widgets/current-strike';
 import { ProfileCard } from '@/components/profile/card';
 import { RevenueCatContext } from '@/provider/RevenueCatProvider';
+import { ListHeader } from '@/components/ui/list/header';
 
 const ExploreTopSection = () => {
   return (
     <VStack space="md">
-      <HomeWidgetSavingsHistory />
       <HStack space="md">
         <CurrentStrikeWidget />
         <TotalSavingsWidget />
@@ -49,14 +45,11 @@ const Explorepage = () => {
 
             <ExploreTopSection />
             <Box className="flex flex-1 flex-col overflow-auto">
-              <Box className="mb-4 flex flex-row items-center justify-between">
-                <Heading size="xl">{t('home.top_section_title')}</Heading>
-                <Button
-                  onPress={() => router.push('/(protected)/challenges/create')}>
-                  <PlusCircle size={24} color="white" />
-                </Button>
-              </Box>
-              <PendingInvitations />
+              <ListHeader
+                title={t('home.top_section_title')}
+                onPress={() => router.push('/(protected)/challenges/create')}
+              />
+
               <ChallengeList limit={5} />
             </Box>
           </VStack>

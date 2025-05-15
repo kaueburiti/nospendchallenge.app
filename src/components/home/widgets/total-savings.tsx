@@ -52,7 +52,7 @@ export function TotalSavingsWidget() {
   return (
     <HomeWidgetWrapper isPro={true}>
       <HStack space="md" className="items-center">
-        <Box className="rounded-full bg-primary-100 p-2">
+        <Box className="rounded-full bg-primary-500 p-2">
           <DollarSign size={24} color="white" />
         </Box>
 
