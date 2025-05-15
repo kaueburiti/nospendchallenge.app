@@ -6,7 +6,7 @@ import { Button, Text } from '@/components/ui';
 interface ListHeaderProps {
   title: string;
   description?: string;
-  onPress: () => void;
+  onPress?: () => void;
   titleSize?: 'xl' | '2xl' | '3xl' | '4xl';
 }
 
@@ -22,9 +22,11 @@ export const ListHeader = ({
         <Heading size={titleSize}>{title}</Heading>
         {description && <Text>{description}</Text>}
       </VStack>
-      <Button onPress={onPress}>
-        <PlusIcon size={24} color="white" />
-      </Button>
+      {onPress && (
+        <Button onPress={onPress}>
+          <PlusIcon size={24} color="white" />
+        </Button>
+      )}
     </Box>
   );
 };

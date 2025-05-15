@@ -17,6 +17,7 @@ import {
   HStack,
 } from '@/components/ui';
 import { Bot, Send } from 'lucide-react-native';
+import { ListHeader } from '@/components/ui/list/header';
 
 interface Message {
   id: string;
@@ -159,13 +160,14 @@ export default function AIAssistantScreen() {
     <SafeAreaView className="flex-1">
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-        style={{ flex: 1 }}>
-        <VStack style={{ flex: 1 }}>
-          <Box className="flex-row items-center bg-white p-4 dark:bg-black">
-            <Bot size={24} color={isDark ? 'white' : 'black'} />
-            <Text className="ml-2 text-xl font-bold text-black dark:text-white">
-              {t('ai_assistant.title')}
-            </Text>
+        className="flex-1">
+        <VStack className="flex-1">
+          <Box className="px-4">
+            <ListHeader
+              title={t('ai_assistant.title')}
+              titleSize="3xl"
+              description={t('ai_assistant.description')}
+            />
           </Box>
 
           <FlatList
@@ -178,6 +180,7 @@ export default function AIAssistantScreen() {
             ListFooterComponent={isLoading ? <TypingIndicator /> : null}
             onContentSizeChange={scrollToBottom}
             onLayout={scrollToBottom}
+            className="bg-red-100"
             style={{
               flex: 1,
               backgroundColor: isDark ? '#1F2937' : '#F3F4F6',

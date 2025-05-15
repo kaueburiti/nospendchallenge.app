@@ -313,6 +313,7 @@
   "ai_assistant": {
     "tab_label": "AI Assistant",
     "title": "AI Assistant",
+    "description": "Ask anything about your challenge or your savings",
     "message_placeholder": "Type a message..."
   },
   "auth": {
