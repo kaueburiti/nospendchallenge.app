@@ -25,14 +25,13 @@ import {
 import { supabase } from '@/lib/supabase';
 import PhotoUpload from '../ui/photo-upload';
 import useUploadImage from '@/hooks/storage';
+import FormInput from '../ui/form/input';
 
 // Form schema for wishlist item
 const wishlistItemSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   description: z.string().optional(),
-  cost: z.string().refine(val => !isNaN(Number(val)), {
-    message: 'Cost must be a valid number',
-  }),
+  cost: z.number().min(0, 'Cost must be greater than 0'),
   photo: z.string().optional(),
 });
 
@@ -240,28 +239,14 @@ export const EditWishlistItemDrawer = ({ isOpen, onClose, itemId }: Props) => {
           </FormControl>
 
           <FormControl isInvalid={!!errors.cost}>
-            <FormInputLabel label={t('wishlists.form.item_cost.label')} />
-            <Controller
-              control={control}
+            <FormInput
+              isCurrency
+              label={t('wishlists.form.item_cost.label')}
               name="cost"
-              render={({ field: { onChange, value } }) => (
-                <Input>
-                  <InputField
-                    value={value}
-                    onChangeText={onChange}
-                    keyboardType="numeric"
-                    placeholder={t('wishlists.form.item_cost.placeholder')}
-                  />
-                </Input>
-              )}
+              control={control}
+              placeholder={t('wishlists.form.item_cost.placeholder')}
+              errorMessage={errors?.cost?.message}
             />
-            {errors.cost && (
-              <FormControlError>
-                <FormControlErrorText>
-                  {t('wishlists.form.item_cost.error')}
-                </FormControlErrorText>
-              </FormControlError>
-            )}
           </FormControl>
         </VStack>
       </VStack>
