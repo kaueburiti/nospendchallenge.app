@@ -72,7 +72,7 @@ export default function WishlistsPage() {
                 ))}
               </VStack>
             ) : (
-              <EmptyWishlists />
+              <EmptyWishlists onClick={handleAddItem} />
             )}
           </VStack>
         </Section>

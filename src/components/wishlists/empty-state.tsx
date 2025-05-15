@@ -1,23 +1,22 @@
 import React from 'react';
-import { Box, Heading, Text, VStack } from '@/components/ui';
 import { useTranslation } from '@/hooks/useTranslation';
+import wishlistAnimation from '@/assets/animations/wishlist.json';
+import EmptyList from '@/components/ui/list/empty';
 
-export default function EmptyWishlists() {
+interface EmptyWishlistsProps {
+  onClick: () => void;
+}
+
+export default function EmptyWishlists({ onClick }: EmptyWishlistsProps) {
   const { t } = useTranslation();
 
   return (
-    <Box className="flex-1 items-center justify-center py-12">
-      <VStack space="lg" className="items-center">
-        <Text className="mb-2 text-4xl">📋</Text>
-        <VStack space="sm">
-          <Heading size="lg" className="text-center">
-            {t('wishlists.no_items')}
-          </Heading>
-          <Text className="max-w-xs text-center text-gray-500">
-            {t('wishlists.no_items_description')}
-          </Text>
-        </VStack>
-      </VStack>
-    </Box>
+    <EmptyList
+      onClick={onClick}
+      title={t('wishlists.no_items')}
+      description={t('wishlists.no_items_description')}
+      buttonText={t('wishlists.add_item')}
+      animationSource={wishlistAnimation}
+    />
   );
 }

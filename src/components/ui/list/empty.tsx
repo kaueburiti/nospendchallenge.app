@@ -1,37 +1,55 @@
-import { Box, Button, ButtonText, Text } from '@/components/ui';
-import { Heading } from '@/components/ui/heading';
-import LottieView from 'lottie-react-native';
-import animation from '@/assets/animations/high-five.json';
-import { useRef } from 'react';
-import { Image } from 'react-native';
-const ListEmptyState = ({
-  title,
-  description,
-  ctaText,
-  onCtaClick,
-}: {
+import React from 'react';
+import {
+  Box,
+  Button,
+  ButtonText,
+  Heading,
+  Text,
+  VStack,
+} from '@/components/ui';
+import LottieView, { type AnimationObject } from 'lottie-react-native';
+import LottieViewWrapper from '@/components/lottie-view-wrapper';
+
+interface EmptyListProps {
+  onClick: () => void;
   title: string;
   description: string;
-  ctaText: string;
-  onCtaClick: () => void;
-}) => {
-  const animationRef = useRef<LottieView>(null);
+  buttonText: string;
+  animationSource: AnimationObject;
+}
 
+export default function EmptyList({
+  onClick,
+  title,
+  description,
+  buttonText,
+  animationSource,
+}: EmptyListProps) {
   return (
-    <Box className="flex flex-1 flex-col items-center justify-center gap-6 rounded-lg p-10">
-      <Image
-        source={require('@/assets/images/home/giving-five.png')}
-        className="h-[150px] w-[224px]"
-      />
-      <Box className="flex flex-col items-center justify-center">
-        <Heading size="xl">{title}</Heading>
-        <Text className="text-center">{description}</Text>
-      </Box>
-      <Button onPress={onCtaClick} size="xl">
-        <ButtonText>{ctaText}</ButtonText>
-      </Button>
+    <Box className="flex-1 items-center justify-center py-12">
+      <VStack space="sm" className="items-center">
+        <LottieViewWrapper height={192} width={192}>
+          <LottieView
+            source={animationSource}
+            autoPlay
+            style={{ width: 250, height: 250 }}
+          />
+        </LottieViewWrapper>
+        <VStack space="4xl">
+          <VStack space="xs">
+            <Heading size="lg" className="text-center">
+              {title}
+            </Heading>
+            <Text className="max-w-xs text-center text-gray-500">
+              {description}
+            </Text>
+          </VStack>
+
+          <Button onPress={onClick} size="lg">
+            <ButtonText>{buttonText}</ButtonText>
+          </Button>
+        </VStack>
+      </VStack>
     </Box>
   );
-};
-
-export default ListEmptyState;
+}
