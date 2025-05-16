@@ -38,6 +38,9 @@ const inputStyle = tva({
 
   variants: {
     size: {
+      '4xl': 'h-20',
+      '3xl': 'h-16',
+      '2xl': 'h-14',
       xl: 'h-12',
       lg: 'h-11',
       md: 'h-10',
@@ -62,11 +65,14 @@ const inputIconStyle = tva({
   parentVariants: {
     size: {
       '2xs': 'h-3 w-3',
-      'xs': 'h-3.5 w-3.5',
-      'sm': 'h-4 w-4',
-      'md': 'h-[18px] w-[18px]',
-      'lg': 'h-5 w-5',
-      'xl': 'h-6 w-6',
+      xs: 'h-3.5 w-3.5',
+      sm: 'h-4 w-4',
+      md: 'h-[18px] w-[18px]',
+      lg: 'h-5 w-5',
+      xl: 'h-6 w-6',
+      '2xl': 'h-7 w-7',
+      '3xl': 'h-8 w-8',
+      '4xl': 'h-9 w-9',
     },
   },
 });
@@ -87,11 +93,11 @@ const inputFieldStyle = tva({
 
     size: {
       '2xs': 'text-2xs',
-      'xs': 'text-xs',
-      'sm': 'text-sm',
-      'md': 'text-base',
-      'lg': 'text-lg',
-      'xl': 'text-xl',
+      xs: 'text-xs',
+      sm: 'text-sm',
+      md: 'text-base',
+      lg: 'text-lg',
+      xl: 'text-xl',
       '2xl': 'text-2xl',
       '3xl': 'text-3xl',
       '4xl': 'text-4xl',
@@ -113,7 +119,7 @@ const Input = React.forwardRef<React.ElementRef<typeof UIInput>, IInputProps>(
         context={{ variant, size }}
       />
     );
-  }
+  },
 );
 
 type IInputIconProps = React.ComponentProps<typeof UIInput.Icon> &
