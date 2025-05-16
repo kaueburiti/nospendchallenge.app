@@ -2,9 +2,10 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { HomeIcon, User, Bot, Gift } from 'lucide-react-native';
+import { HomeIcon, User, Bot, Gift, HandHeart } from 'lucide-react-native';
 import { useTheme } from '@/hooks/useTheme';
 import { useTranslation } from '@/hooks/useTranslation';
+import { Box } from '@/components/ui';
 
 export default function TabLayout() {
   const { isDark } = useTheme();
@@ -32,6 +33,17 @@ export default function TabLayout() {
         options={{
           title: t('wishlists.tab_label'),
           tabBarIcon: ({ color }) => <TabBarIcon icon={Gift} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="buy-or-not"
+        options={{
+          title: '',
+          tabBarIcon: ({ color }) => (
+            <Box className="-mt-1 scale-[2.0] rounded-full bg-primary-500 p-2">
+              <TabBarIcon icon={Bot} color="#fff" />
+            </Box>
+          ),
         }}
       />
       <Tabs.Screen
