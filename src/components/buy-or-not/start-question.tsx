@@ -7,15 +7,25 @@ import {
   Button,
   Box,
   Heading,
+  Spinner,
 } from '@/components/ui';
-import React from 'react';
+import React, { useState } from 'react';
 import { Keyboard, TouchableWithoutFeedback } from 'react-native';
 
 interface StartQuestionProps {
-  onStart: () => void;
+  onStart: (productName: string) => void;
+  isLoading?: boolean;
 }
 
-export function StartQuestion({ onStart }: StartQuestionProps) {
+export function StartQuestion({ onStart, isLoading }: StartQuestionProps) {
+  const [productName, setProductName] = useState('');
+
+  const handleStart = () => {
+    if (productName.trim()) {
+      onStart(productName.trim());
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <VStack
@@ -36,31 +46,24 @@ export function StartQuestion({ onStart }: StartQuestionProps) {
             <InputField
               className="bg-white text-center text-3xl font-bold"
               placeholder="A new pair of shoes"
+              value={productName}
+              onChangeText={setProductName}
+              editable={!isLoading}
             />
           </Input>
         </VStack>
 
-        {/* <Input size={'3xl'}>
-          <CurrencyInput
-            value={price}
-            onChangeValue={setPrice}
-            renderTextInput={(textInputProps: TextInputProps) => (
-              <InputField
-                className="bg-white text-center text-3xl font-bold"
-                placeholder="$0.00"
-                {...textInputProps}
-              />
-            )}
-            prefix="$"
-            delimiter=","
-            separator="."
-            precision={2}
-          />
-        </Input> */}
-
         <Box className="mt-auto">
-          <Button size="xl" className="w-full" onPress={onStart}>
-            <ButtonText className="w-full text-center">Start</ButtonText>
+          <Button
+            size="xl"
+            className="w-full"
+            onPress={handleStart}
+            isDisabled={!productName.trim() || isLoading}>
+            {isLoading ? (
+              <Spinner size="small" color="$white" />
+            ) : (
+              <ButtonText className="w-full text-center">Start</ButtonText>
+            )}
           </Button>
         </Box>
       </VStack>
