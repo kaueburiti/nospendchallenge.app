@@ -84,6 +84,7 @@ export const CheckInForm = ({
     amount: string;
     status: string;
   }) => {
+    console.log('oioioio');
     if (!data.status) {
       setErrorMessage(
         t('checks.form.error.status_required') || 'Please select a status',
@@ -100,20 +101,18 @@ export const CheckInForm = ({
 
     if (data.status === 'success') {
       // Convert amount from string to number for success case
-      savedAmount = data.amount
-        ? parseFloat(data.amount.replace(/[^0-9.]/g, ''))
-        : 0;
+      savedAmount = Number(data.amount);
     } else if (data.status === 'failure') {
       // For failure, use either the sum of items or the entered amount
       if (checkItems.length > 0) {
         spentAmount = checkItems.reduce((sum, item) => sum + item.price, 0);
       } else {
         // Fallback to the amount field if no items entered
-        spentAmount = data.amount
-          ? parseFloat(data.amount.replace(/[^0-9.]/g, ''))
-          : 0;
+        spentAmount = Number(data.amount);
       }
     }
+
+    console.log('spentAmount', spentAmount);
 
     // Set saved_amount or spent_amount based on status
     const checkData = {

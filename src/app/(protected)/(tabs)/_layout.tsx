@@ -2,7 +2,14 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import { HomeIcon, User, Bot, Gift, HandHeart } from 'lucide-react-native';
+import {
+  HomeIcon,
+  User,
+  Bot,
+  Gift,
+  HandHeart,
+  Wallet,
+} from 'lucide-react-native';
 import { useTheme } from '@/hooks/useTheme';
 import { useTranslation } from '@/hooks/useTranslation';
 import { Box } from '@/components/ui';
@@ -47,10 +54,10 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="ai-assistant"
+        name="balance"
         options={{
-          title: t('ai_assistant.tab_label'),
-          tabBarIcon: ({ color }) => <TabBarIcon icon={Bot} color={color} />,
+          title: t('balance.tab_label'),
+          tabBarIcon: ({ color }) => <TabBarIcon icon={Wallet} color={color} />,
         }}
       />
       <Tabs.Screen
