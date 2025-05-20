@@ -18,13 +18,13 @@ interface VerdictProps {
 
 export function Verdict({ verdict, onRestart }: VerdictProps) {
   const Icon = verdict.isImpulsive ? XCircle : CheckCircle;
-  const iconColor = verdict.isImpulsive ? 'text-red-500' : 'text-green-500';
+  const iconColor = verdict.isImpulsive ? '#E63535' : '#1ABC9C';
 
   return (
     <ScrollView className="flex-1">
-      <VStack space="xl" className="flex-1 p-4">
+      <VStack space="sm" className="flex-1 p-4">
         <Box className="items-center">
-          <Icon size={64} className={iconColor} />
+          <Icon size={64} color={iconColor} />
           <Heading size="2xl" className="mt-4 text-center">
             {verdict.isImpulsive
               ? 'Impulsive Purchase'
@@ -33,7 +33,7 @@ export function Verdict({ verdict, onRestart }: VerdictProps) {
         </Box>
 
         <Box className="rounded-lg bg-gray-100 p-4 dark:bg-gray-800">
-          <Text className="text-lg">{verdict.reasoning}</Text>
+          <Text>{verdict.reasoning}</Text>
         </Box>
 
         <VStack space="md">

@@ -56,9 +56,7 @@ export function Question({
             value={option}
             className="flex-row items-center rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
             <RadioIndicator className="mr-3">
-              <RadioIcon>
-                <CircleIcon />
-              </RadioIcon>
+              <RadioIcon as={CircleIcon} color="#ffb4b4" />
             </RadioIndicator>
             <RadioLabel className="flex-1 text-lg">{option}</RadioLabel>
           </Radio>
