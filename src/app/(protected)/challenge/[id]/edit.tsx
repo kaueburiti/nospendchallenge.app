@@ -11,6 +11,7 @@ import { useChallenge, useDeleteChallenge } from '@/hooks/challenges';
 import { useQueryClient } from '@tanstack/react-query';
 import { useShowNotification } from '@/hooks/notifications';
 import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
+import BackButton from '@/components/navigation/back-button';
 
 export default function EditChallenge() {
   const { t } = useTranslation();
@@ -105,6 +106,9 @@ export default function EditChallenge() {
 
   return (
     <SafeAreaView>
+      <Box className="p-4">
+        <BackButton />
+      </Box>
       <ChallengeForm
         title={t('challenge.edit.title')}
         subtitle={t('challenge.edit.description')}

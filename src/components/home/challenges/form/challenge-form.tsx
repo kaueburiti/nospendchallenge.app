@@ -112,7 +112,7 @@ export function ChallengeForm({
   return (
     <KeyboardAvoidingView behavior="padding" className="flex-1">
       <ScrollView className="h-[1px] flex-1">
-        <Box className="px-4 py-12">
+        <Box className="px-4">
           <Box className="mb-8 items-center">
             <Heading size="2xl" className="mb-1">
               {title}

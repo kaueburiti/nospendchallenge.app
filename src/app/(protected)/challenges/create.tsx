@@ -9,6 +9,8 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
 import { useQueryClient } from '@tanstack/react-query';
 import { useShowNotification } from '@/hooks/notifications';
+import { Box } from '@/components/ui/box';
+import BackButton from '@/components/navigation/back-button';
 export default function CreateChallenge() {
   const router = useRouter();
   const { t } = useTranslation();
@@ -67,6 +69,9 @@ export default function CreateChallenge() {
 
   return (
     <SafeAreaView>
+      <Box className="px-4">
+        <BackButton />
+      </Box>
       <ChallengeForm
         title={t('challenge.create.title')}
         subtitle={t('challenge.create.description')}
