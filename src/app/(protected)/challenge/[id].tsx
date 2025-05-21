@@ -31,6 +31,7 @@ import { useChallenge } from '@/hooks/challenges';
 import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
 import MoneyTrackerTab from '@/components/challenge/money-tracket-tab';
 import classNames from 'classnames';
+import ChallengeProgressBar from '@/components/home/challenges/progress';
 
 export default function ChallengeDetails() {
   const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
@@ -126,7 +127,7 @@ export default function ChallengeDetails() {
             <ChallengeCover challenge={challenge} size="2xl" />
 
             <VStack className="flex-1 justify-between">
-              <Box>
+              <VStack space="xs">
                 <Box className="flex flex-row items-center justify-between">
                   <Heading size="2xl">{challenge.title}</Heading>
 
@@ -148,7 +149,9 @@ export default function ChallengeDetails() {
                 </Box>
 
                 <Text className="text-sm">{challenge.description}</Text>
-              </Box>
+              </VStack>
+
+              <ChallengeProgressBar challenge={challenge} showDates />
             </VStack>
           </HStack>
 
