@@ -168,6 +168,13 @@ export const EditWishlistItemDrawer = ({ isOpen, onClose, itemId }: Props) => {
             onSuccess: () => {
               onClose();
               showToast('success', 'Item created successfully');
+              // reset form
+              reset({
+                name: '',
+                description: '',
+                cost: 0,
+                photo: '',
+              });
             },
             onError: error => {
               console.error('Error creating item:', error);
