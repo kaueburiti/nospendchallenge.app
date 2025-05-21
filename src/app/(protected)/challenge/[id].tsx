@@ -15,7 +15,6 @@ import {
   CheckCheck,
   DollarSign,
   LogOut,
-  MessageCircle,
   Settings,
   Users,
 } from 'lucide-react-native';
@@ -25,7 +24,6 @@ import ChallengeCover from '@/components/home/challenges/cover';
 import BackButton from '@/components/navigation/back-button';
 import ChallengeDetailsTab from '@/components/challenge/details-tab';
 import ChallengeParticipantsTab from '@/components/challenge/participants-tab';
-import ChallengeChatTab from '@/components/challenge/chat-tab';
 import { useIsChallengeOwner } from '@/hooks/challenges/index';
 import { useChallenge } from '@/hooks/challenges';
 import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
@@ -37,7 +35,7 @@ export default function ChallengeDetails() {
   const [isCheckInDrawerOpen, setIsCheckInDrawerOpen] =
     useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<
-    'details' | 'money-tracker' | 'participants' | 'chat'
+    'details' | 'money-tracker' | 'participants'
   >('details');
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: challenge, isLoading } = useChallenge(id);
@@ -159,29 +157,22 @@ export default function ChallengeDetails() {
           <Box className="flex flex-row border-b border-gray-200">
             <Pressable
               onPress={() => setActiveTab('details')}
-              className={classNames('w-1/4 items-center px-4 pb-2', {
+              className={classNames('w-1/3 items-center px-4 pb-2', {
                 'border-primary border-b-2': activeTab === 'details',
               })}>
               <CheckCheck size={24} color="rgb(82,82,82)" />
             </Pressable>
 
             <Pressable
-              onPress={() => setActiveTab('chat')}
-              className={classNames('w-1/4 items-center px-4 pb-2', {
-                'border-primary border-b-2': activeTab === 'chat',
-              })}>
-              <MessageCircle size={24} color="rgb(82,82,82)" />
-            </Pressable>
-            <Pressable
               onPress={() => setActiveTab('money-tracker')}
-              className={classNames('w-1/4 items-center px-4 pb-2', {
+              className={classNames('w-1/3 items-center px-4 pb-2', {
                 'border-primary border-b-2': activeTab === 'money-tracker',
               })}>
               <DollarSign size={24} color="rgb(82,82,82)" />
             </Pressable>
             <Pressable
               onPress={() => setActiveTab('participants')}
-              className={classNames('w-1/4 items-center px-4 pb-2', {
+              className={classNames('w-1/3 items-center px-4 pb-2', {
                 'border-primary border-b-2': activeTab === 'participants',
               })}>
               <Users size={24} color="rgb(82,82,82)" />
@@ -197,8 +188,6 @@ export default function ChallengeDetails() {
             />
           ) : activeTab === 'money-tracker' ? (
             <MoneyTrackerTab challengeId={id} />
-          ) : activeTab === 'chat' ? (
-            <ChallengeChatTab challengeId={id} />
           ) : (
             <ChallengeParticipantsTab challengeId={Number(id)} />
           )}
