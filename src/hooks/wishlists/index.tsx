@@ -5,15 +5,10 @@ import {
   getUserWishlists,
   getWishlist,
   updateWishlist,
-  createWishlistItem,
-  deleteWishlistItem,
-  getWishlistItem,
-  getWishlistItems,
-  updateWishlistItem,
 } from '@/lib/db/repository/wishlist';
 import { useShowNotification } from '../notifications';
 import { router } from 'expo-router';
-import { Tables } from '@/lib/db/database.types';
+import { type Tables } from '@/lib/db/database.types';
 import { supabase } from '@/lib/supabase';
 
 // Wishlist hooks
@@ -133,8 +128,7 @@ export const useCreateWishlistItem = () => {
       return data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['wishlistItems'] });
-      router.back();
+      void queryClient.invalidateQueries({ queryKey: ['wishlistItems'] });
     },
   });
 };
@@ -161,11 +155,10 @@ export const useUpdateWishlistItem = () => {
       return data;
     },
     onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['wishlistItems'] });
-      queryClient.invalidateQueries({
+      void queryClient.invalidateQueries({ queryKey: ['wishlistItems'] });
+      void queryClient.invalidateQueries({
         queryKey: ['wishlistItem', variables.id],
       });
-      router.back();
     },
   });
 };
@@ -184,8 +177,7 @@ export const useDeleteWishlistItem = () => {
       return true;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['wishlistItems'] });
-      router.back();
+      void queryClient.invalidateQueries({ queryKey: ['wishlistItems'] });
     },
   });
 };
