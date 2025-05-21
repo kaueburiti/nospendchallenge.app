@@ -221,6 +221,10 @@
       "spent": "Total Spent",
       "history": "Savings History",
       "empty": "No savings recorded yet"
+    },
+    "money_tracker": {
+      "title": "Money Tracker",
+      "empty": "No checks recorded yet"
     }
   },
   "password": {

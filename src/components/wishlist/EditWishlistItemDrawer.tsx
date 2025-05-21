@@ -54,9 +54,6 @@ export const EditWishlistItemDrawer = ({ isOpen, onClose, itemId }: Props) => {
   const [imageData, setImageData] = useState<ImageData | null>(null);
   const { data: item, isLoading: isItemLoading } = useGetWishlistItem(
     itemId ?? 0,
-    {
-      enabled: !!itemId,
-    },
   );
   const { mutate: createItem, isPending: isCreating } = useCreateWishlistItem();
   const { mutate: updateItem, isPending: isUpdating } = useUpdateWishlistItem();
@@ -73,7 +70,7 @@ export const EditWishlistItemDrawer = ({ isOpen, onClose, itemId }: Props) => {
     defaultValues: {
       name: '',
       description: '',
-      cost: '',
+      cost: 0,
     },
   });
 
@@ -82,7 +79,7 @@ export const EditWishlistItemDrawer = ({ isOpen, onClose, itemId }: Props) => {
       reset({
         name: item.name,
         description: item.description ?? '',
-        cost: item.cost.toString(),
+        cost: item.cost,
         photo: item.photo ?? '',
       });
 
@@ -97,7 +94,7 @@ export const EditWishlistItemDrawer = ({ isOpen, onClose, itemId }: Props) => {
       reset({
         name: '',
         description: '',
-        cost: '',
+        cost: 0,
       });
     }
   }, [item, reset]);
@@ -135,6 +132,14 @@ export const EditWishlistItemDrawer = ({ isOpen, onClose, itemId }: Props) => {
             onSuccess: () => {
               onClose();
               showToast('success', 'Item updated successfully');
+              // reset form
+              reset({
+                name: '',
+                description: '',
+                cost: 0,
+                photo: '',
+              });
+              setImageData(null);
             },
             onError: error => {
               console.error('Error updating item:', error);
