@@ -190,9 +190,6 @@ export default function ChallengeDetails() {
         <Box className="flex-1">
           {activeTab === 'details' ? (
             <ChallengeDetailsTab
-              challenge={challenge}
-              challengeId={id}
-              isOwner={isOwner}
               onCheckIn={() => setIsCheckInDrawerOpen(true)}
             />
           ) : activeTab === 'money-tracker' ? (

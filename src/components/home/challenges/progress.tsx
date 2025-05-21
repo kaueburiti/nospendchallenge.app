@@ -4,6 +4,7 @@ import { ProgressFilledTrack } from '@/components/ui/progress';
 import { Progress } from '@/components/ui/progress';
 import { differenceInDays, format } from 'date-fns';
 import type { Tables } from '@/lib/db/database.types';
+
 export default function ChallengeProgressBar({
   challenge,
   showDates = false,
