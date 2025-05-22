@@ -155,6 +155,7 @@
       "saving_button": "Saving..."
     },
     "billing_title": "Billing",
+    "billing_description": "Manage your subscription and billing details",
     "manage_subscription": "Manage Subscription",
     "subscription_status": "Current Plan",
     "renewal_date": "Renewal Date",
@@ -373,8 +374,8 @@
   },
   "payment": {
     "plans": {
-      "full": "Full Access",
-      "basic": "Basic Access"
+      "full": "Premium Package",
+      "basic": "Basic Package"
     },
     "errors": {
       "generic": "Oops. Something went wrong!"

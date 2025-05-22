@@ -1,14 +1,13 @@
 import React, { useContext, useState } from 'react';
-import { VStack, HStack, Text, Box } from '@/components/ui';
+import { VStack, Text, Box } from '@/components/ui';
 import { Heading } from '@/components/ui';
-import { MenuItem } from '@/components/MenuItem';
-import { CreditCard, ChevronLeft } from 'lucide-react-native';
 import { Alert, Linking } from 'react-native';
 import { useTranslation } from '@/hooks/useTranslation';
-import { router } from 'expo-router';
 import { RevenueCatContext } from '@/provider/RevenueCatProvider';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { Button, ButtonText } from '@/components/ui';
+import BackButton from '@/components/navigation/back-button';
+import { Section } from '@/components/Section';
 
 const BillingPage = () => {
   const { t } = useTranslation();
@@ -36,7 +35,7 @@ const BillingPage = () => {
           t('profile.cancel_subscription_error'),
         );
       }
-    } catch (error) {
+    } catch {
       Alert.alert(
         t('common.error_occurred'),
         t('profile.cancel_subscription_error'),
@@ -51,53 +50,51 @@ const BillingPage = () => {
   const expirationDate =
     activeSubscription && customerInfo?.allExpirationDates?.[activeSubscription]
       ? new Date(customerInfo.allExpirationDates[activeSubscription])
-      : null;
+      : new Date();
 
   return (
-    <SafeAreaView className="bg-background flex-1">
-      <VStack className="flex-1 px-5 py-4" space="lg">
-        {/* Header */}
-        <HStack className="items-center">
-          <Button variant="link" onPress={() => router.back()} className="mr-2">
-            <ButtonText>
-              <ChevronLeft size={24} />
-            </ButtonText>
-          </Button>
-          <Heading>{t('profile.billing_title')}</Heading>
-        </HStack>
-
-        {/* Current Plan Status */}
-        <Box className="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
-          <VStack space="md">
-            <HStack className="items-center justify-between">
-              <Text className="text-gray-600 dark:text-gray-300">
-                {t('profile.subscription_status')}
-              </Text>
-              <Text className="font-semibold text-primary-500">
-                {t('payment.plans.full')}
-              </Text>
-            </HStack>
-
-            {expirationDate && (
-              <HStack className="items-center justify-between">
-                <Text className="text-gray-600 dark:text-gray-300">
-                  {t('profile.renewal_date')}
-                </Text>
-                <Text className="font-semibold">
-                  {expirationDate.toLocaleDateString()}
-                </Text>
-              </HStack>
-            )}
+    <SafeAreaView>
+      <Section className="h-full flex-1">
+        <VStack className="flex-1 py-4" space="4xl">
+          <VStack space="xs">
+            <BackButton />
+            <VStack>
+              <Heading size="3xl">{t('profile.billing_title')}</Heading>
+              <Text>{t('profile.billing_description')}</Text>
+            </VStack>
           </VStack>
-        </Box>
 
-        {/* Management Action */}
-        <MenuItem
-          icon={CreditCard}
-          text={t('profile.manage_subscription')}
-          onPress={handleManageSubscription}
-        />
-      </VStack>
+          {/* Current Plan Status */}
+          <Box className="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-800">
+            <VStack space="4xl">
+              <VStack space="md">
+                <VStack className="justify-between">
+                  <Text className="text-sm">
+                    {t('profile.subscription_status')}
+                  </Text>
+                  <Text className="text-2xl font-semibold">
+                    {t('payment.plans.full')}
+                  </Text>
+                </VStack>
+
+                <VStack className="justify-between">
+                  <Text className="text-sm">{t('profile.renewal_date')}</Text>
+                  <Text className="text-2xl">
+                    {expirationDate.toLocaleDateString()}
+                  </Text>
+                </VStack>
+              </VStack>
+
+              <Button
+                variant="outline"
+                onPress={handleManageSubscription}
+                disabled={isLoading}>
+                <ButtonText>{t('profile.manage_subscription')}</ButtonText>
+              </Button>
+            </VStack>
+          </Box>
+        </VStack>
+      </Section>
     </SafeAreaView>
   );
 };
