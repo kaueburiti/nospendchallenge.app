@@ -1,17 +1,25 @@
 import { useState } from 'react';
-import { SafeAreaView } from 'react-native';
+import { SafeAreaView, Image } from 'react-native';
 import { router } from 'expo-router';
 import { Box, HStack } from '@/components/ui';
 import { useTranslation } from '@/hooks/useTranslation';
 import QuestionScreen, {
   type Question,
 } from '@/components/onboard/question-screen';
+import icon from '@/assets/images/icon.png';
 
 const questions: Question[] = [
   {
     id: 'reason',
     title: "What's your main reason for joining the #NoSpendChallenge?",
     description: 'Choose one or more',
+    illustration: (
+      <Image
+        source={icon}
+        className="h-40 w-40 rounded-full bg-primary-500"
+        resizeMode="contain"
+      />
+    ),
     type: 'multiple',
     options: [
       { id: 'save', label: 'I want to save money', value: 'save_money' },
@@ -31,6 +39,13 @@ const questions: Question[] = [
   {
     id: 'frequency',
     title: 'How often do you make impulsive purchases?',
+    illustration: (
+      <Image
+        source={icon}
+        className="h-40 w-40 rounded-full bg-primary-500"
+        resizeMode="contain"
+      />
+    ),
     type: 'single',
     options: [
       { id: 'daily', label: 'Almost every day', value: 'daily' },
@@ -42,6 +57,13 @@ const questions: Question[] = [
   {
     id: 'temptation',
     title: "What's your biggest spending temptation?",
+    illustration: (
+      <Image
+        source={icon}
+        className="h-40 w-40 rounded-full bg-primary-500"
+        resizeMode="contain"
+      />
+    ),
     type: 'single',
     options: [
       { id: 'clothes', label: 'Clothes & Accessories', value: 'clothes' },
@@ -54,6 +76,13 @@ const questions: Question[] = [
     id: 'support',
     title: 'How do you want the app to support you?',
     description: 'Choose all that apply',
+    illustration: (
+      <Image
+        source={icon}
+        className="h-40 w-40 rounded-full bg-primary-500"
+        resizeMode="contain"
+      />
+    ),
     type: 'multiple',
     options: [
       {
@@ -101,7 +130,7 @@ export default function Onboard() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <Box className="flex-1 bg-white pb-16">
       <Box className="flex-1">
         <QuestionScreen
           question={questions[currentIndex]}
@@ -122,6 +151,6 @@ export default function Onboard() {
           ))}
         </HStack>
       </Box>
-    </SafeAreaView>
+    </Box>
   );
 }

@@ -31,6 +31,7 @@ export interface Question {
   type: 'single' | 'multiple' | 'text';
   options: QuestionOption[];
   allowOther?: boolean;
+  illustration?: React.ReactNode;
 }
 
 interface QuestionScreenProps {
@@ -78,67 +79,82 @@ export default function QuestionScreen({
   const isNextDisabled = !hasSelected;
 
   return (
-    <Box className="h-full w-screen flex-1 flex-col justify-center px-8">
-      <VStack className="items-center" space="4xl">
-        <VStack className="w-full" space="xl">
-          <Heading size="xl" className="text-center text-neutral-900">
-            {question.title}
-          </Heading>
-          {question.description && (
-            <Text className="text-center text-neutral-600">
-              {question.description}
-            </Text>
-          )}
+    <Box className="flex-1 bg-primary-50">
+      {/* Top illustration section */}
+      <Box
+        className="w-full items-center justify-center"
+        style={{ height: '33%' }}>
+        {question.illustration ? (
+          question.illustration
+        ) : (
+          <Box className="mt-8 h-40 w-40 rounded-full bg-neutral-200" />
+        )}
+      </Box>
+      {/* Bottom white rounded container */}
+      <Box className="-mt-8 flex-1 rounded-t-3xl border-l border-r border-t border-gray-200 bg-white px-6 pb-6 pt-10">
+        <VStack className="items-center" space="4xl">
+          <VStack className="w-full" space="xl">
+            <Heading size="xl" className="text-center text-neutral-900">
+              {question.title}
+            </Heading>
+            {question.description && (
+              <Text className="text-center text-neutral-600">
+                {question.description}
+              </Text>
+            )}
 
-          {question.type === 'single' ? (
-            <RadioGroup
-              value={selectedAnswers[0]}
-              onChange={value => handleAnswer(value)}
-              className="mt-4">
+            {question.type === 'single' ? (
+              <RadioGroup
+                value={selectedAnswers[0]}
+                onChange={value => handleAnswer(value)}
+                className="mt-4">
+                <VStack space="md">
+                  {question.options.map(option => (
+                    <Radio
+                      key={option.id}
+                      value={option.value}
+                      className="flex-row items-center">
+                      <RadioIndicator />
+                      <Text className="ml-3 text-neutral-900">
+                        {option.label}
+                      </Text>
+                    </Radio>
+                  ))}
+                </VStack>
+              </RadioGroup>
+            ) : (
               <VStack space="md">
                 {question.options.map(option => (
-                  <Radio
+                  <Checkbox
                     key={option.id}
                     value={option.value}
+                    isChecked={selectedAnswers.includes(option.value)}
+                    onChange={() => handleAnswer(option.value)}
                     className="flex-row items-center">
-                    <RadioIndicator />
+                    <CheckboxIndicator />
                     <Text className="ml-3 text-neutral-900">
                       {option.label}
                     </Text>
-                  </Radio>
+                  </Checkbox>
                 ))}
               </VStack>
-            </RadioGroup>
-          ) : (
-            <VStack space="md">
-              {question.options.map(option => (
-                <Checkbox
-                  key={option.id}
-                  value={option.value}
-                  isChecked={selectedAnswers.includes(option.value)}
-                  onChange={() => handleAnswer(option.value)}
-                  className="flex-row items-center">
-                  <CheckboxIndicator />
-                  <Text className="ml-3 text-neutral-900">{option.label}</Text>
-                </Checkbox>
-              ))}
-            </VStack>
-          )}
-        </VStack>
+            )}
+          </VStack>
 
-        <Box className="flex w-full flex-row justify-between">
-          <Button
-            onPress={onBack}
-            size="lg"
-            variant="outline"
-            isDisabled={isFirstQuestion}>
-            <ButtonText>Back</ButtonText>
-          </Button>
-          <Button onPress={handleNext} size="lg" isDisabled={isNextDisabled}>
-            <ButtonText>{isLastQuestion ? 'Finish' : 'Next'}</ButtonText>
-          </Button>
-        </Box>
-      </VStack>
+          <Box className="flex w-full flex-row justify-between">
+            <Button
+              onPress={onBack}
+              size="lg"
+              variant="outline"
+              isDisabled={isFirstQuestion}>
+              <ButtonText>Back</ButtonText>
+            </Button>
+            <Button onPress={handleNext} size="lg" isDisabled={isNextDisabled}>
+              <ButtonText>{isLastQuestion ? 'Finish' : 'Next'}</ButtonText>
+            </Button>
+          </Box>
+        </VStack>
+      </Box>
     </Box>
   );
 }
