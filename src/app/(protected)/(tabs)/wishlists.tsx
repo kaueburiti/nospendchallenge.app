@@ -4,7 +4,7 @@ import { Box, Heading, VStack } from '@/components/ui';
 import { Section } from '@/components/Section';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useGetWishlistItems } from '@/hooks/wishlists';
-import { ActivityIndicator } from 'react-native';
+import { ActivityIndicator, Pressable } from 'react-native';
 import { Text } from '@/components/ui/text';
 import EmptyWishlists from '@/components/wishlists/empty-state';
 import { EditWishlistItemDrawer } from '@/components/wishlist/EditWishlistItemDrawer';
@@ -48,7 +48,7 @@ export default function WishlistsPage() {
                 <ActivityIndicator size="large" />
               </Box>
             ) : items && items.length > 0 ? (
-              <WishlistGrid items={items} />
+              <WishlistGrid items={items} onPressItem={handleEditItem} />
             ) : (
               <EmptyWishlists onClick={handleAddItem} />
             )}
@@ -65,9 +65,15 @@ export default function WishlistsPage() {
   );
 }
 
-function WishlistGrid({ items }: { items: Tables<'wishlist_items'>[] }) {
+function WishlistGrid({
+  items,
+  onPressItem,
+}: {
+  items: Tables<'wishlist_items'>[];
+  onPressItem: (itemId: number) => void;
+}) {
   return (
-    <Grid className="gap-4">
+    <Grid className="gap-4" _extra={{ className: 'grid-cols-12' }}>
       {items.map(item => (
         <GridItem
           key={item.id}
@@ -75,33 +81,43 @@ function WishlistGrid({ items }: { items: Tables<'wishlist_items'>[] }) {
           _extra={{
             className: 'col-span-6',
           }}>
-          <WishlistItemCard item={item} />
+          <WishlistItemCard item={item} onPress={onPressItem} />
         </GridItem>
       ))}
     </Grid>
   );
 }
 
-function WishlistItemCard({ item }: { item: Tables<'wishlist_items'> }) {
+function WishlistItemCard({
+  item,
+  onPress,
+}: {
+  item: Tables<'wishlist_items'>;
+  onPress: (itemId: number) => void;
+}) {
   return (
-    <Card className="shadow-xs relative overflow-hidden rounded-lg border border-gray-200 p-0">
-      <Image
-        source={{
-          uri: 'https://picsum.photos/200/200' ?? item.photo,
-        }}
-        className="h-[100px] w-full"
-        alt="image"
-      />
-      <Box className="absolute right-0 top-[76px] z-10 rounded-tl-md border-l border-t border-gray-200 bg-white px-3 py-1">
-        <Text className="font-bold text-success-500">${item.cost}</Text>
-      </Box>
+    <Pressable onPress={() => onPress(item.id)}>
+      <Card className="shadow-xs relative overflow-hidden rounded-lg border border-gray-200 p-0">
+        <Image
+          source={{
+            uri: item.photo ?? '',
+          }}
+          className="h-[100px] w-full bg-gray-200"
+          alt="image"
+        />
+        <Box className="absolute right-0 top-[76px] z-10 rounded-tl-md border-l border-t border-gray-200 bg-white px-3 py-1">
+          <Text className="text-sm font-bold text-success-500">
+            ${item.cost}
+          </Text>
+        </Box>
 
-      <VStack className="border-t border-gray-200 p-4">
-        <Heading size="md">{item.name}</Heading>
-        <Text className="mb-2 text-sm font-normal text-typography-500">
-          {item.description}
-        </Text>
-      </VStack>
-    </Card>
+        <VStack className="border-t border-gray-200 p-4">
+          <Heading size="md">{item.name}</Heading>
+          <Text className="mb-2 text-xs font-normal text-typography-500">
+            {item.description}
+          </Text>
+        </VStack>
+      </Card>
+    </Pressable>
   );
 }
