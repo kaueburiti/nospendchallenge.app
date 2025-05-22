@@ -6,5 +6,5 @@ export default function PageSafeAreaView({
 }: {
   children: React.ReactNode;
 }) {
-  return <SafeAreaView className="pt-4">{children}</SafeAreaView>;
+  return <SafeAreaView className="pb-8 pt-4">{children}</SafeAreaView>;
 }

@@ -4,8 +4,6 @@ import { HStack } from '../ui/hstack';
 import { VStack } from '../ui/vstack';
 import { Text } from '../ui/text';
 import { Link, LinkText } from '../ui/link';
-import { Icon } from '../ui/icon';
-import { Box, ChevronRight } from 'lucide-react-native';
 import { Avatar, AvatarFallbackText, AvatarImage } from '../ui/avatar';
 import { type User as SupabaseUser } from '@supabase/supabase-js';
 import { useDisclose } from '@gluestack-ui/hooks';
@@ -29,7 +27,7 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => {
 
   return (
     <>
-      <HStack className="flex-1">
+      <HStack>
         <Pressable
           className="flex flex-1 flex-row justify-start"
           onPress={onOpenActionsheet}>
