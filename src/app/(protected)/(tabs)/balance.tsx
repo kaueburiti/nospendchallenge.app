@@ -20,37 +20,35 @@ const BalanceSummaryCard = ({
   netBalance: number;
 }) => {
   return (
-    <Box>
-      <Box className="flex-row">
-        <VStack className="flex-1 items-center border-r border-outline-300 py-2">
-          <Heading size="xl" className="text-success-500">
-            {formatCurrency(totalSaved)}
-          </Heading>
-          <Text size="xs">Total Saved</Text>
-        </VStack>
-        <Divider
-          orientation="horizontal"
-          className="flex w-1 self-center bg-background-300"
-        />
-        <VStack className="flex-1 items-center border-r border-outline-300 py-2">
-          <Heading size="xl" className="text-error-500">
-            {formatCurrency(totalSpent)}
-          </Heading>
-          <Text size="xs">Total Spent</Text>
-        </VStack>
-        <Divider
-          orientation="horizontal"
-          className="flex w-1 self-center bg-background-300 sm:hidden"
-        />
-        <VStack className="flex-1 items-center pt-2">
-          <Heading
-            size="xl"
-            className={netBalance >= 0 ? 'text-success-500' : 'text-error-500'}>
-            {formatCurrency(netBalance)}
-          </Heading>
-          <Text size="xs">Overall Balance</Text>
-        </VStack>
-      </Box>
+    <Box className="flex-row">
+      <VStack className="flex-1 items-center border-r border-outline-300 py-2">
+        <Heading size="xl" className="text-success-500">
+          {formatCurrency(totalSaved)}
+        </Heading>
+        <Text size="xs">Total Saved</Text>
+      </VStack>
+      <Divider
+        orientation="horizontal"
+        className="flex w-1 self-center bg-background-300"
+      />
+      <VStack className="flex-1 items-center border-r border-outline-300 py-2">
+        <Heading size="xl" className="text-error-500">
+          {formatCurrency(totalSpent)}
+        </Heading>
+        <Text size="xs">Total Spent</Text>
+      </VStack>
+      <Divider
+        orientation="horizontal"
+        className="flex w-1 self-center bg-background-300 sm:hidden"
+      />
+      <VStack className="flex-1 items-center pt-2">
+        <Heading
+          size="xl"
+          className={netBalance >= 0 ? 'text-success-500' : 'text-error-500'}>
+          {formatCurrency(netBalance)}
+        </Heading>
+        <Text size="xs">Overall Balance</Text>
+      </VStack>
     </Box>
   );
 };
@@ -116,12 +114,15 @@ const HistoryItem = ({
   challengeName,
 }: {
   date: string;
-  savedAmount: number | null;
+  savedAmount: number;
   spentAmount: number;
   status: string;
   message: string;
   challengeName: string;
 }) => {
+  const amount = savedAmount || spentAmount;
+  const isSaved = savedAmount > spentAmount;
+
   return (
     <Box className="rounded-lg border border-gray-200 bg-white p-3 dark:bg-gray-800">
       <VStack space="sm">
@@ -137,10 +138,11 @@ const HistoryItem = ({
           <Box>
             <Text
               className={classNames('text-2xl font-bold', {
-                'text-emerald-600': savedAmount,
-                'text-red-600': !savedAmount,
+                'text-emerald-600': isSaved,
+                'text-red-600': !isSaved,
               })}>
-              {formatCurrency(savedAmount || spentAmount)}
+              {isSaved ? '+ ' : '- '}
+              {formatCurrency(amount)}
             </Text>
           </Box>
         </HStack>
@@ -190,19 +192,24 @@ export default function BalanceScreen() {
     <PageSafeAreaView>
       <ScrollView className="h-[1px] flex-1">
         <Section>
-          <VStack space="4xl">
-            <ListHeader
-              title={t('balance.title')}
-              titleSize="3xl"
-              description={t('balance.description')}
-            />
+          <ListHeader
+            title={t('balance.title')}
+            titleSize="3xl"
+            description={t('balance.description')}
+          />
 
+          <VStack space="4xl">
             {/* Summary Card */}
-            <BalanceSummaryCard
-              totalSaved={data.totalSaved}
-              totalSpent={data.totalSpent}
-              netBalance={data.netBalance}
-            />
+            <VStack space="md">
+              <Text className="text-lg font-semibold text-gray-900">
+                {t('balance.summary.title')}
+              </Text>
+              <BalanceSummaryCard
+                totalSaved={data.totalSaved}
+                totalSpent={data.totalSpent}
+                netBalance={data.netBalance}
+              />
+            </VStack>
 
             {/* Challenges Section */}
             <VStack space="md">
@@ -241,7 +248,7 @@ export default function BalanceScreen() {
                     <HistoryItem
                       key={`${item.date}-${index}`}
                       date={item.date}
-                      savedAmount={item.savedAmount}
+                      savedAmount={item.savedAmount ?? 0}
                       spentAmount={item.spentAmount}
                       status={item.status}
                       message={item.message ?? ''}

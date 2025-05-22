@@ -458,8 +458,14 @@
     "total_saved": "Total Saved",
     "total_spent": "Total Spent",
     "net_balance": "Net Balance",
+    "summary": {
+      "title": "Overall Balance",
+      "total_saved": "Total Saved",
+      "total_spent": "Total Spent",
+      "net_balance": "Net Balance"
+    },
     "challenges": {
-      "title": "Challenges",
+      "title": "By Challenge",
       "empty": "No challenges yet",
       "empty_description": "Join or create a challenge to start tracking your balance"
     },
