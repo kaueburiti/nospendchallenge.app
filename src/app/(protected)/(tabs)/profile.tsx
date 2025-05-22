@@ -4,7 +4,7 @@ import { Heading } from '@/components/ui';
 import { Divider } from '@/components/ui';
 import { Button, ButtonText } from '@/components/ui';
 import { MenuItem } from '@/components/MenuItem';
-import { LifeBuoyIcon, OctagonX } from 'lucide-react-native';
+import { LifeBuoyIcon, OctagonX, CreditCard } from 'lucide-react-native';
 import { ProfileCard } from '@/components/profile/ProfileCard';
 import DeleteAccountAlertDialog from '../../../components/profile/DeleteAccountAlertDialog';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
@@ -27,9 +27,19 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
   onOpenDeleteAccountDialog,
 }) => {
   const { t } = useTranslation();
+  const { customerInfo } = useContext(RevenueCatContext);
+  const isPro = !!customerInfo?.activeSubscriptions?.length;
+
   return (
     <VStack space="lg">
       <Heading className="mb-1">{t('profile.settings_title')}</Heading>
+      {isPro && (
+        <MenuItem
+          icon={CreditCard}
+          text={t('profile.billing_title')}
+          onPress={() => router.push('/billing')}
+        />
+      )}
       <MenuItem
         icon={OctagonX}
         onPress={onOpenDeleteAccountDialog}
@@ -82,7 +92,12 @@ const ProfilePage = () => {
         <ScrollView className="flex flex-1">
           <VStack className="flex-1 px-5 py-4" space="lg">
             <ProfileCard user={session?.user ?? null} />
-            {!isPro && <PaymentPlan onUpgrade={() => {}} isPro={isPro} />}
+            {!isPro && (
+              <PaymentPlan
+                onUpgrade={() => router.push('/paywall')}
+                isPro={isPro}
+              />
+            )}
             <ProfileSettings
               onOpenDeleteAccountDialog={onOpenDeleteAccountDialog}
             />
