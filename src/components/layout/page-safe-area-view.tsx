@@ -1,0 +1,10 @@
+import React from 'react';
+import { SafeAreaView } from '@/components/ui/SafeAreaView';
+
+export default function PageSafeAreaView({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return <SafeAreaView className="pt-4">{children}</SafeAreaView>;
+}

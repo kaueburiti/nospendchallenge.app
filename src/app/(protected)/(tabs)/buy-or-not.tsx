@@ -1,7 +1,7 @@
 import { HStack, Text, VStack } from '@/components/ui';
 import React, { useState } from 'react';
 import { Progress, ProgressFilledTrack } from '@/components/ui/progress';
-import { KeyboardAvoidingView, SafeAreaView, ScrollView } from 'react-native';
+import { KeyboardAvoidingView, ScrollView } from 'react-native';
 import { useTranslation } from '@/hooks/useTranslation';
 import { StartQuestion } from '@/components/buy-or-not/start-question';
 import { Question } from '@/components/buy-or-not/question';
@@ -12,6 +12,7 @@ import {
   type BuyOrNotQuestion,
   type BuyOrNotVerdict,
 } from '@/lib/openai';
+import PageSafeAreaView from '@/components/layout/page-safe-area-view';
 
 type ScreenState = 'start' | 'questions' | 'verdict';
 
@@ -103,7 +104,7 @@ export default function BuyOrNotScreen() {
   };
 
   return (
-    <SafeAreaView className="bg-background flex-1">
+    <PageSafeAreaView>
       <KeyboardAvoidingView behavior="padding" className="flex-1">
         <VStack space="lg" className="flex-1 p-4">
           {/* Progress Section */}
@@ -132,6 +133,6 @@ export default function BuyOrNotScreen() {
           </ScrollView>
         </VStack>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </PageSafeAreaView>
   );
 }

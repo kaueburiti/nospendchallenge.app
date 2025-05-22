@@ -1,7 +1,6 @@
 import React from 'react';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Box, VStack, HStack, Text, Divider } from '@/components/ui';
-import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { Section } from '@/components/Section';
 import { useTranslation } from '@/hooks/useTranslation';
 import { ListHeader } from '@/components/ui/list/header';
@@ -10,7 +9,7 @@ import { ActivityIndicator } from 'react-native';
 import { ArrowDown, ArrowUp, TrendingUp } from 'lucide-react-native';
 import { useTheme } from '@/hooks/useTheme';
 import { formatCurrency } from '@/lib/utils';
-
+import PageSafeAreaView from '@/components/layout/page-safe-area-view';
 const BalanceSummaryCard = ({
   totalSaved,
   totalSpent,
@@ -205,17 +204,17 @@ export default function BalanceScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView>
+      <PageSafeAreaView>
         <Box className="flex-1 items-center justify-center">
           <ActivityIndicator size="large" />
         </Box>
-      </SafeAreaView>
+      </PageSafeAreaView>
     );
   }
 
   if (!data) {
     return (
-      <SafeAreaView>
+      <PageSafeAreaView>
         <ScrollView className="h-[1px] flex-1">
           <Section>
             <VStack space="4xl">
@@ -232,12 +231,12 @@ export default function BalanceScreen() {
             </VStack>
           </Section>
         </ScrollView>
-      </SafeAreaView>
+      </PageSafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView>
+    <PageSafeAreaView>
       <ScrollView className="h-[1px] flex-1">
         <Section>
           <VStack space="4xl">
@@ -308,6 +307,6 @@ export default function BalanceScreen() {
           </VStack>
         </Section>
       </ScrollView>
-    </SafeAreaView>
+    </PageSafeAreaView>
   );
 }

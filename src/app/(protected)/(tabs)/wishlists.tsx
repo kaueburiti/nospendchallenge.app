@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { ScrollView } from '@/components/ui/scroll-view';
 import { Box, VStack } from '@/components/ui';
-import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { Section } from '@/components/Section';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useGetWishlistItems } from '@/hooks/wishlists';
@@ -10,6 +9,7 @@ import WishlistItemCard from '@/components/wishlists/item-card';
 import EmptyWishlists from '@/components/wishlists/empty-state';
 import { EditWishlistItemDrawer } from '@/components/wishlist/EditWishlistItemDrawer';
 import { ListHeader } from '@/components/ui/list/header';
+import PageSafeAreaView from '@/components/layout/page-safe-area-view';
 
 export default function WishlistsPage() {
   const { t } = useTranslation();
@@ -28,7 +28,7 @@ export default function WishlistsPage() {
   };
 
   return (
-    <SafeAreaView>
+    <PageSafeAreaView>
       <ScrollView className="h-[1px] flex-1">
         <Section>
           <VStack space="4xl">
@@ -49,7 +49,6 @@ export default function WishlistsPage() {
                   <WishlistItemCard
                     key={item.id}
                     item={item}
-                    wishlistId={null}
                     onEdit={() => handleEditItem(item.id)}
                   />
                 ))}
@@ -66,6 +65,6 @@ export default function WishlistsPage() {
         onClose={() => setIsDrawerOpen(false)}
         itemId={selectedItemId}
       />
-    </SafeAreaView>
+    </PageSafeAreaView>
   );
 }

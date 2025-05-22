@@ -2,14 +2,7 @@ import { Tabs } from 'expo-router';
 import React from 'react';
 
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
-import {
-  HomeIcon,
-  User,
-  Bot,
-  Gift,
-  HandHeart,
-  Wallet,
-} from 'lucide-react-native';
+import { HomeIcon, User, Bot, Gift, Wallet } from 'lucide-react-native';
 import { useTheme } from '@/hooks/useTheme';
 import { useTranslation } from '@/hooks/useTranslation';
 import { Box } from '@/components/ui';

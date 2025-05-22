@@ -5,7 +5,7 @@ import { VStack } from '../ui/vstack';
 import { Text } from '../ui/text';
 import { Link, LinkText } from '../ui/link';
 import { Icon } from '../ui/icon';
-import { ChevronRight } from 'lucide-react-native';
+import { Box, ChevronRight } from 'lucide-react-native';
 import { Avatar, AvatarFallbackText, AvatarImage } from '../ui/avatar';
 import { type User as SupabaseUser } from '@supabase/supabase-js';
 import { useDisclose } from '@gluestack-ui/hooks';
@@ -29,11 +29,11 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => {
 
   return (
     <>
-      <HStack>
+      <HStack className="flex-1">
         <Pressable
-          className={'flex flex-1 flex-row items-center justify-between'}
+          className="flex flex-1 flex-row justify-start"
           onPress={onOpenActionsheet}>
-          <HStack space="md">
+          <HStack space="md" className="justify-end">
             <Avatar className="bg-primary-500">
               <AvatarFallbackText>{profile?.display_name}</AvatarFallbackText>
               {profile?.avatar_url && (
@@ -55,7 +55,6 @@ export const ProfileCard: React.FC<ProfileCardProps> = ({ user }) => {
               </Link>
             </VStack>
           </HStack>
-          <Icon as={ChevronRight} />
         </Pressable>
       </HStack>
       <EditProfileDrawer

@@ -4,12 +4,23 @@ import {
 } from 'react-native-safe-area-context';
 
 import { Box } from './box';
+import classNames from 'classnames';
 
-export const SafeAreaView = ({ children, ...props }: SafeAreaViewProps) => (
+type SafeAreaViewProps = {
+  children: React.ReactNode;
+  className?: string;
+};
+
+export const SafeAreaView = ({
+  children,
+  className,
+  ...props
+}: SafeAreaViewProps) => (
   <Box
-    className={
-      'h-full flex-1 flex bg-background-light dark:bg-background-dark'
-    }>
+    className={classNames(
+      'flex h-full flex-1 bg-background-light dark:bg-background-dark',
+      className,
+    )}>
     <RNSSafeAreaView
       edges={['top', 'right', 'left']}
       style={[
@@ -17,7 +28,7 @@ export const SafeAreaView = ({ children, ...props }: SafeAreaViewProps) => (
           flex: 1,
         },
       ]}
-      className={'bg-background-light dark:bg-background-dark flex-1'}
+      className={'flex-1 bg-background-light dark:bg-background-dark'}
       {...props}>
       {children}
     </RNSSafeAreaView>

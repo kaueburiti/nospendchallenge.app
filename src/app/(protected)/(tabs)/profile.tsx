@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { VStack } from '@/components/ui';
+import { HStack, VStack } from '@/components/ui';
 import { Heading } from '@/components/ui';
 import { Divider } from '@/components/ui';
 import { Button, ButtonText } from '@/components/ui';
@@ -7,7 +7,6 @@ import { MenuItem } from '@/components/MenuItem';
 import { LifeBuoyIcon, OctagonX, CreditCard } from 'lucide-react-native';
 import { ProfileCard } from '@/components/profile/ProfileCard';
 import DeleteAccountAlertDialog from '../../../components/profile/DeleteAccountAlertDialog';
-import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { useSession } from '@/hooks/useSession';
 import {
   ScrollView,
@@ -16,9 +15,8 @@ import {
 import { useTranslation } from '@/hooks/useTranslation';
 import { router } from 'expo-router';
 import { useSignOut } from '@/hooks/auth/useSignOut';
-import PaymentPlan from '@/components/profile/PaymentPlan';
 import { RevenueCatContext } from '@/provider/RevenueCatProvider';
-
+import PageSafeAreaView from '@/components/layout/page-safe-area-view';
 interface ProfileSettingsProps {
   onOpenDeleteAccountDialog: () => void;
 }
@@ -77,27 +75,21 @@ const SignOutButton: React.FC<SignOutButtonProps> = ({ onClick }) => {
 };
 
 const ProfilePage = () => {
-  const { t } = useTranslation();
   const { session } = useSession();
   const { signOut } = useSignOut();
-  const { customerInfo } = useContext(RevenueCatContext);
-  const isPro = !!customerInfo?.activeSubscriptions?.length;
   const [showDeleteAccountDialog, setShowDeleteAccountDialog] = useState(false);
 
   const onOpenDeleteAccountDialog = () => setShowDeleteAccountDialog(true);
 
   return (
-    <SafeAreaView className="bg-background flex-1">
+    <PageSafeAreaView>
       <GestureHandlerRootView>
         <ScrollView className="flex flex-1">
-          <VStack className="flex-1 px-5 py-4" space="lg">
-            <ProfileCard user={session?.user ?? null} />
-            {!isPro && (
-              <PaymentPlan
-                onUpgrade={() => router.push('/paywall')}
-                isPro={isPro}
-              />
-            )}
+          <VStack className="flex-1 px-5" space="lg">
+            <HStack className="flex-1 items-center justify-between">
+              <ProfileCard user={session?.user ?? null} />
+            </HStack>
+
             <ProfileSettings
               onOpenDeleteAccountDialog={onOpenDeleteAccountDialog}
             />
@@ -111,7 +103,7 @@ const ProfilePage = () => {
           />
         </ScrollView>
       </GestureHandlerRootView>
-    </SafeAreaView>
+    </PageSafeAreaView>
   );
 };
 
