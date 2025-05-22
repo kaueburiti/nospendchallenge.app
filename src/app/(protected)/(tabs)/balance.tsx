@@ -58,16 +58,20 @@ const ChallengeBalanceCard = ({
   totalSaved,
   totalSpent,
   netBalance,
+  savingsGoal,
 }: {
   title: string;
   totalSaved: number;
   totalSpent: number;
   netBalance: number;
+  savingsGoal: number;
 }) => {
   return (
     <Box className="rounded-lg border border-gray-200 bg-white p-3 dark:bg-gray-800">
       <VStack space="sm">
-        <Heading size="lg">{title}</Heading>
+        <Heading size="lg">
+          {title} - {formatCurrency(savingsGoal)}
+        </Heading>
 
         <Box className="flex-row">
           <VStack className="flex-1 items-center border-r border-outline-300 py-2">
@@ -212,7 +216,7 @@ export default function BalanceScreen() {
             </VStack>
 
             {/* Challenges Section */}
-            <VStack space="md">
+            {/* <VStack space="md">
               <Text className="text-lg font-semibold text-gray-900 dark:text-white">
                 {t('balance.challenges.title')}
               </Text>
@@ -225,6 +229,7 @@ export default function BalanceScreen() {
                       totalSaved={challenge.totalSaved}
                       totalSpent={challenge.totalSpent}
                       netBalance={challenge.netBalance}
+                      savingsGoal={challenge.savingsGoal}
                     />
                   ))}
                 </VStack>
@@ -235,7 +240,7 @@ export default function BalanceScreen() {
                   </Text>
                 </Box>
               )}
-            </VStack>
+            </VStack> */}
 
             {/* History Section */}
             <VStack space="md">
@@ -255,7 +260,7 @@ export default function BalanceScreen() {
                       challengeName={
                         data.challenges.find(
                           challenge => challenge.id === item.challengeId,
-                        )?.title
+                        )?.title ?? ''
                       }
                     />
                   ))}

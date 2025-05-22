@@ -20,6 +20,7 @@ export interface BalanceData {
     totalSaved: number;
     totalSpent: number;
     netBalance: number;
+    savingsGoal: number;
   }[];
 }
 
@@ -79,6 +80,7 @@ export const useBalance = () => {
               title: challenge.title,
               totalSaved,
               totalSpent,
+              savingsGoal: challenge.savings_goal ?? 0,
               netBalance: totalSaved - totalSpent,
             };
           }),
