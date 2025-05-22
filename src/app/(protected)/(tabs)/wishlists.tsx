@@ -1,15 +1,19 @@
 import React, { useState } from 'react';
 import { ScrollView } from '@/components/ui/scroll-view';
-import { Box, VStack } from '@/components/ui';
+import { Box, Heading, VStack } from '@/components/ui';
 import { Section } from '@/components/Section';
 import { useTranslation } from '@/hooks/useTranslation';
 import { useGetWishlistItems } from '@/hooks/wishlists';
 import { ActivityIndicator } from 'react-native';
-import WishlistItemCard from '@/components/wishlists/item-card';
+import { Text } from '@/components/ui/text';
 import EmptyWishlists from '@/components/wishlists/empty-state';
 import { EditWishlistItemDrawer } from '@/components/wishlist/EditWishlistItemDrawer';
 import { ListHeader } from '@/components/ui/list/header';
 import PageSafeAreaView from '@/components/layout/page-safe-area-view';
+import { type Tables } from '@/lib/db/database.types';
+import { Grid, GridItem } from '@/components/ui/grid';
+import { Card } from '@/components/ui/card';
+import { Image } from '@/components/ui/image';
 
 export default function WishlistsPage() {
   const { t } = useTranslation();
@@ -44,15 +48,7 @@ export default function WishlistsPage() {
                 <ActivityIndicator size="large" />
               </Box>
             ) : items && items.length > 0 ? (
-              <VStack space="md" className="mt-4">
-                {items.map(item => (
-                  <WishlistItemCard
-                    key={item.id}
-                    item={item}
-                    onEdit={() => handleEditItem(item.id)}
-                  />
-                ))}
-              </VStack>
+              <WishlistGrid items={items} />
             ) : (
               <EmptyWishlists onClick={handleAddItem} />
             )}
@@ -66,5 +62,46 @@ export default function WishlistsPage() {
         itemId={selectedItemId}
       />
     </PageSafeAreaView>
+  );
+}
+
+function WishlistGrid({ items }: { items: Tables<'wishlist_items'>[] }) {
+  return (
+    <Grid className="gap-4">
+      {items.map(item => (
+        <GridItem
+          key={item.id}
+          className="rounded-md text-center"
+          _extra={{
+            className: 'col-span-6',
+          }}>
+          <WishlistItemCard item={item} />
+        </GridItem>
+      ))}
+    </Grid>
+  );
+}
+
+function WishlistItemCard({ item }: { item: Tables<'wishlist_items'> }) {
+  return (
+    <Card className="shadow-xs relative overflow-hidden rounded-lg border border-gray-200 p-0">
+      <Image
+        source={{
+          uri: 'https://picsum.photos/200/200' ?? item.photo,
+        }}
+        className="h-[100px] w-full"
+        alt="image"
+      />
+      <Box className="absolute right-0 top-[76px] z-10 rounded-tl-md border-l border-t border-gray-200 bg-white px-3 py-1">
+        <Text className="font-bold text-success-500">${item.cost}</Text>
+      </Box>
+
+      <VStack className="border-t border-gray-200 p-4">
+        <Heading size="md">{item.name}</Heading>
+        <Text className="mb-2 text-sm font-normal text-typography-500">
+          {item.description}
+        </Text>
+      </VStack>
+    </Card>
   );
 }
