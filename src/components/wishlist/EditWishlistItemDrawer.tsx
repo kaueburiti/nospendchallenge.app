@@ -10,6 +10,7 @@ import { useTranslation } from '@/hooks/useTranslation';
 import { Input, InputField } from '@/components/ui/input';
 import { Textarea, TextareaInput } from '@/components/ui/textarea';
 import {
+  Box,
   FormControl,
   FormControlError,
   FormControlErrorText,
@@ -19,6 +20,7 @@ import { Controller } from 'react-hook-form';
 import { z } from 'zod';
 import {
   useCreateWishlistItem,
+  useDeleteWishlistItem,
   useGetWishlistItem,
   useUpdateWishlistItem,
 } from '@/hooks/wishlists';
@@ -26,6 +28,7 @@ import { supabase } from '@/lib/supabase';
 import PhotoUpload from '../ui/photo-upload';
 import useUploadImage from '@/hooks/storage';
 import FormInput from '../ui/form/input';
+import { Alert } from 'react-native';
 
 // Form schema for wishlist item
 const wishlistItemSchema = z.object({
@@ -52,6 +55,8 @@ interface Props {
 export const EditWishlistItemDrawer = ({ isOpen, onClose, itemId }: Props) => {
   const { t } = useTranslation();
   const [imageData, setImageData] = useState<ImageData | null>(null);
+  const { mutate: deleteItem } = useDeleteWishlistItem();
+
   const { data: item, isLoading: isItemLoading } = useGetWishlistItem(
     itemId ?? 0,
   );
@@ -193,12 +198,35 @@ export const EditWishlistItemDrawer = ({ isOpen, onClose, itemId }: Props) => {
     }
   };
 
+  const handleDelete = () => {
+    Alert.alert(
+      t('wishlists.delete_item'),
+      t('wishlists.delete_item_confirm'),
+      [
+        {
+          text: t('wishlists.form.cancel_button'),
+          style: 'cancel',
+        },
+        {
+          text: t('wishlists.form.delete_button'),
+          style: 'destructive',
+          onPress: () => {
+            onClose();
+            if (itemId) {
+              deleteItem(itemId);
+            }
+          },
+        },
+      ],
+    );
+  };
+
   return (
     <BottomDrawer
       isOpen={isOpen}
       onClose={onClose}
       title={itemId ? t('wishlists.edit_item') : t('wishlists.add_item')}>
-      <VStack space="xs" className="mb-2 w-full p-4">
+      <VStack space="xs" className="mb-2 w-full">
         <VStack space="md">
           <PhotoUpload
             onImageUpload={setImageData}
@@ -263,18 +291,25 @@ export const EditWishlistItemDrawer = ({ isOpen, onClose, itemId }: Props) => {
         </VStack>
       </VStack>
 
-      <HStack space="md" className="mb-4 mt-4 justify-end">
-        <Button variant="outline" onPress={onClose}>
-          <ButtonText>{t('wishlists.form.cancel_button')}</ButtonText>
-        </Button>
-        <Button onPress={handleSubmit(onSubmit)} isDisabled={isLoading}>
-          <ButtonText>
-            {isLoading
-              ? t('wishlists.form.saving_button')
-              : t('wishlists.form.save_button')}
-          </ButtonText>
-        </Button>
-      </HStack>
+      <Box className="mb-4 mt-4 flex-row items-center justify-between">
+        {itemId && (
+          <Button variant="link" onPress={handleDelete}>
+            <ButtonText>{t('wishlists.form.delete_button')}</ButtonText>
+          </Button>
+        )}
+        <HStack space="md" className="mb-4 mt-4 justify-end">
+          <Button variant="outline" onPress={onClose}>
+            <ButtonText>{t('wishlists.form.cancel_button')}</ButtonText>
+          </Button>
+          <Button onPress={handleSubmit(onSubmit)} isDisabled={isLoading}>
+            <ButtonText>
+              {isLoading
+                ? t('wishlists.form.saving_button')
+                : t('wishlists.form.save_button')}
+            </ButtonText>
+          </Button>
+        </HStack>
+      </Box>
     </BottomDrawer>
   );
 };
