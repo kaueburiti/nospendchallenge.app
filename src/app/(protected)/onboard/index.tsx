@@ -1,88 +1,127 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { SafeAreaView } from 'react-native';
 import { router } from 'expo-router';
-import { Box, Button, ButtonText, HStack, VStack } from '@/components/ui';
+import { Box, HStack } from '@/components/ui';
 import { useTranslation } from '@/hooks/useTranslation';
-import OnboardScreen from '@/components/onboard/screen';
-import buying from '@/assets/animations/buying.json';
-import progress from '@/assets/animations/progress.json';
-import highFive from '@/assets/animations/high-five.json';
+import QuestionScreen, {
+  type Question,
+} from '@/components/onboard/question-screen';
 
-const screens = [
+const questions: Question[] = [
   {
-    title: 'Create challenges to stop impulsive buying!',
-    description:
-      'Take control of your finances and build better spending habits.',
-    animationSource: buying,
+    id: 'reason',
+    title: "What's your main reason for joining the #NoSpendChallenge?",
+    description: 'Choose one or more',
+    type: 'multiple',
+    options: [
+      { id: 'save', label: 'I want to save money', value: 'save_money' },
+      {
+        id: 'control',
+        label: 'I want to control impulsive spending',
+        value: 'control_spending',
+      },
+      { id: 'debt', label: "I'm trying to pay off debt", value: 'pay_debt' },
+      {
+        id: 'fun',
+        label: "I'm doing it for fun or self-discipline",
+        value: 'fun_discipline',
+      },
+    ],
   },
   {
-    title: 'Monitor your spending habits and see your improvement over time.',
-    description:
-      'Monitor your spending habits and see your improvement over time.',
-    animationSource: progress,
+    id: 'frequency',
+    title: 'How often do you make impulsive purchases?',
+    type: 'single',
+    options: [
+      { id: 'daily', label: 'Almost every day', value: 'daily' },
+      { id: 'weekly', label: 'A few times a week', value: 'weekly' },
+      { id: 'monthly', label: 'Once or twice a month', value: 'monthly' },
+      { id: 'rarely', label: 'Rarely', value: 'rarely' },
+    ],
   },
   {
-    title: 'Connect with others on the same journey to financial freedom.',
-    description: '',
-    animationSource: highFive,
+    id: 'temptation',
+    title: "What's your biggest spending temptation?",
+    type: 'single',
+    options: [
+      { id: 'clothes', label: 'Clothes & Accessories', value: 'clothes' },
+      { id: 'food', label: 'Food Delivery & Snacks', value: 'food' },
+      { id: 'tech', label: 'Tech & Gadgets', value: 'tech' },
+      { id: 'subs', label: 'Subscriptions & Apps', value: 'subscriptions' },
+    ],
+  },
+  {
+    id: 'support',
+    title: 'How do you want the app to support you?',
+    description: 'Choose all that apply',
+    type: 'multiple',
+    options: [
+      {
+        id: 'reflect',
+        label: 'Help me reflect before each purchase',
+        value: 'reflect',
+      },
+      {
+        id: 'track',
+        label: 'Track my savings and overspending',
+        value: 'track',
+      },
+      { id: 'goals', label: 'Remind me of my goals', value: 'goals' },
+      { id: 'ai', label: 'Give AI advice before I buy', value: 'ai_advice' },
+      { id: 'stats', label: 'Motivate me with progress stats', value: 'stats' },
+    ],
   },
 ];
 
 export default function Onboard() {
+  console.log('Onboard');
   const [currentIndex, setCurrentIndex] = useState(0);
-  const flatListRef = useRef(null);
+  const [answers, setAnswers] = useState<Record<string, string[]>>({});
+
+  const handleAnswer = (questionId: string, answer: string[]) => {
+    setAnswers(prev => ({
+      ...prev,
+      [questionId]: answer,
+    }));
+  };
 
   const handleNext = () => {
-    if (currentIndex < screens.length - 1) {
-      flatListRef.current?.scrollToIndex({
-        index: currentIndex + 1,
-        animated: true,
-      });
+    if (currentIndex < questions.length - 1) {
+      setCurrentIndex(prev => prev + 1);
     } else {
+      // TODO: Save answers to user profile
       router.replace('/(protected)/paywall');
     }
   };
 
   const handleBack = () => {
     if (currentIndex > 0) {
-      flatListRef.current?.scrollToIndex({
-        index: currentIndex - 1,
-        animated: true,
-      });
+      setCurrentIndex(prev => prev - 1);
     }
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-primary-500">
-      <VStack className="flex-1 justify-center">
-        <Box className="flex-1 flex-col items-center justify-center">
-          <OnboardScreen
-            ref={flatListRef}
-            screens={screens}
-            onIndexChange={setCurrentIndex}
-          />
-          <HStack space="lg" className="flex-1 justify-center">
-            {screens.map((_, index) => (
-              <Box
-                key={index}
-                className={`h-4 w-4 rounded-full border border-white ${
-                  index === currentIndex ? 'bg-primary-500' : 'bg-white'
-                }`}
-              />
-            ))}
-          </HStack>
-        </Box>
-
-        <HStack className="flex justify-between p-8">
-          <Button onPress={handleBack} size="xl">
-            <ButtonText>Back</ButtonText>
-          </Button>
-
-          <Button onPress={handleNext} size="xl" variant="secondary">
-            <ButtonText>Next</ButtonText>
-          </Button>
+    <SafeAreaView className="flex-1 bg-white">
+      <Box className="flex-1">
+        <QuestionScreen
+          question={questions[currentIndex]}
+          onAnswer={answer => handleAnswer(questions[currentIndex].id, answer)}
+          onNext={handleNext}
+          onBack={handleBack}
+          isLastQuestion={currentIndex === questions.length - 1}
+          isFirstQuestion={currentIndex === 0}
+        />
+        <HStack space="lg" className="flex justify-center p-4">
+          {questions.map((_, index) => (
+            <Box
+              key={index}
+              className={`h-2 w-2 rounded-full ${
+                index === currentIndex ? 'bg-neutral-900' : 'bg-neutral-300'
+              }`}
+            />
+          ))}
         </HStack>
-      </VStack>
+      </Box>
     </SafeAreaView>
   );
 }

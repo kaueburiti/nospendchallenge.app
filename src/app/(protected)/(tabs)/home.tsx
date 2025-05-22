@@ -29,7 +29,7 @@ const Explorepage = () => {
   const { session } = useSession();
   const { isProUser } = useContext(RevenueCatContext);
 
-  if (!isProUser) {
+  if (!isProUser || true) {
     return <Redirect href="/(protected)/onboard" />;
   }
 
