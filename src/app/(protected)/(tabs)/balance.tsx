@@ -1,15 +1,15 @@
 import React from 'react';
 import { ScrollView } from '@/components/ui/scroll-view';
-import { Box, VStack, HStack, Text, Divider } from '@/components/ui';
+import { Box, VStack, HStack, Text, Divider, Heading } from '@/components/ui';
 import { Section } from '@/components/Section';
 import { useTranslation } from '@/hooks/useTranslation';
 import { ListHeader } from '@/components/ui/list/header';
 import { useBalance } from '@/hooks/balance/useBalance';
 import { ActivityIndicator } from 'react-native';
-import { ArrowDown, ArrowUp, TrendingUp } from 'lucide-react-native';
-import { useTheme } from '@/hooks/useTheme';
 import { formatCurrency } from '@/lib/utils';
 import PageSafeAreaView from '@/components/layout/page-safe-area-view';
+import classNames from 'classnames';
+
 const BalanceSummaryCard = ({
   totalSaved,
   totalSpent,
@@ -19,66 +19,38 @@ const BalanceSummaryCard = ({
   totalSpent: number;
   netBalance: number;
 }) => {
-  const { t } = useTranslation();
-  const { isDark } = useTheme();
-
   return (
-    <Box className="rounded-xl bg-white p-4 shadow-sm dark:bg-gray-800">
-      <VStack space="md">
-        <HStack className="items-center justify-between">
-          <Text className="text-lg font-semibold text-gray-600 dark:text-gray-300">
-            {t('balance.total_saved')}
-          </Text>
-          <HStack className="items-center space-x-1">
-            <ArrowDown size={16} color={isDark ? '#10B981' : '#059669'} />
-            <Text className="text-lg font-semibold text-emerald-600 dark:text-emerald-400">
-              {formatCurrency(totalSaved)}
-            </Text>
-          </HStack>
-        </HStack>
-
-        <HStack className="items-center justify-between">
-          <Text className="text-lg font-semibold text-gray-600 dark:text-gray-300">
-            {t('balance.total_spent')}
-          </Text>
-          <HStack className="items-center space-x-1">
-            <ArrowUp size={16} color={isDark ? '#EF4444' : '#DC2626'} />
-            <Text className="text-lg font-semibold text-red-600 dark:text-red-400">
-              {formatCurrency(totalSpent)}
-            </Text>
-          </HStack>
-        </HStack>
-
-        <Divider />
-
-        <HStack className="items-center justify-between">
-          <Text className="text-lg font-semibold text-gray-600 dark:text-gray-300">
-            {t('balance.net_balance')}
-          </Text>
-          <HStack className="items-center space-x-1">
-            <TrendingUp
-              size={16}
-              color={
-                netBalance >= 0
-                  ? isDark
-                    ? '#10B981'
-                    : '#059669'
-                  : isDark
-                    ? '#EF4444'
-                    : '#DC2626'
-              }
-            />
-            <Text
-              className={`text-lg font-semibold ${
-                netBalance >= 0
-                  ? 'text-emerald-600 dark:text-emerald-400'
-                  : 'text-red-600 dark:text-red-400'
-              }`}>
-              {formatCurrency(netBalance)}
-            </Text>
-          </HStack>
-        </HStack>
-      </VStack>
+    <Box>
+      <Box className="flex-row">
+        <VStack className="flex-1 items-center border-r border-outline-300 py-2">
+          <Heading size="xl" className="text-success-500">
+            {formatCurrency(totalSaved)}
+          </Heading>
+          <Text size="xs">Total Saved</Text>
+        </VStack>
+        <Divider
+          orientation="horizontal"
+          className="flex w-1 self-center bg-background-300"
+        />
+        <VStack className="flex-1 items-center border-r border-outline-300 py-2">
+          <Heading size="xl" className="text-error-500">
+            {formatCurrency(totalSpent)}
+          </Heading>
+          <Text size="xs">Total Spent</Text>
+        </VStack>
+        <Divider
+          orientation="horizontal"
+          className="flex w-1 self-center bg-background-300 sm:hidden"
+        />
+        <VStack className="flex-1 items-center pt-2">
+          <Heading
+            size="xl"
+            className={netBalance >= 0 ? 'text-success-500' : 'text-error-500'}>
+            {formatCurrency(netBalance)}
+          </Heading>
+          <Text size="xs">Overall Balance</Text>
+        </VStack>
+      </Box>
     </Box>
   );
 };
@@ -94,45 +66,43 @@ const ChallengeBalanceCard = ({
   totalSpent: number;
   netBalance: number;
 }) => {
-  const { isDark } = useTheme();
-
   return (
-    <Box className="rounded-lg bg-white p-3 shadow-sm dark:bg-gray-800">
+    <Box className="rounded-lg border border-gray-200 bg-white p-3 dark:bg-gray-800">
       <VStack space="sm">
-        <Text className="font-semibold text-gray-900 dark:text-white">
-          {title}
-        </Text>
-        <HStack className="justify-between">
-          <VStack>
-            <Text className="text-xs text-gray-500 dark:text-gray-400">
-              Saved
-            </Text>
-            <Text className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
+        <Heading size="lg">{title}</Heading>
+
+        <Box className="flex-row">
+          <VStack className="flex-1 items-center border-r border-outline-300 py-2">
+            <Heading size="md" className="text-success-500">
               {formatCurrency(totalSaved)}
-            </Text>
+            </Heading>
+            <Text size="xs">Saved</Text>
           </VStack>
-          <VStack>
-            <Text className="text-xs text-gray-500 dark:text-gray-400">
-              Spent
-            </Text>
-            <Text className="text-sm font-medium text-red-600 dark:text-red-400">
+          <Divider
+            orientation="horizontal"
+            className="flex w-1 self-center bg-background-300"
+          />
+          <VStack className="flex-1 items-center border-r border-outline-300 py-2">
+            <Heading size="md" className="text-error-500">
               {formatCurrency(totalSpent)}
-            </Text>
+            </Heading>
+            <Text size="xs">Spent</Text>
           </VStack>
-          <VStack>
-            <Text className="text-xs text-gray-500 dark:text-gray-400">
-              Balance
-            </Text>
-            <Text
-              className={`text-sm font-medium ${
-                netBalance >= 0
-                  ? 'text-emerald-600 dark:text-emerald-400'
-                  : 'text-red-600 dark:text-red-400'
-              }`}>
+          <Divider
+            orientation="horizontal"
+            className="flex w-1 self-center bg-background-300 sm:hidden"
+          />
+          <VStack className="flex-1 items-center pt-2">
+            <Heading
+              size="md"
+              className={
+                netBalance >= 0 ? 'text-success-500' : 'text-error-500'
+              }>
               {formatCurrency(netBalance)}
-            </Text>
+            </Heading>
+            <Text size="xs">Balance</Text>
           </VStack>
-        </HStack>
+        </Box>
       </VStack>
     </Box>
   );
@@ -142,56 +112,37 @@ const HistoryItem = ({
   date,
   savedAmount,
   spentAmount,
-  status,
+  message,
+  challengeName,
 }: {
   date: string;
   savedAmount: number | null;
   spentAmount: number;
   status: string;
+  message: string;
+  challengeName: string;
 }) => {
-  const { t } = useTranslation();
-  const { isDark } = useTheme();
-
   return (
-    <Box className="rounded-lg bg-white p-3 shadow-sm dark:bg-gray-800">
+    <Box className="rounded-lg border border-gray-200 bg-white p-3 dark:bg-gray-800">
       <VStack space="sm">
-        <HStack className="justify-between">
-          <Text className="font-medium text-gray-900 dark:text-white">
-            {new Date(date).toLocaleDateString()}
-          </Text>
-          <Box
-            className={`rounded-full px-2 py-1 ${
-              status === 'success'
-                ? 'bg-emerald-100 dark:bg-emerald-900'
-                : 'bg-red-100 dark:bg-red-900'
-            }`}>
+        <HStack className="items-center justify-between">
+          <VStack space="xs">
+            <Text className="text-xs">
+              {new Date(date).toLocaleDateString()}
+            </Text>
+            <Heading size="md">{challengeName}</Heading>
+            {message && <Text className="text-md">{message}</Text>}
+          </VStack>
+
+          <Box>
             <Text
-              className={`text-xs font-medium ${
-                status === 'success'
-                  ? 'text-emerald-600 dark:text-emerald-400'
-                  : 'text-red-600 dark:text-red-400'
-              }`}>
-              {t(`balance.history.status.${status}`)}
+              className={classNames('text-2xl font-bold', {
+                'text-emerald-600': savedAmount,
+                'text-red-600': !savedAmount,
+              })}>
+              {formatCurrency(savedAmount || spentAmount)}
             </Text>
           </Box>
-        </HStack>
-        <HStack className="justify-between">
-          <VStack>
-            <Text className="text-xs text-gray-500 dark:text-gray-400">
-              {t('balance.history.saved')}
-            </Text>
-            <Text className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
-              {formatCurrency(savedAmount ?? 0)}
-            </Text>
-          </VStack>
-          <VStack>
-            <Text className="text-xs text-gray-500 dark:text-gray-400">
-              {t('balance.history.spent')}
-            </Text>
-            <Text className="text-sm font-medium text-red-600 dark:text-red-400">
-              {formatCurrency(spentAmount)}
-            </Text>
-          </VStack>
         </HStack>
       </VStack>
     </Box>
@@ -293,6 +244,12 @@ export default function BalanceScreen() {
                       savedAmount={item.savedAmount}
                       spentAmount={item.spentAmount}
                       status={item.status}
+                      message={item.message ?? ''}
+                      challengeName={
+                        data.challenges.find(
+                          challenge => challenge.id === item.challengeId,
+                        )?.title
+                      }
                     />
                   ))}
                 </VStack>

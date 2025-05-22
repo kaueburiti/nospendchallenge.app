@@ -178,10 +178,11 @@ export const getAllChallengesSavingsHistory = async () => {
 
   const { data, error } = await supabase
     .from('checks')
-    .select('date, saved_amount, spent_amount, status, challenge_id')
+    .select('*')
     .eq('user_id', userId)
     .order('date', { ascending: true });
 
+  console.log(data);
   if (error) {
     console.error('Error fetching all challenges savings history:', error);
     throw error;
@@ -192,7 +193,6 @@ export const getAllChallengesSavingsHistory = async () => {
 
 // Get all items for a specific check
 export const getCheckItems = async (checkId: number) => {
-  console.log('getCheckItems', checkId);
   const { data, error } = await supabase
     .from('check_items')
     .select('*')

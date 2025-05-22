@@ -42,9 +42,12 @@ export default function MoneyTrackerTab({ challengeId }: MoneyTrackerTabProps) {
             <HStack space="md" className="items-start">
               <Box className="mt-1">
                 {check.status === 'success' ? (
-                  <CheckCircle className="h-6 w-6 text-success-500" />
+                  <CheckCircle
+                    className="h-6 w-6 text-success-500"
+                    color="#1ABC9C"
+                  />
                 ) : (
-                  <XCircle className="h-6 w-6 text-error-500" />
+                  <XCircle className="h-6 w-6 text-error-500" color="#E63535" />
                 )}
               </Box>
 

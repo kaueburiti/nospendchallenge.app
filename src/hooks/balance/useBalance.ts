@@ -12,6 +12,7 @@ export interface BalanceData {
     spentAmount: number;
     status: string;
     challengeId: number;
+    message: string | null;
   }[];
   challenges: {
     id: number;
@@ -58,6 +59,7 @@ export const useBalance = () => {
             spentAmount: check.spent_amount,
             status: check.status,
             challengeId: check.challenge_id,
+            message: check.message,
           })),
           challenges: challenges.map(challenge => {
             const challengeHistory = history.filter(
