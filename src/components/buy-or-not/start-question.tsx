@@ -9,8 +9,11 @@ import {
   Heading,
   Spinner,
 } from '@/components/ui';
+import LottieView from 'lottie-react-native';
 import React, { useState } from 'react';
 import { Keyboard, TouchableWithoutFeedback } from 'react-native';
+import shoppingreceipt from '@/assets/animations/shopping-receipt.json';
+import LottieViewWrapper from '../lottie-view-wrapper';
 
 interface StartQuestionProps {
   onStart: (productName: string) => void;
@@ -31,21 +34,27 @@ export function StartQuestion({ onStart, isLoading }: StartQuestionProps) {
       <VStack
         space="md"
         className="my-8 flex flex-1 items-center justify-center">
-        <VStack space="lg" className="flex-1 justify-center">
-          <Heading size="2xl" className="text-center">
-            Should I Buy or Not?
-          </Heading>
-          <Text className="text-muted-foreground text-center">
-            Sometimes we don&apos;t know if it&apos;s a fair buy or just a
-            impulsive behavior. Let&apos;s find out if it&apos;s a good idea.
-          </Text>
-          <Text className="text-muted-foreground text-center">
-            Describe the item you&apos;re considering to buy:
-          </Text>
-          <Input size={'3xl'}>
+        <VStack space="4xl">
+          <VStack space="lg" className="items-center">
+            <LottieViewWrapper height={192} width={192}>
+              <LottieView
+                source={shoppingreceipt}
+                autoPlay
+                style={{ width: 250, height: 250 }}
+              />
+            </LottieViewWrapper>
+            <Heading size="3xl" className="text-center">
+              Should I Buy or Not?
+            </Heading>
+            <Text className="text-muted-foreground text-center">
+              Sometimes we don&apos;t know if it&apos;s a fair buy or just a
+              impulsive behavior. Let&apos;s find out if it&apos;s a good idea.
+            </Text>
+          </VStack>
+          <Input size={'3xl'} className="rounded-lg">
             <InputField
-              className="bg-white text-center text-3xl font-bold"
-              placeholder="A new pair of shoes"
+              className="bg-white text-center text-xl font-bold"
+              placeholder="What do you want to buy?"
               value={productName}
               onChangeText={setProductName}
               editable={!isLoading}
@@ -59,11 +68,15 @@ export function StartQuestion({ onStart, isLoading }: StartQuestionProps) {
             className="w-full"
             onPress={handleStart}
             isDisabled={!productName.trim() || isLoading}>
-            {isLoading ? (
-              <Spinner size="small" color="$white" />
-            ) : (
-              <ButtonText className="w-full text-center">Start</ButtonText>
-            )}
+            <ButtonText className="w-full text-center">
+              {isLoading ? (
+                <Box className="flex w-full flex-row items-center justify-center">
+                  <Spinner size="small" color="white" />
+                </Box>
+              ) : (
+                <ButtonText className="w-full text-center">Start</ButtonText>
+              )}
+            </ButtonText>
           </Button>
         </Box>
       </VStack>

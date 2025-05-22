@@ -93,6 +93,7 @@ export default function BuyOrNotScreen() {
           <Question
             question={questions[currentQuestionIndex]}
             onAnswer={handleAnswer}
+            isLoading={isLoading}
             isLastQuestion={currentQuestionIndex === questions.length - 1}
           />
         );

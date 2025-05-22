@@ -32,18 +32,18 @@ export function Verdict({ verdict, onRestart }: VerdictProps) {
           </Heading>
         </Box>
 
-        <Box className="rounded-lg bg-gray-100 p-4 dark:bg-gray-800">
+        <Box className="rounded-lg dark:bg-gray-800">
           <Text>{verdict.reasoning}</Text>
         </Box>
 
-        <VStack space="md">
-          <Heading size="lg">Advice</Heading>
+        <VStack space="md" className="py-8">
+          <Heading size="lg">What should you do?</Heading>
           {verdict.advice.map((advice, index) => (
             <Box
               key={index}
-              className="flex-row items-start rounded-lg bg-gray-100 p-4 dark:bg-gray-800">
+              className="flex-row items-start rounded-lg border border-gray-200 bg-white p-4 dark:bg-gray-800">
               <Text className="mr-2 text-lg font-bold">{index + 1}.</Text>
-              <Text className="flex-1 text-lg">{advice}</Text>
+              <Text className="flex-1 text-sm">{advice}</Text>
             </Box>
           ))}
         </VStack>

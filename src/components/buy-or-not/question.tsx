@@ -10,6 +10,7 @@ import {
   RadioIcon,
   CircleIcon,
   Spinner,
+  Box,
 } from '@/components/ui';
 import React from 'react';
 import { type BuyOrNotQuestion } from '@/lib/openai';
@@ -69,7 +70,9 @@ export function Question({
         isDisabled={!selectedAnswer || isLoading}
         onPress={handleNext}>
         {isLoading ? (
-          <Spinner size="small" color="$white" />
+          <Box className="flex w-full flex-row items-center justify-center">
+            <Spinner size="small" color="white" />
+          </Box>
         ) : (
           <ButtonText className="w-full text-center">
             {isLastQuestion ? 'Get Verdict' : 'Next Question'}
