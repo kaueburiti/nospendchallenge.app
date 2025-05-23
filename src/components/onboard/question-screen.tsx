@@ -6,17 +6,20 @@ import {
   Checkbox,
   CheckboxIndicator,
   CheckboxLabel,
+  CircleIcon,
   Heading,
   Input,
   InputField,
   Radio,
   RadioGroup,
+  RadioIcon,
   RadioIndicator,
   RadioLabel,
   Text,
   VStack,
 } from '@/components/ui';
 import { useTranslation } from '@/hooks/useTranslation';
+import { Circle } from 'lucide-react-native';
 
 export interface QuestionOption {
   id: string;
@@ -114,7 +117,9 @@ export default function QuestionScreen({
                       key={option.id}
                       value={option.value}
                       className="flex-row items-center">
-                      <RadioIndicator />
+                      <RadioIndicator>
+                        <RadioIcon as={Circle} color="#ffb4b4" />
+                      </RadioIndicator>
                       <Text className="ml-3 text-neutral-900">
                         {option.label}
                       </Text>

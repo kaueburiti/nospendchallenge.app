@@ -103,7 +103,6 @@ const questions: Question[] = [
 ];
 
 export default function Onboard() {
-  console.log('Onboard');
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<Record<string, string[]>>({});
 
