@@ -3,14 +3,21 @@ import { SafeAreaView, Image } from 'react-native';
 import { router } from 'expo-router';
 import { Box, HStack } from '@/components/ui';
 import { useTranslation } from '@/hooks/useTranslation';
+import { useCaptureEvent } from '@/hooks/analytics/useCaptureEvent';
 import QuestionScreen, {
   type Question,
+  type QuestionOption,
 } from '@/components/onboard/question-screen';
 import icon from '@/assets/images/icon.png';
 
+type OnboardingAnswerKey = 'reason' | 'frequency' | 'temptation' | 'support';
+type OnboardingAnswers = Partial<
+  Record<OnboardingAnswerKey, QuestionOption['value'][]>
+>;
+
 const questions: Question[] = [
   {
-    id: 'reason',
+    id: 'reason' as OnboardingAnswerKey,
     title: "What's your main reason for joining the #NoSpendChallenge?",
     description: 'Choose one or more',
     illustration: (
@@ -37,7 +44,7 @@ const questions: Question[] = [
     ],
   },
   {
-    id: 'frequency',
+    id: 'frequency' as OnboardingAnswerKey,
     title: 'How often do you make impulsive purchases?',
     illustration: (
       <Image
@@ -55,7 +62,7 @@ const questions: Question[] = [
     ],
   },
   {
-    id: 'temptation',
+    id: 'temptation' as OnboardingAnswerKey,
     title: "What's your biggest spending temptation?",
     illustration: (
       <Image
@@ -73,7 +80,7 @@ const questions: Question[] = [
     ],
   },
   {
-    id: 'support',
+    id: 'support' as OnboardingAnswerKey,
     title: 'How do you want the app to support you?',
     description: 'Choose all that apply',
     illustration: (
@@ -104,9 +111,13 @@ const questions: Question[] = [
 
 export default function Onboard() {
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, string[]>>({});
+  const [answers, setAnswers] = useState<OnboardingAnswers>({});
+  const { captureEvent } = useCaptureEvent();
 
-  const handleAnswer = (questionId: string, answer: string[]) => {
+  const handleAnswer = (
+    questionId: OnboardingAnswerKey,
+    answer: QuestionOption['value'][],
+  ) => {
     setAnswers(prev => ({
       ...prev,
       [questionId]: answer,
@@ -117,6 +128,14 @@ export default function Onboard() {
     if (currentIndex < questions.length - 1) {
       setCurrentIndex(prev => prev + 1);
     } else {
+      // Capture onboarding completion event with all answers
+      captureEvent('onboarding_completed', {
+        reason: answers.reason,
+        frequency: answers.frequency?.[0], // Single answer
+        temptation: answers.temptation?.[0], // Single answer
+        support: answers.support,
+      });
+
       // TODO: Save answers to user profile
       router.replace('/(protected)/paywall');
     }
@@ -133,7 +152,12 @@ export default function Onboard() {
       <Box className="flex-1">
         <QuestionScreen
           question={questions[currentIndex]}
-          onAnswer={answer => handleAnswer(questions[currentIndex].id, answer)}
+          onAnswer={answer =>
+            handleAnswer(
+              questions[currentIndex].id as OnboardingAnswerKey,
+              answer,
+            )
+          }
           onNext={handleNext}
           onBack={handleBack}
           isLastQuestion={currentIndex === questions.length - 1}
