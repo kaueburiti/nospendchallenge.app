@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SafeAreaView, Image } from 'react-native';
 import { router } from 'expo-router';
 import { Box, HStack } from '@/components/ui';
@@ -20,6 +20,11 @@ export default function Onboard() {
   const [answers, setAnswers] = useState<OnboardingAnswers>({});
   const { captureEvent } = useCaptureEvent();
   const { t } = useTranslation();
+
+  // Track when user opens onboard screen
+  useEffect(() => {
+    captureEvent('ONBOARD_OPENED');
+  }, [captureEvent]);
 
   const questions: Question[] = [
     {
