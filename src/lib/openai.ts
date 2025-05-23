@@ -49,7 +49,7 @@ Based on their answers to the following questions:
 
 ${answers.map(a => `Q: ${a.question}\nA: ${a.answer}`).join('\n\n')}
 
-Determine if this is an impulsive purchase or a well-thought-out decision.
+Determine if this is an impulsive purchase or a well-thought-out decision, you should have in mind that the user is trying to save money and control impulsive spending.
 Provide your reasoning and specific advice.
 Format the response as a JSON object with:
 - isImpulsive: boolean
