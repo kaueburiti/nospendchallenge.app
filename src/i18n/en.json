@@ -481,5 +481,48 @@
         "failure": "Failure"
       }
     }
+  },
+  "onboard": {
+    "questions": {
+      "reason": {
+        "title": "What's your main reason for joining the #NoSpendChallenge?",
+        "description": "Choose one or more",
+        "options": {
+          "save": "I want to save money",
+          "control": "I want to control impulsive spending",
+          "debt": "I'm trying to pay off debt",
+          "fun": "I'm doing it for fun or self-discipline"
+        }
+      },
+      "frequency": {
+        "title": "How often do you make impulsive purchases?",
+        "options": {
+          "daily": "Almost every day",
+          "weekly": "A few times a week",
+          "monthly": "Once or twice a month",
+          "rarely": "Rarely"
+        }
+      },
+      "temptation": {
+        "title": "What's your biggest spending temptation?",
+        "options": {
+          "clothes": "Clothes & Accessories",
+          "food": "Food Delivery & Snacks",
+          "tech": "Tech & Gadgets",
+          "subs": "Subscriptions & Apps"
+        }
+      },
+      "support": {
+        "title": "How do you want the app to support you?",
+        "description": "Choose all that apply",
+        "options": {
+          "reflect": "Help me reflect before each purchase",
+          "track": "Track my savings and overspending",
+          "goals": "Remind me of my goals",
+          "ai": "Give AI advice before I buy",
+          "stats": "Motivate me with progress stats"
+        }
+      }
+    }
   }
 }

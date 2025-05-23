@@ -5,16 +5,11 @@ import {
   ButtonText,
   Checkbox,
   CheckboxIndicator,
-  CheckboxLabel,
-  CircleIcon,
   Heading,
-  Input,
-  InputField,
   Radio,
   RadioGroup,
   RadioIcon,
   RadioIndicator,
-  RadioLabel,
   Text,
   VStack,
 } from '@/components/ui';
@@ -82,17 +77,16 @@ export default function QuestionScreen({
   const isNextDisabled = !hasSelected;
 
   return (
-    <Box className="flex-1 bg-primary-50">
+    <Box className="flex-1 bg-primary-500">
       {/* Top illustration section */}
       <Box
-        className="w-full items-center justify-center"
+        className="relative w-full flex-col items-center justify-center"
         style={{ height: '33%' }}>
-        {question.illustration ? (
-          question.illustration
-        ) : (
-          <Box className="mt-8 h-40 w-40 rounded-full bg-neutral-200" />
+        {question.illustration ?? (
+          <Box className="h-40 w-40 rounded-full bg-neutral-200" />
         )}
       </Box>
+
       {/* Bottom white rounded container */}
       <Box className="-mt-8 flex-1 rounded-t-3xl border-l border-r border-t border-gray-200 bg-white px-6 pb-6 pt-10">
         <VStack className="items-center" space="4xl">

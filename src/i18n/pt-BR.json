@@ -566,5 +566,48 @@
         "failure": "Falha"
       }
     }
+  },
+  "onboard": {
+    "questions": {
+      "reason": {
+        "title": "Qual é o seu principal motivo para participar do #NoSpendChallenge?",
+        "description": "Escolha um ou mais",
+        "options": {
+          "save": "Quero economizar dinheiro",
+          "control": "Quero controlar gastos impulsivos",
+          "debt": "Estou tentando pagar dívidas",
+          "fun": "Estou fazendo por diversão ou autodisciplina"
+        }
+      },
+      "frequency": {
+        "title": "Com que frequência você faz compras impulsivas?",
+        "options": {
+          "daily": "Quase todos os dias",
+          "weekly": "Algumas vezes por semana",
+          "monthly": "Uma ou duas vezes por mês",
+          "rarely": "Raramente"
+        }
+      },
+      "temptation": {
+        "title": "Qual é sua maior tentação de gastos?",
+        "options": {
+          "clothes": "Roupas e Acessórios",
+          "food": "Delivery e Lanches",
+          "tech": "Tecnologia e Gadgets",
+          "subs": "Assinaturas e Aplicativos"
+        }
+      },
+      "support": {
+        "title": "Como você quer que o app te ajude?",
+        "description": "Escolha todas as opções que se aplicam",
+        "options": {
+          "reflect": "Me ajudar a refletir antes de cada compra",
+          "track": "Acompanhar minhas economias e gastos excessivos",
+          "goals": "Me lembrar dos meus objetivos",
+          "ai": "Dar conselhos de IA antes de eu comprar",
+          "stats": "Me motivar com estatísticas de progresso"
+        }
+      }
+    }
   }
 }

@@ -15,104 +15,157 @@ type OnboardingAnswers = Partial<
   Record<OnboardingAnswerKey, QuestionOption['value'][]>
 >;
 
-const questions: Question[] = [
-  {
-    id: 'reason' as OnboardingAnswerKey,
-    title: "What's your main reason for joining the #NoSpendChallenge?",
-    description: 'Choose one or more',
-    illustration: (
-      <Image
-        source={icon}
-        className="h-40 w-40 rounded-full bg-primary-500"
-        resizeMode="contain"
-      />
-    ),
-    type: 'multiple',
-    options: [
-      { id: 'save', label: 'I want to save money', value: 'save_money' },
-      {
-        id: 'control',
-        label: 'I want to control impulsive spending',
-        value: 'control_spending',
-      },
-      { id: 'debt', label: "I'm trying to pay off debt", value: 'pay_debt' },
-      {
-        id: 'fun',
-        label: "I'm doing it for fun or self-discipline",
-        value: 'fun_discipline',
-      },
-    ],
-  },
-  {
-    id: 'frequency' as OnboardingAnswerKey,
-    title: 'How often do you make impulsive purchases?',
-    illustration: (
-      <Image
-        source={icon}
-        className="h-40 w-40 rounded-full bg-primary-500"
-        resizeMode="contain"
-      />
-    ),
-    type: 'single',
-    options: [
-      { id: 'daily', label: 'Almost every day', value: 'daily' },
-      { id: 'weekly', label: 'A few times a week', value: 'weekly' },
-      { id: 'monthly', label: 'Once or twice a month', value: 'monthly' },
-      { id: 'rarely', label: 'Rarely', value: 'rarely' },
-    ],
-  },
-  {
-    id: 'temptation' as OnboardingAnswerKey,
-    title: "What's your biggest spending temptation?",
-    illustration: (
-      <Image
-        source={icon}
-        className="h-40 w-40 rounded-full bg-primary-500"
-        resizeMode="contain"
-      />
-    ),
-    type: 'single',
-    options: [
-      { id: 'clothes', label: 'Clothes & Accessories', value: 'clothes' },
-      { id: 'food', label: 'Food Delivery & Snacks', value: 'food' },
-      { id: 'tech', label: 'Tech & Gadgets', value: 'tech' },
-      { id: 'subs', label: 'Subscriptions & Apps', value: 'subscriptions' },
-    ],
-  },
-  {
-    id: 'support' as OnboardingAnswerKey,
-    title: 'How do you want the app to support you?',
-    description: 'Choose all that apply',
-    illustration: (
-      <Image
-        source={icon}
-        className="h-40 w-40 rounded-full bg-primary-500"
-        resizeMode="contain"
-      />
-    ),
-    type: 'multiple',
-    options: [
-      {
-        id: 'reflect',
-        label: 'Help me reflect before each purchase',
-        value: 'reflect',
-      },
-      {
-        id: 'track',
-        label: 'Track my savings and overspending',
-        value: 'track',
-      },
-      { id: 'goals', label: 'Remind me of my goals', value: 'goals' },
-      { id: 'ai', label: 'Give AI advice before I buy', value: 'ai_advice' },
-      { id: 'stats', label: 'Motivate me with progress stats', value: 'stats' },
-    ],
-  },
-];
-
 export default function Onboard() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answers, setAnswers] = useState<OnboardingAnswers>({});
   const { captureEvent } = useCaptureEvent();
+  const { t } = useTranslation();
+
+  const questions: Question[] = [
+    {
+      id: 'reason' as OnboardingAnswerKey,
+      title: t('onboard.questions.reason.title'),
+      description: t('onboard.questions.reason.description'),
+      illustration: (
+        <Image
+          source={icon}
+          className="h-40 w-40 rounded-full bg-primary-500"
+          resizeMode="contain"
+        />
+      ),
+      type: 'multiple',
+      options: [
+        {
+          id: 'save',
+          label: t('onboard.questions.reason.options.save'),
+          value: 'save_money',
+        },
+        {
+          id: 'control',
+          label: t('onboard.questions.reason.options.control'),
+          value: 'control_spending',
+        },
+        {
+          id: 'debt',
+          label: t('onboard.questions.reason.options.debt'),
+          value: 'pay_debt',
+        },
+        {
+          id: 'fun',
+          label: t('onboard.questions.reason.options.fun'),
+          value: 'fun_discipline',
+        },
+      ],
+    },
+    {
+      id: 'frequency' as OnboardingAnswerKey,
+      title: t('onboard.questions.frequency.title'),
+      illustration: (
+        <Image
+          source={icon}
+          className="h-40 w-40 rounded-full bg-primary-500"
+          resizeMode="contain"
+        />
+      ),
+      type: 'single',
+      options: [
+        {
+          id: 'daily',
+          label: t('onboard.questions.frequency.options.daily'),
+          value: 'daily',
+        },
+        {
+          id: 'weekly',
+          label: t('onboard.questions.frequency.options.weekly'),
+          value: 'weekly',
+        },
+        {
+          id: 'monthly',
+          label: t('onboard.questions.frequency.options.monthly'),
+          value: 'monthly',
+        },
+        {
+          id: 'rarely',
+          label: t('onboard.questions.frequency.options.rarely'),
+          value: 'rarely',
+        },
+      ],
+    },
+    {
+      id: 'temptation' as OnboardingAnswerKey,
+      title: t('onboard.questions.temptation.title'),
+      illustration: (
+        <Image
+          source={icon}
+          className="h-40 w-40 rounded-full bg-primary-500"
+          resizeMode="contain"
+        />
+      ),
+      type: 'single',
+      options: [
+        {
+          id: 'clothes',
+          label: t('onboard.questions.temptation.options.clothes'),
+          value: 'clothes',
+        },
+        {
+          id: 'food',
+          label: t('onboard.questions.temptation.options.food'),
+          value: 'food',
+        },
+        {
+          id: 'tech',
+          label: t('onboard.questions.temptation.options.tech'),
+          value: 'tech',
+        },
+        {
+          id: 'subs',
+          label: t('onboard.questions.temptation.options.subs'),
+          value: 'subscriptions',
+        },
+      ],
+    },
+    {
+      id: 'support' as OnboardingAnswerKey,
+      title: t('onboard.questions.support.title'),
+      description: t('onboard.questions.support.description'),
+      illustration: (
+        <Image
+          source={icon}
+          className="h-40 w-40 rounded-full bg-primary-500"
+          resizeMode="contain"
+        />
+      ),
+      type: 'multiple',
+      options: [
+        {
+          id: 'reflect',
+          label: t('onboard.questions.support.options.reflect'),
+          value: 'reflect',
+        },
+        {
+          id: 'track',
+          label: t('onboard.questions.support.options.track'),
+          value: 'track',
+        },
+        {
+          id: 'goals',
+          label: t('onboard.questions.support.options.goals'),
+          value: 'goals',
+        },
+        {
+          id: 'ai',
+          label: t('onboard.questions.support.options.ai'),
+          value: 'ai_advice',
+        },
+        {
+          id: 'stats',
+          label: t('onboard.questions.support.options.stats'),
+          value: 'stats',
+        },
+      ],
+    },
+  ];
 
   const handleAnswer = (
     questionId: OnboardingAnswerKey,
