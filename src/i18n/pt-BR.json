@@ -15,7 +15,10 @@
     "create_challenge": "Criar Desafio",
     "no_activities": "Nenhuma atividade recente",
     "no_activities_description": "Suas atividades recentes aparecerão aqui",
-    "total_savings": "Economia Total"
+    "total_savings": "Economia Total",
+    "greeting": "Olá",
+    "no_challenges": "Nenhum desafio ainda",
+    "no_challenges_description": "Crie seu primeiro desafio para começar!"
   },
   "profile": {
     "tab_label": "Perfil",
@@ -47,7 +50,51 @@
     "confirm_password": "Confirmar Nova Senha",
     "current_password_incorrect": "Senha atual incorreta",
     "password_update_failed": "Falha ao atualizar senha",
-    "password_updated": "Senha atualizada com sucesso"
+    "password_updated": "Senha atualizada com sucesso",
+    "edit_profile": {
+      "title": "Editar Perfil",
+      "description": "Atualize os detalhes do seu perfil."
+    },
+    "delete_account": {
+      "title": "Excluir Conta",
+      "description": "Tem certeza que deseja excluir sua conta? Esta ação não pode ser desfeita.",
+      "delete_button": "Excluir Conta",
+      "cancel_button": "Cancelar"
+    },
+    "form": {
+      "first_name": {
+        "label": "Nome",
+        "placeholder": "Digite seu nome",
+        "error": "O nome deve ter pelo menos 2 caracteres"
+      },
+      "last_name": {
+        "label": "Sobrenome",
+        "placeholder": "Digite seu sobrenome",
+        "error": "O sobrenome deve ter pelo menos 2 caracteres"
+      },
+      "email": {
+        "label": "E-mail",
+        "placeholder": "Digite seu e-mail",
+        "error": "E-mail é obrigatório"
+      },
+      "avatar": {
+        "label": "Avatar",
+        "error": "Avatar é obrigatório",
+        "change": "Alterar Avatar"
+      },
+      "cancel_button": "Cancelar",
+      "save_button": "Salvar",
+      "saving_button": "Salvando..."
+    },
+    "billing_title": "Cobrança",
+    "billing_description": "Gerencie sua assinatura e detalhes de cobrança",
+    "manage_subscription": "Gerenciar Assinatura",
+    "subscription_status": "Plano Atual",
+    "renewal_date": "Data de Renovação",
+    "cancel_subscription": "Cancelar Assinatura",
+    "cancel_subscription_confirm": "Tem certeza que deseja cancelar sua assinatura? Você perderá acesso a todos os recursos premium ao final do seu período de cobrança atual.",
+    "cancel_subscription_success": "Sua assinatura foi cancelada com sucesso",
+    "cancel_subscription_error": "Falha ao cancelar assinatura"
   },
   "category": {
     "development": "Desenvolvimento",
@@ -92,6 +139,56 @@
       "name_required": "Nome é obrigatório",
       "description_required": "Descrição é obrigatória",
       "amount_required": "Valor deve ser maior que 0"
+    },
+    "create": {
+      "title": "Criar Desafio",
+      "description": "Comece um novo desafio agora!"
+    },
+    "edit": {
+      "title": "Editar Desafio",
+      "description": "Atualize os detalhes do seu desafio."
+    },
+    "delete": {
+      "title": "Excluir Desafio",
+      "description": "Tem certeza que deseja excluir este desafio? Esta ação não pode ser desfeita.",
+      "delete_button": "Excluir Desafio",
+      "cancel_button": "Cancelar"
+    },
+    "form": {
+      "title": {
+        "label": "Título",
+        "placeholder": "Digite o título do seu desafio",
+        "error": "O título deve ter pelo menos 4 caracteres"
+      },
+      "description": {
+        "label": "Descrição",
+        "placeholder": "Descreva seu desafio",
+        "error": "A descrição deve ter pelo menos 10 caracteres"
+      },
+      "start_date": {
+        "label": "Data de Início",
+        "error": "Data de início é obrigatória"
+      },
+      "end_date": {
+        "label": "Data de Término",
+        "error": "Data de término é obrigatória"
+      },
+      "cover": {
+        "label": "Editar Capa",
+        "error": "Capa é obrigatória"
+      },
+      "savings_goal": {
+        "label": "Meta de Economia",
+        "placeholder": "Digite sua meta de economia",
+        "error": "A meta de economia deve ser um número positivo"
+      },
+      "days_suggestion_label": "Algumas sugestões",
+      "days_label": "Dias",
+      "cancel_button": "Cancelar",
+      "create_button": "Criar Desafio",
+      "update_button": "Atualizar Desafio",
+      "delete_button": "Excluir Desafio",
+      "saving_button": "Salvando..."
     }
   },
   "validation": {
@@ -422,6 +519,52 @@
     "savings_history": {
       "title": "Histórico de Economia",
       "empty": "Nenhuma economia registrada ainda"
+    }
+  },
+  "welcome": {
+    "greeting": "Bem-vindo ao",
+    "description": "Crie desafios para ajudar você em sua jornada de controle financeiro!",
+    "create_account": "Criar Conta",
+    "already_have_account": "Já tenho uma conta",
+    "sign_in": "Entrar ou Cadastrar",
+    "verify_email": "Verifique seu e-mail",
+    "back": "Voltar para boas-vindas"
+  },
+  "ai_assistant": {
+    "tab_label": "Assistente IA",
+    "title": "Assistente IA",
+    "description": "Pergunte qualquer coisa sobre seu desafio ou suas economias",
+    "message_placeholder": "Digite uma mensagem..."
+  },
+  "balance": {
+    "tab_label": "Saldo",
+    "title": "Saldo",
+    "description": "Acompanhe suas economias e gastos em todos os desafios",
+    "total_saved": "Total Economizado",
+    "total_spent": "Total Gasto",
+    "net_balance": "Saldo Líquido",
+    "summary": {
+      "title": "Saldo Geral",
+      "total_saved": "Total Economizado",
+      "total_spent": "Total Gasto",
+      "net_balance": "Saldo Líquido"
+    },
+    "challenges": {
+      "title": "Por Desafio",
+      "empty": "Nenhum desafio ainda",
+      "empty_description": "Participe ou crie um desafio para começar a acompanhar seu saldo"
+    },
+    "history": {
+      "title": "Histórico",
+      "empty": "Nenhum histórico ainda",
+      "empty_description": "Seu histórico de saldo aparecerá aqui conforme você completar os desafios",
+      "date": "Data",
+      "saved": "Economizado",
+      "spent": "Gasto",
+      "status": {
+        "success": "Sucesso",
+        "failure": "Falha"
+      }
     }
   }
 }
